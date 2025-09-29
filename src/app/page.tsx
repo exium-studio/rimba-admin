@@ -87,17 +87,8 @@ const IndexRoute = () => {
   const authToken = useAuthMiddleware((s) => s.authToken);
 
   return (
-    <CContainer minH={"100dvh"} p={4} align={"center"} justify={"center"}>
-      <SimpleGrid
-        className="ss"
-        columns={[1, null, 2]}
-        w={"full"}
-        maxW={"1000px"}
-        rounded={themeConfig.radii.container}
-        border={"1px solid"}
-        borderColor={"d1"}
-        overflow={"clip"}
-      >
+    <CContainer minH={"100dvh"} align={"center"}>
+      <SimpleGrid columns={[1, null, 2]} flex={1} w={"full"}>
         <CContainer
           display={["none", null, "flex"]}
           bg={themeConfig.primaryColor}
@@ -116,8 +107,8 @@ const IndexRoute = () => {
           </CContainer>
         </CContainer>
 
-        <CContainer h={"full"} p={[2, null, 8]} gap={16} align={"center"}>
-          <HStack justify={"center"}>
+        <CContainer h={"full"} p={[2, null, 8]} gap={16}>
+          <HStack>
             <ColorModeButton />
 
             <LangMenu />
@@ -127,7 +118,7 @@ const IndexRoute = () => {
 
           {!authToken && <SigninForm />}
 
-          <BrandWatermark textAlign={"center"} />
+          <BrandWatermark />
         </CContainer>
       </SimpleGrid>
     </CContainer>

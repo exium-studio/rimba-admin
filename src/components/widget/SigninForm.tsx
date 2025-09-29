@@ -2,6 +2,7 @@
 
 import { Field } from "@/components/ui/field";
 import { NavLink } from "@/components/ui/nav-link";
+import { DotIndicator } from "@/components/widget/Indicator";
 import Logo from "@/components/widget/Logo";
 import useAuthMiddleware from "@/context/useAuthMiddleware";
 import useLang from "@/context/useLang";
@@ -37,7 +38,6 @@ import { P } from "../ui/p";
 import { PasswordInput } from "../ui/password-input";
 import { StringInput } from "../ui/string-input";
 import ResetPasswordDisclosure from "./ResetPasswordDisclosure";
-import { DotIndicator } from "@/components/widget/Indicator";
 
 interface Props extends StackProps {}
 
@@ -373,23 +373,27 @@ const SigninForm = (props: Props) => {
       w={"full"}
       m={"auto"}
       gap={8}
-      align={"center"}
       rounded={themeConfig.radii.container}
       {...restProps}
     >
-      <CContainer gap={1} align={"center"}>
+      <CContainer gap={1}>
         <Logo mb={4} />
 
-        <P fontSize={"xl"} fontWeight={"bold"} textAlign={"center"}>
+        <P fontSize={"xl"} fontWeight={"bold"}>
           {l.msg_signin_title}
         </P>
 
-        <P textAlign={"center"}>{activeRoleKey ? msg : l.msg_signin}</P>
+        <P>{activeRoleKey ? msg : l.msg_signin}</P>
       </CContainer>
 
       {!activeRoleKey && (
         <>
-          <SimpleGrid columns={[1, null, 3]} h={"calc(276px - 72px)"} gap={4}>
+          <SimpleGrid
+            columns={[1, null, 3]}
+            w={"full"}
+            h={"calc(276px - 72px)"}
+            gap={4}
+          >
             {ROLES.map((role) => {
               const isActive = selectedRoleKey === role.key;
 
