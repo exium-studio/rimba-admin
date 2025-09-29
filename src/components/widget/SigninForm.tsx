@@ -96,7 +96,7 @@ const SSOAuthForm = (props: any) => {
             setStorage("__user_data", JSON.stringify(r.data.data?.user));
             setAuthToken(r.data.data?.token);
             setPermissions(r.data.data?.permissions);
-            router.push("/demo");
+            router.push(indexRoute);
           },
         },
       });
@@ -237,7 +237,7 @@ const BasicAuthForm = (props: any) => {
             setStorage("__user_data", JSON.stringify(r.data.data?.user));
             setAuthToken(r.data.data?.token);
             setPermissions(r.data.data?.permissions);
-            router.push("/demo");
+            router.push(indexRoute);
           },
         },
       });
@@ -341,10 +341,9 @@ const SigninForm = (props: Props) => {
     {
       icon: IconUserCog,
       key: "super_admin",
-      indexRoute: "/cms/static-contents",
       sso: true,
       msg: l.msg_signin_as_super_admin,
-      form: <SSOAuthForm />,
+      form: <SSOAuthForm indexRoute={"/cms/static-contents"} />,
     },
     {
       icon: IconDeviceDesktopAnalytics,
@@ -352,15 +351,14 @@ const SigninForm = (props: Props) => {
       indexRoute: "/monev/dashboard",
       sso: true,
       msg: l.msg_signin_as_monev,
-      form: <SSOAuthForm />,
+      form: <SSOAuthForm indexRoute={"/monev/dashboard"} />,
     },
     {
       icon: IconBook2,
       key: "educator",
-      indexRoute: "/kmis/dashboard",
       sso: false,
       msg: l.msg_signin_as_educator,
-      form: <BasicAuthForm />,
+      form: <BasicAuthForm indexRoute={"/kmis/dashboard"} />,
     },
   ];
   const [selectedRoleKey, setSelectedRoleKey] = useState<string | null>(null);
@@ -404,7 +402,9 @@ const SigninForm = (props: Props) => {
                   p={4}
                   color={isActive ? themeConfig.primaryColor : ""}
                   border={"1px solid"}
-                  borderColor={"border.muted"}
+                  borderColor={
+                    isActive ? themeConfig.primaryColor : "border.muted"
+                  }
                   rounded={themeConfig.radii.container}
                   opacity={isActive ? 1 : 0.6}
                   cursor={"pointer"}
