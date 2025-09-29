@@ -8,6 +8,7 @@ import { LangMenu } from "@/components/ui/lang-menu";
 import { NavLink } from "@/components/ui/nav-link";
 import { P } from "@/components/ui/p";
 import BrandWatermark from "@/components/widget/BrandWatermark";
+import { PartnersLogo } from "@/components/widget/PartnersLogo";
 import SigninForm from "@/components/widget/SigninForm";
 import { IMAGES_PATH } from "@/constants/paths";
 import useAuthMiddleware from "@/context/useAuthMiddleware";
@@ -94,7 +95,17 @@ const IndexRoute = () => {
           bgImage={`url(${IMAGES_PATH}/hero-bg.jpg)`}
           bgPos={"center"}
           bgSize={"cover"}
-        ></CContainer>
+        >
+          <CContainer
+            w={"fit"}
+            p={3}
+            m={4}
+            bg={"body"}
+            rounded={themeConfig.radii.component}
+          >
+            <PartnersLogo />
+          </CContainer>
+        </CContainer>
 
         <CContainer h={"full"} p={4}>
           <HStack justify={"center"}>
