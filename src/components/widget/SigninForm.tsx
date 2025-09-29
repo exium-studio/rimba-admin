@@ -380,7 +380,7 @@ const SigninForm = (props: Props) => {
       <CContainer gap={1} align={"center"}>
         <Logo mb={4} />
 
-        <P textAlign={"center"} fontWeight={"bold"} fontSize={"xl"}>
+        <P fontSize={"xl"} fontWeight={"bold"} textAlign={"center"}>
           {l.msg_signin_title}
         </P>
 
