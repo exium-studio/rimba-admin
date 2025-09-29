@@ -37,6 +37,7 @@ import Logo from "@/components/widget/Logo";
 import { MiniProfile } from "@/components/widget/MiniProfile";
 import { Today } from "@/components/widget/Today";
 import { APP } from "@/constants/_meta";
+import { Interface__NavListItem } from "@/constants/interfaces";
 import { PRIVATE_NAVS, PRIVATE_ROUTE_INDEX } from "@/constants/navs";
 import { Props__Layout, Props__NavLink } from "@/constants/props";
 import { FIREFOX_SCROLL_Y_CLASS_PR_PREFIX } from "@/constants/sizes";
@@ -85,6 +86,41 @@ const NavTooltip = (props: TooltipProps) => {
     >
       {children}
     </Tooltip>
+  );
+};
+const NavTitle = (props: any) => {
+  // Props
+  const { backPath, resolvedActiveNavs, ...restProps } = props;
+
+  // Contexts
+  const { l } = useLang();
+
+  return (
+    <HStack {...restProps}>
+      {backPath && <BackButton iconButton clicky={false} backPath={backPath} />}
+
+      {resolvedActiveNavs.map((nav: Interface__NavListItem, idx: number) => {
+        return (
+          <HStack key={idx}>
+            {idx !== 0 && (
+              <>
+                {backPath && (
+                  <Icon boxSize={5} color={"fg.subtle"}>
+                    <IconSlash stroke={1.5} />
+                  </Icon>
+                )}
+
+                {!backPath && <DotIndicator color={"d4"} />}
+              </>
+            )}
+
+            <P fontSize={"lg"} fontWeight={"semibold"} lineClamp={1}>
+              {capitalizeWords(pluckString(l, nav.labelKey))}
+            </P>
+          </HStack>
+        );
+      })}
+    </HStack>
   );
 };
 const MobileNavLink = (props: Props__NavLink) => {
@@ -146,39 +182,11 @@ const MobileLayout = (props: any) => {
           </HStack>
 
           <HStack gap={4} h={"52px"} p={4} justify={"space-between"}>
-            <HStack>
-              {backPath && (
-                <BackButton
-                  iconButton
-                  clicky={false}
-                  backPath={backPath}
-                  ml={"-6px"}
-                  variant={"plain"}
-                />
-              )}
-
-              {resolvedActiveNavs.map((nav, idx) => {
-                return (
-                  <HStack key={idx}>
-                    {idx !== 0 && (
-                      <>
-                        {backPath && (
-                          <Icon boxSize={5} color={"fg.subtle"}>
-                            <IconSlash stroke={1.5} />
-                          </Icon>
-                        )}
-
-                        {!backPath && <DotIndicator color={"d4"} />}
-                      </>
-                    )}
-
-                    <P fontSize={"lg"} fontWeight={"semibold"} lineClamp={1}>
-                      {pluckString(l, nav.labelKey)}
-                    </P>
-                  </HStack>
-                );
-              })}
-            </HStack>
+            <NavTitle
+              backPath={backPath}
+              resolvedActiveNavs={resolvedActiveNavs}
+              ml={"-6px"}
+            />
           </HStack>
         </CContainer>
 
@@ -851,38 +859,10 @@ const DesktopLayout = (props: any) => {
       <CContainer bg={BG_CONTENT_CONTAINER} overflowY={"auto"} color={"ibody"}>
         {/* Content header */}
         <HStack gap={4} h={"52px"} p={4} justify={"space-between"}>
-          <HStack>
-            {backPath && (
-              <BackButton iconButton clicky={false} backPath={backPath} />
-            )}
-
-            {resolvedActiveNavs.map((nav, idx) => {
-              return (
-                <HStack key={idx}>
-                  {idx !== 0 && (
-                    <>
-                      {backPath && (
-                        <Icon boxSize={5} color={"fg.subtle"}>
-                          <IconSlash stroke={1.5} />
-                        </Icon>
-                      )}
-
-                      {!backPath && <DotIndicator color={"d4"} />}
-                    </>
-                  )}
-
-                  <P
-                    fontSize={"lg"}
-                    fontWeight={"semibold"}
-                    ml={idx === 0 ? 1 : 0}
-                    lineClamp={1}
-                  >
-                    {capitalizeWords(pluckString(l, nav.labelKey))}
-                  </P>
-                </HStack>
-              );
-            })}
-          </HStack>
+          <NavTitle
+            backPath={backPath}
+            resolvedActiveNavs={resolvedActiveNavs}
+          />
 
           <HStack flexShrink={0} gap={1}>
             <HStack mx={1}>
