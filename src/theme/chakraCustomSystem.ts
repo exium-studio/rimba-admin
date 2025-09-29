@@ -399,7 +399,7 @@ const customConfig = defineConfig({
           fg: {
             value: {
               base: "{colors.p.500}",
-              _dark: "{colors.p.200}",
+              _dark: "{colors.p.500}",
             },
           },
           muted: {
@@ -417,8 +417,8 @@ const customConfig = defineConfig({
           emphasized: { value: "{colors.p.400}" },
           focusRing: {
             value: {
-              base: "{colors.p.600}",
-              _dark: "{colors.p.700}",
+              base: "{colors.p.500}",
+              _dark: "{colors.p.900}",
             },
           },
         },

@@ -235,12 +235,32 @@ const translations = {
   "my_profile": "My profile",
   "navigation": "Navigation",
   "navs": {
-    "dashboard": "Dashboard",
-    "transaction": "Transaction",
-    "master_data": {
-      "index": "Master Data",
-      "category": "Category",
-      "user": "User"
+    "cms": {
+      "index": "CMS",
+      "static_contents": "Static Contents",
+      "legal_documents": "Legal Documents",
+      "activities": "Activities",
+      "news": "News and Field Notes",
+      "animal_composition": "Animal Composition"
+    },
+    "kmis": {
+      "index": "KMIS",
+      "dashboard": "Dashboard",
+      "category": "Topic Category",
+      "topic": "Topic - Course",
+      "material": "Learning Material",
+      "quiz": "Quiz",
+      "quiz_participant": "Quiz Participants",
+      "educator": "Educators",
+      "student": "Students"
+    },
+    "monev": {
+      "index": "Monev",
+      "dashboard": "Dashboard",
+      "activity_calendar": "Activity Calendar",
+      "data_sharing": "Data Sharing",
+      "monitoring": "Monitoring",
+      "package_information": "Package Information"
     },
     "settings": "Settings",
     "profile": "Profile"

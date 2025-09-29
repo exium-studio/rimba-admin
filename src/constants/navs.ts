@@ -1,45 +1,113 @@
 import { Interface__NavItem } from "@/constants/interfaces";
 import {
-  IconDatabase,
   IconDeviceAnalytics,
   IconDeviceDesktop,
   IconLanguage,
-  IconReceipt,
+  IconSchool,
   IconSettings,
   IconShieldHalf,
   IconUser,
+  IconWorld,
 } from "@tabler/icons-react";
 
 export const PRIVATE_ROUTE_INDEX = "/pvt";
 
-export const NAVS: Interface__NavItem[] = [
+export const PRIVATE_NAVS: Interface__NavItem[] = [
   {
     groupLabelKey: "main",
     list: [
       {
-        icon: IconDeviceAnalytics,
-        labelKey: "navs.dashboard",
-        path: `${PRIVATE_ROUTE_INDEX}/dashboard`,
-      },
-      {
-        icon: IconReceipt,
-        labelKey: "navs.transaction",
-        path: `${PRIVATE_ROUTE_INDEX}/transaction`,
-      },
-      {
-        icon: IconDatabase,
-        labelKey: "navs.master_data.index",
-        path: `${PRIVATE_ROUTE_INDEX}/master-data`,
+        icon: IconWorld,
+        labelKey: "navs.cms.index",
+        path: `${PRIVATE_ROUTE_INDEX}/cms`,
         subMenus: [
           {
             list: [
               {
-                labelKey: "navs.master_data.user",
-                path: `${PRIVATE_ROUTE_INDEX}/master-data/user`,
+                labelKey: "navs.cms.static_contents",
+                path: `${PRIVATE_ROUTE_INDEX}/cms/static-contents`,
               },
               {
-                labelKey: "navs.master_data.category",
-                path: `${PRIVATE_ROUTE_INDEX}/master-data/category`,
+                labelKey: "navs.cms.legal_documents",
+                path: `${PRIVATE_ROUTE_INDEX}/cms/legal-documents`,
+              },
+              {
+                labelKey: "navs.cms.activities",
+                path: `${PRIVATE_ROUTE_INDEX}/cms/activities`,
+              },
+              {
+                labelKey: "navs.cms.news",
+                path: `${PRIVATE_ROUTE_INDEX}/cms/news`,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        icon: IconSchool,
+        labelKey: "navs.kmis.index",
+        path: `${PRIVATE_ROUTE_INDEX}/kmis`,
+        subMenus: [
+          {
+            list: [
+              {
+                labelKey: "navs.kmis.dashboard",
+                path: `${PRIVATE_ROUTE_INDEX}/kmis/dashboard`,
+              },
+              {
+                labelKey: "navs.kmis.topic",
+                path: `${PRIVATE_ROUTE_INDEX}/kmis/topic`,
+              },
+              {
+                labelKey: "navs.kmis.quiz",
+                path: `${PRIVATE_ROUTE_INDEX}/kmis/quiz`,
+              },
+              {
+                labelKey: "navs.kmis.quiz_participant",
+                path: `${PRIVATE_ROUTE_INDEX}/kmis/quiz-participant`,
+              },
+              {
+                labelKey: "navs.kmis.educator",
+                path: `${PRIVATE_ROUTE_INDEX}/kmis/educator`,
+              },
+              {
+                labelKey: "navs.kmis.student",
+                path: `${PRIVATE_ROUTE_INDEX}/kmis/student`,
+              },
+              {
+                labelKey: "navs.kmis.category",
+                path: `${PRIVATE_ROUTE_INDEX}/kmis/category`,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        icon: IconDeviceAnalytics,
+        labelKey: "navs.monev.index",
+        path: `${PRIVATE_ROUTE_INDEX}/monev`,
+        subMenus: [
+          {
+            list: [
+              {
+                labelKey: "navs.monev.dashboard",
+                path: `${PRIVATE_ROUTE_INDEX}/monev/dashboard`,
+              },
+              {
+                labelKey: "navs.monev.activity_calendar",
+                path: `${PRIVATE_ROUTE_INDEX}/monev/activity-calendar`,
+              },
+              {
+                labelKey: "navs.monev.data_sharing",
+                path: `${PRIVATE_ROUTE_INDEX}/monev/data-sharing`,
+              },
+              {
+                labelKey: "navs.monev.monitoring",
+                path: `${PRIVATE_ROUTE_INDEX}/monev/monitoring`,
+              },
+              {
+                labelKey: "navs.monev.package_information",
+                path: `${PRIVATE_ROUTE_INDEX}/monev/package-information`,
               },
             ],
           },

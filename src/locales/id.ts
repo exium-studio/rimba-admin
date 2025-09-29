@@ -235,12 +235,32 @@ const translations = {
   "my_profile": "Profil saya",
   "navigation": "Navigasi",
   "navs": {
-    "dashboard": "Dashboard",
-    "transaction": "Transaksi",
-    "master_data": {
-      "index": "Master Data",
-      "category": "Kategori",
-      "user": "Pengguna"
+    "cms": {
+      "index": "CMS",
+      "static_contents": "Konten Statis",
+      "legal_documents": "Dokumen Hukum",
+      "activities": "Aktivitas",
+      "news": "Berita dan Catatan Lapangan",
+      "animal_composition": "Komposisi Hewan"
+    },
+    "kmis": {
+      "index": "KMIS",
+      "dashboard": "Dashboard",
+      "category": "Kategori Topik",
+      "topic": "Topik - Course",
+      "material": "Materi Pembelajaran",
+      "quiz": "Quiz",
+      "quiz_participant": "Peserta Quiz",
+      "educator": "Pengajar",
+      "student": "Pelajar"
+    },
+    "monev": {
+      "index": "Monev",
+      "dashboard": "Dasbor",
+      "activity_calendar": "Kalendar Kegiatan",
+      "data_sharing": "Penyampaian Data",
+      "monitoring": "Monitoring",
+      "package_information": "Informasi Paket"
     },
     "settings": "Pengaturan",
     "profile": "Profil"

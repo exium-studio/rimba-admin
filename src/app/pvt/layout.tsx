@@ -37,7 +37,7 @@ import Logo from "@/components/widget/Logo";
 import { MiniProfile } from "@/components/widget/MiniProfile";
 import { Today } from "@/components/widget/Today";
 import { APP } from "@/constants/_meta";
-import { NAVS, PRIVATE_ROUTE_INDEX } from "@/constants/navs";
+import { PRIVATE_NAVS, PRIVATE_ROUTE_INDEX } from "@/constants/navs";
 import { Props__Layout, Props__NavLink } from "@/constants/props";
 import { FIREFOX_SCROLL_Y_CLASS_PR_PREFIX } from "@/constants/sizes";
 import useLang from "@/context/useLang";
@@ -47,7 +47,7 @@ import { useIsSmScreenWidth } from "@/hooks/useIsSmScreenWidth";
 import useScreen from "@/hooks/useScreen";
 import { last } from "@/utils/array";
 import { getUserData } from "@/utils/auth";
-import { pluckString } from "@/utils/string";
+import { capitalizeWords, pluckString } from "@/utils/string";
 import { getActiveNavs } from "@/utils/url";
 import { Center, HStack, Icon, Stack } from "@chakra-ui/react";
 import {
@@ -195,7 +195,7 @@ const MobileLayout = (props: any) => {
         borderColor={"border.subtle"}
         overflowX={"auto"}
       >
-        {NAVS.map((navItem, idx) => {
+        {PRIVATE_NAVS.map((navItem, idx) => {
           return (
             <Fragment key={idx}>
               {navItem.list.map((nav) => {
@@ -379,13 +379,13 @@ const DesktopLayout = (props: any) => {
     sw < 960 ? [activeNavs[activeNavs.length - 1]] : activeNavs;
   const backPath = last(activeNavs)?.backPath;
   const [search, setSearch] = useState<string>("");
-  const resolvedNavs = NAVS.map((nav) => {
+  const resolvedNavs = PRIVATE_NAVS.map((nav) => {
     const filteredList = nav.list.flatMap((item) => {
       const isMatch =
         item.path &&
         pluckString(l, item.labelKey)
-          .toLowerCase()
-          .includes(search.toLowerCase());
+          ?.toLowerCase()
+          ?.includes(search.toLowerCase());
 
       if (isMatch) return [item];
 
@@ -393,8 +393,8 @@ const DesktopLayout = (props: any) => {
         const matchedSubs = item.subMenus.flatMap((sub) =>
           sub.list.filter((subItem) =>
             pluckString(l, subItem.labelKey)
-              .toLowerCase()
-              .includes(search.toLowerCase())
+              ?.toLowerCase()
+              ?.includes(search.toLowerCase())
           )
         );
 
@@ -405,7 +405,7 @@ const DesktopLayout = (props: any) => {
     });
 
     return filteredList.length > 0 ? { ...nav, list: filteredList } : null;
-  }).filter(Boolean) as typeof NAVS;
+  }).filter(Boolean) as typeof PRIVATE_NAVS;
 
   return (
     <HStack
@@ -877,7 +877,7 @@ const DesktopLayout = (props: any) => {
                     ml={idx === 0 ? 1 : 0}
                     lineClamp={1}
                   >
-                    {pluckString(l, nav.labelKey)}
+                    {capitalizeWords(pluckString(l, nav.labelKey))}
                   </P>
                 </HStack>
               );

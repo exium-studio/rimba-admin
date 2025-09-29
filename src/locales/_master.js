@@ -1,25 +1,93 @@
 // Navs
 export const navs = {
-  dashboard: {
-    id: "Dashboard",
-    en: "Dashboard",
-  },
-  transaction: {
-    id: "Transaksi",
-    en: "Transaction",
-  },
-  master_data: {
+  cms: {
     index: {
-      id: "Master Data",
-      en: "Master Data",
+      id: "CMS",
+      en: "CMS",
+    },
+    static_contents: {
+      id: "Konten Statis",
+      en: "Static Contents",
+    },
+    legal_documents: {
+      id: "Dokumen Hukum",
+      en: "Legal Documents",
+    },
+    activities: {
+      id: "Aktivitas",
+      en: "Activities",
+    },
+    news: {
+      id: "Berita dan Catatan Lapangan",
+      en: "News and Field Notes",
+    },
+    animal_composition: {
+      id: "Komposisi Hewan",
+      en: "Animal Composition",
+    },
+  },
+  kmis: {
+    index: {
+      id: "KMIS",
+      en: "KMIS",
+    },
+    dashboard: {
+      id: "Dashboard",
+      en: "Dashboard",
     },
     category: {
-      id: "Kategori",
-      en: "Category",
+      id: "Kategori Topik",
+      en: "Topic Category",
     },
-    user: {
-      id: "Pengguna",
-      en: "User",
+    topic: {
+      id: "Topik - Course",
+      en: "Topic - Course",
+    },
+    material: {
+      id: "Materi Pembelajaran",
+      en: "Learning Material",
+    },
+    quiz: {
+      id: "Quiz",
+      en: "Quiz",
+    },
+    quiz_participant: {
+      id: "Peserta Quiz",
+      en: "Quiz Participants",
+    },
+    educator: {
+      id: "Pengajar",
+      en: "Educators",
+    },
+    student: {
+      id: "Pelajar",
+      en: "Students",
+    },
+  },
+  monev: {
+    index: {
+      id: "Monev",
+      en: "Monev",
+    },
+    dashboard: {
+      id: "Dasbor",
+      en: "Dashboard",
+    },
+    activity_calendar: {
+      id: "Kalendar Kegiatan",
+      en: "Activity Calendar",
+    },
+    data_sharing: {
+      id: "Penyampaian Data",
+      en: "Data Sharing",
+    },
+    monitoring: {
+      id: "Monitoring",
+      en: "Monitoring",
+    },
+    package_information: {
+      id: "Informasi Paket",
+      en: "Package Information",
     },
   },
   settings: {

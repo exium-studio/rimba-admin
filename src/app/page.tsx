@@ -81,7 +81,7 @@ const Signedin = () => {
   );
 };
 
-const IndexRoute = () => {
+export default function IndexRoute() {
   // Contexts
   const { themeConfig } = useThemeConfig();
   const authToken = useAuthMiddleware((s) => s.authToken);
@@ -123,6 +123,4 @@ const IndexRoute = () => {
       </SimpleGrid>
     </CContainer>
   );
-};
-
-export default IndexRoute;
+}
