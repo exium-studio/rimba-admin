@@ -116,8 +116,8 @@ const IndexRoute = () => {
           </CContainer>
         </CContainer>
 
-        <CContainer h={"full"} p={[2, null, 12]} gap={16}>
-          <HStack>
+        <CContainer h={"full"} p={[2, null, 8]} gap={16} align={"center"}>
+          <HStack justify={"center"}>
             <ColorModeButton />
 
             <LangMenu />
@@ -127,7 +127,7 @@ const IndexRoute = () => {
 
           {!authToken && <SigninForm />}
 
-          <BrandWatermark />
+          <BrandWatermark textAlign={"center"} />
         </CContainer>
       </SimpleGrid>
     </CContainer>
