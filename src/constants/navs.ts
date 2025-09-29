@@ -25,15 +25,15 @@ export const PRIVATE_NAVS: Interface__NavItem[] = [
             list: [
               {
                 labelKey: "navs.cms.static_contents",
-                path: `${PRIVATE_ROUTE_INDEX}/cms/static-contents`,
+                path: `${PRIVATE_ROUTE_INDEX}/cms/static-content`,
               },
               {
                 labelKey: "navs.cms.legal_documents",
-                path: `${PRIVATE_ROUTE_INDEX}/cms/legal-documents`,
+                path: `${PRIVATE_ROUTE_INDEX}/cms/legal-document`,
               },
               {
-                labelKey: "navs.cms.activities",
-                path: `${PRIVATE_ROUTE_INDEX}/cms/activities`,
+                labelKey: "navs.cms.activity",
+                path: `${PRIVATE_ROUTE_INDEX}/cms/activity`,
               },
               {
                 labelKey: "navs.cms.news",

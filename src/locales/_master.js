@@ -13,9 +13,9 @@ export const navs = {
       id: "Dokumen Hukum",
       en: "Legal Documents",
     },
-    activities: {
+    activity: {
       id: "Aktivitas",
-      en: "Activities",
+      en: "Activity",
     },
     news: {
       id: "Berita dan Catatan Lapangan",

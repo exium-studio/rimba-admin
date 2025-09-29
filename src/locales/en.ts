@@ -239,7 +239,7 @@ const translations = {
       "index": "CMS",
       "static_contents": "Static Contents",
       "legal_documents": "Legal Documents",
-      "activities": "Activities",
+      "activity": "Activity",
       "news": "News and Field Notes",
       "animal_composition": "Animal Composition"
     },
