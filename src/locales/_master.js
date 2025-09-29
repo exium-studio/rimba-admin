@@ -32,16 +32,16 @@ export const navs = {
       en: "KMIS",
     },
     dashboard: {
-      id: "Dashboard",
-      en: "Dashboard",
+      id: "Dasbor KMIS",
+      en: "KMIS Dashboard",
     },
     category: {
-      id: "Kategori Topik",
-      en: "Topic Category",
+      id: "Kategori Topik/Course",
+      en: "Topic/Course Category",
     },
     topic: {
-      id: "Topik - Course",
-      en: "Topic - Course",
+      id: "Topik/Course",
+      en: "Topic/Course",
     },
     material: {
       id: "Materi Pembelajaran",
@@ -70,8 +70,8 @@ export const navs = {
       en: "Monev",
     },
     dashboard: {
-      id: "Dasbor",
-      en: "Dashboard",
+      id: "Dasbor Monev",
+      en: "Monev Dashboard",
     },
     activity_calendar: {
       id: "Kalendar Kegiatan",

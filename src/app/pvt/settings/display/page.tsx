@@ -350,7 +350,7 @@ const Theme = () => {
 
   // States
   const colorPalettes = [
-    { palette: "p", primaryHex: "#006aff" },
+    { palette: "p", primaryHex: "#4f8250" },
 
     // Neutral & Dark Shades
     { palette: "gray", primaryHex: "#1B1B1B" },

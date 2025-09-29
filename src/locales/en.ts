@@ -245,9 +245,9 @@ const translations = {
     },
     "kmis": {
       "index": "KMIS",
-      "dashboard": "Dashboard",
-      "category": "Topic Category",
-      "topic": "Topic - Course",
+      "dashboard": "KMIS Dashboard",
+      "category": "Topic/Course Category",
+      "topic": "Topic/Course",
       "material": "Learning Material",
       "quiz": "Quiz",
       "quiz_participant": "Quiz Participants",
@@ -256,7 +256,7 @@ const translations = {
     },
     "monev": {
       "index": "Monev",
-      "dashboard": "Dashboard",
+      "dashboard": "Monev Dashboard",
       "activity_calendar": "Activity Calendar",
       "data_sharing": "Data Sharing",
       "monitoring": "Monitoring",

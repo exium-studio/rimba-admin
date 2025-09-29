@@ -245,9 +245,9 @@ const translations = {
     },
     "kmis": {
       "index": "KMIS",
-      "dashboard": "Dashboard",
-      "category": "Kategori Topik",
-      "topic": "Topik - Course",
+      "dashboard": "Dasbor KMIS",
+      "category": "Kategori Topik/Course",
+      "topic": "Topik/Course",
       "material": "Materi Pembelajaran",
       "quiz": "Quiz",
       "quiz_participant": "Peserta Quiz",
@@ -256,7 +256,7 @@ const translations = {
     },
     "monev": {
       "index": "Monev",
-      "dashboard": "Dasbor",
+      "dashboard": "Dasbor Monev",
       "activity_calendar": "Kalendar Kegiatan",
       "data_sharing": "Penyampaian Data",
       "monitoring": "Monitoring",
