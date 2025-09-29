@@ -145,7 +145,7 @@ const translations = {
   "get": "Dapatkan",
   "hide": "Sembunyikan",
   "info_timezone_auto": {
-    "title": "Zona waktu otomatis diset",
+    "title": "Zona waktu diatur secara otomatis",
     "description": "${timezone}"
   },
   "january": "Januari",
