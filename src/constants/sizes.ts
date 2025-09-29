@@ -1,0 +1,12 @@
+export const DRAWER_BODY_MAXH = `calc(100dvh - 176px)`;
+export const MAIN_BUTTON_SIZE = ["lg", null, "md"];
+export const MOBILE_NAVS_HEIGHT = "74px";
+export const R_GAP = ["10px", null, 4];
+export const R_ITEM_MAX_W = ["", null, "400px"];
+export const ITEM_BODY_H = "500px";
+export const SM_SCREEN_W_NUMBER = 720;
+export const PANEL_WIDTH_NUMBER = 400;
+export const FIT_BOUNDS_PADDING = 64; // px
+export const MIN_H_FEEDBACK_CONTAINER = "200px";
+export const C_ACTIVE_INDICATOR_SIZE = "9px";
+export const FIREFOX_SCROLL_Y_CLASS_PR_PREFIX = "6px";

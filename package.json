@@ -1,0 +1,49 @@
+{
+  "name": "next-chakra-pwa-template",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "d": "next dev",
+    "l": "node src/scripts/generate-translation.js",
+    "s": "node src/scripts/generate-sitemap.js"
+  },
+  "dependencies": {
+    "@chakra-ui/react": "^3.25.0",
+    "@ducanh2912/next-pwa": "^10.2.9",
+    "@emotion/react": "^11.14.0",
+    "@tabler/icons-react": "^3.34.1",
+    "@tinymce/tinymce-react": "^6.3.0",
+    "@types/react-virtualized": "^9.22.2",
+    "axios": "^1.11.0",
+    "date-fns": "2.30.0",
+    "formik": "^2.4.6",
+    "geist": "^1.5.1",
+    "html-react-parser": "^5.2.6",
+    "jszip": "^3.10.1",
+    "moment-timezone": "^0.6.0",
+    "next": "15.5.0",
+    "next-themes": "^0.4.6",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-icons": "^5.5.0",
+    "react-virtualized": "^9.22.6",
+    "yup": "^1.7.0",
+    "zustand": "^5.0.8"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@typescript-eslint/eslint-plugin": "^8.42.0",
+    "@typescript-eslint/parser": "^8.42.0",
+    "eslint": "^9.34.0",
+    "eslint-config-next": "15.5.0",
+    "eslint-plugin-unused-imports": "^4.2.0",
+    "typescript": "^5"
+  }
+}
