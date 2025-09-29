@@ -87,8 +87,17 @@ const IndexRoute = () => {
   const authToken = useAuthMiddleware((s) => s.authToken);
 
   return (
-    <CContainer minH={"100dvh"}>
-      <SimpleGrid columns={[1, null, 2]} flex={1}>
+    <CContainer minH={"100dvh"} p={4} align={"center"} justify={"center"}>
+      <SimpleGrid
+        className="ss"
+        columns={[1, null, 2]}
+        w={"full"}
+        maxW={"1000px"}
+        rounded={themeConfig.radii.container}
+        border={"1px solid"}
+        borderColor={"d1"}
+        overflow={"clip"}
+      >
         <CContainer
           display={["none", null, "flex"]}
           bg={themeConfig.primaryColor}
@@ -107,8 +116,8 @@ const IndexRoute = () => {
           </CContainer>
         </CContainer>
 
-        <CContainer h={"full"} p={4}>
-          <HStack justify={"center"}>
+        <CContainer h={"full"} p={[2, null, 12]} gap={16}>
+          <HStack>
             <ColorModeButton />
 
             <LangMenu />

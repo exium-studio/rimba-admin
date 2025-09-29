@@ -14,7 +14,7 @@ const BrandWatermark = (props: Props) => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <Text textAlign={"center"} fontSize={"sm"} {...restProps}>
+    <Text fontSize={"sm"} {...restProps}>
       ©Copyright {currentYear}{" "}
       <Span fontWeight={"bold"}>
         <Link href={"https://exium.id"} target="_blank">

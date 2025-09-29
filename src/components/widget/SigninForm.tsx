@@ -37,6 +37,7 @@ import { P } from "../ui/p";
 import { PasswordInput } from "../ui/password-input";
 import { StringInput } from "../ui/string-input";
 import ResetPasswordDisclosure from "./ResetPasswordDisclosure";
+import { DotIndicator } from "@/components/widget/Indicator";
 
 interface Props extends StackProps {}
 
@@ -369,21 +370,20 @@ const SigninForm = (props: Props) => {
 
   return (
     <CContainer
-      m={"auto"}
       w={"full"}
-      p={6}
+      m={"auto"}
       gap={8}
       rounded={themeConfig.radii.container}
       {...restProps}
     >
-      <CContainer gap={1} align={"center"}>
+      <CContainer gap={1}>
         <Logo mb={4} />
 
-        <P textAlign={"center"} fontWeight={"bold"} fontSize={"xl"}>
+        <P fontWeight={"bold"} fontSize={"xl"}>
           {l.msg_signin_title}
         </P>
 
-        <P textAlign={"center"}>{activeRoleKey ? msg : l.msg_signin}</P>
+        <P>{activeRoleKey ? msg : l.msg_signin}</P>
       </CContainer>
 
       {!activeRoleKey && (
@@ -399,9 +399,7 @@ const SigninForm = (props: Props) => {
                   p={4}
                   color={isActive ? themeConfig.primaryColor : ""}
                   border={"1px solid"}
-                  borderColor={
-                    isActive ? themeConfig.primaryColor : "border.muted"
-                  }
+                  borderColor={"border.muted"}
                   rounded={themeConfig.radii.container}
                   opacity={isActive ? 1 : 0.6}
                   cursor={"pointer"}
@@ -412,6 +410,8 @@ const SigninForm = (props: Props) => {
                     setSelectedRoleKey(role.key);
                   }}
                 >
+                  {isActive && <DotIndicator ml={0} />}
+
                   <Icon
                     boxSize={"100px"}
                     pos={"absolute"}
@@ -438,7 +438,7 @@ const SigninForm = (props: Props) => {
             })}
           </SimpleGrid>
 
-          <NavLink to={`/?roleKey=${selectedRoleKey}`} w={"fit"} mx={"auto"}>
+          <NavLink to={`/?roleKey=${selectedRoleKey}`}>
             <Btn
               colorPalette={themeConfig.colorPalette}
               disabled={!selectedRoleKey}
@@ -454,7 +454,7 @@ const SigninForm = (props: Props) => {
       )}
 
       {activeRoleKey && (
-        <CContainer maxW={"360px"} gap={4} mx={"auto"}>
+        <CContainer gap={4} mx={"auto"}>
           <HStack>
             <Btn size={"md"} variant={"ghost"} onClick={back} pl={3}>
               <Icon>
