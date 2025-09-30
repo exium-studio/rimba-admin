@@ -16,6 +16,33 @@ import {
 } from "./types";
 import { ReactNode } from "react";
 
+// Auth
+export interface Interface__User {
+  id: string;
+  role: Interface__Role;
+  photoProfile: Interface__StorageFile[];
+  name: string;
+  email: string;
+  accountStatus: Interface__AccountStatus;
+  lastLogin: string;
+}
+
+export interface Interface__Role {
+  id: string;
+  name: string;
+  description: string;
+  permissions: string[];
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+}
+export enum Interface__AccountStatus {
+  Inactive = 0,
+  Pending = 1,
+  Active = 2,
+  Suspended = 3,
+}
+
 // Navs
 export interface Interface__NavListItem {
   icon?: any;

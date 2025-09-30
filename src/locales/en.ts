@@ -46,6 +46,7 @@ const translations = {
   "december": "December",
   "delete_": "Delete",
   "deleted_file": "Removed file",
+  "description": "Description",
   "educator": "Educator",
   "error_400_default": {
     "title": "Bad request",
@@ -233,6 +234,7 @@ const translations = {
   "msg_soft_delete": "Data will be hidden but can be restored later.",
   "msg_toggle_dark_mode": "Toggle dark mode",
   "my_profile": "My profile",
+  "name": "Name",
   "navigation": "Navigation",
   "navs": {
     "cms": {
@@ -391,6 +393,7 @@ const translations = {
   "thursday": "Thursday",
   "time_format": "Time format",
   "timezone": "Timezone",
+  "title": "Title",
   "try_camera": "Try Camera",
   "try_location": "Try Location",
   "try_mic": "Try Mic",

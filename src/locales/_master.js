@@ -547,6 +547,18 @@ export const monev = {
   id: "Monev",
   en: "Monev",
 };
+export const name = {
+  id: "Nama",
+  en: "Name",
+};
+export const title = {
+  id: "Judul",
+  en: "Title",
+};
+export const description = {
+  id: "Deskripsi",
+  en: "Description",
+};
 
 // Message
 export const msg_location_test_helper = {

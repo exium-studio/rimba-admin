@@ -1,3 +1,4 @@
+import { Interface__User } from "@/constants/interfaces";
 import { getStorage, removeStorage, setStorage } from "@/utils/client";
 
 export function getAuthToken() {
@@ -17,7 +18,7 @@ export function getUserData(): Record<string, any> | null {
   if (!raw) return null;
 
   try {
-    return JSON.parse(raw);
+    return JSON.parse(raw) as Interface__User;
   } catch (e) {
     console.error("Failed to parse user data:", e);
     return null;

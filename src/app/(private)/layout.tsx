@@ -34,10 +34,9 @@ import {
   DotIndicator,
   LeftIndicator,
 } from "@/components/widget/Indicator";
-import Logo from "@/components/widget/Logo";
 import { MiniProfile } from "@/components/widget/MiniProfile";
+import { PartnersLogo } from "@/components/widget/PartnersLogo";
 import { Today } from "@/components/widget/Today";
-import { APP } from "@/constants/_meta";
 import { Interface__NavListItem } from "@/constants/interfaces";
 import { PRIVATE_NAVS } from "@/constants/navs";
 import { Props__Layout, Props__NavLink } from "@/constants/props";
@@ -168,10 +167,7 @@ const MobileLayout = (props: any) => {
         {/* Content header */}
         <CContainer>
           <HStack w={"full"} justify={"space-between"} pt={2} px={4}>
-            <HStack>
-              <Logo size={15} />
-              <P fontWeight={"semibold"}>{APP.name}</P>
-            </HStack>
+            <PartnersLogo h={"20px"} gap={1} />
 
             <HStack>
               <Clock showTimezone={sw > 320} />
@@ -184,7 +180,7 @@ const MobileLayout = (props: any) => {
             <NavTitle
               backPath={backPath}
               resolvedActiveNavs={resolvedActiveNavs}
-              ml={"-6px"}
+              ml={backPath ? -1 : 0}
             />
           </HStack>
         </CContainer>
@@ -264,7 +260,9 @@ const MobileLayout = (props: any) => {
                                     return (
                                       <NavLink key={menu.path} to={menu.path}>
                                         <MenuItem value={menu.path} h={"44px"}>
-                                          {pluckString(l, menu.labelKey)}
+                                          <P lineClamp={1}>
+                                            {pluckString(l, menu.labelKey)}
+                                          </P>
 
                                           {isSubNavsActive && (
                                             <DotIndicator mr={1} />
@@ -448,7 +446,7 @@ const DesktopLayout = (props: any) => {
                   bg: "bg.subtle",
                 }}
               >
-                <Logo size={15} />
+                <PartnersLogo h={"24px"} compact />
               </Center>
             </NavLink>
           )}
@@ -457,16 +455,7 @@ const DesktopLayout = (props: any) => {
             {navsExpanded && (
               <NavLink to="/">
                 <HStack ml={"12px"} gap={3}>
-                  <Logo size={15} />
-
-                  <P
-                    w={"full"}
-                    fontSize={16}
-                    fontWeight={"semibold"}
-                    lineClamp={1}
-                  >
-                    {APP.name}
-                  </P>
+                  <PartnersLogo h={"24px"} />
                 </HStack>
               </NavLink>
             )}

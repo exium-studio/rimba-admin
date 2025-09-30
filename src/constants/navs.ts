@@ -1,7 +1,7 @@
 import { Interface__NavItem } from "@/constants/interfaces";
 import {
-  IconDeviceAnalytics,
   IconDeviceDesktop,
+  IconDeviceDesktopAnalytics,
   IconLanguage,
   IconSchool,
   IconSettings,
@@ -83,7 +83,7 @@ export const PRIVATE_NAVS: Interface__NavItem[] = [
         ],
       },
       {
-        icon: IconDeviceAnalytics,
+        icon: IconDeviceDesktopAnalytics,
         labelKey: "navs.monev.index",
         path: `/monev`,
         subMenus: [

@@ -46,6 +46,7 @@ const translations = {
   "december": "Desember",
   "delete_": "Hapus",
   "deleted_file": "File dihapus",
+  "description": "Deskripsi",
   "educator": "Pengajar",
   "error_400_default": {
     "title": "Bad request",
@@ -233,6 +234,7 @@ const translations = {
   "msg_soft_delete": "Data akan disembunyikan dan bisa dikembalikan nanti.",
   "msg_toggle_dark_mode": "Toggle mode gelap",
   "my_profile": "Profil saya",
+  "name": "Nama",
   "navigation": "Navigasi",
   "navs": {
     "cms": {
@@ -391,6 +393,7 @@ const translations = {
   "thursday": "Kamis",
   "time_format": "Format waktu",
   "timezone": "Zona waktu",
+  "title": "Judul",
   "try_camera": "Coba Kamera",
   "try_location": "Coba Lokasi",
   "try_mic": "Coba Mic",
