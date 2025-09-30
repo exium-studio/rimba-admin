@@ -19,25 +19,25 @@ export const PRIVATE_NAVS: Interface__NavItem[] = [
       {
         icon: IconWorld,
         labelKey: "navs.cms.index",
-        path: `${PRIVATE_ROUTE_INDEX}/cms`,
+        path: `/cms`,
         subMenus: [
           {
             list: [
               {
                 labelKey: "navs.cms.static_contents",
-                path: `${PRIVATE_ROUTE_INDEX}/cms/static-content`,
+                path: `/cms/static-content`,
               },
               {
                 labelKey: "navs.cms.legal_documents",
-                path: `${PRIVATE_ROUTE_INDEX}/cms/legal-document`,
+                path: `/cms/legal-document`,
               },
               {
                 labelKey: "navs.cms.activity",
-                path: `${PRIVATE_ROUTE_INDEX}/cms/activity`,
+                path: `/cms/activity`,
               },
               {
                 labelKey: "navs.cms.news",
-                path: `${PRIVATE_ROUTE_INDEX}/cms/news`,
+                path: `/cms/news`,
               },
             ],
           },
@@ -46,37 +46,37 @@ export const PRIVATE_NAVS: Interface__NavItem[] = [
       {
         icon: IconSchool,
         labelKey: "navs.kmis.index",
-        path: `${PRIVATE_ROUTE_INDEX}/kmis`,
+        path: `/kmis`,
         subMenus: [
           {
             list: [
               {
                 labelKey: "navs.kmis.dashboard",
-                path: `${PRIVATE_ROUTE_INDEX}/kmis/dashboard`,
+                path: `/kmis/dashboard`,
               },
               {
                 labelKey: "navs.kmis.topic",
-                path: `${PRIVATE_ROUTE_INDEX}/kmis/topic`,
+                path: `/kmis/topic`,
               },
               {
                 labelKey: "navs.kmis.quiz",
-                path: `${PRIVATE_ROUTE_INDEX}/kmis/quiz`,
+                path: `/kmis/quiz`,
               },
               {
                 labelKey: "navs.kmis.quiz_participant",
-                path: `${PRIVATE_ROUTE_INDEX}/kmis/quiz-participant`,
+                path: `/kmis/quiz-participant`,
               },
               {
                 labelKey: "navs.kmis.educator",
-                path: `${PRIVATE_ROUTE_INDEX}/kmis/educator`,
+                path: `/kmis/educator`,
               },
               {
                 labelKey: "navs.kmis.student",
-                path: `${PRIVATE_ROUTE_INDEX}/kmis/student`,
+                path: `/kmis/student`,
               },
               {
                 labelKey: "navs.kmis.category",
-                path: `${PRIVATE_ROUTE_INDEX}/kmis/category`,
+                path: `/kmis/category`,
               },
             ],
           },
@@ -85,29 +85,29 @@ export const PRIVATE_NAVS: Interface__NavItem[] = [
       {
         icon: IconDeviceAnalytics,
         labelKey: "navs.monev.index",
-        path: `${PRIVATE_ROUTE_INDEX}/monev`,
+        path: `/monev`,
         subMenus: [
           {
             list: [
               {
                 labelKey: "navs.monev.dashboard",
-                path: `${PRIVATE_ROUTE_INDEX}/monev/dashboard`,
+                path: `/monev/dashboard`,
               },
               {
                 labelKey: "navs.monev.activity_calendar",
-                path: `${PRIVATE_ROUTE_INDEX}/monev/activity-calendar`,
+                path: `/monev/activity-calendar`,
               },
               {
                 labelKey: "navs.monev.data_sharing",
-                path: `${PRIVATE_ROUTE_INDEX}/monev/data-sharing`,
+                path: `/monev/data-sharing`,
               },
               {
                 labelKey: "navs.monev.monitoring",
-                path: `${PRIVATE_ROUTE_INDEX}/monev/monitoring`,
+                path: `/monev/monitoring`,
               },
               {
                 labelKey: "navs.monev.package_information",
-                path: `${PRIVATE_ROUTE_INDEX}/monev/package-information`,
+                path: `/monev/package-information`,
               },
             ],
           },
@@ -124,7 +124,7 @@ export const OTHER_NAVS: Interface__NavItem[] = [
       {
         icon: IconSettings,
         labelKey: "navs.settings",
-        path: `${PRIVATE_ROUTE_INDEX}/settings`,
+        path: `/settings`,
         subMenus: [
           {
             groupLabelKey: "settings_navs.main.index",
@@ -132,26 +132,26 @@ export const OTHER_NAVS: Interface__NavItem[] = [
               {
                 icon: IconUser,
                 labelKey: "my_profile",
-                path: `${PRIVATE_ROUTE_INDEX}/settings/profile`,
-                backPath: `${PRIVATE_ROUTE_INDEX}/settings`,
+                path: `/settings/profile`,
+                backPath: `/settings`,
               },
               {
                 icon: IconDeviceDesktop,
                 labelKey: "settings_navs.main.display",
-                path: `${PRIVATE_ROUTE_INDEX}/settings/display`,
-                backPath: `${PRIVATE_ROUTE_INDEX}/settings`,
+                path: `/settings/display`,
+                backPath: `/settings`,
               },
               {
                 icon: IconLanguage,
                 labelKey: "settings_navs.main.regional",
-                path: `${PRIVATE_ROUTE_INDEX}/settings/regional`,
-                backPath: `${PRIVATE_ROUTE_INDEX}/settings`,
+                path: `/settings/regional`,
+                backPath: `/settings`,
               },
               {
                 icon: IconShieldHalf,
                 labelKey: "settings_navs.main.permissions",
-                path: `${PRIVATE_ROUTE_INDEX}/settings/permissions`,
-                backPath: `${PRIVATE_ROUTE_INDEX}/settings`,
+                path: `/settings/permissions`,
+                backPath: `/settings`,
               },
             ],
           },
@@ -160,7 +160,7 @@ export const OTHER_NAVS: Interface__NavItem[] = [
       {
         icon: IconUser,
         labelKey: "navs.profile",
-        path: `${PRIVATE_ROUTE_INDEX}/profile`,
+        path: `/profile`,
       },
     ],
   },
