@@ -21,6 +21,8 @@ import FeedbackRetry from "@/components/widget/FeedbackRetry";
 import { PageContainer, PageContent } from "@/components/widget/Page";
 import { Interface__KMISCourseCategory } from "@/constants/interfaces";
 import useLang from "@/context/useLang";
+import { useLoadingBar } from "@/context/useLoadingBar";
+import useRenderTrigger from "@/context/useRenderTrigger";
 import { useThemeConfig } from "@/context/useThemeConfig";
 import useBackOnClose from "@/hooks/useBackOnClose";
 import useDataState from "@/hooks/useDataState";
@@ -41,7 +43,7 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 import { useFormik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as yup from "yup";
 
 interface Props extends StackProps {}
@@ -52,6 +54,7 @@ const Create = () => {
   // Contexts
   const { l } = useLang();
   const { themeConfig } = useThemeConfig();
+  const setRt = useRenderTrigger((s) => s.setRt);
 
   // Hooks
   const { open, onOpen, onClose } = useDisclosure();
@@ -89,6 +92,7 @@ const Create = () => {
         onResolve: {
           onSuccess: () => {
             resetForm();
+            setRt((ps) => !ps);
           },
         },
       });
@@ -202,6 +206,7 @@ const Table = (props: any) => {
 
   // Contexts
   const { l } = useLang();
+  const setLoadingBar = useLoadingBar((s) => s.setLoadingBar);
 
   // States
   const {
@@ -309,14 +314,16 @@ const Table = (props: any) => {
         page={page}
         setPage={setPage}
         totalPage={pagination?.meta?.last_page}
-        loading={loading}
       />
     ),
   };
 
+  useEffect(() => {
+    setLoadingBar(initialLoading || loading);
+  }, [loading, initialLoading]);
+
   return (
     <>
-      {initialLoading && render.loading}
       {!initialLoading && (
         <>
           {error && render.error}

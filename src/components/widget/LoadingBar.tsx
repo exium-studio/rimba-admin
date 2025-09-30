@@ -1,16 +1,15 @@
 "use client";
 
+import { useLoadingBar } from "@/context/useLoadingBar";
 import { useThemeConfig } from "@/context/useThemeConfig";
 import { Box, BoxProps } from "@chakra-ui/react";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
-interface LoadingBarProps extends BoxProps {
-  loading: boolean;
-}
-
-export function LoadingBar({ loading, ...restProps }: LoadingBarProps) {
+export function LoadingBar(props: BoxProps) {
   // Contexts
   const { themeConfig } = useThemeConfig();
+  const loadingBar = useLoadingBar((s) => s.loadingBar);
+  console.log(loadingBar);
 
   // States
   const [visible, setVisible] = useState(false);
@@ -19,8 +18,8 @@ export function LoadingBar({ loading, ...restProps }: LoadingBarProps) {
   const finishTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    // Start loading
-    if (loading) {
+    // Start loadingBar
+    if (loadingBar) {
       setVisible(true);
       setProgress(0);
 
@@ -34,7 +33,7 @@ export function LoadingBar({ loading, ...restProps }: LoadingBarProps) {
         });
       }, tick);
     } else {
-      // Finish loading
+      // Finish loadingBar
       if (intervalRef.current) clearInterval(intervalRef.current);
       setProgress(100);
 
@@ -48,24 +47,25 @@ export function LoadingBar({ loading, ...restProps }: LoadingBarProps) {
       if (intervalRef.current) clearInterval(intervalRef.current);
       if (finishTimeoutRef.current) clearTimeout(finishTimeoutRef.current);
     };
-  }, [loading]);
+  }, [loadingBar]);
 
   if (!visible) return null;
 
   return (
     <Box
+      id="loading_bar"
+      w={"full"}
+      h={"3px"}
+      bg={"transparent"}
       position={"fixed"}
       top={0}
       left={0}
-      width={"100%"}
-      height={"1px"}
-      bg={"transparent"}
       zIndex={9999}
-      {...restProps}
+      {...props}
     >
       <Box
-        width={`${progress}%`}
-        height={"full"}
+        w={`${progress}%`}
+        h={"full"}
         bg={themeConfig.primaryColor}
         transition="width 0.2s linear, opacity 0.3s ease"
       />

@@ -9,6 +9,7 @@ import { Img } from "../ui/img";
 import GlobalDisclosure from "./GlobalDisclosure";
 import { useColorMode } from "@/components/ui/color-mode";
 import useADM from "@/context/useADM";
+import { LoadingBar } from "@/components/widget/LoadingBar";
 
 interface Props {
   children: React.ReactNode;
@@ -77,7 +78,9 @@ export default function ClientSideOnly(props: Props) {
 
   return (
     <>
+      <LoadingBar />
       <GlobalDisclosure />
+
       {children}
     </>
   );
