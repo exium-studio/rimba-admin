@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/menu";
 import { P } from "@/components/ui/p";
 import { DotIndicator } from "@/components/widget/Indicator";
+import { LoadingBar } from "@/components/widget/LoadingBar";
 import { SortIcon } from "@/components/widget/SortIcon";
 import { Interface__FormattedTableData } from "@/constants/interfaces";
 import {
@@ -23,10 +24,11 @@ import { Type__SortHandler } from "@/constants/types";
 import useConfirmationDisclosure from "@/context/disclosure/useConfirmationDisclosure";
 import useLang from "@/context/useLang";
 import { useThemeConfig } from "@/context/useThemeConfig";
+import { useIsSmScreenWidth } from "@/hooks/useIsSmScreenWidth";
 import useScreen from "@/hooks/useScreen";
 import { isEmptyArray } from "@/utils/array";
 import { formatNumber } from "@/utils/formatter";
-import { Center, HStack, Icon, SimpleGrid, Table } from "@chakra-ui/react";
+import { Center, HStack, Icon, Table } from "@chakra-ui/react";
 import {
   IconCaretDownFilled,
   IconCaretLeftFilled,
@@ -71,8 +73,11 @@ const RowOptions = (props: Props_RowOptions) => {
       </MenuTrigger>
 
       <MenuContent portalRef={tableContainerRef} zIndex={2} minW={"140px"}>
-        {rowOptions?.map((option, idx) => {
-          if (option === "divider") return <MenuSeparator key={idx} />;
+        {rowOptions?.map((item, idx) => {
+          // if (item === "divider") return <MenuSeparator key={idx} />;
+
+          const option = item(row);
+          if (!option) return null;
 
           const {
             disabled = false,
@@ -89,7 +94,7 @@ const RowOptions = (props: Props_RowOptions) => {
               <MenuItem
                 key={idx}
                 value={label}
-                justifyContent={"space-between"}
+                justifyContent="space-between"
                 disabled={disabled}
                 onClick={() => {
                   if (!disabled) handleConfirmationClick(option);
@@ -97,14 +102,13 @@ const RowOptions = (props: Props_RowOptions) => {
                 {...menuItemProps}
               >
                 {label}
-
                 {icon && <Icon boxSize={ICON_BOX_SIZE}>{icon}</Icon>}
               </MenuItem>
             );
           }
 
           if (override) {
-            return <Fragment key={idx}>{override?.(row)}</Fragment>;
+            return <Fragment key={idx}>{override}</Fragment>;
           }
 
           return (
@@ -113,13 +117,12 @@ const RowOptions = (props: Props_RowOptions) => {
               disabled={disabled}
               value={label}
               onClick={() => {
-                if (!disabled) onClick?.(row);
+                if (!disabled) onClick();
               }}
-              justifyContent={"space-between"}
+              justifyContent="space-between"
               {...menuItemProps}
             >
               {label}
-
               {icon && <Icon boxSize={ICON_BOX_SIZE}>{icon}</Icon>}
             </MenuItem>
           );
@@ -192,10 +195,13 @@ const BatchOptions = (props: Props__BatchOptions) => {
 
         <MenuSeparator />
 
-        {batchOptions?.map((option, idx) => {
-          const noSelection = selectedRows?.length === 0;
+        {batchOptions?.map((item, idx) => {
+          const noSelection = selectedRows.length === 0;
 
-          if (option === "divider") return <MenuSeparator key={idx} />;
+          // if (item === "divider") return <MenuSeparator key={idx} />;
+
+          const option = item(selectedRows);
+          if (!option) return null;
 
           const {
             disabled = false,
@@ -214,7 +220,7 @@ const BatchOptions = (props: Props__BatchOptions) => {
               <MenuItem
                 key={idx}
                 value={label}
-                justifyContent={"space-between"}
+                justifyContent="space-between"
                 disabled={resolvedDisabled}
                 onClick={() => {
                   if (!resolvedDisabled) handleConfirmationClick(option);
@@ -222,14 +228,13 @@ const BatchOptions = (props: Props__BatchOptions) => {
                 {...menuItemProps}
               >
                 {label}
-
                 {icon && <Icon boxSize={ICON_BOX_SIZE}>{icon}</Icon>}
               </MenuItem>
             );
           }
 
           if (override) {
-            return <Fragment key={idx}>{override?.(noSelection)}</Fragment>;
+            return <Fragment key={idx}>{override}</Fragment>;
           }
 
           return (
@@ -237,14 +242,13 @@ const BatchOptions = (props: Props__BatchOptions) => {
               key={idx}
               value={label}
               onClick={() => {
-                if (!resolvedDisabled) onClick?.(selectedRows);
+                if (!resolvedDisabled) onClick();
               }}
               disabled={resolvedDisabled}
-              justifyContent={"space-between"}
+              justifyContent="space-between"
               {...menuItemProps}
             >
               {label}
-
               {icon && <Icon boxSize={ICON_BOX_SIZE}>{icon}</Icon>}
             </MenuItem>
           );
@@ -345,7 +349,7 @@ const Pagination = (props: Props_PaginationTableData) => {
 
         <P>{l.of}</P>
 
-        <P>{totalPage || "?"}</P>
+        <P>{formatNumber(totalPage) || "?"}</P>
       </HStack>
 
       <Btn
@@ -380,6 +384,7 @@ export const DataTable = (props: Props__DataTable) => {
     setPage,
     totalPage,
     footer,
+    loading = false,
     ...restProps
   } = props;
 
@@ -387,6 +392,7 @@ export const DataTable = (props: Props__DataTable) => {
   const { themeConfig } = useThemeConfig();
 
   // Hooks
+  const iss = useIsSmScreenWidth();
   const { sh } = useScreen();
 
   // Refs
@@ -504,7 +510,7 @@ export const DataTable = (props: Props__DataTable) => {
   // set initial source of truth table data
   useEffect(() => {
     setTableData([...rows]);
-  }, []);
+  }, [rows]);
 
   return (
     <>
@@ -512,11 +518,12 @@ export const DataTable = (props: Props__DataTable) => {
         ref={tableContainerRef}
         className="scrollX scrollY"
         borderColor={"border.muted"}
-        minH={props?.minH || sh < 625 ? "400px" : "full"}
+        minH={props?.minH || sh < 625 ? "400px" : ""}
         flex={1}
-        flexShrink={0}
         {...restProps}
       >
+        <LoadingBar loading={loading} />
+
         <Table.Root
           w={headers.length > 1 ? "full" : "fit-content"}
           tableLayout={"auto"}
@@ -765,34 +772,44 @@ export const DataTable = (props: Props__DataTable) => {
       </CContainer>
 
       {hasTableFooter && (
-        <SimpleGrid
-          columns={[1, null, 3]}
-          p={3}
-          borderTop={"1px solid"}
-          borderColor={"border.muted"}
-        >
-          <CContainer
-            order={1}
-            align={["start", null, "start"]}
-            mb={[1, null, 0]}
+        <>
+          <HStack
+            p={3}
+            borderTop={"1px solid"}
+            borderColor={"border.muted"}
+            justify={"space-between"}
           >
-            <Limittation limit={limit} setLimit={setLimit} />
-          </CContainer>
+            <CContainer w={"fit"} mb={[1, null, 0]}>
+              <Limittation limit={limit} setLimit={setLimit} />
+            </CContainer>
 
-          <CContainer
-            order={[3, null, 2]}
-            align={["start", null, "center"]}
-            justify={"center"}
-            pl={[2, null, 0]}
-            mt={[footer ? 1 : 0, null, 0]}
-          >
-            {footer}
-          </CContainer>
+            {!iss && (
+              <CContainer
+                w={"fit"}
+                justify={"center"}
+                pl={[2, null, 0]}
+                mt={[footer ? 1 : 0, null, 0]}
+              >
+                {footer}
+              </CContainer>
+            )}
 
-          <CContainer order={[2, null, 3]} align={["start", null, "end"]}>
-            <Pagination page={page} setPage={setPage} totalPage={totalPage} />
-          </CContainer>
-        </SimpleGrid>
+            <CContainer w={"fit"}>
+              <Pagination page={page} setPage={setPage} totalPage={totalPage} />
+            </CContainer>
+          </HStack>
+
+          {iss && (
+            <CContainer
+              w={"fit"}
+              justify={"center"}
+              pl={[2, null, 0]}
+              mt={[footer ? 1 : 0, null, 0]}
+            >
+              {footer}
+            </CContainer>
+          )}
+        </>
       )}
     </>
   );

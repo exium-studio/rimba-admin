@@ -88,8 +88,8 @@ export interface Interface__TableOption {
   disabled?: boolean;
   label?: string;
   icon?: any;
-  onClick?: (data: any) => void;
-  confirmation?: (dataParams: any) => {
+  onClick?: () => void;
+  confirmation?: {
     id: string;
     title: string;
     description: string;
@@ -98,8 +98,11 @@ export interface Interface__TableOption {
     confirmButtonProps?: BtnProps;
   };
   menuItemProps?: Partial<MenuItemProps>;
-  override?: (data: any) => ReactNode;
+  override?: ReactNode;
 }
+export type Interface__TableOptionGenerator<T = any> = (
+  data: T
+) => Interface__TableOption | null | false;
 
 // HTTP
 export interface Interface__RequestState<T = any> {

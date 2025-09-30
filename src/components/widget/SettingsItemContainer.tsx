@@ -12,6 +12,7 @@ export const SettingsItemContainer = ({
   return (
     <HStack
       justify={"space-between"}
+      gap={4}
       px={4}
       pointerEvents={disabled ? "none" : "auto"}
       opacity={disabled ? 0.4 : 1}

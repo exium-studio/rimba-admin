@@ -262,7 +262,7 @@ const translations = {
     "kmis": {
       "index": "KMIS",
       "dashboard": "Dasbor KMIS",
-      "category": "Kategori Topik/Course",
+      "category": "Kategori Topik",
       "topic": "Topik/Course",
       "material": "Materi Pembelajaran",
       "quiz": "Quiz",

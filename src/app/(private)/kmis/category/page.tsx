@@ -1,7 +1,6 @@
 "use client";
 
 import { Btn } from "@/components/ui/btn";
-import { CContainer } from "@/components/ui/c-container";
 import { CSpinner } from "@/components/ui/c-spinner";
 import {
   DisclosureBody,
@@ -16,10 +15,10 @@ import { FileInput } from "@/components/ui/file-input";
 import SearchInput from "@/components/ui/search-input";
 import { StringInput } from "@/components/ui/string-input";
 import { Textarea } from "@/components/ui/textarea";
-import { ContentTableContainer } from "@/components/widget/ContentTableContainer";
 import { DataTable } from "@/components/widget/DataTable";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
+import { PageContainer, PageContent } from "@/components/widget/Page";
 import { Interface__KMISCourseCategory } from "@/constants/interfaces";
 import useLang from "@/context/useLang";
 import { useThemeConfig } from "@/context/useThemeConfig";
@@ -96,19 +95,19 @@ const Create = () => {
     },
   });
 
-  console.log(formik.values.files);
-
   return (
     <>
       <Btn
-        iconButton
         size={"md"}
         colorPalette={themeConfig.colorPalette}
+        pl={3}
         onClick={onOpen}
       >
         <Icon>
           <IconPlus stroke={1.5} />
         </Icon>
+
+        {l.add}
       </Btn>
 
       <DisclosureRoot open={open} lazyLoad size={"xs"}>
@@ -185,8 +184,13 @@ const TableUtils = (props: any) => {
   const { filter, setFilter, ...restProps } = props;
 
   return (
-    <HStack p={3} {...restProps}>
-      <SearchInput />
+    <HStack p={4} {...restProps}>
+      <SearchInput
+        inputValue={filter.search}
+        onChange={(inputValue) => {
+          setFilter({ ...filter, search: inputValue });
+        }}
+      />
 
       <Create />
     </HStack>
@@ -194,18 +198,28 @@ const TableUtils = (props: any) => {
 };
 const Table = (props: any) => {
   // Props
-  const { filter, ...restProps } = props;
+  const { filter } = props;
 
   // Contexts
   const { l } = useLang();
 
   // States
-  const { error, loading, data, makeRequest, limit, page } = useDataState<
-    Interface__KMISCourseCategory[]
-  >({
+  const {
+    error,
+    initialLoading,
+    loading,
+    data,
+    makeRequest,
+    limit,
+    setLimit,
+    page,
+    setPage,
+    pagination,
+  } = useDataState<Interface__KMISCourseCategory[]>({
     initialData: undefined,
     url: `/api/kmis/category/index`,
-    dependencies: [],
+    params: filter,
+    dependencies: [filter],
   });
   const tableProps = {
     headers: [
@@ -234,47 +248,50 @@ const Table = (props: any) => {
       ],
     })),
     rowOptions: [
-      {
+      (data: Interface__KMISCourseCategory) => ({
         label: "Edit",
         icon: <IconPencilMinus stroke={1.5} />,
-        onClick: () => {
-          console.log("Edit");
-        },
-      },
-      {
+        onClick: () => console.log("Edit", data.id),
+      }),
+      (data: Interface__KMISCourseCategory) => ({
         label: "Restore",
         icon: <IconRestore stroke={1.5} />,
-        onClick: () => {
-          console.log("Restore");
-        },
-      },
-      {
-        // disabled: true,
+        disabled: !data.deletedAt,
+        onClick: () => console.log("Restore", data.id),
+      }),
+      (data: Interface__KMISCourseCategory) => ({
         label: "Delete",
         icon: <IconTrash stroke={1.5} />,
         menuItemProps: { color: "fg.error" },
-        onClick: () => {
-          console.log("Delete");
+        disabled: data.deletedAt,
+        onClick: () => console.log("Delete", data.id),
+        confirmation: {
+          id: data.id,
+          title: "Delete User",
+          description: `Are you sure you want to delete ${data.title}?`,
+          confirmLabel: "Delete",
+          onConfrim: () => console.log("Confirmed delete", data.id),
         },
-      },
+      }),
     ],
     batchOptions: [
-      {
+      (ids: number[]) => ({
         label: "Restore",
         icon: <IconRestore stroke={1.5} />,
-        onClick: () => {
-          console.log("Restore");
-        },
-      },
-      {
-        // disabled: true,
+        disabled: data
+          ?.filter((item) => ids.includes(item.id))
+          .some((item) => !item.deletedAt),
+        onClick: () => console.log("Restore", ids),
+      }),
+      (ids: number[]) => ({
         label: "Delete",
         icon: <IconTrash stroke={1.5} />,
         menuItemProps: { color: "fg.error" },
-        onClick: () => {
-          console.log("Delete");
-        },
-      },
+        disabled: data
+          ?.filter((item) => ids.includes(item.id))
+          .some((item) => item.deletedAt),
+        onClick: () => console.log("Delete", ids),
+      }),
     ],
   };
   const render = {
@@ -288,15 +305,21 @@ const Table = (props: any) => {
         rowOptions={tableProps.rowOptions}
         batchOptions={tableProps.batchOptions}
         limit={limit}
+        setLimit={setLimit}
         page={page}
+        setPage={setPage}
+        totalPage={pagination?.meta?.last_page}
+        loading={loading}
       />
     ),
   };
 
+  console.log(pagination);
+
   return (
     <>
-      {loading && render.loading}
-      {!loading && (
+      {initialLoading && render.loading}
+      {!initialLoading && (
         <>
           {error && render.error}
           {!error && (
@@ -315,9 +338,6 @@ export default function KMISCategoryPage(props: Props) {
   // Props
   const { ...restProps } = props;
 
-  // Contexts
-  const { themeConfig } = useThemeConfig();
-
   // States
   const DEFAULT_FILTER = {
     search: "",
@@ -325,11 +345,11 @@ export default function KMISCategoryPage(props: Props) {
   const [filter, setFilter] = useState(DEFAULT_FILTER);
 
   return (
-    <ContentTableContainer {...restProps}>
-      <CContainer flex={1} bg={"body"} rounded={themeConfig.radii.container}>
+    <PageContainer {...restProps}>
+      <PageContent>
         <TableUtils filter={filter} setFilter={setFilter} />
         <Table filter={filter} />
-      </CContainer>
-    </ContentTableContainer>
+      </PageContent>
+    </PageContainer>
   );
 }

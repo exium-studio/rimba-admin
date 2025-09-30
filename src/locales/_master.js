@@ -36,8 +36,8 @@ export const private_navs = {
       en: "KMIS Dashboard",
     },
     category: {
-      id: "Kategori Topik/Course",
-      en: "Topic/Course Category",
+      id: "Kategori Topik",
+      en: "Topic Category",
     },
     topic: {
       id: "Topik/Course",
