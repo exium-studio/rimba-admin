@@ -314,8 +314,6 @@ const Table = (props: any) => {
     ),
   };
 
-  console.log(pagination);
-
   return (
     <>
       {initialLoading && render.loading}
