@@ -9,12 +9,26 @@ import {
 } from "@chakra-ui/react";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import {
+  Type__AccountStatus,
   Type__DateRange,
   Type__DateRangePresets,
   Type__DisclosureSizes,
   Type__TimeRange,
 } from "./types";
 import { ReactNode } from "react";
+
+export interface Interface__KMISCourse extends Interface__CUD {
+  id: number;
+  category: Interface__KMISCourseCategory[];
+  title: string;
+  description: string;
+}
+export interface Interface__KMISCourseCategory extends Interface__CUD {
+  id: number;
+  categoryCover: Interface__StorageFile[];
+  title: string;
+  description: string;
+}
 
 // Auth
 export interface Interface__User {
@@ -23,10 +37,9 @@ export interface Interface__User {
   photoProfile: Interface__StorageFile[];
   name: string;
   email: string;
-  accountStatus: Interface__AccountStatus;
+  accountStatus: Type__AccountStatus;
   lastLogin: string;
 }
-
 export interface Interface__Role {
   id: string;
   name: string;
@@ -35,12 +48,6 @@ export interface Interface__Role {
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
-}
-export enum Interface__AccountStatus {
-  Inactive = 0,
-  Pending = 1,
-  Active = 2,
-  Suspended = 3,
 }
 
 // Navs
@@ -111,9 +118,9 @@ export interface Interface__Req<T = any> {
 
 // CUD
 export interface Interface__CUD {
-  created_at?: string;
-  updated_at?: string | null;
-  deleted_at?: string | null;
+  createdAt?: string;
+  updatedAt?: string | null;
+  deletedAt?: string | null;
 }
 
 // Storage

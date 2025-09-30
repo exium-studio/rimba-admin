@@ -18,25 +18,25 @@ export const PRIVATE_NAVS: Interface__NavItem[] = [
     list: [
       {
         icon: IconWorld,
-        labelKey: "navs.cms.index",
+        labelKey: "private_navs.cms.index",
         path: `/cms`,
         subMenus: [
           {
             list: [
               {
-                labelKey: "navs.cms.static_contents",
+                labelKey: "private_navs.cms.static_contents",
                 path: `/cms/static-content`,
               },
               {
-                labelKey: "navs.cms.legal_documents",
+                labelKey: "private_navs.cms.legal_documents",
                 path: `/cms/legal-document`,
               },
               {
-                labelKey: "navs.cms.activity",
+                labelKey: "private_navs.cms.activity",
                 path: `/cms/activity`,
               },
               {
-                labelKey: "navs.cms.news",
+                labelKey: "private_navs.cms.news",
                 path: `/cms/news`,
               },
             ],
@@ -45,37 +45,41 @@ export const PRIVATE_NAVS: Interface__NavItem[] = [
       },
       {
         icon: IconSchool,
-        labelKey: "navs.kmis.index",
+        labelKey: "private_navs.kmis.index",
         path: `/kmis`,
         subMenus: [
           {
             list: [
               {
-                labelKey: "navs.kmis.dashboard",
+                labelKey: "private_navs.kmis.dashboard",
                 path: `/kmis/dashboard`,
               },
               {
-                labelKey: "navs.kmis.topic",
+                labelKey: "private_navs.kmis.topic",
                 path: `/kmis/topic`,
               },
               {
-                labelKey: "navs.kmis.quiz",
+                labelKey: "private_navs.kmis.material",
+                path: `/kmis/material`,
+              },
+              {
+                labelKey: "private_navs.kmis.quiz",
                 path: `/kmis/quiz`,
               },
               {
-                labelKey: "navs.kmis.quiz_participant",
-                path: `/kmis/quiz-participant`,
+                labelKey: "private_navs.kmis.quiz_assessment",
+                path: `/kmis/quiz-assessment`,
               },
               {
-                labelKey: "navs.kmis.educator",
+                labelKey: "private_navs.kmis.educator",
                 path: `/kmis/educator`,
               },
               {
-                labelKey: "navs.kmis.student",
+                labelKey: "private_navs.kmis.student",
                 path: `/kmis/student`,
               },
               {
-                labelKey: "navs.kmis.category",
+                labelKey: "private_navs.kmis.category",
                 path: `/kmis/category`,
               },
             ],
@@ -84,29 +88,29 @@ export const PRIVATE_NAVS: Interface__NavItem[] = [
       },
       {
         icon: IconDeviceDesktopAnalytics,
-        labelKey: "navs.monev.index",
+        labelKey: "private_navs.monev.index",
         path: `/monev`,
         subMenus: [
           {
             list: [
               {
-                labelKey: "navs.monev.dashboard",
+                labelKey: "private_navs.monev.dashboard",
                 path: `/monev/dashboard`,
               },
               {
-                labelKey: "navs.monev.activity_calendar",
+                labelKey: "private_navs.monev.activity_calendar",
                 path: `/monev/activity-calendar`,
               },
               {
-                labelKey: "navs.monev.data_sharing",
+                labelKey: "private_navs.monev.data_sharing",
                 path: `/monev/data-sharing`,
               },
               {
-                labelKey: "navs.monev.monitoring",
+                labelKey: "private_navs.monev.monitoring",
                 path: `/monev/monitoring`,
               },
               {
-                labelKey: "navs.monev.package_information",
+                labelKey: "private_navs.monev.package_information",
                 path: `/monev/package-information`,
               },
             ],
@@ -123,7 +127,7 @@ export const OTHER_NAVS: Interface__NavItem[] = [
     list: [
       {
         icon: IconSettings,
-        labelKey: "navs.settings",
+        labelKey: "private_navs.settings",
         path: `/settings`,
         subMenus: [
           {
@@ -159,7 +163,7 @@ export const OTHER_NAVS: Interface__NavItem[] = [
       },
       {
         icon: IconUser,
-        labelKey: "navs.profile",
+        labelKey: "private_navs.profile",
         path: `/profile`,
       },
     ],

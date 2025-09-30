@@ -11,8 +11,9 @@ export const ContentTableContainer = (props: StackProps) => {
     <CContainer
       flex={1}
       gap={4}
-      p={[1, null, 4]}
+      p={[2, null, 4]}
       pt={"0 !important"}
+      overflow={"clip"}
       {...restProps}
     >
       {children}

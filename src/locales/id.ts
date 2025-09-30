@@ -236,7 +236,21 @@ const translations = {
   "my_profile": "Profil saya",
   "name": "Nama",
   "navigation": "Navigasi",
-  "navs": {
+  "next": "Selanjutnya",
+  "november": "November",
+  "october": "Oktober",
+  "of": "dari",
+  "offline_route": {
+    "description": "Sepertinya Anda sedang offline. Periksa koneksi internet Anda dan coba lagi."
+  },
+  "open": "Buka",
+  "optional": "Opsional",
+  "others": "Lainnya",
+  "otp_sent": "OTP telah dikirim",
+  "otp_sent_to": "OTP telah dikirim ke",
+  "password_confirmation": "Konfirmasi Password",
+  "previous": "Sebelumnya",
+  "private_navs": {
     "cms": {
       "index": "CMS",
       "static_contents": "Konten Statis",
@@ -252,7 +266,7 @@ const translations = {
       "topic": "Topik/Course",
       "material": "Materi Pembelajaran",
       "quiz": "Quiz",
-      "quiz_participant": "Peserta Quiz",
+      "quiz_assessment": "Penilaian Quiz",
       "educator": "Pengajar",
       "student": "Pelajar"
     },
@@ -267,20 +281,6 @@ const translations = {
     "settings": "Pengaturan",
     "profile": "Profil"
   },
-  "next": "Selanjutnya",
-  "november": "November",
-  "october": "Oktober",
-  "of": "dari",
-  "offline_route": {
-    "description": "Sepertinya Anda sedang offline. Periksa koneksi internet Anda dan coba lagi."
-  },
-  "open": "Buka",
-  "optional": "Opsional",
-  "others": "Lainnya",
-  "otp_sent": "OTP telah dikirim",
-  "otp_sent_to": "OTP telah dikirim ke",
-  "password_confirmation": "Konfirmasi Password",
-  "previous": "Sebelumnya",
   "profile": "Profil",
   "published_at": "Diterbitkan pada",
   "purpose": "Tujuan",

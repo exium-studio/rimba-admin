@@ -842,7 +842,7 @@ const DesktopLayout = (props: any) => {
           >
             <PopoverTrigger asChild>
               <HStack
-                gap={4}
+                gap={3}
                 px={navsExpanded ? 2 : "7px"}
                 py={2}
                 rounded={themeConfig.radii.component}
@@ -858,7 +858,7 @@ const DesktopLayout = (props: any) => {
                 <Avatar
                   src={user?.photoProfile?.fileUrl}
                   name={user?.name}
-                  size={navsExpanded ? "xs" : "2xs"}
+                  size={navsExpanded ? "md" : "2xs"}
                 />
 
                 {navsExpanded && (

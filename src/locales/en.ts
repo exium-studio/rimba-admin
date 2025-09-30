@@ -236,7 +236,21 @@ const translations = {
   "my_profile": "My profile",
   "name": "Name",
   "navigation": "Navigation",
-  "navs": {
+  "next": "Next",
+  "november": "November",
+  "october": "October",
+  "of": "of",
+  "offline_route": {
+    "description": "It looks like you are offline. Check your internet connection and try again."
+  },
+  "open": "Open",
+  "optional": "Optional",
+  "others": "Others",
+  "otp_sent": "OTP has been sent",
+  "otp_sent_to": "OTP has been sent to",
+  "password_confirmation": "Password Confirmation",
+  "previous": "Previous",
+  "private_navs": {
     "cms": {
       "index": "CMS",
       "static_contents": "Static Contents",
@@ -252,7 +266,7 @@ const translations = {
       "topic": "Topic/Course",
       "material": "Learning Material",
       "quiz": "Quiz",
-      "quiz_participant": "Quiz Participants",
+      "quiz_assessment": "Quiz Assessment",
       "educator": "Educators",
       "student": "Students"
     },
@@ -267,20 +281,6 @@ const translations = {
     "settings": "Settings",
     "profile": "Profile"
   },
-  "next": "Next",
-  "november": "November",
-  "october": "October",
-  "of": "of",
-  "offline_route": {
-    "description": "It looks like you are offline. Check your internet connection and try again."
-  },
-  "open": "Open",
-  "optional": "Optional",
-  "others": "Others",
-  "otp_sent": "OTP has been sent",
-  "otp_sent_to": "OTP has been sent to",
-  "password_confirmation": "Password Confirmation",
-  "previous": "Previous",
   "profile": "Profile",
   "published_at": "Published at",
   "purpose": "Purpose",

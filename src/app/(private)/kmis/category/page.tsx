@@ -2,6 +2,7 @@
 
 import { Btn } from "@/components/ui/btn";
 import { CContainer } from "@/components/ui/c-container";
+import { CSpinner } from "@/components/ui/c-spinner";
 import {
   DisclosureBody,
   DisclosureContent,
@@ -16,10 +17,16 @@ import SearchInput from "@/components/ui/search-input";
 import { StringInput } from "@/components/ui/string-input";
 import { Textarea } from "@/components/ui/textarea";
 import { ContentTableContainer } from "@/components/widget/ContentTableContainer";
+import { DataTable } from "@/components/widget/DataTable";
+import FeedbackNoData from "@/components/widget/FeedbackNoData";
+import FeedbackRetry from "@/components/widget/FeedbackRetry";
+import { Interface__KMISCourseCategory } from "@/constants/interfaces";
 import useLang from "@/context/useLang";
 import { useThemeConfig } from "@/context/useThemeConfig";
 import useBackOnClose from "@/hooks/useBackOnClose";
+import useDataState from "@/hooks/useDataState";
 import useRequest from "@/hooks/useRequest";
+import { isEmptyArray } from "@/utils/array";
 import { fileValidation } from "@/utils/validationSchema";
 import {
   FieldsetRoot,
@@ -28,14 +35,19 @@ import {
   StackProps,
   useDisclosure,
 } from "@chakra-ui/react";
-import { IconPlus } from "@tabler/icons-react";
+import {
+  IconPencilMinus,
+  IconPlus,
+  IconRestore,
+  IconTrash,
+} from "@tabler/icons-react";
 import { useFormik } from "formik";
 import { useState } from "react";
 import * as yup from "yup";
 
 interface Props extends StackProps {}
 
-const AddData = () => {
+const Create = () => {
   const ID = "create_topic_category";
 
   // Contexts
@@ -62,12 +74,15 @@ const AddData = () => {
       description: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values, { resetForm }) => {
-      console.log(values);
+      const payload = new FormData();
+      payload.append("files", values.files[0]);
+      payload.append("title", values.title);
+      payload.append("description", values.description);
 
       const config = {
         url: `/api/kmis/category/create`,
         method: "POST",
-        data: values,
+        data: payload,
       };
 
       req({
@@ -80,6 +95,8 @@ const AddData = () => {
       });
     },
   });
+
+  console.log(formik.values.files);
 
   return (
     <>
@@ -98,7 +115,7 @@ const AddData = () => {
         <DisclosureContent>
           <DisclosureHeader>
             <DisclosureHeaderContent
-              title={`${l.add} ${l.navs.kmis.category}`}
+              title={`${l.add} ${l.private_navs.kmis.category}`}
             />
           </DisclosureHeader>
 
@@ -168,10 +185,10 @@ const TableUtils = (props: any) => {
   const { filter, setFilter, ...restProps } = props;
 
   return (
-    <HStack {...restProps}>
+    <HStack p={3} {...restProps}>
       <SearchInput />
 
-      <AddData />
+      <Create />
     </HStack>
   );
 };
@@ -179,7 +196,119 @@ const Table = (props: any) => {
   // Props
   const { filter, ...restProps } = props;
 
-  return <></>;
+  // Contexts
+  const { l } = useLang();
+
+  // States
+  const { error, loading, data, makeRequest, limit, page } = useDataState<
+    Interface__KMISCourseCategory[]
+  >({
+    initialData: undefined,
+    url: `/api/kmis/category/index`,
+    dependencies: [],
+  });
+  const tableProps = {
+    headers: [
+      {
+        th: l.title,
+        sortable: true,
+      },
+      {
+        th: l.description,
+        sortable: true,
+      },
+    ],
+    rows: data?.map((item, idx) => ({
+      id: item.id,
+      idx: idx,
+      data: item,
+      columns: [
+        {
+          td: item.title,
+          value: item.title,
+        },
+        {
+          td: item.description,
+          value: item.description,
+        },
+      ],
+    })),
+    rowOptions: [
+      {
+        label: "Edit",
+        icon: <IconPencilMinus stroke={1.5} />,
+        onClick: () => {
+          console.log("Edit");
+        },
+      },
+      {
+        label: "Restore",
+        icon: <IconRestore stroke={1.5} />,
+        onClick: () => {
+          console.log("Restore");
+        },
+      },
+      {
+        // disabled: true,
+        label: "Delete",
+        icon: <IconTrash stroke={1.5} />,
+        menuItemProps: { color: "fg.error" },
+        onClick: () => {
+          console.log("Delete");
+        },
+      },
+    ],
+    batchOptions: [
+      {
+        label: "Restore",
+        icon: <IconRestore stroke={1.5} />,
+        onClick: () => {
+          console.log("Restore");
+        },
+      },
+      {
+        // disabled: true,
+        label: "Delete",
+        icon: <IconTrash stroke={1.5} />,
+        menuItemProps: { color: "fg.error" },
+        onClick: () => {
+          console.log("Delete");
+        },
+      },
+    ],
+  };
+  const render = {
+    loading: <CSpinner />,
+    error: <FeedbackRetry onRetry={makeRequest} />,
+    empty: <FeedbackNoData />,
+    loaded: (
+      <DataTable
+        headers={tableProps.headers}
+        rows={tableProps.rows}
+        rowOptions={tableProps.rowOptions}
+        batchOptions={tableProps.batchOptions}
+        limit={limit}
+        page={page}
+      />
+    ),
+  };
+
+  return (
+    <>
+      {loading && render.loading}
+      {!loading && (
+        <>
+          {error && render.error}
+          {!error && (
+            <>
+              {data && render.loaded}
+              {(!data || isEmptyArray(data)) && render.empty}
+            </>
+          )}
+        </>
+      )}
+    </>
+  );
 };
 
 export default function KMISCategoryPage(props: Props) {
@@ -197,12 +326,7 @@ export default function KMISCategoryPage(props: Props) {
 
   return (
     <ContentTableContainer {...restProps}>
-      <CContainer
-        flex={1}
-        bg={"body"}
-        p={4}
-        rounded={themeConfig.radii.container}
-      >
+      <CContainer flex={1} bg={"body"} rounded={themeConfig.radii.container}>
         <TableUtils filter={filter} setFilter={setFilter} />
         <Table filter={filter} />
       </CContainer>

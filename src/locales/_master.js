@@ -1,5 +1,5 @@
 // Navs
-export const navs = {
+export const private_navs = {
   cms: {
     index: {
       id: "CMS",
@@ -51,9 +51,9 @@ export const navs = {
       id: "Quiz",
       en: "Quiz",
     },
-    quiz_participant: {
-      id: "Peserta Quiz",
-      en: "Quiz Participants",
+    quiz_assessment: {
+      id: "Penilaian Quiz",
+      en: "Quiz Assessment",
     },
     educator: {
       id: "Pengajar",

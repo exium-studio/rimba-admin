@@ -38,6 +38,96 @@ import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 
 const ICON_BOX_SIZE = "18px";
 
+const RowOptions = (props: Props_RowOptions) => {
+  // Props
+  const { row, rowOptions, tableContainerRef } = props;
+
+  // Contexts
+  const { setConfirmationData, confirmationOnOpen } =
+    useConfirmationDisclosure();
+
+  // Utils
+  function handleConfirmationClick(option: any) {
+    setConfirmationData({
+      id: option.confirmation(row).id,
+      title: option.confirmation(row).title,
+      description: option.confirmation(row).description,
+      confirmLabel: option.confirmation(row).confirmLabel,
+      onConfirm: option.confirmation(row).onConfirm,
+      confirmButtonProps: option.confirmation(row).confirmButtonProps,
+      loading: option.confirmation(row).loading,
+    });
+    confirmationOnOpen();
+  }
+
+  return (
+    <MenuRoot lazyMount>
+      <MenuTrigger asChild aria-label="row options">
+        <Btn iconButton clicky={false} variant={"ghost"} size={"xs"}>
+          <Icon boxSize={5}>
+            <IconDots />
+          </Icon>
+        </Btn>
+      </MenuTrigger>
+
+      <MenuContent portalRef={tableContainerRef} zIndex={2} minW={"140px"}>
+        {rowOptions?.map((option, idx) => {
+          if (option === "divider") return <MenuSeparator key={idx} />;
+
+          const {
+            disabled = false,
+            label = "",
+            icon,
+            onClick = () => {},
+            confirmation,
+            menuItemProps,
+            override,
+          } = option;
+
+          if (confirmation) {
+            return (
+              <MenuItem
+                key={idx}
+                value={label}
+                justifyContent={"space-between"}
+                disabled={disabled}
+                onClick={() => {
+                  if (!disabled) handleConfirmationClick(option);
+                }}
+                {...menuItemProps}
+              >
+                {label}
+
+                {icon && <Icon boxSize={ICON_BOX_SIZE}>{icon}</Icon>}
+              </MenuItem>
+            );
+          }
+
+          if (override) {
+            return <Fragment key={idx}>{override?.(row)}</Fragment>;
+          }
+
+          return (
+            <MenuItem
+              key={idx}
+              disabled={disabled}
+              value={label}
+              onClick={() => {
+                if (!disabled) onClick?.(row);
+              }}
+              justifyContent={"space-between"}
+              {...menuItemProps}
+            >
+              {label}
+
+              {icon && <Icon boxSize={ICON_BOX_SIZE}>{icon}</Icon>}
+            </MenuItem>
+          );
+        })}
+      </MenuContent>
+    </MenuRoot>
+  );
+};
 const BatchOptions = (props: Props__BatchOptions) => {
   // Props
   const {
@@ -150,96 +240,6 @@ const BatchOptions = (props: Props__BatchOptions) => {
                 if (!resolvedDisabled) onClick?.(selectedRows);
               }}
               disabled={resolvedDisabled}
-              justifyContent={"space-between"}
-              {...menuItemProps}
-            >
-              {label}
-
-              {icon && <Icon boxSize={ICON_BOX_SIZE}>{icon}</Icon>}
-            </MenuItem>
-          );
-        })}
-      </MenuContent>
-    </MenuRoot>
-  );
-};
-const RowOptions = (props: Props_RowOptions) => {
-  // Props
-  const { row, rowOptions, tableContainerRef } = props;
-
-  // Contexts
-  const { setConfirmationData, confirmationOnOpen } =
-    useConfirmationDisclosure();
-
-  // Utils
-  function handleConfirmationClick(option: any) {
-    setConfirmationData({
-      id: option.confirmation(row).id,
-      title: option.confirmation(row).title,
-      description: option.confirmation(row).description,
-      confirmLabel: option.confirmation(row).confirmLabel,
-      onConfirm: option.confirmation(row).onConfirm,
-      confirmButtonProps: option.confirmation(row).confirmButtonProps,
-      loading: option.confirmation(row).loading,
-    });
-    confirmationOnOpen();
-  }
-
-  return (
-    <MenuRoot lazyMount>
-      <MenuTrigger asChild aria-label="row options">
-        <Btn iconButton clicky={false} variant={"ghost"} size={"xs"}>
-          <Icon boxSize={5}>
-            <IconDots />
-          </Icon>
-        </Btn>
-      </MenuTrigger>
-
-      <MenuContent portalRef={tableContainerRef} zIndex={2} minW={"140px"}>
-        {rowOptions?.map((option, idx) => {
-          if (option === "divider") return <MenuSeparator key={idx} />;
-
-          const {
-            disabled = false,
-            label = "",
-            icon,
-            onClick = () => {},
-            confirmation,
-            menuItemProps,
-            override,
-          } = option;
-
-          if (confirmation) {
-            return (
-              <MenuItem
-                key={idx}
-                value={label}
-                justifyContent={"space-between"}
-                disabled={disabled}
-                onClick={() => {
-                  if (!disabled) handleConfirmationClick(option);
-                }}
-                {...menuItemProps}
-              >
-                {label}
-
-                {icon && <Icon boxSize={ICON_BOX_SIZE}>{icon}</Icon>}
-              </MenuItem>
-            );
-          }
-
-          if (override) {
-            return <Fragment key={idx}>{override?.(row)}</Fragment>;
-          }
-
-          return (
-            <MenuItem
-              key={idx}
-              disabled={disabled}
-              value={label}
-              onClick={() => {
-                if (!disabled) onClick?.(row);
-              }}
               justifyContent={"space-between"}
               {...menuItemProps}
             >
