@@ -108,7 +108,7 @@ export default function IndexRoute() {
         </CContainer>
 
         <CContainer h={"full"} p={[2, null, 8]} gap={16}>
-          <HStack>
+          <HStack justify={"center"}>
             <ColorModeButton />
 
             <LangMenu />
@@ -118,7 +118,7 @@ export default function IndexRoute() {
 
           {!authToken && <SigninForm />}
 
-          <BrandWatermark />
+          <BrandWatermark textAlign={"center"} />
         </CContainer>
       </SimpleGrid>
     </CContainer>

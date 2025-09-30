@@ -369,19 +369,20 @@ const SigninForm = (props: Props) => {
   return (
     <CContainer
       w={"full"}
+      maxW={"400px"}
       m={"auto"}
       gap={8}
       rounded={themeConfig.radii.container}
       {...restProps}
     >
-      <CContainer gap={1}>
+      <CContainer gap={1} align={"center"}>
         <Logo mb={4} />
 
-        <P fontSize={"xl"} fontWeight={"bold"}>
+        <P fontSize={"xl"} fontWeight={"bold"} textAlign={"center"}>
           {l.msg_signin_title}
         </P>
 
-        <P>{activeRoleKey ? msg : l.msg_signin}</P>
+        <P textAlign={"center"}>{activeRoleKey ? msg : l.msg_signin}</P>
       </CContainer>
 
       {!activeRoleKey && (
