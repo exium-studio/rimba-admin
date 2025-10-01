@@ -3,6 +3,7 @@ const translations = {
   "access": "Akses",
   "adaptive_dark_mode": "Mode gelap adaptif",
   "add": "Tambah",
+  "added": "Ditambahkan",
   "address": "Alamat",
   "address_not_found": "Alamat tidak ditemukan",
   "alert_forbidden": {
@@ -40,6 +41,7 @@ const translations = {
   "close": "Tutup",
   "component": "Komponen",
   "confirm": "Konfirmasi",
+  "created": "Dibuat",
   "dark_mode": "Mode gelap",
   "date_format": "Format tanggal",
   "day": "Hari",
@@ -401,6 +403,7 @@ const translations = {
   "tuesday": "Selasa",
   "unselect_all": "Batalkan pilihan semua",
   "update": "Ubah",
+  "updated": "Diubah",
   "uploaded": "Sudah diunggah",
   "uploaded_file": "File yang sudah diunggah",
   "verify": "Verifikasi",

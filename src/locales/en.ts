@@ -3,6 +3,7 @@ const translations = {
   "access": "Access",
   "adaptive_dark_mode": "Adaptive dark mode",
   "add": "Add",
+  "added": "Added",
   "address": "Address",
   "address_not_found": "Address not found",
   "alert_forbidden": {
@@ -40,6 +41,7 @@ const translations = {
   "close": "Close",
   "component": "Component",
   "confirm": "Confirm",
+  "created": "Created",
   "dark_mode": "Dark mode",
   "date_format": "Date format",
   "day": "Day",
@@ -401,6 +403,7 @@ const translations = {
   "tuesday": "Tuesday",
   "unselect_all": "Unselect all",
   "update": "Update",
+  "updated": "Updated",
   "uploaded": "Uploaded",
   "uploaded_file": "Uploaded file",
   "verify": "Verify",
