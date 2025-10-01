@@ -405,14 +405,16 @@ const SigninForm = (props: Props) => {
   const { l } = useLang();
   const { themeConfig } = useThemeConfig();
   const authToken = useAuthMiddleware((s) => s.authToken);
+  const user = getUserData();
 
   // Hooks
   const searchParams = useSearchParams();
-  const activeRoleKey = searchParams.get("roleKey");
+  const activeRoleId = user?.role.id || searchParams.get("roleId");
 
   // States
   const ROLES = [
     {
+      id: 1,
       icon: IconUserCog,
       key: "super_admin",
       sso: true,
@@ -426,6 +428,7 @@ const SigninForm = (props: Props) => {
       ),
     },
     {
+      id: 2,
       icon: IconDeviceDesktopAnalytics,
       key: "monev",
       indexRoute: "/monev/dashboard",
@@ -440,6 +443,7 @@ const SigninForm = (props: Props) => {
       ),
     },
     {
+      id: 3,
       icon: IconChalkboardTeacher,
       key: "educator",
       sso: false,
@@ -453,8 +457,8 @@ const SigninForm = (props: Props) => {
       ),
     },
   ];
-  const [selectedRoleKey, setSelectedRoleKey] = useState<string | null>(null);
-  const selectedRole = ROLES.find((role) => role.key === activeRoleKey);
+  const [selectedRoleId, setSelectedRoleId] = useState<string | null>(null);
+  const selectedRole = ROLES.find((role) => `${role.id}` === activeRoleId);
   const signinForm = selectedRole?.form;
   const msg = selectedRole?.msg;
   const indexRoute = selectedRole?.IndexRoute;
@@ -480,14 +484,14 @@ const SigninForm = (props: Props) => {
               {l.msg_signin_title}
             </P>
 
-            <P textAlign={"center"}>{activeRoleKey ? msg : l.msg_signin}</P>
+            <P textAlign={"center"}>{activeRoleId ? msg : l.msg_signin}</P>
           </CContainer>
 
-          {!activeRoleKey && (
+          {!activeRoleId && (
             <>
               <SimpleGrid flex={1} columns={[1, null, 3]} w={"full"} gap={4}>
                 {ROLES.map((role) => {
-                  const isActive = selectedRoleKey === role.key;
+                  const isActive = selectedRoleId === `${role.id}`;
 
                   return (
                     <CContainer
@@ -506,7 +510,7 @@ const SigninForm = (props: Props) => {
                       overflow={"clip"}
                       transition={"200ms"}
                       onClick={() => {
-                        setSelectedRoleKey(role.key);
+                        setSelectedRoleId(`${role.id}`);
                       }}
                     >
                       {isActive && <DotIndicator ml={0} />}
@@ -537,10 +541,10 @@ const SigninForm = (props: Props) => {
                 })}
               </SimpleGrid>
 
-              <NavLink to={`/?roleKey=${selectedRoleKey}`}>
+              <NavLink to={`/?roleId=${selectedRoleId}`}>
                 <Btn
                   colorPalette={themeConfig.colorPalette}
-                  disabled={!selectedRoleKey}
+                  disabled={!selectedRoleId}
                 >
                   {l.next}
 
@@ -552,7 +556,7 @@ const SigninForm = (props: Props) => {
             </>
           )}
 
-          {activeRoleKey && (
+          {activeRoleId && (
             <CContainer gap={4} mx={"auto"}>
               <HStack>
                 <Btn size={"md"} variant={"ghost"} onClick={back} pl={3}>
