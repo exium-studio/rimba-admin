@@ -37,12 +37,11 @@ export const ImgViewer = (props: Props) => {
         <DialogContent bg={"transparent"} onClick={back}>
           <DialogBody>
             <CContainer flex={1} h={"full"} justify={"center"}>
-              <CContainer pos={"relative"}>
+              <CContainer gap={4}>
                 <CloseButton
                   colorPalette={"light"}
-                  pos={"absolute"}
-                  top={2}
-                  right={2}
+                  w={"fit"}
+                  ml={"auto"}
                   onClick={(e) => {
                     e.stopPropagation();
                     back();
@@ -58,13 +57,12 @@ export const ImgViewer = (props: Props) => {
 
                 <NavLink to={src}>
                   <Btn
+                    w={"fit"}
                     size={"md"}
                     variant={"ghost"}
                     colorPalette={"light"}
                     pr={3}
-                    pos={"absolute"}
-                    bottom={2}
-                    right={2}
+                    ml={"auto"}
                   >
                     {l.open}
                     <Icon>

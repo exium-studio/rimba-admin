@@ -17,6 +17,7 @@ import { MenuItem } from "@/components/ui/menu";
 import SearchInput from "@/components/ui/search-input";
 import { StringInput } from "@/components/ui/string-input";
 import { Textarea } from "@/components/ui/textarea";
+import { ClampText } from "@/components/widget/ClampText";
 import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
 import { DataTable } from "@/components/widget/DataTable";
 import { DeletedStatus } from "@/components/widget/DeletedStatus";
@@ -240,7 +241,7 @@ const Update = (props: any) => {
       description: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values) => {
-      // back();
+      back();
 
       const payload = new FormData();
       if (values.files?.[0]) {
@@ -586,18 +587,18 @@ const Table = (props: any) => {
               <Img
                 src={imgUrl(item.categoryCover?.[0]?.filePath)}
                 aspectRatio={16 / 10}
-                h={"36px"}
+                h={"24px"}
               />
             </ImgViewer>
           ),
           value: imgUrl(item.categoryCover?.[0]?.filePath),
         },
         {
-          td: item.title,
+          td: <ClampText>{item.title}</ClampText>,
           value: item.title,
         },
         {
-          td: item.description,
+          td: <ClampText>{item.description}</ClampText>,
           value: item.description,
         },
         {
