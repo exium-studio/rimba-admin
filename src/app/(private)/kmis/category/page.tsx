@@ -1,7 +1,6 @@
 "use client";
 
 import { Btn } from "@/components/ui/btn";
-import { CSpinner } from "@/components/ui/c-spinner";
 import {
   DisclosureBody,
   DisclosureContent,
@@ -25,6 +24,7 @@ import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
 import { ImgViewer } from "@/components/widget/ImgViewer";
 import { PageContainer, PageContent } from "@/components/widget/Page";
+import { TableSkeleton } from "@/components/widget/TableSkeleton";
 import {
   Interface__KMISCourseCategory,
   Interface__TableOptionGenerator,
@@ -525,6 +525,7 @@ const Table = (props: any) => {
   const { l } = useLang();
 
   // States
+  // const initialLoading = true;
   const {
     error,
     initialLoading,
@@ -674,7 +675,7 @@ const Table = (props: any) => {
     ] as Interface__TableOptionGenerator<string[]>[],
   };
   const render = {
-    loading: <CSpinner />,
+    loading: <TableSkeleton />,
     error: <FeedbackRetry onRetry={onRetry} />,
     empty: <FeedbackNoData />,
     loaded: (
@@ -694,6 +695,8 @@ const Table = (props: any) => {
 
   return (
     <>
+      {initialLoading && render.loading}
+
       {!initialLoading && (
         <>
           {error && render.error}
