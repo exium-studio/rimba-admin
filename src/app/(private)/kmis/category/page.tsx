@@ -14,32 +14,29 @@ import { Field } from "@/components/ui/field";
 import { FileInput } from "@/components/ui/file-input";
 import { Img } from "@/components/ui/img";
 import { MenuItem } from "@/components/ui/menu";
-import { P } from "@/components/ui/p";
 import SearchInput from "@/components/ui/search-input";
 import { StringInput } from "@/components/ui/string-input";
 import { Textarea } from "@/components/ui/textarea";
 import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
 import { DataTable } from "@/components/widget/DataTable";
-import { EmptyString } from "@/components/widget/EmptyString";
+import { DeletedStatus } from "@/components/widget/DeletedStatus";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
 import { ImgViewer } from "@/components/widget/ImgViewer";
-import { DotIndicator } from "@/components/widget/Indicator";
 import { PageContainer, PageContent } from "@/components/widget/Page";
 import {
   Interface__FormattedTableRow,
   Interface__KMISCourseCategory,
 } from "@/constants/interfaces";
 import useLang from "@/context/useLang";
-import { useLoadingBar } from "@/context/useLoadingBar";
 import useRenderTrigger from "@/context/useRenderTrigger";
 import { useThemeConfig } from "@/context/useThemeConfig";
 import useBackOnClose from "@/hooks/useBackOnClose";
 import useDataState from "@/hooks/useDataState";
+import { useIsSmScreenWidth } from "@/hooks/useIsSmScreenWidth";
 import useRequest from "@/hooks/useRequest";
 import { isEmptyArray } from "@/utils/array";
 import { back } from "@/utils/client";
-import { formatDate } from "@/utils/formatter";
 import { capitalize } from "@/utils/string";
 import { imgUrl } from "@/utils/url";
 import { fileValidation } from "@/utils/validationSchema";
@@ -71,6 +68,7 @@ const Create = () => {
   const setRt = useRenderTrigger((s) => s.setRt);
 
   // Hooks
+  const iss = useIsSmScreenWidth();
   const { open, onOpen, onClose } = useDisclosure();
   useBackOnClose(ID, open, onOpen, onClose);
   const { req, loading } = useRequest({
@@ -121,8 +119,9 @@ const Create = () => {
   return (
     <>
       <Btn
+        iconButton={iss ? true : false}
         size={"md"}
-        pl={3}
+        pl={iss ? "" : 3}
         colorPalette={themeConfig.colorPalette}
         onClick={onOpen}
       >
@@ -130,7 +129,7 @@ const Create = () => {
           <IconPlus stroke={1.5} />
         </Icon>
 
-        {l.add}
+        {!iss && l.add}
       </Btn>
 
       <DisclosureRoot open={open} lazyLoad size={"xs"}>
@@ -383,8 +382,7 @@ const Restore = (props: any) => {
   const ID = "restore_topic_category";
 
   // Props
-  const { data } = props;
-  const resolvedData = data as Interface__KMISCourseCategory;
+  const { restoreIds, disabled } = props;
 
   // Contexts
   const { l } = useLang();
@@ -406,7 +404,7 @@ const Restore = (props: any) => {
         url: `/api/kmis/category/restore`,
         method: "PATCH",
         data: {
-          restoreIds: [resolvedData.id],
+          restoreIds: restoreIds,
         },
       },
       onResolve: {
@@ -420,15 +418,15 @@ const Restore = (props: any) => {
   return (
     <ConfirmationDisclosureTrigger
       w={"full"}
-      id={`${ID}-${resolvedData.id}`}
+      id={`${ID}-${restoreIds}`}
       title={`Restore ${l.private_navs.kmis.category}`}
       description={l.msg_soft_delete}
       confirmLabel={"Restore"}
       onConfirm={onDelete}
       loading={loading}
-      disabled={!resolvedData.deletedAt}
+      disabled={disabled}
     >
-      <MenuItem value="restore" disabled={!resolvedData.deletedAt} {...props}>
+      <MenuItem value="restore" disabled={disabled}>
         Restore
         <Icon boxSize={"18px"} ml={"auto"}>
           <IconRestore stroke={1.5} />
@@ -441,8 +439,7 @@ const Delete = (props: any) => {
   const ID = "delete_topic_category";
 
   // Props
-  const { data } = props;
-  const resolvedData = data as Interface__KMISCourseCategory;
+  const { deleteIds, disabled } = props;
 
   // Contexts
   const { l } = useLang();
@@ -464,7 +461,7 @@ const Delete = (props: any) => {
         url: `/api/kmis/category/delete`,
         method: "DELETE",
         data: {
-          deleteIds: [resolvedData.id],
+          deleteIds: deleteIds,
         },
       },
       onResolve: {
@@ -478,21 +475,16 @@ const Delete = (props: any) => {
   return (
     <ConfirmationDisclosureTrigger
       w={"full"}
-      id={`${ID}-${resolvedData.id}`}
+      id={`${ID}-${deleteIds}`}
       title={`Delete ${l.private_navs.kmis.category}`}
       description={l.msg_soft_delete}
       confirmLabel={"Delete"}
       onConfirm={onDelete}
       confirmButtonProps={{ colorPalette: "red" }}
       loading={loading}
-      disabled={!!resolvedData.deletedAt}
+      disabled={disabled}
     >
-      <MenuItem
-        value="delete"
-        color={"fg.error"}
-        disabled={!!resolvedData.deletedAt}
-        {...props}
-      >
+      <MenuItem value="delete" color={"fg.error"} disabled={disabled}>
         Delete
         <Icon boxSize={"18px"} ml={"auto"}>
           <IconTrash stroke={1.5} />
@@ -525,15 +517,13 @@ const Table = (props: any) => {
 
   // Contexts
   const { l } = useLang();
-  const setLoadingBar = useLoadingBar((s) => s.setLoadingBar);
 
   // States
   const {
     error,
     initialLoading,
-    loading,
     data,
-    makeRequest,
+    onRetry,
     limit,
     setLimit,
     page,
@@ -592,14 +582,7 @@ const Table = (props: any) => {
           value: item.description,
         },
         {
-          td: item.deletedAt ? (
-            <HStack>
-              <DotIndicator ml={0} color={"fg.error"} />
-              <P>{formatDate(item.deletedAt)}</P>
-            </HStack>
-          ) : (
-            <EmptyString />
-          ),
+          td: <DeletedStatus deletedAt={item.deletedAt} />,
           value: item.deletedAt,
           dataType: "date",
           wrapperProps: {
@@ -613,10 +596,14 @@ const Table = (props: any) => {
         override: <Update data={row.data} />,
       }),
       (row: Interface__FormattedTableRow) => ({
-        override: <Restore data={row.data} />,
+        override: (
+          <Restore restoreIds={[row.data.id]} disabled={!row.data.deletedAt} />
+        ),
       }),
       (row: Interface__FormattedTableRow) => ({
-        override: <Delete data={row.data} />,
+        override: (
+          <Delete deleteIds={[row.data.id]} disabled={row.data.deletedAt} />
+        ),
       }),
     ],
     batchOptions: [
@@ -641,7 +628,7 @@ const Table = (props: any) => {
   };
   const render = {
     loading: <CSpinner />,
-    error: <FeedbackRetry onRetry={makeRequest} />,
+    error: <FeedbackRetry onRetry={onRetry} />,
     empty: <FeedbackNoData />,
     loaded: (
       <DataTable
@@ -657,10 +644,6 @@ const Table = (props: any) => {
       />
     ),
   };
-
-  useEffect(() => {
-    setLoadingBar(initialLoading || loading);
-  }, [loading, initialLoading]);
 
   return (
     <>

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import useRequest from "@/hooks/useRequest";
 import useRenderTrigger from "@/context/useRenderTrigger";
+import { useLoadingBar } from "@/context/useLoadingBar";
 
 interface Props<T> {
   initialData?: T;
@@ -35,6 +36,9 @@ const useDataState = <T = any>(props: Props<T>) => {
     intialOffset = 0,
     dataResource = true,
   } = props;
+
+  // Contexts
+  const setLoadingBar = useLoadingBar((s) => s.setLoadingBar);
 
   // States
   const [data, setData] = useState<T | undefined>(initialData);
@@ -134,8 +138,12 @@ const useDataState = <T = any>(props: Props<T>) => {
       },
     });
   }
+  function onRetry() {
+    setInitialLoading(true);
+    makeRequest();
+  }
 
-  // Handle request via useEffect
+  // start request via useEffect
   useEffect(() => {
     if (!conditions || !url) return;
 
@@ -158,25 +166,26 @@ const useDataState = <T = any>(props: Props<T>) => {
     ...(dependencies || []),
   ]);
 
-  // Handle set initial limit
+  // set initial limit
   useEffect(() => {
     setLimit(initialLimit);
   }, [initialLimit]);
 
-  // Handle initial loading when no url
+  // initialLoading = true when no url
   useEffect(() => {
     if (!url) {
       setInitialLoading(false);
     }
   }, [url]);
 
-  // Handle initial loading to tru when limit & page changes
-  // useEffect(() => {
-  //   setInitialLoading(true);
-  // }, [limit, page]);
+  // trigger loading bar on initialLoading | loading  is true
+  useEffect(() => {
+    setLoadingBar(initialLoading || loading);
+  }, [loading, initialLoading]);
 
   return {
     makeRequest,
+    onRetry,
     data,
     setData,
     initialLoading,
