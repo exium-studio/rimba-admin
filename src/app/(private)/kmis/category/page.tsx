@@ -614,21 +614,30 @@ const Table = (props: any) => {
     ],
     batchOptions: [
       (ids: string[]) => ({
-        label: "Restore",
-        icon: <IconRestore stroke={1.5} />,
-        disabled: data
-          ?.filter((item) => ids.includes(item.id))
-          .some((item) => !item.deletedAt),
-        onClick: () => console.log("Restore", ids),
+        override: (
+          <Restore
+            restoreIds={ids}
+            disabled={
+              isEmptyArray(ids) ||
+              data
+                ?.filter((item) => ids.includes(item.id))
+                .some((item) => !item.deletedAt)
+            }
+          />
+        ),
       }),
       (ids: string[]) => ({
-        label: "Delete",
-        icon: <IconTrash stroke={1.5} />,
-        menuItemProps: { color: "fg.error" },
-        disabled: data
-          ?.filter((item) => ids.includes(item.id))
-          .some((item) => !!item.deletedAt),
-        onClick: () => console.log("Delete", ids),
+        override: (
+          <Delete
+            deleteIds={ids}
+            disabled={
+              isEmptyArray(ids) ||
+              data
+                ?.filter((item) => ids.includes(item.id))
+                .some((item) => item.deletedAt)
+            }
+          />
+        ),
       }),
     ],
   };
