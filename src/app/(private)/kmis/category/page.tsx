@@ -1,6 +1,6 @@
 "use client";
 
-import { Btn, BtnProps } from "@/components/ui/btn";
+import { Btn } from "@/components/ui/btn";
 import { CSpinner } from "@/components/ui/c-spinner";
 import {
   DisclosureBody,
@@ -13,6 +13,7 @@ import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-conte
 import { Field } from "@/components/ui/field";
 import { FileInput } from "@/components/ui/file-input";
 import { Img } from "@/components/ui/img";
+import { MenuItem } from "@/components/ui/menu";
 import SearchInput from "@/components/ui/search-input";
 import { StringInput } from "@/components/ui/string-input";
 import { Textarea } from "@/components/ui/textarea";
@@ -21,7 +22,10 @@ import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
 import { ImgViewer } from "@/components/widget/ImgViewer";
 import { PageContainer, PageContent } from "@/components/widget/Page";
-import { Interface__KMISCourseCategory } from "@/constants/interfaces";
+import {
+  Interface__FormattedTableRow,
+  Interface__KMISCourseCategory,
+} from "@/constants/interfaces";
 import useLang from "@/context/useLang";
 import { useLoadingBar } from "@/context/useLoadingBar";
 import useRenderTrigger from "@/context/useRenderTrigger";
@@ -53,7 +57,7 @@ import * as yup from "yup";
 
 interface Props extends StackProps {}
 
-const Create = (props: BtnProps) => {
+const Create = () => {
   const ID = "create_topic_category";
 
   // Contexts
@@ -79,7 +83,7 @@ const Create = (props: BtnProps) => {
       files: fileValidation({
         maxSizeMB: 10,
         allowedExtensions: ["jpg", "jpeg", "png"],
-      }),
+      }).required(l.msg_required_form),
       title: yup.string().required(l.msg_required_form),
       description: yup.string().required(l.msg_required_form),
     }),
@@ -116,7 +120,6 @@ const Create = (props: BtnProps) => {
         pl={3}
         colorPalette={themeConfig.colorPalette}
         onClick={onOpen}
-        {...props}
       >
         <Icon>
           <IconPlus stroke={1.5} />
@@ -187,6 +190,183 @@ const Create = (props: BtnProps) => {
               loading={loading}
             >
               {l.add}
+            </Btn>
+          </DisclosureFooter>
+        </DisclosureContent>
+      </DisclosureRoot>
+    </>
+  );
+};
+const Update = (props: any) => {
+  const ID = "edit_topic_category";
+
+  // Props
+  const { data } = props;
+  const resolvedData = data as Interface__KMISCourseCategory;
+
+  // Contexts
+  const { l } = useLang();
+  const { themeConfig } = useThemeConfig();
+  const setRt = useRenderTrigger((s) => s.setRt);
+
+  // Hooks
+  const { open, onOpen, onClose } = useDisclosure();
+  useBackOnClose(`${ID}-${resolvedData?.id}`, open, onOpen, onClose);
+  const { req, loading } = useRequest({
+    id: ID,
+    loadingMessage: {
+      title: capitalize(`Edit ${l.private_navs.kmis.category}`),
+    },
+  });
+
+  // States
+  const formik = useFormik({
+    validateOnChange: false,
+    initialValues: {
+      files: null as any,
+      title: "",
+      description: "",
+      deleteDocumentIds: [],
+    },
+    validationSchema: yup.object().shape({
+      files: fileValidation({
+        maxSizeMB: 10,
+        allowedExtensions: ["jpg", "jpeg", "png"],
+      }),
+      title: yup.string().required(l.msg_required_form),
+      description: yup.string().required(l.msg_required_form),
+    }),
+    onSubmit: (values) => {
+      // back();
+
+      const payload = new FormData();
+      if (values.files?.[0]) {
+        payload.append("files", values.files[0]);
+      }
+      payload.append("title", values.title);
+      payload.append("description", values.description);
+      payload.append(
+        "deletedDocumentIds",
+        JSON.stringify(values.deleteDocumentIds)
+      );
+
+      const config = {
+        url: `/api/kmis/category/update/${resolvedData.id}`,
+        method: "PATCH",
+        data: payload,
+      };
+
+      req({
+        config,
+        onResolve: {
+          onSuccess: () => {
+            setRt((ps) => !ps);
+          },
+        },
+      });
+    },
+  });
+
+  useEffect(() => {
+    formik.setValues({
+      files: [],
+      title: resolvedData.title,
+      description: resolvedData.description,
+      deleteDocumentIds: [],
+    });
+  }, [resolvedData]);
+
+  return (
+    <>
+      <MenuItem value="edit" onClick={onOpen} {...props}>
+        Edit
+        <Icon boxSize={"18px"} ml={"auto"}>
+          <IconPencilMinus stroke={1.5} />
+        </Icon>
+      </MenuItem>
+
+      <DisclosureRoot open={open} lazyLoad size={"xs"}>
+        <DisclosureContent>
+          <DisclosureHeader>
+            <DisclosureHeaderContent
+              title={`Edit ${l.private_navs.kmis.category}`}
+            />
+          </DisclosureHeader>
+
+          <DisclosureBody>
+            <form id={ID} onSubmit={formik.handleSubmit}>
+              <FieldsetRoot disabled={loading}>
+                <Field
+                  label={"Cover"}
+                  invalid={!!formik.errors.files}
+                  errorText={formik.errors.files as string}
+                >
+                  <FileInput
+                    dropzone
+                    inputValue={formik.values.files}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("files", inputValue);
+                    }}
+                    existingFiles={resolvedData.categoryCover}
+                    onDeleteFile={(fileData) => {
+                      formik.setFieldValue(
+                        "deleteDocumentIds",
+                        Array.from(
+                          new Set([
+                            ...formik.values.deleteDocumentIds,
+                            fileData.id,
+                          ])
+                        )
+                      );
+                    }}
+                    onUndoDeleteFile={(fileData) => {
+                      formik.setFieldValue(
+                        "deleteDocumentIds",
+                        formik.values.deleteDocumentIds.filter(
+                          (id: string) => id !== fileData.id
+                        )
+                      );
+                    }}
+                  />
+                </Field>
+
+                <Field
+                  label={l.title}
+                  invalid={!!formik.errors.title}
+                  errorText={formik.errors.title as string}
+                >
+                  <StringInput
+                    inputValue={formik.values.title}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("title", inputValue);
+                    }}
+                  />
+                </Field>
+
+                <Field
+                  label={l.description}
+                  invalid={!!formik.errors.description}
+                  errorText={formik.errors.description as string}
+                >
+                  <Textarea
+                    inputValue={formik.values.description}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("description", inputValue);
+                    }}
+                  />
+                </Field>
+              </FieldsetRoot>
+            </form>
+          </DisclosureBody>
+
+          <DisclosureFooter>
+            <Btn
+              type="submit"
+              form={ID}
+              colorPalette={themeConfig.colorPalette}
+              loading={loading}
+            >
+              {l.save}
             </Btn>
           </DisclosureFooter>
         </DisclosureContent>
@@ -279,34 +459,32 @@ const Table = (props: any) => {
       ],
     })),
     rowOptions: [
-      (data: Interface__KMISCourseCategory) => ({
-        label: "Edit",
-        icon: <IconPencilMinus stroke={1.5} />,
-        onClick: () => console.log("Edit", data.id),
+      (row: Interface__FormattedTableRow) => ({
+        override: <Update data={row.data} />,
       }),
-      (data: Interface__KMISCourseCategory) => ({
+      (row: Interface__FormattedTableRow) => ({
         label: "Restore",
         icon: <IconRestore stroke={1.5} />,
-        disabled: !data.deletedAt,
-        onClick: () => console.log("Restore", data.id),
+        disabled: !row.data.deletedAt,
+        onClick: () => console.log("Restore", row.data.id),
       }),
-      (data: Interface__KMISCourseCategory) => ({
+      (row: Interface__FormattedTableRow) => ({
         label: "Delete",
         icon: <IconTrash stroke={1.5} />,
         menuItemProps: { color: "fg.error" },
-        disabled: data.deletedAt,
-        onClick: () => console.log("Delete", data.id),
+        disabled: !!row.data.deletedAt,
+        onClick: () => console.log("Delete", row.data.id),
         confirmation: {
-          id: data.id,
+          id: row.data.id,
           title: "Delete User",
-          description: `Are you sure you want to delete ${data.title}?`,
+          description: `Are you sure you want to delete ${row.data.title}?`,
           confirmLabel: "Delete",
-          onConfrim: () => console.log("Confirmed delete", data.id),
+          onConfirm: () => console.log("Confirmed delete", row.data.id),
         },
       }),
     ],
     batchOptions: [
-      (ids: number[]) => ({
+      (ids: string[]) => ({
         label: "Restore",
         icon: <IconRestore stroke={1.5} />,
         disabled: data
@@ -314,13 +492,13 @@ const Table = (props: any) => {
           .some((item) => !item.deletedAt),
         onClick: () => console.log("Restore", ids),
       }),
-      (ids: number[]) => ({
+      (ids: string[]) => ({
         label: "Delete",
         icon: <IconTrash stroke={1.5} />,
         menuItemProps: { color: "fg.error" },
         disabled: data
           ?.filter((item) => ids.includes(item.id))
-          .some((item) => item.deletedAt),
+          .some((item) => !!item.deletedAt),
         onClick: () => console.log("Delete", ids),
       }),
     ],

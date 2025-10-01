@@ -18,13 +18,13 @@ import {
 import { ReactNode } from "react";
 
 export interface Interface__KMISCourse extends Interface__CUD {
-  id: number;
+  id: string;
   category: Interface__KMISCourseCategory[];
   title: string;
   description: string;
 }
 export interface Interface__KMISCourseCategory extends Interface__CUD {
-  id: number;
+  id: string;
   categoryCover: Interface__StorageFile[];
   title: string;
   description: string;
@@ -72,8 +72,8 @@ export interface Interface__FormattedTableHeader {
   headerProps?: TableColumnHeaderProps;
   wrapperProps?: StackProps;
 }
-export interface Interface__FormattedTableData {
-  id: number;
+export interface Interface__FormattedTableRow {
+  id: string;
   idx: number;
   data: any;
   columns: {
@@ -94,15 +94,14 @@ export interface Interface__TableOption {
     title: string;
     description: string;
     confirmLabel: string;
-    onConfrim: () => void;
+    onConfirm: () => void;
     confirmButtonProps?: BtnProps;
   };
   menuItemProps?: Partial<MenuItemProps>;
   override?: ReactNode;
 }
-export type Interface__TableOptionGenerator<T = any> = (
-  data: T
-) => Interface__TableOption | null | false;
+export type Interface__TableOptionGenerator<T = Interface__FormattedTableRow> =
+  (data: T) => Interface__TableOption | null | false;
 
 // HTTP
 export interface Interface__RequestState<T = any> {
@@ -128,7 +127,7 @@ export interface Interface__CUD {
 
 // Storage
 export interface Interface__StorageFile extends Interface__CUD {
-  id: number;
+  id: string;
   fileName: string;
   filePath: string;
   fileUrl: string;

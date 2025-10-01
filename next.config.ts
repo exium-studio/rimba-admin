@@ -21,6 +21,7 @@ const nextConfig: NextConfig = {
         pathname: "/storage/documents/**",
       },
     ],
+    qualities: [60, 70, 80, 90, 100],
   },
   experimental: {
     optimizePackageImports: ["@chakra-ui/react"],

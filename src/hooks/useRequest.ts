@@ -70,14 +70,22 @@ export default function useRequest<T = any>(props: Props) {
     },
     []
   );
+
   const resolveErrorMessage = (e: any) => {
     const statusCode = e.response?.status;
     const errorCase = e.response?.data?.case;
 
+    // Handle network-level errors first
+    if (e.code === "ERR_NETWORK") {
+      return l.error_network;
+    }
+
+    // Check if a custom error message is provided for this status code and case
     if (statusCode && errorMessage?.[statusCode]) {
       if (errorCase && errorMessage[statusCode][errorCase]) {
         return errorMessage[statusCode][errorCase];
       }
+      // Fallback to default custom message for this status code
       return (
         errorMessage[statusCode].default || {
           title: l.error_default.title,
@@ -86,13 +94,26 @@ export default function useRequest<T = any>(props: Props) {
       );
     }
 
-    switch (e.code) {
-      case "ERR_NETWORK":
-        return l.error_network;
+    // Switch-based handling for known status codes
+    switch (statusCode) {
+      case 400:
+        return l.error_400_default;
+      case 401:
+        return l.error_401_default;
+      case 403:
+        return l.error_403_default;
+      case 404:
+        return l.error_404_default;
+      case 429:
+        return l.error_429_default;
+      case 500:
+        return l.error_500_default;
       default:
+        // 4. Final fallback for unhandled cases
         return l.error_default;
     }
   };
+
   const req = useCallback(
     async ({ config, onResolve }: Interface__Req<T>) => {
       try {

@@ -48,7 +48,7 @@ const useDataState = <T = any>(props: Props<T>) => {
   const { req, response, loading, error, status } = useRequest({
     id: url || "data-state",
     showLoadingToast: false,
-    showErrorToast: false,
+    showErrorToast: true,
     showSuccessToast: false,
   });
   const payloadData = {

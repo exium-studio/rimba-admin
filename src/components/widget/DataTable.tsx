@@ -11,7 +11,7 @@ import {
 import { P } from "@/components/ui/p";
 import { DotIndicator } from "@/components/widget/Indicator";
 import { SortIcon } from "@/components/widget/SortIcon";
-import { Interface__FormattedTableData } from "@/constants/interfaces";
+import { Interface__FormattedTableRow } from "@/constants/interfaces";
 import {
   Props__BatchOptions,
   Props__DataTable,
@@ -482,7 +482,7 @@ export const DataTable = (props: Props__DataTable) => {
       setSelectedRows([]);
     }
   }
-  function toggleRowSelection(row: Interface__FormattedTableData) {
+  function toggleRowSelection(row: Interface__FormattedTableRow) {
     const rowId = row.id;
     setSelectedRows((ps) => {
       const isSelected = ps.includes(rowId);
