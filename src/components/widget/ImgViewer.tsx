@@ -8,6 +8,7 @@ import { NavLink } from "@/components/ui/nav-link";
 import useLang from "@/context/useLang";
 import useBackOnClose from "@/hooks/useBackOnClose";
 import { back } from "@/utils/client";
+import { disclosureId } from "@/utils/disclosure";
 import { Icon, Image, StackProps, useDisclosure } from "@chakra-ui/react";
 import { IconArrowUpRight } from "@tabler/icons-react";
 
@@ -24,7 +25,7 @@ export const ImgViewer = (props: Props) => {
 
   // Hooks
   const { open, onOpen, onClose } = useDisclosure();
-  useBackOnClose(`img-viewer-${src}`, open, onOpen, onClose);
+  useBackOnClose(disclosureId(`img-viewer-${src}`), open, onOpen, onClose);
 
   return (
     <>

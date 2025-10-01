@@ -37,6 +37,7 @@ import { useIsSmScreenWidth } from "@/hooks/useIsSmScreenWidth";
 import useRequest from "@/hooks/useRequest";
 import { isEmptyArray } from "@/utils/array";
 import { back } from "@/utils/client";
+import { disclosureId } from "@/utils/disclosure";
 import { capitalize } from "@/utils/string";
 import { imgUrl } from "@/utils/url";
 import { fileValidation } from "@/utils/validationSchema";
@@ -70,7 +71,7 @@ const Create = () => {
   // Hooks
   const iss = useIsSmScreenWidth();
   const { open, onOpen, onClose } = useDisclosure();
-  useBackOnClose(ID, open, onOpen, onClose);
+  useBackOnClose(disclosureId(ID), open, onOpen, onClose);
   const { req, loading } = useRequest({
     id: ID,
     loadingMessage: {
@@ -215,7 +216,12 @@ const Update = (props: any) => {
 
   // Hooks
   const { open, onOpen, onClose } = useDisclosure();
-  useBackOnClose(`${ID}-${resolvedData?.id}`, open, onOpen, onClose);
+  useBackOnClose(
+    disclosureId(`${ID}-${resolvedData?.id}`),
+    open,
+    onOpen,
+    onClose
+  );
   const { req, loading } = useRequest({
     id: ID,
     loadingMessage: {
