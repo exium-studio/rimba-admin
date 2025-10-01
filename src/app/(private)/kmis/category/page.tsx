@@ -38,6 +38,7 @@ import useRequest from "@/hooks/useRequest";
 import { isEmptyArray } from "@/utils/array";
 import { back } from "@/utils/client";
 import { disclosureId } from "@/utils/disclosure";
+import { formatDate } from "@/utils/formatter";
 import { capitalize } from "@/utils/string";
 import { imgUrl } from "@/utils/url";
 import { fileValidation } from "@/utils/validationSchema";
@@ -553,6 +554,20 @@ const Table = (props: any) => {
         sortable: true,
       },
       {
+        th: l.added,
+        sortable: true,
+        wrapperProps: {
+          justify: "center",
+        },
+      },
+      {
+        th: l.updated,
+        sortable: true,
+        wrapperProps: {
+          justify: "center",
+        },
+      },
+      {
         th: l.deleted,
         sortable: true,
         wrapperProps: {
@@ -584,6 +599,22 @@ const Table = (props: any) => {
         {
           td: item.description,
           value: item.description,
+        },
+        {
+          td: formatDate(item.createdAt, { variant: "numeric" }),
+          value: item.createdAt,
+          dataType: "date",
+          wrapperProps: {
+            justify: "center",
+          },
+        },
+        {
+          td: formatDate(item.updatedAt, { variant: "numeric" }),
+          value: item.updatedAt,
+          dataType: "date",
+          wrapperProps: {
+            justify: "center",
+          },
         },
         {
           td: <DeletedStatus deletedAt={item.deletedAt} />,
