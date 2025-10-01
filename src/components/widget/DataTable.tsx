@@ -164,7 +164,7 @@ const BatchOptions = (props: Props__BatchOptions) => {
           <P>{l.select_all}</P>
 
           <DotIndicator
-            color={selectAllRows ? themeConfig.primaryColor : "d3"}
+            color={selectAllRows ? themeConfig.primaryColor : "d2"}
             mr={1}
           />
         </MenuItem>

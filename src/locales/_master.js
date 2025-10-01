@@ -439,6 +439,10 @@ export const select_all = {
   id: "Pilih semua",
   en: "Select all",
 };
+export const unselect_all = {
+  id: "Batalkan pilihan semua",
+  en: "Unselect all",
+};
 export const minimize = {
   id: "Minimalkan",
   en: "Minimize",

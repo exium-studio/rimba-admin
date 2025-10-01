@@ -399,6 +399,7 @@ const translations = {
   "try_location": "Coba Lokasi",
   "try_mic": "Coba Mic",
   "tuesday": "Selasa",
+  "unselect_all": "Batalkan pilihan semua",
   "update": "Ubah",
   "uploaded": "Sudah diunggah",
   "uploaded_file": "File yang sudah diunggah",

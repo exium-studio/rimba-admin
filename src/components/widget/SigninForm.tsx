@@ -513,7 +513,7 @@ const SigninForm = (props: Props) => {
                         setSelectedRoleId(`${role.id}`);
                       }}
                     >
-                      {isActive && <DotIndicator ml={0} />}
+                      {isActive && <DotIndicator />}
 
                       <Icon
                         boxSize={"100px"}

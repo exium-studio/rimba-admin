@@ -399,6 +399,7 @@ const translations = {
   "try_location": "Try Location",
   "try_mic": "Try Mic",
   "tuesday": "Tuesday",
+  "unselect_all": "Unselect all",
   "update": "Update",
   "uploaded": "Uploaded",
   "uploaded_file": "Uploaded file",
