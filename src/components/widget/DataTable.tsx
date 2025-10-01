@@ -42,12 +42,18 @@ const ICON_BOX_SIZE = "18px";
 
 const RowOptions = (props: Props_RowOptions) => {
   // Props
-  const { row, rowOptions, tableContainerRef } = props;
+  const { row, rowOptions, tableContainerRef, ...restProps } = props;
 
   return (
     <MenuRoot lazyMount>
       <MenuTrigger asChild aria-label="row options">
-        <Btn iconButton clicky={false} variant={"ghost"} size={"xs"}>
+        <Btn
+          iconButton
+          clicky={false}
+          variant={"ghost"}
+          size={"xs"}
+          {...restProps}
+        >
           <Icon boxSize={5}>
             <IconDots />
           </Icon>
@@ -494,7 +500,7 @@ export const DataTable = (props: Props__DataTable) => {
   const thBorderColor = "border.muted";
   const tdBg = "body";
   const selectedColor = hexWithOpacity(themeConfig.primaryColorHex, 0.05);
-  const tdBorderColor = "border.subtle";
+  const tdBorderColor = "d1";
 
   // set initial source of truth table data
   useEffect(() => {
@@ -760,6 +766,8 @@ export const DataTable = (props: Props__DataTable) => {
                           row={row}
                           rowOptions={rowOptions}
                           tableContainerRef={tableContainerRef}
+                          colorPalette={isRowSelected ? "p" : ""}
+                          color={"ibody"}
                         />
                       </Center>
                     </Table.Cell>

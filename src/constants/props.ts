@@ -100,7 +100,7 @@ export interface Props__BatchOptions {
   handleSelectAllRows: (isChecked: boolean) => void;
   tableContainerRef?: RefObject<HTMLDivElement | null>;
 }
-export interface Props_RowOptions {
+export interface Props_RowOptions extends BtnProps {
   row: Interface__FormattedTableRow;
   rowOptions?: Interface__TableOptionGenerator<Interface__FormattedTableRow>[];
   tableContainerRef?: RefObject<HTMLDivElement | null>;

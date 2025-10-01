@@ -486,7 +486,11 @@ const Delete = (props: any) => {
       description={l.msg_soft_delete}
       confirmLabel={"Delete"}
       onConfirm={onDelete}
-      confirmButtonProps={{ colorPalette: "red" }}
+      confirmButtonProps={{
+        color: "fg.error",
+        colorPalette: "gray",
+        variant: "outline",
+      }}
       loading={loading}
       disabled={disabled}
     >
