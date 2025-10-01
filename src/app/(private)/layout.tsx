@@ -910,7 +910,12 @@ const DesktopLayout = (props: any) => {
               <Today />
             </HStack>
 
-            <ColorModeButton />
+            <ColorModeButton
+              rounded={"full"}
+              size={"xs"}
+              w={"32px"}
+              h={"32px"}
+            />
           </HStack>
         </HStack>
 
