@@ -97,20 +97,54 @@ export default function useRequest<T = any>(props: Props) {
     // Switch-based handling for known status codes
     switch (statusCode) {
       case 400:
-        return l.error_400_default;
+        switch (errorCase) {
+          case "INVALID_CREDENTIALS":
+            return l.error_signin_wrong_credentials;
+          default:
+            return l.error_400_default;
+        }
+
       case 401:
-        return l.error_401_default;
+        switch (errorCase) {
+          default:
+            return l.error_401_default;
+        }
+
       case 403:
-        return l.error_403_default;
+        switch (errorCase) {
+          default:
+            return l.error_403_default;
+        }
+
       case 404:
-        return l.error_404_default;
+        switch (errorCase) {
+          default:
+            return l.error_404_default;
+        }
+
+      case 422:
+        switch (errorCase) {
+          default:
+            return l.error_422_default;
+        }
+
       case 429:
-        return l.error_429_default;
+        switch (errorCase) {
+          default:
+            return l.error_429_default;
+        }
+
       case 500:
-        return l.error_500_default;
+        switch (errorCase) {
+          default:
+            return l.error_500_default;
+        }
+
       default:
-        // 4. Final fallback for unhandled cases
-        return l.error_default;
+        switch (errorCase) {
+          default:
+            return l.error_default;
+        }
     }
   };
 

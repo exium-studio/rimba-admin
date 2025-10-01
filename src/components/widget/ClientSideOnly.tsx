@@ -1,14 +1,15 @@
 "use client";
 
-import { useColorMode } from "@/components/ui/color-mode";
-import { LoadingBar } from "@/components/widget/LoadingBar";
-import Logo from "@/components/widget/Logo";
-import useADM from "@/context/useADM";
+import { APP } from "@/constants/_meta";
 import { useFirefoxPaddingY } from "@/hooks/useFirefoxPaddingY";
 import useOfflineAlert from "@/hooks/useOfflineAlert";
 import { Center } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { Img } from "../ui/img";
 import GlobalDisclosure from "./GlobalDisclosure";
+import { useColorMode } from "@/components/ui/color-mode";
+import useADM from "@/context/useADM";
+import { LoadingBar } from "@/components/widget/LoadingBar";
 
 interface Props {
   children: React.ReactNode;
@@ -18,7 +19,15 @@ interface Props {
 const DefaultFallback = () => {
   return (
     <Center w={"100w"} minH={"100dvh"} color={"fg.subtle"}>
-      <Logo size={32} />
+      <Img
+        alt={`${APP.name} Logo`}
+        src={"/logo.svg"}
+        width={"32px"}
+        height={"32px"}
+        imageProps={{
+          priority: true,
+        }}
+      />
     </Center>
   );
 };

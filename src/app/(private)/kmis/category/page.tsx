@@ -21,6 +21,7 @@ import { DataTable } from "@/components/widget/DataTable";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
 import { ImgViewer } from "@/components/widget/ImgViewer";
+import Logo from "@/components/widget/Logo";
 import { PageContainer, PageContent } from "@/components/widget/Page";
 import {
   Interface__FormattedTableRow,
@@ -556,6 +557,7 @@ export default function KMISCategoryPage(props: Props) {
   return (
     <PageContainer {...restProps}>
       <PageContent>
+        <Logo />
         <TableUtils filter={filter} setFilter={setFilter} />
         <Table filter={filter} />
       </PageContent>
