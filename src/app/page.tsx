@@ -2,13 +2,13 @@
 
 import { CContainer } from "@/components/ui/c-container";
 import { ColorModeButton } from "@/components/ui/color-mode";
+import { H1 } from "@/components/ui/heading";
 import { LangMenu } from "@/components/ui/lang-menu";
 import BrandWatermark from "@/components/widget/BrandWatermark";
 import { PartnersLogo } from "@/components/widget/PartnersLogo";
 import SigninForm from "@/components/widget/SigninForm";
-import { IMAGES_PATH } from "@/constants/paths";
 import { useThemeConfig } from "@/context/useThemeConfig";
-import { HStack, SimpleGrid } from "@chakra-ui/react";
+import { Center, HStack, SimpleGrid } from "@chakra-ui/react";
 
 export default function IndexRoute() {
   // Contexts
@@ -20,7 +20,6 @@ export default function IndexRoute() {
         <CContainer
           display={["none", null, "flex"]}
           bg={themeConfig.primaryColor}
-          bgImage={`url(${IMAGES_PATH}/hero-bg.jpg)`}
           bgPos={"center"}
           bgSize={"cover"}
         >
@@ -33,6 +32,12 @@ export default function IndexRoute() {
           >
             <PartnersLogo />
           </CContainer>
+
+          <Center p={4} pb={"50px"} m={"auto"}>
+            <H1 fontWeight={"bold"} color={"body"}>
+              RIMBA
+            </H1>
+          </Center>
         </CContainer>
 
         <CContainer h={"full"} p={[2, null, 8]} gap={16}>

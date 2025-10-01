@@ -4,7 +4,6 @@ import { Avatar } from "@/components/ui/avatar";
 import { Field } from "@/components/ui/field";
 import { NavLink } from "@/components/ui/nav-link";
 import { DotIndicator } from "@/components/widget/Indicator";
-import Logo from "@/components/widget/Logo";
 import useAuthMiddleware from "@/context/useAuthMiddleware";
 import useLang from "@/context/useLang";
 import { useThemeConfig } from "@/context/useThemeConfig";
@@ -478,8 +477,6 @@ const SigninForm = (props: Props) => {
       ) : (
         <>
           <CContainer gap={1} align={"center"}>
-            <Logo mb={4} />
-
             <P fontSize={"xl"} fontWeight={"bold"} textAlign={"center"}>
               {l.msg_signin_title}
             </P>
