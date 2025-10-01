@@ -428,7 +428,7 @@ const SigninForm = (props: Props) => {
       ),
     },
     {
-      id: 2,
+      id: 3,
       icon: IconDeviceDesktopAnalytics,
       key: "monev",
       indexRoute: "/monev/dashboard",
@@ -443,7 +443,7 @@ const SigninForm = (props: Props) => {
       ),
     },
     {
-      id: 3,
+      id: 2,
       icon: IconChalkboardTeacher,
       key: "educator",
       sso: false,
