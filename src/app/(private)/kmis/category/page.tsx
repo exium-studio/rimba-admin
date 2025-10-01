@@ -1,6 +1,6 @@
 "use client";
 
-import { Btn } from "@/components/ui/btn";
+import { Btn, BtnProps } from "@/components/ui/btn";
 import { CSpinner } from "@/components/ui/c-spinner";
 import {
   DisclosureBody,
@@ -12,12 +12,14 @@ import {
 import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-content";
 import { Field } from "@/components/ui/field";
 import { FileInput } from "@/components/ui/file-input";
+import { Img } from "@/components/ui/img";
 import SearchInput from "@/components/ui/search-input";
 import { StringInput } from "@/components/ui/string-input";
 import { Textarea } from "@/components/ui/textarea";
 import { DataTable } from "@/components/widget/DataTable";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
+import { ImgViewer } from "@/components/widget/ImgViewer";
 import { PageContainer, PageContent } from "@/components/widget/Page";
 import { Interface__KMISCourseCategory } from "@/constants/interfaces";
 import useLang from "@/context/useLang";
@@ -28,6 +30,9 @@ import useBackOnClose from "@/hooks/useBackOnClose";
 import useDataState from "@/hooks/useDataState";
 import useRequest from "@/hooks/useRequest";
 import { isEmptyArray } from "@/utils/array";
+import { back } from "@/utils/client";
+import { capitalize } from "@/utils/string";
+import { imgUrl } from "@/utils/url";
 import { fileValidation } from "@/utils/validationSchema";
 import {
   FieldsetRoot,
@@ -48,7 +53,7 @@ import * as yup from "yup";
 
 interface Props extends StackProps {}
 
-const Create = () => {
+const Create = (props: BtnProps) => {
   const ID = "create_topic_category";
 
   // Contexts
@@ -61,6 +66,9 @@ const Create = () => {
   useBackOnClose(ID, open, onOpen, onClose);
   const { req, loading } = useRequest({
     id: ID,
+    loadingMessage: {
+      title: capitalize(`${l.add} ${l.private_navs.kmis.category}`),
+    },
   });
 
   // States
@@ -76,6 +84,8 @@ const Create = () => {
       description: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values, { resetForm }) => {
+      back();
+
       const payload = new FormData();
       payload.append("files", values.files[0]);
       payload.append("title", values.title);
@@ -103,9 +113,10 @@ const Create = () => {
     <>
       <Btn
         size={"md"}
-        colorPalette={themeConfig.colorPalette}
         pl={3}
+        colorPalette={themeConfig.colorPalette}
         onClick={onOpen}
+        {...props}
       >
         <Icon>
           <IconPlus stroke={1.5} />
@@ -188,7 +199,7 @@ const TableUtils = (props: any) => {
   const { filter, setFilter, ...restProps } = props;
 
   return (
-    <HStack p={4} {...restProps}>
+    <HStack p={3} {...restProps}>
       <SearchInput
         inputValue={filter.search}
         onChange={(inputValue) => {
@@ -229,6 +240,9 @@ const Table = (props: any) => {
   const tableProps = {
     headers: [
       {
+        th: "Cover",
+      },
+      {
         th: l.title,
         sortable: true,
       },
@@ -242,6 +256,18 @@ const Table = (props: any) => {
       idx: idx,
       data: item,
       columns: [
+        {
+          td: (
+            <ImgViewer src={imgUrl(item.categoryCover?.[0]?.filePath)}>
+              <Img
+                src={imgUrl(item.categoryCover?.[0]?.filePath)}
+                aspectRatio={16 / 10}
+                h={"36px"}
+              />
+            </ImgViewer>
+          ),
+          value: imgUrl(item.categoryCover?.[0]?.filePath),
+        },
         {
           td: item.title,
           value: item.title,

@@ -376,7 +376,7 @@ const translations = {
     "description": "Process completed without issues."
   },
   "success_online": {
-    "title": "Connection Recovered",
+    "title": "Connection recovered",
     "description": "You are back online."
   },
   "success_signin": {

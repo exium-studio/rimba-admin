@@ -113,7 +113,7 @@ const InputComponent = (props: Props__FileInputInputComponent) => {
       } ${accept ? `(${accept})` : ""}`;
 
   // disable if disabled prop true or already have maxFiles existing
-  const resolvedDisabled = disabled || existingCount >= maxFiles;
+  const resolvedDisabled = fc.disabled || disabled || existingCount >= maxFiles;
 
   // Utils
   function handleFileChange(details: any) {

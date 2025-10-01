@@ -13,6 +13,15 @@ const withPWA = require("@ducanh2912/next-pwa").default({
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "doc.rimbaexium.org",
+        pathname: "/storage/documents/**",
+      },
+    ],
+  },
   experimental: {
     optimizePackageImports: ["@chakra-ui/react"],
   },

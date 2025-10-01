@@ -54,6 +54,7 @@ export interface Props__Today extends TextProps {
 }
 export interface Props__NavLink extends StackProps {
   to?: string;
+  external?: string;
 }
 export interface Props__ItemContainer extends StackProps {
   scrollY?: boolean;

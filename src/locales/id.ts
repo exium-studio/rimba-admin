@@ -376,7 +376,7 @@ const translations = {
     "description": "Proses berjalan tanpa kendala."
   },
   "success_online": {
-    "title": "Koneksi Pulih",
+    "title": "Koneksi pulih",
     "description": "Anda kembali online."
   },
   "success_signin": {

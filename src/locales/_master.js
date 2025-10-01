@@ -820,8 +820,8 @@ export const loading_reset_password = {
 // Success Toast
 export const success_online = {
   title: {
-    id: "Koneksi Pulih",
-    en: "Connection Recovered",
+    id: "Koneksi pulih",
+    en: "Connection recovered",
   },
   description: {
     id: "Anda kembali online.",

@@ -169,7 +169,7 @@ const BatchOptions = (props: Props__BatchOptions) => {
         </Btn>
       </MenuTrigger>
 
-      <MenuContent portalRef={tableContainerRef} zIndex={10} minW={"140px"}>
+      <MenuContent portalRef={tableContainerRef} zIndex={2} minW={"140px"}>
         <CContainer px={3} py={1}>
           <P fontSize={"sm"} opacity={0.5} fontWeight={500}>
             {`${selectedRows.length} ${l.selected.toLowerCase()}`}
@@ -518,7 +518,6 @@ export const DataTable = (props: Props__DataTable) => {
         borderColor={"border.muted"}
         minH={props?.minH || sh < 625 ? "400px" : ""}
         flex={1}
-        pos={"relative"}
         {...restProps}
       >
         <Table.Root
@@ -529,7 +528,7 @@ export const DataTable = (props: Props__DataTable) => {
             <Table.Row
               position={"sticky"}
               top={0}
-              zIndex={4}
+              zIndex={3}
               borderColor={borderColor}
             >
               {!isEmptyArray(batchOptions) && (
@@ -540,7 +539,6 @@ export const DataTable = (props: Props__DataTable) => {
                   p={0}
                   position={"sticky"}
                   left={0}
-                  zIndex={10}
                   borderBottom={"none !important"}
                 >
                   <Center

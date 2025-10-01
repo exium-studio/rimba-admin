@@ -9,7 +9,6 @@ export function LoadingBar(props: BoxProps) {
   // Contexts
   const { themeConfig } = useThemeConfig();
   const loadingBar = useLoadingBar((s) => s.loadingBar);
-  console.log(loadingBar);
 
   // States
   const [visible, setVisible] = useState(false);
@@ -55,7 +54,7 @@ export function LoadingBar(props: BoxProps) {
     <Box
       id="loading_bar"
       w={"full"}
-      h={"3px"}
+      h={"2px"}
       bg={"transparent"}
       position={"fixed"}
       top={0}

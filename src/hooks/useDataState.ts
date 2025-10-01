@@ -31,7 +31,7 @@ const useDataState = <T = any>(props: Props<T>) => {
     conditions = true,
     noRt = false,
     initialPage = 1,
-    initialLimit = 10,
+    initialLimit = 15,
     intialOffset = 0,
     dataResource = true,
   } = props;
@@ -165,13 +165,15 @@ const useDataState = <T = any>(props: Props<T>) => {
 
   // Handle initial loading when no url
   useEffect(() => {
-    setInitialLoading(false);
-  }, []);
+    if (!url) {
+      setInitialLoading(false);
+    }
+  }, [url]);
 
   // Handle initial loading to tru when limit & page changes
-  useEffect(() => {
-    setInitialLoading(true);
-  }, [limit, page]);
+  // useEffect(() => {
+  //   setInitialLoading(true);
+  // }, [limit, page]);
 
   return {
     makeRequest,
