@@ -14,13 +14,17 @@ import { Field } from "@/components/ui/field";
 import { FileInput } from "@/components/ui/file-input";
 import { Img } from "@/components/ui/img";
 import { MenuItem } from "@/components/ui/menu";
+import { P } from "@/components/ui/p";
 import SearchInput from "@/components/ui/search-input";
 import { StringInput } from "@/components/ui/string-input";
 import { Textarea } from "@/components/ui/textarea";
+import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
 import { DataTable } from "@/components/widget/DataTable";
+import { EmptyString } from "@/components/widget/EmptyString";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
 import { ImgViewer } from "@/components/widget/ImgViewer";
+import { DotIndicator } from "@/components/widget/Indicator";
 import { PageContainer, PageContent } from "@/components/widget/Page";
 import {
   Interface__FormattedTableRow,
@@ -35,6 +39,7 @@ import useDataState from "@/hooks/useDataState";
 import useRequest from "@/hooks/useRequest";
 import { isEmptyArray } from "@/utils/array";
 import { back } from "@/utils/client";
+import { formatDate } from "@/utils/formatter";
 import { capitalize } from "@/utils/string";
 import { imgUrl } from "@/utils/url";
 import { fileValidation } from "@/utils/validationSchema";
@@ -374,6 +379,129 @@ const Update = (props: any) => {
     </>
   );
 };
+const Restore = (props: any) => {
+  const ID = "restore_topic_category";
+
+  // Props
+  const { data } = props;
+  const resolvedData = data as Interface__KMISCourseCategory;
+
+  // Contexts
+  const { l } = useLang();
+  const setRt = useRenderTrigger((s) => s.setRt);
+
+  // Hooks
+  const { req, loading } = useRequest({
+    id: ID,
+    loadingMessage: {
+      title: capitalize(`Restore ${l.private_navs.kmis.category}`),
+    },
+  });
+
+  // Utils
+  function onDelete() {
+    back();
+    req({
+      config: {
+        url: `/api/kmis/category/restore`,
+        method: "PATCH",
+        data: {
+          restoreIds: [resolvedData.id],
+        },
+      },
+      onResolve: {
+        onSuccess: () => {
+          setRt((ps) => !ps);
+        },
+      },
+    });
+  }
+
+  return (
+    <ConfirmationDisclosureTrigger
+      w={"full"}
+      id={`${ID}-${resolvedData.id}`}
+      title={`Restore ${l.private_navs.kmis.category}`}
+      description={l.msg_soft_delete}
+      confirmLabel={"Restore"}
+      onConfirm={onDelete}
+      loading={loading}
+      disabled={!resolvedData.deletedAt}
+    >
+      <MenuItem value="restore" disabled={!resolvedData.deletedAt} {...props}>
+        Restore
+        <Icon boxSize={"18px"} ml={"auto"}>
+          <IconRestore stroke={1.5} />
+        </Icon>
+      </MenuItem>
+    </ConfirmationDisclosureTrigger>
+  );
+};
+const Delete = (props: any) => {
+  const ID = "delete_topic_category";
+
+  // Props
+  const { data } = props;
+  const resolvedData = data as Interface__KMISCourseCategory;
+
+  // Contexts
+  const { l } = useLang();
+  const setRt = useRenderTrigger((s) => s.setRt);
+
+  // Hooks
+  const { req, loading } = useRequest({
+    id: ID,
+    loadingMessage: {
+      title: capitalize(`Delete ${l.private_navs.kmis.category}`),
+    },
+  });
+
+  // Utils
+  function onDelete() {
+    back();
+    req({
+      config: {
+        url: `/api/kmis/category/delete`,
+        method: "DELETE",
+        data: {
+          deleteIds: [resolvedData.id],
+        },
+      },
+      onResolve: {
+        onSuccess: () => {
+          setRt((ps) => !ps);
+        },
+      },
+    });
+  }
+
+  return (
+    <ConfirmationDisclosureTrigger
+      w={"full"}
+      id={`${ID}-${resolvedData.id}`}
+      title={`Delete ${l.private_navs.kmis.category}`}
+      description={l.msg_soft_delete}
+      confirmLabel={"Delete"}
+      onConfirm={onDelete}
+      confirmButtonProps={{ colorPalette: "red" }}
+      loading={loading}
+      disabled={!!resolvedData.deletedAt}
+    >
+      <MenuItem
+        value="delete"
+        color={"fg.error"}
+        disabled={!!resolvedData.deletedAt}
+        {...props}
+      >
+        Delete
+        <Icon boxSize={"18px"} ml={"auto"}>
+          <IconTrash stroke={1.5} />
+        </Icon>
+      </MenuItem>
+    </ConfirmationDisclosureTrigger>
+  );
+};
+
 const TableUtils = (props: any) => {
   // Props
   const { filter, setFilter, ...restProps } = props;
@@ -430,6 +558,13 @@ const Table = (props: any) => {
         th: l.description,
         sortable: true,
       },
+      {
+        th: l.deleted,
+        sortable: true,
+        wrapperProps: {
+          justify: "center",
+        },
+      },
     ],
     rows: data?.map((item, idx) => ({
       id: item.id,
@@ -456,6 +591,21 @@ const Table = (props: any) => {
           td: item.description,
           value: item.description,
         },
+        {
+          td: item.deletedAt ? (
+            <HStack>
+              <DotIndicator ml={0} color={"fg.error"} />
+              <P>{formatDate(item.deletedAt)}</P>
+            </HStack>
+          ) : (
+            <EmptyString />
+          ),
+          value: item.deletedAt,
+          dataType: "date",
+          wrapperProps: {
+            justify: "center",
+          },
+        },
       ],
     })),
     rowOptions: [
@@ -463,27 +613,10 @@ const Table = (props: any) => {
         override: <Update data={row.data} />,
       }),
       (row: Interface__FormattedTableRow) => ({
-        label: "Restore",
-        icon: <IconRestore stroke={1.5} />,
-        disabled: !row.data.deletedAt,
-        onClick: () => console.log("Restore", row.data.id),
+        override: <Restore data={row.data} />,
       }),
       (row: Interface__FormattedTableRow) => ({
-        label: "Delete",
-        icon: <IconTrash stroke={1.5} />,
-        menuItemProps: { color: "fg.error" },
-        disabled: !!row.data.deletedAt,
-        onClick: () => console.log("Delete", row.data.id),
-        confirmation: {
-          id: row.data.id,
-          title: `Delete ${l.private_navs.kmis.category}`,
-          description: `Are you sure you want to delete <b>${row.data.title}</b>?`,
-          confirmLabel: "Delete",
-          onConfirm: () => console.log("Confirmed delete", row.data.id),
-          confirmButtonProps: {
-            colorPalette: "red",
-          },
-        },
+        override: <Delete data={row.data} />,
       }),
     ],
     batchOptions: [

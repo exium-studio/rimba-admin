@@ -45,6 +45,7 @@ const translations = {
   "day": "Day",
   "december": "December",
   "delete_": "Delete",
+  "deleted": "Deleted",
   "deleted_file": "Removed file",
   "description": "Description",
   "educator": "Educator",

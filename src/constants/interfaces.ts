@@ -96,6 +96,8 @@ export interface Interface__TableOption {
     confirmLabel: string;
     onConfirm: () => void;
     confirmButtonProps?: BtnProps;
+    loading?: boolean;
+    disabled?: boolean;
   };
   menuItemProps?: Partial<MenuItemProps>;
   override?: ReactNode;

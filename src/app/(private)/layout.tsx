@@ -355,7 +355,7 @@ const MobileLayout = (props: any) => {
             </MobileNavLink>
           </PopoverTrigger>
 
-          <PopoverContent w={"200px"} zIndex={2}>
+          <PopoverContent w={"200px"} zIndex={10}>
             <MiniProfile />
           </PopoverContent>
         </PopoverRoot>
@@ -880,7 +880,7 @@ const DesktopLayout = (props: any) => {
               </HStack>
             </PopoverTrigger>
 
-            <PopoverContent w={"254px"} zIndex={2}>
+            <PopoverContent w={"254px"} zIndex={10}>
               <MiniProfile />
             </PopoverContent>
           </PopoverRoot>

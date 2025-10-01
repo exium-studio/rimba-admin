@@ -199,6 +199,10 @@ export const delete_ = {
   id: "Hapus",
   en: "Delete",
 };
+export const deleted = {
+  id: "Dihapus",
+  en: "Deleted",
+};
 export const submit = {
   id: "Submit",
   en: "Submit",
