@@ -26,6 +26,7 @@ import { useThemeConfig } from "@/context/useThemeConfig";
 import { useIsSmScreenWidth } from "@/hooks/useIsSmScreenWidth";
 import useScreen from "@/hooks/useScreen";
 import { isEmptyArray } from "@/utils/array";
+import { hexWithOpacity } from "@/utils/color";
 import { formatNumber } from "@/utils/formatter";
 import { Center, HStack, Icon, Table } from "@chakra-ui/react";
 import {
@@ -491,6 +492,8 @@ export const DataTable = (props: Props__DataTable) => {
   const thWidth = "52.4px";
   const thBg = "body";
   const thBorderColor = "border.muted";
+  const tdBg = "body";
+  const selectedColor = hexWithOpacity(themeConfig.primaryColorHex, 0.05);
   const tdBorderColor = "border.subtle";
 
   // set initial source of truth table data
@@ -628,6 +631,8 @@ export const DataTable = (props: Props__DataTable) => {
 
           <Table.Body>
             {resolvedTableData?.map((row, rowIdx) => {
+              const isRowSelected = selectedRows.includes(row.id);
+
               return (
                 <Table.Row
                   key={rowIdx}
@@ -644,7 +649,7 @@ export const DataTable = (props: Props__DataTable) => {
                       p={0}
                       position={"sticky"}
                       left={0}
-                      bg={"body"}
+                      bg={isRowSelected ? selectedColor : tdBg}
                       zIndex={2}
                     >
                       <Center
@@ -656,7 +661,9 @@ export const DataTable = (props: Props__DataTable) => {
                             ? "1px solid"
                             : ""
                         }
-                        borderColor={tdBorderColor}
+                        borderColor={
+                          isRowSelected ? selectedColor : tdBorderColor
+                        }
                         onClick={(e) => {
                           e.stopPropagation();
                           toggleRowSelection(row);
@@ -679,12 +686,15 @@ export const DataTable = (props: Props__DataTable) => {
                       py={3}
                       px={4}
                       h={"48px"}
+                      bg={isRowSelected ? selectedColor : tdBg}
                       borderBottom={
                         rowIdx !== resolvedTableData.length - 1
                           ? "1px solid"
                           : ""
                       }
-                      borderColor={tdBorderColor}
+                      borderColor={
+                        isRowSelected ? selectedColor : tdBorderColor
+                      }
                       fontSize={"md"}
                       color={"fg.subtle"}
                       justify={"center"}
@@ -705,12 +715,15 @@ export const DataTable = (props: Props__DataTable) => {
                         py={3}
                         px={4}
                         h={"48px"}
+                        bg={isRowSelected ? selectedColor : tdBg}
                         borderBottom={
                           rowIdx !== resolvedTableData.length - 1
                             ? "1px solid"
                             : ""
                         }
-                        borderColor={tdBorderColor}
+                        borderColor={
+                          isRowSelected ? selectedColor : tdBorderColor
+                        }
                         {...col?.wrapperProps}
                       >
                         {col?.td}
@@ -725,7 +738,7 @@ export const DataTable = (props: Props__DataTable) => {
                       p={0}
                       position={"sticky"}
                       right={"0px"}
-                      bg={"body"}
+                      bg={isRowSelected ? selectedColor : tdBg}
                       zIndex={2}
                     >
                       <Center
@@ -736,7 +749,9 @@ export const DataTable = (props: Props__DataTable) => {
                             ? "1px solid"
                             : ""
                         }
-                        borderColor={tdBorderColor}
+                        borderColor={
+                          isRowSelected ? selectedColor : tdBorderColor
+                        }
                         onClick={(e) => {
                           e.stopPropagation();
                         }}
