@@ -25,8 +25,8 @@ import FeedbackRetry from "@/components/widget/FeedbackRetry";
 import { ImgViewer } from "@/components/widget/ImgViewer";
 import { PageContainer, PageContent } from "@/components/widget/Page";
 import {
-  Interface__FormattedTableRow,
   Interface__KMISCourseCategory,
+  Interface__TableOptionGenerator,
 } from "@/constants/interfaces";
 import useLang from "@/context/useLang";
 import useRenderTrigger from "@/context/useRenderTrigger";
@@ -380,7 +380,7 @@ const Restore = (props: any) => {
   const ID = "restore_topic_category";
 
   // Props
-  const { restoreIds, disabled } = props;
+  const { restoreIds, clearSelectedRows, disabled } = props;
 
   // Contexts
   const { l } = useLang();
@@ -408,6 +408,7 @@ const Restore = (props: any) => {
       onResolve: {
         onSuccess: () => {
           setRt((ps) => !ps);
+          clearSelectedRows();
         },
       },
     });
@@ -437,7 +438,7 @@ const Delete = (props: any) => {
   const ID = "delete_topic_category";
 
   // Props
-  const { deleteIds, disabled } = props;
+  const { deleteIds, clearSelectedRows, disabled } = props;
 
   // Contexts
   const { l } = useLang();
@@ -465,6 +466,7 @@ const Delete = (props: any) => {
       onResolve: {
         onSuccess: () => {
           setRt((ps) => !ps);
+          clearSelectedRows();
         },
       },
     });
@@ -594,25 +596,26 @@ const Table = (props: any) => {
       ],
     })),
     rowOptions: [
-      (row: Interface__FormattedTableRow) => ({
+      (row) => ({
         override: <Update data={row.data} />,
       }),
-      (row: Interface__FormattedTableRow) => ({
+      (row) => ({
         override: (
           <Restore restoreIds={[row.data.id]} disabled={!row.data.deletedAt} />
         ),
       }),
-      (row: Interface__FormattedTableRow) => ({
+      (row) => ({
         override: (
           <Delete deleteIds={[row.data.id]} disabled={row.data.deletedAt} />
         ),
       }),
-    ],
+    ] as Interface__TableOptionGenerator[],
     batchOptions: [
-      (ids: string[]) => ({
+      (ids, { clearSelectedRows }) => ({
         override: (
           <Restore
             restoreIds={ids}
+            clearSelectedRows={clearSelectedRows}
             disabled={
               isEmptyArray(ids) ||
               data
@@ -622,10 +625,11 @@ const Table = (props: any) => {
           />
         ),
       }),
-      (ids: string[]) => ({
+      (ids, { clearSelectedRows }) => ({
         override: (
           <Delete
             deleteIds={ids}
+            clearSelectedRows={clearSelectedRows}
             disabled={
               isEmptyArray(ids) ||
               data
@@ -635,7 +639,7 @@ const Table = (props: any) => {
           />
         ),
       }),
-    ],
+    ] as Interface__TableOptionGenerator<string[]>[],
   };
   const render = {
     loading: <CSpinner />,

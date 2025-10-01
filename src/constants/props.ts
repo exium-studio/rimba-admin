@@ -95,6 +95,7 @@ export interface Props__SortIcon extends IconProps {
 }
 export interface Props__BatchOptions {
   selectedRows: any[];
+  clearSelectedRows: () => void;
   batchOptions?: Interface__TableOptionGenerator<string[]>[];
   selectAllRows: boolean;
   handleSelectAllRows: (isChecked: boolean) => void;

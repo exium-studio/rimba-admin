@@ -133,6 +133,7 @@ const BatchOptions = (props: Props__BatchOptions) => {
   // Props
   const {
     selectedRows,
+    clearSelectedRows,
     batchOptions,
     selectAllRows,
     handleSelectAllRows,
@@ -144,7 +145,7 @@ const BatchOptions = (props: Props__BatchOptions) => {
   const { themeConfig } = useThemeConfig();
 
   return (
-    <MenuRoot lazyMount closeOnSelect={false}>
+    <MenuRoot lazyMount>
       <MenuTrigger asChild aria-label="batch options">
         <Btn iconButton clicky={false} variant={"ghost"} size={"xs"}>
           <Icon>
@@ -183,7 +184,9 @@ const BatchOptions = (props: Props__BatchOptions) => {
 
           // if (item === "divider") return <MenuSeparator key={idx} />;
 
-          const option = item(selectedRows);
+          const option = item(selectedRows, {
+            clearSelectedRows: clearSelectedRows,
+          });
           if (!option) return null;
 
           const {
@@ -476,6 +479,9 @@ export const DataTable = (props: Props__DataTable) => {
       setSelectedRows([]);
     }
   }
+  function handleClearSelectedRows() {
+    setSelectedRows([]);
+  }
   function toggleRowSelection(row: Interface__FormattedTableRow) {
     const rowId = row.id;
     setSelectedRows((ps) => {
@@ -547,6 +553,7 @@ export const DataTable = (props: Props__DataTable) => {
                   >
                     <BatchOptions
                       selectedRows={selectedRows}
+                      clearSelectedRows={handleClearSelectedRows}
                       batchOptions={batchOptions}
                       selectAllRows={selectAllRows}
                       handleSelectAllRows={handleSelectAllRows}
