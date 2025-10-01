@@ -410,7 +410,7 @@ const Restore = (props: any) => {
       onResolve: {
         onSuccess: () => {
           setRt((ps) => !ps);
-          clearSelectedRows();
+          clearSelectedRows?.();
         },
       },
     });
@@ -468,7 +468,7 @@ const Delete = (props: any) => {
       onResolve: {
         onSuccess: () => {
           setRt((ps) => !ps);
-          clearSelectedRows();
+          clearSelectedRows?.();
         },
       },
     });
