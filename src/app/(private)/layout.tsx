@@ -266,7 +266,7 @@ const MobileLayout = (props: any) => {
                                           </P>
 
                                           {isSubNavsActive && (
-                                            <DotIndicator mr={1} />
+                                            <DotIndicator ml={"auto"} mr={1} />
                                           )}
                                         </MenuItem>
                                       </NavLink>
@@ -746,7 +746,10 @@ const DesktopLayout = (props: any) => {
                                               </P>
 
                                               {isSubNavsActive && (
-                                                <DotIndicator mr={1} />
+                                                <DotIndicator
+                                                  ml={"auto"}
+                                                  mr={1}
+                                                />
                                               )}
                                             </MenuItem>
                                           </Tooltip>
