@@ -2,6 +2,6 @@
 
 import { CContainer } from "@/components/ui/c-container";
 
-export default function MonevPackageInformationPage() {
+export default function CMSActivityPage() {
   return <CContainer></CContainer>;
 }

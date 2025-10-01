@@ -41,13 +41,7 @@ import { disclosureId } from "@/utils/disclosure";
 import { capitalize } from "@/utils/string";
 import { imgUrl } from "@/utils/url";
 import { fileValidation } from "@/utils/validationSchema";
-import {
-  FieldsetRoot,
-  HStack,
-  Icon,
-  StackProps,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { FieldsetRoot, HStack, Icon, useDisclosure } from "@chakra-ui/react";
 import {
   IconPencilMinus,
   IconPlus,
@@ -57,8 +51,6 @@ import {
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import * as yup from "yup";
-
-interface Props extends StackProps {}
 
 const Create = () => {
   const ID = "create_topic_category";
@@ -681,10 +673,7 @@ const Table = (props: any) => {
   );
 };
 
-export default function KMISCategoryPage(props: Props) {
-  // Props
-  const { ...restProps } = props;
-
+export default function KMISCategoryPage() {
   // States
   const DEFAULT_FILTER = {
     search: "",
@@ -692,7 +681,7 @@ export default function KMISCategoryPage(props: Props) {
   const [filter, setFilter] = useState(DEFAULT_FILTER);
 
   return (
-    <PageContainer {...restProps}>
+    <PageContainer>
       <PageContent>
         <TableUtils filter={filter} setFilter={setFilter} />
         <Table filter={filter} />
