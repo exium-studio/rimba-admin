@@ -35,13 +35,7 @@ export const ImgViewer = (props: Props) => {
       <DialogRoot open={open} size={"cover"}>
         <DialogContent bg={"transparent"} onClick={back}>
           <DialogBody>
-            <CContainer
-              flex={1}
-              h={"full"}
-              justify={"center"}
-
-              // border={"2px solid red"}
-            >
+            <CContainer flex={1} h={"full"} justify={"center"}>
               <CContainer pos={"relative"}>
                 <CloseButton
                   colorPalette={"light"}

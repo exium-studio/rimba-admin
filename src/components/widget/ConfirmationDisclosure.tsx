@@ -1,6 +1,4 @@
-import { useThemeConfig } from "@/context/useThemeConfig";
-import useBackOnClose from "@/hooks/useBackOnClose";
-import { Text } from "@chakra-ui/react";
+import { Btn } from "@/components/ui/btn";
 import { CContainer } from "@/components/ui/c-container";
 import {
   DisclosureBody,
@@ -10,9 +8,11 @@ import {
   DisclosureRoot,
 } from "@/components/ui/disclosure";
 import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-content";
+import { P } from "@/components/ui/p";
 import useConfirmationDisclosure from "@/context/disclosure/useConfirmationDisclosure";
+import { useThemeConfig } from "@/context/useThemeConfig";
+import useBackOnClose from "@/hooks/useBackOnClose";
 import BackButton from "./BackButton";
-import { Btn } from "@/components/ui/btn";
 
 interface Props {
   children?: any;
@@ -56,7 +56,7 @@ const ConfirmationDisclosure = (props: Props) => {
           </DisclosureHeader>
 
           <DisclosureBody>
-            <Text>{confirmationData?.description}</Text>
+            <P>{confirmationData?.description}</P>
           </DisclosureBody>
 
           <DisclosureFooter>

@@ -50,13 +50,13 @@ const RowOptions = (props: Props_RowOptions) => {
   // Utils
   function handleConfirmationClick(option: any) {
     setConfirmationData({
-      id: option.confirmation(row).id,
-      title: option.confirmation(row).title,
-      description: option.confirmation(row).description,
-      confirmLabel: option.confirmation(row).confirmLabel,
-      onConfirm: option.confirmation(row).onConfirm,
-      confirmButtonProps: option.confirmation(row).confirmButtonProps,
-      loading: option.confirmation(row).loading,
+      id: option.confirmation.id,
+      title: option.confirmation.title,
+      description: option.confirmation.description,
+      confirmLabel: option.confirmation.confirmLabel,
+      onConfirm: option.confirmation.onConfirm,
+      confirmButtonProps: option.confirmation.confirmButtonProps,
+      loading: option.confirmation.loading,
     });
     confirmationOnOpen();
   }

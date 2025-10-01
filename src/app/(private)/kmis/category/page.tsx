@@ -476,10 +476,13 @@ const Table = (props: any) => {
         onClick: () => console.log("Delete", row.data.id),
         confirmation: {
           id: row.data.id,
-          title: "Delete User",
-          description: `Are you sure you want to delete ${row.data.title}?`,
+          title: `Delete ${l.private_navs.kmis.category}`,
+          description: `Are you sure you want to delete <b>${row.data.title}</b>?`,
           confirmLabel: "Delete",
           onConfirm: () => console.log("Confirmed delete", row.data.id),
+          confirmButtonProps: {
+            colorPalette: "red",
+          },
         },
       }),
     ],
