@@ -1,6 +1,7 @@
 "use client";
 
 import { Btn } from "@/components/ui/btn";
+import { CContainer } from "@/components/ui/c-container";
 import {
   DisclosureBody,
   DisclosureContent,
@@ -13,17 +14,21 @@ import { Field } from "@/components/ui/field";
 import { FileInput } from "@/components/ui/file-input";
 import { Img } from "@/components/ui/img";
 import { MenuItem } from "@/components/ui/menu";
+import { P } from "@/components/ui/p";
 import SearchInput from "@/components/ui/search-input";
 import { StringInput } from "@/components/ui/string-input";
 import { Textarea } from "@/components/ui/textarea";
 import { ClampText } from "@/components/widget/ClampText";
 import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
+import { DataGridDetailDisclosureTrigger } from "@/components/widget/DataGridDetailDisclosure";
 import { DataTable } from "@/components/widget/DataTable";
 import { DeletedStatus } from "@/components/widget/DeletedStatus";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
 import { ImgViewer } from "@/components/widget/ImgViewer";
+import { Limitation } from "@/components/widget/Limitation";
 import { PageContainer, PageContent } from "@/components/widget/Page";
+import { Pagination } from "@/components/widget/Pagination";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
 import {
   Interface__KMISCourseCategory,
@@ -43,11 +48,20 @@ import { formatDate } from "@/utils/formatter";
 import { capitalize } from "@/utils/string";
 import { imgUrl } from "@/utils/url";
 import { fileValidation } from "@/utils/validationSchema";
-import { FieldsetRoot, HStack, Icon, useDisclosure } from "@chakra-ui/react";
 import {
+  FieldsetRoot,
+  HStack,
+  Icon,
+  SimpleGrid,
+  useDisclosure,
+} from "@chakra-ui/react";
+import {
+  IconArrowRight,
+  IconLayoutGrid,
   IconPencilMinus,
   IconPlus,
   IconRestore,
+  IconTable,
   IconTrash,
 } from "@tabler/icons-react";
 import { useFormik } from "formik";
@@ -500,9 +514,31 @@ const Delete = (props: any) => {
   );
 };
 
+const ToggleDataDisplay = (props: any) => {
+  // Props
+  const { displayTable, setDisplayTable, ...restProps } = props;
+
+  return (
+    <Btn
+      iconButton
+      variant={"outline"}
+      onClick={() => setDisplayTable((ps: boolean) => !ps)}
+      {...restProps}
+    >
+      <Icon>
+        {displayTable ? (
+          <IconTable stroke={1.5} />
+        ) : (
+          <IconLayoutGrid stroke={1.5} />
+        )}
+      </Icon>
+    </Btn>
+  );
+};
 const TableUtils = (props: any) => {
   // Props
-  const { filter, setFilter, ...restProps } = props;
+  const { filter, setFilter, displayTable, setDisplayTable, ...restProps } =
+    props;
 
   return (
     <HStack p={3} {...restProps}>
@@ -513,13 +549,165 @@ const TableUtils = (props: any) => {
         }}
       />
 
+      <ToggleDataDisplay
+        displayTable={displayTable}
+        setDisplayTable={setDisplayTable}
+      />
+
       <Create />
     </HStack>
   );
 };
-const Table = (props: any) => {
+const DataGrid = (props: any) => {
   // Props
-  const { filter } = props;
+  const {
+    data,
+    limit,
+    setLimit,
+    page,
+    setPage,
+    totalPage,
+    footer,
+    ...restProps
+  } = props;
+
+  // Contexts
+  const { l } = useLang();
+  const { themeConfig } = useThemeConfig();
+
+  // Hooks
+  const iss = useIsSmScreenWidth();
+
+  // States
+  const detailSpecs = {
+    id: {
+      label: "ID",
+      dataType: "string",
+    },
+    categoryCover: {
+      label: "Cover",
+      dataType: "image",
+    },
+    title: {
+      label: l.title,
+      dataType: "string",
+    },
+    description: {
+      label: l.description,
+      dataType: "string",
+    },
+    createdAt: {
+      label: l.added,
+      dataType: "timestamp",
+    },
+    updatedAt: {
+      label: l.updated,
+      dataType: "timestamp",
+    },
+    deletedAt: {
+      label: l.deleted,
+      dataType: "timestamp",
+    },
+  };
+  const hasTableFooter = limit && setLimit && page && setPage;
+
+  return (
+    <>
+      <CContainer className="scrollY" p={4} {...restProps}>
+        <SimpleGrid columns={[1, null, 2, 3, 5]} gap={4}>
+          {data.map((item: Interface__KMISCourseCategory) => {
+            return (
+              <DataGridDetailDisclosureTrigger
+                key={item.id}
+                className="clicky"
+                id={`${item.id}`}
+                data={item}
+                specs={detailSpecs}
+                w={"full"}
+                cursor={"pointer"}
+              >
+                <CContainer
+                  key={item.id}
+                  flex={1}
+                  border={"1px solid"}
+                  borderColor={"border.muted"}
+                  rounded={themeConfig.radii.component}
+                  overflow={"clip"}
+                >
+                  <Img
+                    src={imgUrl(item.categoryCover?.[0].filePath)}
+                    aspectRatio={16 / 10}
+                    rounded={themeConfig.radii.component}
+                  />
+
+                  <CContainer flex={1} gap={2} px={3} my={3}>
+                    <HStack justify={"space-between"}>
+                      <P fontWeight={"semibold"} lineClamp={1}>
+                        {item.title}
+                      </P>
+
+                      <Icon boxSize={5} color={"fg.subtle"} mb={"1px"}>
+                        <IconArrowRight stroke={1.5} />
+                      </Icon>
+                    </HStack>
+
+                    <P color={"fg.subtle"} lineClamp={2}>
+                      {item.description}
+                    </P>
+                  </CContainer>
+                </CContainer>
+              </DataGridDetailDisclosureTrigger>
+            );
+          })}
+        </SimpleGrid>
+      </CContainer>
+
+      {hasTableFooter && (
+        <>
+          <HStack
+            p={3}
+            borderTop={"1px solid"}
+            borderColor={"border.muted"}
+            justify={"space-between"}
+          >
+            <CContainer w={"fit"} mb={[1, null, 0]}>
+              <Limitation limit={limit} setLimit={setLimit} />
+            </CContainer>
+
+            {!iss && (
+              <CContainer
+                w={"fit"}
+                justify={"center"}
+                pl={[2, null, 0]}
+                mt={[footer ? 1 : 0, null, 0]}
+              >
+                {footer}
+              </CContainer>
+            )}
+
+            <CContainer w={"fit"}>
+              <Pagination page={page} setPage={setPage} totalPage={totalPage} />
+            </CContainer>
+          </HStack>
+
+          {iss && (
+            <CContainer
+              w={"fit"}
+              justify={"center"}
+              pl={[2, null, 0]}
+              mt={[footer ? 1 : 0, null, 0]}
+            >
+              {footer}
+            </CContainer>
+          )}
+        </>
+      )}
+    </>
+  );
+};
+const Data = (props: any) => {
+  // Props
+  const { filter, displayTable } = props;
 
   // Contexts
   const { l } = useLang();
@@ -666,12 +854,21 @@ const Table = (props: any) => {
     loading: <TableSkeleton />,
     error: <FeedbackRetry onRetry={onRetry} />,
     empty: <FeedbackNoData />,
-    loaded: (
+    loaded: displayTable ? (
       <DataTable
         headers={tableProps.headers}
         rows={tableProps.rows}
         rowOptions={tableProps.rowOptions}
         batchOptions={tableProps.batchOptions}
+        limit={limit}
+        setLimit={setLimit}
+        page={page}
+        setPage={setPage}
+        totalPage={pagination?.meta?.last_page}
+      />
+    ) : (
+      <DataGrid
+        data={data}
         limit={limit}
         setLimit={setLimit}
         page={page}
@@ -706,12 +903,18 @@ export default function KMISCategoryPage() {
     search: "",
   };
   const [filter, setFilter] = useState(DEFAULT_FILTER);
+  const [displayTable, setDisplayTable] = useState<boolean>(true);
 
   return (
     <PageContainer>
       <PageContent>
-        <TableUtils filter={filter} setFilter={setFilter} />
-        <Table filter={filter} />
+        <TableUtils
+          filter={filter}
+          setFilter={setFilter}
+          displayTable={displayTable}
+          setDisplayTable={setDisplayTable}
+        />
+        <Data filter={filter} displayTable={displayTable} />
       </PageContent>
     </PageContainer>
   );
