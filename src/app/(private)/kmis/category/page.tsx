@@ -530,6 +530,7 @@ const DataGrid = (props: any) => {
     setPage,
     totalPage,
     footer,
+    disclosureTitle,
     ...restProps
   } = props;
 
@@ -611,7 +612,7 @@ const DataGrid = (props: any) => {
                 key={item.id}
                 className="lg-clicky"
                 id={`${item.id}`}
-                title={item.title}
+                title={disclosureTitle}
                 data={item}
                 details={details}
                 w={"full"}
@@ -945,6 +946,7 @@ const Data = (props: any) => {
         page={page}
         setPage={setPage}
         totalPage={pagination?.meta?.last_page}
+        disclosureTitle={disclosureTitle}
       />
     ),
   };
