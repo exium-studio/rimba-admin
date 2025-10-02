@@ -517,18 +517,27 @@ const ToggleDataDisplay = (props: any) => {
   // Props
   const { displayTable, setDisplayTable, ...restProps } = props;
 
+  const iss = useIsSmScreenWidth();
+
   return (
     <Btn
-      iconButton
+      iconButton={iss ? true : false}
+      w={iss ? "" : "100px"}
       variant={"outline"}
       onClick={() => setDisplayTable((ps: boolean) => !ps)}
       {...restProps}
     >
       <Icon>
         {displayTable ? (
-          <IconTable stroke={1.5} />
+          <>
+            <IconTable stroke={1.5} />
+            {!iss && "Table"}
+          </>
         ) : (
-          <IconLayoutGrid stroke={1.5} />
+          <>
+            <IconLayoutGrid stroke={1.5} />
+            {!iss && "Grid"}
+          </>
         )}
       </Icon>
     </Btn>
