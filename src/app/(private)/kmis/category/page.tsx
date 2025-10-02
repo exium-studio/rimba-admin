@@ -304,7 +304,7 @@ const Update = (props: any) => {
 
   return (
     <>
-      <MenuItem value="edit" onClick={onOpen} {...props}>
+      <MenuItem value="edit" onClick={onOpen}>
         Edit
         <Icon boxSize={"18px"} ml={"auto"}>
           <IconPencilMinus stroke={1.5} />
