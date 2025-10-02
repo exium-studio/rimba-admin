@@ -341,6 +341,7 @@ const translations = {
   },
   "show": "Tampilkan",
   "showing": "Menampilkan",
+  "student": "Pelajar",
   "submit": "Submit",
   "success_200_default": {
     "title": "Ok",
@@ -397,6 +398,7 @@ const translations = {
   "time_format": "Format waktu",
   "timezone": "Zona waktu",
   "title": "Judul",
+  "total_material": "Total Materi",
   "try_camera": "Coba Kamera",
   "try_location": "Coba Lokasi",
   "try_mic": "Coba Mic",

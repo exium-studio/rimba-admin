@@ -341,6 +341,7 @@ const translations = {
   },
   "show": "Show",
   "showing": "Showing",
+  "student": "Student",
   "submit": "Submit",
   "success_200_default": {
     "title": "Ok",
@@ -397,6 +398,7 @@ const translations = {
   "time_format": "Time format",
   "timezone": "Timezone",
   "title": "Title",
+  "total_material": "Total Material",
   "try_camera": "Try Camera",
   "try_location": "Try Location",
   "try_mic": "Try Mic",

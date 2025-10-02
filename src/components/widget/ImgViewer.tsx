@@ -13,7 +13,7 @@ import { Icon, Image, StackProps, useDisclosure } from "@chakra-ui/react";
 import { IconArrowUpRight } from "@tabler/icons-react";
 
 interface Props extends StackProps {
-  src: string;
+  src?: string;
 }
 
 export const ImgViewer = (props: Props) => {

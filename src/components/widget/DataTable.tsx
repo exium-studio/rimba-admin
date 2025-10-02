@@ -388,7 +388,7 @@ export const DataTable = (props: Props__DataTable) => {
   const thBg = "body";
   const thBorderColor = "border.muted";
   const tdBg = "body";
-  const tdMinH = "48px";
+  const tdMinH = "52px";
   const selectedColor = hexWithOpacity(themeConfig.primaryColorHex, 0.05);
   const tdBorderColor = "d1";
 

@@ -17,6 +17,11 @@ import {
 } from "./types";
 import { ReactNode } from "react";
 
+export interface Interface__KMISEducator extends Interface__CUD {
+  id: string;
+  user: Interface__User;
+  totalMaterial: number;
+}
 export interface Interface__KMISCourse extends Interface__CUD {
   id: string;
   category: Interface__KMISCourseCategory[];
@@ -31,14 +36,23 @@ export interface Interface__KMISCourseCategory extends Interface__CUD {
 }
 
 // Auth
-export interface Interface__User {
+export interface Interface__User extends Interface__CUD {
   id: string;
-  role: Interface__Role;
   photoProfile: Interface__StorageFile[];
   name: string;
   email: string;
+  role: Interface__Role;
   accountStatus: Type__AccountStatus;
-  lastLogin: string;
+  // optional
+  gender?: boolean | null; // 1 male, 0 female
+  phoneNumber?: string | null;
+  birthDate?: string | null;
+  address?: string | null;
+  // audit timestamps
+  registeredAt: string;
+  lastLogin: string | null;
+  lastChangePasswordAt: string | null;
+  deactiveAt: string | null;
 }
 export interface Interface__Role {
   id: string;

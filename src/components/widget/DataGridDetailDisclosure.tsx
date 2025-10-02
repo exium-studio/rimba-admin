@@ -14,10 +14,12 @@ import { P } from "@/components/ui/p";
 import SearchInput from "@/components/ui/search-input";
 import BackButton from "@/components/widget/BackButton";
 import { DeletedStatus } from "@/components/widget/DeletedStatus";
+import FeedbackNotFound from "@/components/widget/FeedbackNotFound";
 import { ImgViewer } from "@/components/widget/ImgViewer";
 import useBackOnClose from "@/hooks/useBackOnClose";
+import { isEmptyArray } from "@/utils/array";
 import { disclosureId } from "@/utils/disclosure";
-import { formatDate, formatTime } from "@/utils/formatter";
+import { formatDate, formatNumber, formatTime } from "@/utils/formatter";
 import { imgUrl } from "@/utils/url";
 import { StackProps, useDisclosure } from "@chakra-ui/react";
 import { useState } from "react";
@@ -41,8 +43,10 @@ const RenderData = (props: any) => {
       return <DeletedStatus deletedAt={data} />;
     case "time":
       return <P>{formatTime(data)}</P>;
+    case "number":
+      return <P>{formatNumber(data)}</P>;
     default: // string
-      return <P>{data}</P>;
+      return <P>{`${data}`}</P>;
   }
 };
 export const DataGridDetailDisclosure = (props: any) => {
@@ -52,7 +56,7 @@ export const DataGridDetailDisclosure = (props: any) => {
   // States
   const [search, setSearch] = useState<string>("");
   const resolvedDataKeys = Object.keys(data).filter((key) => {
-    return specs[key].label.toLowerCase().includes(search.toLowerCase());
+    return specs[key]?.label?.toLowerCase()?.includes(search.toLowerCase());
   });
 
   return (
@@ -63,7 +67,7 @@ export const DataGridDetailDisclosure = (props: any) => {
         </DisclosureHeader>
 
         <DisclosureBody p={0}>
-          <CContainer p={3} pt={2}>
+          <CContainer px={2} my={2}>
             <SearchInput
               inputValue={search}
               onChange={(inputValue) => {
@@ -76,31 +80,36 @@ export const DataGridDetailDisclosure = (props: any) => {
             />
           </CContainer>
 
-          <CContainer>
-            {data &&
-              resolvedDataKeys.map((key) => {
-                const isLast = key === Object.keys(data).at(-1);
+          <CContainer px={2}>
+            {data && (
+              <>
+                {isEmptyArray(resolvedDataKeys) && <FeedbackNotFound />}
 
-                return (
-                  <CContainer
-                    key={key}
-                    gap={2}
-                    px={4}
-                    py={3}
-                    borderBottom={!isLast ? "1px solid" : ""}
-                    borderColor={"d1"}
-                  >
-                    <P fontWeight={"medium"} color={"fg.subtle"}>
-                      {specs[key].label}
-                    </P>
+                {resolvedDataKeys.map((key) => {
+                  const isLast = key === Object.keys(data).at(-1);
 
-                    <RenderData
-                      data={data[key]}
-                      dataType={specs[key].dataType}
-                    />
-                  </CContainer>
-                );
-              })}
+                  return (
+                    <CContainer
+                      key={key}
+                      gap={2}
+                      px={4}
+                      py={3}
+                      borderBottom={!isLast ? "1px solid" : ""}
+                      borderColor={"d1"}
+                    >
+                      <P fontWeight={"medium"} color={"fg.subtle"}>
+                        {specs[key].label}
+                      </P>
+
+                      <RenderData
+                        data={data[key]}
+                        dataType={specs[key].dataType}
+                      />
+                    </CContainer>
+                  );
+                })}
+              </>
+            )}
           </CContainer>
         </DisclosureBody>
 

@@ -579,6 +579,14 @@ export const description = {
   id: "Deskripsi",
   en: "Description",
 };
+export const student = {
+  id: "Pelajar",
+  en: "Student",
+};
+export const total_material = {
+  id: "Total Materi",
+  en: "Total Material",
+};
 
 // Message
 export const msg_location_test_helper = {

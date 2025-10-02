@@ -477,7 +477,7 @@ const DataGrid = (props: any) => {
 
   return (
     <>
-      <CContainer className="scrollY" p={4} {...restProps}>
+      <CContainer className="scrollY" flex={1} p={4} {...restProps}>
         <SimpleGrid columns={[1, null, 2, 3, 5]} gap={4}>
           {data.map((item: Interface__KMISCourseCategory) => {
             return (
