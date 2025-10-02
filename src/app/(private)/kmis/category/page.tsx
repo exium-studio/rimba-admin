@@ -558,23 +558,14 @@ const Table = (props: any) => {
       {
         th: l.added,
         sortable: true,
-        wrapperProps: {
-          justify: "center",
-        },
       },
       {
         th: l.updated,
         sortable: true,
-        wrapperProps: {
-          justify: "center",
-        },
       },
       {
         th: l.deleted,
         sortable: true,
-        wrapperProps: {
-          justify: "center",
-        },
       },
     ],
     rows: data?.map((item, idx) => ({
@@ -603,28 +594,25 @@ const Table = (props: any) => {
           value: item.description,
         },
         {
-          td: formatDate(item.createdAt, { variant: "numeric" }),
+          td: formatDate(item.createdAt, {
+            variant: "numeric",
+            withTime: true,
+          }),
           value: item.createdAt,
           dataType: "date",
-          wrapperProps: {
-            justify: "center",
-          },
         },
         {
-          td: formatDate(item.updatedAt, { variant: "numeric" }),
+          td: formatDate(item.updatedAt, {
+            variant: "numeric",
+            withTime: true,
+          }),
           value: item.updatedAt,
           dataType: "date",
-          wrapperProps: {
-            justify: "center",
-          },
         },
         {
           td: <DeletedStatus deletedAt={item.deletedAt} />,
           value: item.deletedAt,
           dataType: "date",
-          wrapperProps: {
-            justify: "center",
-          },
         },
       ],
     })),
