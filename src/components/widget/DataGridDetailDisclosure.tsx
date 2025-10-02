@@ -13,6 +13,7 @@ import { Img } from "@/components/ui/img";
 import { P } from "@/components/ui/p";
 import SearchInput from "@/components/ui/search-input";
 import BackButton from "@/components/widget/BackButton";
+import { DeletedStatus } from "@/components/widget/DeletedStatus";
 import { ImgViewer } from "@/components/widget/ImgViewer";
 import useBackOnClose from "@/hooks/useBackOnClose";
 import { disclosureId } from "@/utils/disclosure";
@@ -36,6 +37,8 @@ const RenderData = (props: any) => {
       return <P>{formatDate(data)}</P>;
     case "timestamp":
       return <P>{formatDate(data, { variant: "numeric", withTime: true })}</P>;
+    case "deletedAt":
+      return <DeletedStatus deletedAt={data} />;
     case "time":
       return <P>{formatTime(data)}</P>;
     default: // string
@@ -117,7 +120,7 @@ interface TirggerProps extends StackProps {
     string,
     {
       label: string;
-      dataType: string; // "string" | "number" | "date" | "timestap" | "time" |
+      dataType: string; // "string" | "number" | "date" | "timestap" | "time" | "deletedAt"
     }
   >;
 }

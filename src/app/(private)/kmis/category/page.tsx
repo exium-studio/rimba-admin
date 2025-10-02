@@ -26,6 +26,7 @@ import { DeletedStatus } from "@/components/widget/DeletedStatus";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
 import { ImgViewer } from "@/components/widget/ImgViewer";
+import { DotIndicator } from "@/components/widget/Indicator";
 import { Limitation } from "@/components/widget/Limitation";
 import { PageContainer, PageContent } from "@/components/widget/Page";
 import { Pagination } from "@/components/widget/Pagination";
@@ -612,7 +613,7 @@ const DataGrid = (props: any) => {
     },
     deletedAt: {
       label: l.deleted,
-      dataType: "timestamp",
+      dataType: "deletedAt",
     },
   };
   const hasTableFooter = limit && setLimit && page && setPage;
@@ -651,9 +652,15 @@ const DataGrid = (props: any) => {
                   />
 
                   <CContainer flex={1} gap={2} px={3} my={3}>
-                    <P fontWeight={"semibold"} lineClamp={1}>
-                      {item.title}
-                    </P>
+                    <HStack>
+                      <P fontWeight={"semibold"} lineClamp={1}>
+                        {item.title}
+                      </P>
+
+                      {item.deletedAt && (
+                        <DotIndicator color={"fg.error"} ml={"auto"} mr={1} />
+                      )}
+                    </HStack>
 
                     <P color={"fg.subtle"} lineClamp={2}>
                       {item.description}
