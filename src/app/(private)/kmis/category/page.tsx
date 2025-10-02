@@ -531,17 +531,13 @@ const ToggleDataDisplay = (props: any) => {
     >
       <Icon>
         {displayTable ? (
-          <>
-            <IconTable stroke={1.5} />
-            {!iss && "Table"}
-          </>
+          <IconTable stroke={1.5} />
         ) : (
-          <>
-            <IconLayoutGrid stroke={1.5} />
-            {!iss && "Grid"}
-          </>
+          <IconLayoutGrid stroke={1.5} />
         )}
       </Icon>
+
+      {iss ? "" : displayTable ? "Table" : "Grid"}
     </Btn>
   );
 };
