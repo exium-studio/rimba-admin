@@ -10,6 +10,11 @@ import {
   IconWorld,
 } from "@tabler/icons-react";
 
+// Roles
+// 1 Super Admin
+// 2 Educator
+// 3 Monev
+
 export const PRIVATE_ROUTE_INDEX = "/pvt";
 
 export const PRIVATE_NAVS: Interface__NavItem[] = [
@@ -20,24 +25,29 @@ export const PRIVATE_NAVS: Interface__NavItem[] = [
         icon: IconWorld,
         labelKey: "private_navs.cms.index",
         path: `/cms`,
+        allowedRoles: ["1"],
         subMenus: [
           {
             list: [
               {
                 labelKey: "private_navs.cms.static_contents",
                 path: `/cms/static-content`,
+                allowedRoles: ["1"],
               },
               {
                 labelKey: "private_navs.cms.legal_documents",
                 path: `/cms/legal-document`,
+                allowedRoles: ["1"],
               },
               {
                 labelKey: "private_navs.cms.activity",
                 path: `/cms/activity`,
+                allowedRoles: ["1"],
               },
               {
                 labelKey: "private_navs.cms.news",
                 path: `/cms/news`,
+                allowedRoles: ["1"],
               },
             ],
           },
@@ -47,40 +57,49 @@ export const PRIVATE_NAVS: Interface__NavItem[] = [
         icon: IconSchool,
         labelKey: "private_navs.kmis.index",
         path: `/kmis`,
+        allowedRoles: ["1", "2"],
         subMenus: [
           {
             list: [
               {
                 labelKey: "private_navs.kmis.dashboard",
                 path: `/kmis/dashboard`,
+                allowedRoles: ["1", "2"],
               },
               {
                 labelKey: "private_navs.kmis.topic",
                 path: `/kmis/topic`,
+                allowedRoles: ["1"],
               },
               {
                 labelKey: "private_navs.kmis.material",
                 path: `/kmis/material`,
+                allowedRoles: ["1", "2"],
               },
               {
                 labelKey: "private_navs.kmis.quiz",
                 path: `/kmis/quiz`,
+                allowedRoles: ["1", "2"],
               },
               {
                 labelKey: "private_navs.kmis.quiz_assessment",
                 path: `/kmis/quiz-assessment`,
+                allowedRoles: ["1", "2"],
               },
               {
                 labelKey: "private_navs.kmis.educator",
                 path: `/kmis/educator`,
+                allowedRoles: ["1"],
               },
               {
                 labelKey: "private_navs.kmis.student",
                 path: `/kmis/student`,
+                allowedRoles: ["1"],
               },
               {
                 labelKey: "private_navs.kmis.category",
                 path: `/kmis/category`,
+                allowedRoles: ["1"],
               },
             ],
           },
@@ -90,28 +109,34 @@ export const PRIVATE_NAVS: Interface__NavItem[] = [
         icon: IconDeviceDesktopAnalytics,
         labelKey: "private_navs.monev.index",
         path: `/monev`,
+        allowedRoles: ["1", "3"],
         subMenus: [
           {
             list: [
               {
                 labelKey: "private_navs.monev.dashboard",
                 path: `/monev/dashboard`,
+                allowedRoles: ["1", "3"],
               },
               {
                 labelKey: "private_navs.monev.activity_calendar",
                 path: `/monev/activity-calendar`,
+                allowedRoles: ["1", "3"],
               },
               {
                 labelKey: "private_navs.monev.data_sharing",
                 path: `/monev/data-sharing`,
+                allowedRoles: ["1", "3"],
               },
               {
                 labelKey: "private_navs.monev.monitoring",
                 path: `/monev/monitoring`,
+                allowedRoles: ["1", "3"],
               },
               {
                 labelKey: "private_navs.monev.package_information",
                 path: `/monev/package-information`,
+                allowedRoles: ["1", "3"],
               },
             ],
           },
