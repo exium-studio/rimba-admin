@@ -822,12 +822,15 @@ const Data = (props: any) => {
             <ImgViewer src={imgUrl(item.categoryCover?.[0]?.filePath)}>
               <Img
                 h={"24px"}
-                aspectRatio={16 / 10}
+                aspectRatio={1}
                 src={imgUrl(item.categoryCover?.[0]?.filePath)}
               />
             </ImgViewer>
           ),
           value: item.title,
+          wrapperProps: {
+            justify: "center",
+          },
         },
         {
           td: <ClampText>{item.title}</ClampText>,
