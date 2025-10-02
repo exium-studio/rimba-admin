@@ -32,8 +32,9 @@ import { PageContainer, PageContent } from "@/components/widget/Page";
 import { Pagination } from "@/components/widget/Pagination";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
 import {
+  Interface__BatchOptionsTableOptionGenerator,
   Interface__KMISCourseCategory,
-  Interface__TableOptionGenerator,
+  Interface__RowOptionsTableOptionGenerator,
 } from "@/constants/interfaces";
 import { SVGS_PATH } from "@/constants/paths";
 import useLang from "@/context/useLang";
@@ -43,12 +44,12 @@ import useBackOnClose from "@/hooks/useBackOnClose";
 import useDataState from "@/hooks/useDataState";
 import { useIsSmScreenWidth } from "@/hooks/useIsSmScreenWidth";
 import useRequest from "@/hooks/useRequest";
-import { isEmptyArray } from "@/utils/array";
+import { isEmptyArray, last } from "@/utils/array";
 import { back } from "@/utils/client";
 import { disclosureId } from "@/utils/disclosure";
 import { formatDate } from "@/utils/formatter";
-import { capitalize } from "@/utils/string";
-import { imgUrl } from "@/utils/url";
+import { capitalize, pluckString } from "@/utils/string";
+import { getActiveNavs, imgUrl } from "@/utils/url";
 import { fileValidation } from "@/utils/validationSchema";
 import {
   FieldsetRoot,
@@ -66,6 +67,7 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 import { useFormik } from "formik";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import * as yup from "yup";
 
@@ -73,8 +75,11 @@ const BASE_ENDPOINT = "/api/kmis/category";
 const PREFIX_ID = "course_category";
 type Interface__Data = Interface__KMISCourseCategory;
 
-const Create = () => {
+const Create = (props: any) => {
   const ID = `${PREFIX_ID}_create`;
+
+  // Props
+  const { disclosureTitle } = props;
 
   // Contexts
   const { l } = useLang();
@@ -88,7 +93,7 @@ const Create = () => {
   const { req, loading } = useRequest({
     id: ID,
     loadingMessage: {
-      title: capitalize(`${l.add} ${l.private_navs.kmis.category}`),
+      title: capitalize(`${l.add} ${disclosureTitle}`),
     },
   });
 
@@ -149,9 +154,7 @@ const Create = () => {
       <DisclosureRoot open={open} lazyLoad size={"xs"}>
         <DisclosureContent>
           <DisclosureHeader>
-            <DisclosureHeaderContent
-              title={`${l.add} ${l.private_navs.kmis.category}`}
-            />
+            <DisclosureHeaderContent title={`${l.add} ${disclosureTitle}`} />
           </DisclosureHeader>
 
           <DisclosureBody>
@@ -219,7 +222,7 @@ const Update = (props: any) => {
   const ID = `${PREFIX_ID}_update`;
 
   // Props
-  const { data } = props;
+  const { data, disclosureTitle } = props;
   const resolvedData = data as Interface__KMISCourseCategory;
 
   // Contexts
@@ -238,7 +241,7 @@ const Update = (props: any) => {
   const { req, loading } = useRequest({
     id: ID,
     loadingMessage: {
-      title: capitalize(`Edit ${l.private_navs.kmis.category}`),
+      title: capitalize(`Edit ${disclosureTitle}`),
     },
   });
 
@@ -311,9 +314,7 @@ const Update = (props: any) => {
       <DisclosureRoot open={open} lazyLoad size={"xs"}>
         <DisclosureContent>
           <DisclosureHeader>
-            <DisclosureHeaderContent
-              title={`Edit ${l.private_navs.kmis.category}`}
-            />
+            <DisclosureHeaderContent title={`Edit ${disclosureTitle}`} />
           </DisclosureHeader>
 
           <DisclosureBody>
@@ -401,7 +402,7 @@ const Restore = (props: any) => {
   const ID = `${PREFIX_ID}_restore`;
 
   // Props
-  const { restoreIds, clearSelectedRows, disabled } = props;
+  const { restoreIds, clearSelectedRows, disabled, disclosureTitle } = props;
 
   // Contexts
   const { l } = useLang();
@@ -411,7 +412,7 @@ const Restore = (props: any) => {
   const { req, loading } = useRequest({
     id: ID,
     loadingMessage: {
-      title: capitalize(`Restore ${l.private_navs.kmis.category}`),
+      title: capitalize(`Restore ${disclosureTitle}`),
     },
   });
 
@@ -439,7 +440,7 @@ const Restore = (props: any) => {
     <ConfirmationDisclosureTrigger
       w={"full"}
       id={`${ID}-${restoreIds}`}
-      title={`Restore ${l.private_navs.kmis.category}`}
+      title={`Restore ${disclosureTitle}`}
       description={l.msg_soft_delete}
       confirmLabel={"Restore"}
       onConfirm={onDelete}
@@ -459,7 +460,7 @@ const Delete = (props: any) => {
   const ID = `${PREFIX_ID}_delete`;
 
   // Props
-  const { deleteIds, clearSelectedRows, disabled } = props;
+  const { deleteIds, clearSelectedRows, disabled, disclosureTitle } = props;
 
   // Contexts
   const { l } = useLang();
@@ -469,7 +470,7 @@ const Delete = (props: any) => {
   const { req, loading } = useRequest({
     id: ID,
     loadingMessage: {
-      title: capitalize(`Delete ${l.private_navs.kmis.category}`),
+      title: capitalize(`Delete ${disclosureTitle}`),
     },
   });
 
@@ -497,7 +498,7 @@ const Delete = (props: any) => {
     <ConfirmationDisclosureTrigger
       w={"full"}
       id={`${ID}-${deleteIds}`}
-      title={`Delete ${l.private_navs.kmis.category}`}
+      title={`Delete ${disclosureTitle}`}
       description={l.msg_soft_delete}
       confirmLabel={"Delete"}
       onConfirm={onDelete}
@@ -519,57 +520,6 @@ const Delete = (props: any) => {
   );
 };
 
-const ToggleDataDisplay = (props: any) => {
-  // Props
-  const { displayTable, setDisplayTable, ...restProps } = props;
-
-  // Hooks
-  const iss = useIsSmScreenWidth();
-
-  return (
-    <Btn
-      iconButton={iss ? true : false}
-      size={"md"}
-      w={iss ? "" : "100px"}
-      variant={"outline"}
-      onClick={() => setDisplayTable((ps: boolean) => !ps)}
-      {...restProps}
-    >
-      <Icon>
-        {displayTable ? (
-          <IconTable stroke={1.5} />
-        ) : (
-          <IconLayoutGrid stroke={1.5} />
-        )}
-      </Icon>
-
-      {iss ? "" : displayTable ? "Table" : "Grid"}
-    </Btn>
-  );
-};
-const DataUtils = (props: any) => {
-  // Props
-  const { filter, setFilter, displayTable, setDisplayTable, ...restProps } =
-    props;
-
-  return (
-    <HStack p={3} {...restProps}>
-      <SearchInput
-        inputValue={filter.search}
-        onChange={(inputValue) => {
-          setFilter({ ...filter, search: inputValue });
-        }}
-      />
-
-      <ToggleDataDisplay
-        displayTable={displayTable}
-        setDisplayTable={setDisplayTable}
-      />
-
-      <Create />
-    </HStack>
-  );
-};
 const DataGrid = (props: any) => {
   // Props
   const {
@@ -750,9 +700,67 @@ const DataGrid = (props: any) => {
     </>
   );
 };
+
+const ToggleDataDisplay = (props: any) => {
+  // Props
+  const { displayTable, setDisplayTable, ...restProps } = props;
+
+  // Hooks
+  const iss = useIsSmScreenWidth();
+
+  return (
+    <Btn
+      iconButton={iss ? true : false}
+      size={"md"}
+      w={iss ? "" : "100px"}
+      variant={"outline"}
+      onClick={() => setDisplayTable((ps: boolean) => !ps)}
+      {...restProps}
+    >
+      <Icon>
+        {displayTable ? (
+          <IconTable stroke={1.5} />
+        ) : (
+          <IconLayoutGrid stroke={1.5} />
+        )}
+      </Icon>
+
+      {iss ? "" : displayTable ? "Table" : "Grid"}
+    </Btn>
+  );
+};
+const DataUtils = (props: any) => {
+  // Props
+  const {
+    filter,
+    setFilter,
+    displayTable,
+    setDisplayTable,
+    disclosureTitle,
+    ...restProps
+  } = props;
+
+  return (
+    <HStack p={3} {...restProps}>
+      <SearchInput
+        inputValue={filter.search}
+        onChange={(inputValue) => {
+          setFilter({ ...filter, search: inputValue });
+        }}
+      />
+
+      <ToggleDataDisplay
+        displayTable={displayTable}
+        setDisplayTable={setDisplayTable}
+      />
+
+      <Create disclosureTitle={disclosureTitle} />
+    </HStack>
+  );
+};
 const Data = (props: any) => {
   // Props
-  const { filter, displayTable } = props;
+  const { filter, displayTable, disclosureTitle } = props;
 
   // Contexts
   const { l } = useLang();
@@ -854,19 +862,27 @@ const Data = (props: any) => {
     })),
     rowOptions: [
       (row) => ({
-        override: <Update data={row.data} />,
+        override: <Update data={row.data} disclosureTitle={disclosureTitle} />,
       }),
       (row) => ({
         override: (
-          <Restore restoreIds={[row.data.id]} disabled={!row.data.deletedAt} />
+          <Restore
+            restoreIds={[row.data.id]}
+            disabled={!row.data.deletedAt}
+            disclosureTitle={disclosureTitle}
+          />
         ),
       }),
       (row) => ({
         override: (
-          <Delete deleteIds={[row.data.id]} disabled={row.data.deletedAt} />
+          <Delete
+            deleteIds={[row.data.id]}
+            disabled={row.data.deletedAt}
+            disclosureTitle={disclosureTitle}
+          />
         ),
       }),
-    ] as Interface__TableOptionGenerator[],
+    ] as Interface__RowOptionsTableOptionGenerator<Interface__Data>[],
     batchOptions: [
       (ids, { clearSelectedRows }) => ({
         override: (
@@ -879,6 +895,7 @@ const Data = (props: any) => {
                 ?.filter((item) => ids.includes(item.id))
                 .some((item) => !item.deletedAt)
             }
+            disclosureTitle={disclosureTitle}
           />
         ),
       }),
@@ -893,10 +910,11 @@ const Data = (props: any) => {
                 ?.filter((item) => ids.includes(item.id))
                 .some((item) => item.deletedAt)
             }
+            disclosureTitle={disclosureTitle}
           />
         ),
       }),
-    ] as Interface__TableOptionGenerator<string[]>[],
+    ] as Interface__BatchOptionsTableOptionGenerator[],
   };
   const render = {
     loading: <TableSkeleton />,
@@ -946,7 +964,13 @@ const Data = (props: any) => {
 };
 
 export default function KMISEducatorPage() {
+  // Contexts
+  const { l } = useLang();
+
   // States
+  const pathname = usePathname();
+  const activeNav = getActiveNavs(pathname);
+  const disclosureTitle = pluckString(l, last(activeNav)!.labelKey);
   const DEFAULT_FILTER = {
     search: "",
   };
@@ -961,8 +985,13 @@ export default function KMISEducatorPage() {
           setFilter={setFilter}
           displayTable={displayTable}
           setDisplayTable={setDisplayTable}
+          disclosureTitle={disclosureTitle}
         />
-        <Data filter={filter} displayTable={displayTable} />
+        <Data
+          filter={filter}
+          displayTable={displayTable}
+          disclosureTitle={disclosureTitle}
+        />
       </PageContent>
     </PageContainer>
   );

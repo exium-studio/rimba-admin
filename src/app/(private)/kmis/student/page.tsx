@@ -33,7 +33,7 @@ import { Pagination } from "@/components/widget/Pagination";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
 import {
   Interface__KMISCourseCategory,
-  Interface__TableOptionGenerator,
+  Interface__RowOptionsTableOptionGenerator,
 } from "@/constants/interfaces";
 import useLang from "@/context/useLang";
 import useRenderTrigger from "@/context/useRenderTrigger";
@@ -686,7 +686,7 @@ const Data = (props: any) => {
           <Delete deleteIds={[row.data.id]} disabled={row.data.deletedAt} />
         ),
       }),
-    ] as Interface__TableOptionGenerator[],
+    ] as Interface__RowOptionsTableOptionGenerator[],
     batchOptions: [
       (ids, { clearSelectedRows }) => ({
         override: (
@@ -716,7 +716,7 @@ const Data = (props: any) => {
           />
         ),
       }),
-    ] as Interface__TableOptionGenerator<string[]>[],
+    ] as Interface__RowOptionsTableOptionGenerator<string[]>[],
   };
   const render = {
     loading: <TableSkeleton />,
