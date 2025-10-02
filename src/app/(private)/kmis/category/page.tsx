@@ -35,6 +35,7 @@ import {
   Interface__KMISCourseCategory,
   Interface__TableOptionGenerator,
 } from "@/constants/interfaces";
+import { SVGS_PATH } from "@/constants/paths";
 import useLang from "@/context/useLang";
 import useRenderTrigger from "@/context/useRenderTrigger";
 import { useThemeConfig } from "@/context/useThemeConfig";
@@ -69,9 +70,11 @@ import { useEffect, useState } from "react";
 import * as yup from "yup";
 
 const BASE_ENDPOINT = "/api/kmis/category";
+const PREFIX_ID = "course_category";
+type Interface__Data = Interface__KMISCourseCategory;
 
 const Create = () => {
-  const ID = "create_topic_category";
+  const ID = `${PREFIX_ID}_create`;
 
   // Contexts
   const { l } = useLang();
@@ -213,7 +216,7 @@ const Create = () => {
   );
 };
 const Update = (props: any) => {
-  const ID = "edit_topic_category";
+  const ID = `${PREFIX_ID}_update`;
 
   // Props
   const { data } = props;
@@ -395,7 +398,7 @@ const Update = (props: any) => {
   );
 };
 const Restore = (props: any) => {
-  const ID = "restore_topic_category";
+  const ID = `${PREFIX_ID}_restore`;
 
   // Props
   const { restoreIds, clearSelectedRows, disabled } = props;
@@ -453,7 +456,7 @@ const Restore = (props: any) => {
   );
 };
 const Delete = (props: any) => {
-  const ID = "delete_topic_category";
+  const ID = `${PREFIX_ID}_delete`;
 
   // Props
   const { deleteIds, clearSelectedRows, disabled } = props;
@@ -561,7 +564,6 @@ const DataUtils = (props: any) => {
       <ToggleDataDisplay
         displayTable={displayTable}
         setDisplayTable={setDisplayTable}
-        display={"none"}
       />
 
       <Create />
@@ -589,43 +591,71 @@ const DataGrid = (props: any) => {
   const iss = useIsSmScreenWidth();
 
   // States
-  const detailSpecs = {
-    id: {
-      label: "ID",
-      dataType: "string",
-    },
-    categoryCover: {
-      label: "Cover",
-      dataType: "image",
-    },
-    title: {
-      label: l.title,
-      dataType: "string",
-    },
-    description: {
-      label: l.description,
-      dataType: "string",
-    },
-    createdAt: {
-      label: l.added,
-      dataType: "timestamp",
-    },
-    updatedAt: {
-      label: l.updated,
-      dataType: "timestamp",
-    },
-    deletedAt: {
-      label: l.deleted,
-      dataType: "deletedAt",
-    },
-  };
   const hasFooter = limit && setLimit && page && setPage;
 
   return (
     <>
       <CContainer className="scrollY" flex={1} p={4} {...restProps}>
-        <SimpleGrid columns={[1, null, 2, 3, 5]} gap={4}>
-          {data.map((item: Interface__KMISCourseCategory) => {
+        <SimpleGrid columns={[1, null, 2, 3, 4, 5]} gap={4}>
+          {data.map((item: Interface__Data) => {
+            const details = [
+              {
+                label: "ID",
+                render: <P>{item.id}</P>,
+              },
+              {
+                label: "Cover",
+                render: (
+                  <ImgViewer
+                    src={imgUrl(item.categoryCover?.[0]?.filePath)}
+                    w={"full"}
+                  >
+                    <Img
+                      src={imgUrl(item.categoryCover?.[0]?.filePath)}
+                      fallbackSrc={`${SVGS_PATH}/no-avatar.svg`}
+                      fluid
+                    />
+                  </ImgViewer>
+                ),
+              },
+              {
+                label: l.title,
+                render: <P>{item.title}</P>,
+              },
+              {
+                label: l.description,
+                render: <P>{item.description}</P>,
+              },
+              {
+                label: l.added,
+                render: (
+                  <P>
+                    {formatDate(item.createdAt, {
+                      variant: "numeric",
+                      withTime: true,
+                      dashEmpty: true,
+                    })}
+                  </P>
+                ),
+              },
+              {
+                label: l.updated,
+                render: (
+                  <P>
+                    {formatDate(item.updatedAt, {
+                      variant: "numeric",
+                      withTime: true,
+                      dashEmpty: true,
+                    })}
+                  </P>
+                ),
+              },
+              {
+                label: l.deleted,
+                render: <DeletedStatus deletedAt={item.deletedAt} />,
+              },
+            ];
+
             return (
               <DataGridDetailDisclosureTrigger
                 key={item.id}
@@ -633,7 +663,7 @@ const DataGrid = (props: any) => {
                 id={`${item.id}`}
                 title={item.title}
                 data={item}
-                specs={detailSpecs}
+                details={details}
                 w={"full"}
                 cursor={"pointer"}
                 _hover={{
@@ -649,12 +679,13 @@ const DataGrid = (props: any) => {
                   overflow={"clip"}
                 >
                   <Img
-                    src={imgUrl(item.categoryCover?.[0].filePath)}
-                    aspectRatio={16 / 10}
+                    src={imgUrl(item.categoryCover?.[0]?.filePath)}
+                    aspectRatio={1}
                     rounded={themeConfig.radii.component}
+                    fallbackSrc={`${SVGS_PATH}/no-avatar.svg`}
                   />
 
-                  <CContainer flex={1} gap={2} px={3} my={3}>
+                  <CContainer flex={1} gap={1} px={3} my={3}>
                     <HStack>
                       <P fontWeight={"semibold"} lineClamp={1}>
                         {item.title}
@@ -738,7 +769,7 @@ const Data = (props: any) => {
     page,
     setPage,
     pagination,
-  } = useDataState<Interface__KMISCourseCategory[]>({
+  } = useDataState<Interface__Data[]>({
     initialData: undefined,
     url: `${BASE_ENDPOINT}/index`,
     params: filter,
@@ -748,6 +779,9 @@ const Data = (props: any) => {
     headers: [
       {
         th: "Cover",
+        wrapperProps: {
+          justify: "center",
+        },
       },
       {
         th: l.title,
@@ -779,13 +813,13 @@ const Data = (props: any) => {
           td: (
             <ImgViewer src={imgUrl(item.categoryCover?.[0]?.filePath)}>
               <Img
-                src={imgUrl(item.categoryCover?.[0]?.filePath)}
-                aspectRatio={16 / 10}
                 h={"24px"}
+                aspectRatio={16 / 10}
+                src={imgUrl(item.categoryCover?.[0]?.filePath)}
               />
             </ImgViewer>
           ),
-          value: imgUrl(item.categoryCover?.[0]?.filePath),
+          value: item.title,
         },
         {
           td: <ClampText>{item.title}</ClampText>,
@@ -911,7 +945,7 @@ const Data = (props: any) => {
   );
 };
 
-export default function KMISStudentPage() {
+export default function KMISEducatorPage() {
   // States
   const DEFAULT_FILTER = {
     search: "",
