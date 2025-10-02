@@ -522,6 +522,7 @@ const ToggleDataDisplay = (props: any) => {
   return (
     <Btn
       iconButton={iss ? true : false}
+      size={"md"}
       w={iss ? "" : "100px"}
       variant={"outline"}
       onClick={() => setDisplayTable((ps: boolean) => !ps)}
