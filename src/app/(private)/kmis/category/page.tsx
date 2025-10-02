@@ -517,6 +517,7 @@ const ToggleDataDisplay = (props: any) => {
   // Props
   const { displayTable, setDisplayTable, ...restProps } = props;
 
+  // Hooks
   const iss = useIsSmScreenWidth();
 
   return (
