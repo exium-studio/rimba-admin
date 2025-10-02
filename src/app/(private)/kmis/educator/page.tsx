@@ -72,6 +72,7 @@ import * as yup from "yup";
 
 const BASE_ENDPOINT = "/api/kmis/educator";
 const PREFIX_ID = "educator";
+type Interface__Data = Interface__KMISEducator;
 
 const Create = () => {
   const ID = `${PREFIX_ID}_create`;
@@ -597,7 +598,7 @@ const DataGrid = (props: any) => {
     <>
       <CContainer className="scrollY" flex={1} p={4} {...restProps}>
         <SimpleGrid columns={[1, null, 2, 3, 4, 5]} gap={4}>
-          {data.map((item: Interface__KMISEducator) => {
+          {data.map((item: Interface__Data) => {
             const details = [
               {
                 label: "ID",
@@ -773,7 +774,7 @@ const Data = (props: any) => {
     page,
     setPage,
     pagination,
-  } = useDataState<Interface__KMISEducator[]>({
+  } = useDataState<Interface__Data[]>({
     initialData: undefined,
     url: `${BASE_ENDPOINT}/index`,
     params: filter,
