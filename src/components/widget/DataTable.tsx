@@ -333,7 +333,7 @@ export const DataTable = (props: Props__DataTable) => {
     sortConfig.sortColumnIdx !== null && sortConfig.sortColumnIdx !== undefined
       ? sortedTableData
       : tableData;
-  const hasTableFooter = limit && setLimit && page && setPage;
+  const hasFooter = limit && setLimit && page && setPage;
 
   // Utils
   function sort(columnIndex: number) {
@@ -679,7 +679,7 @@ export const DataTable = (props: Props__DataTable) => {
         </Table.Root>
       </CContainer>
 
-      {hasTableFooter && (
+      {hasFooter && (
         <>
           <HStack
             p={3}

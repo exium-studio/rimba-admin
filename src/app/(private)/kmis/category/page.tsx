@@ -619,7 +619,7 @@ const DataGrid = (props: any) => {
       dataType: "deletedAt",
     },
   };
-  const hasTableFooter = limit && setLimit && page && setPage;
+  const hasFooter = limit && setLimit && page && setPage;
 
   return (
     <>
@@ -676,7 +676,7 @@ const DataGrid = (props: any) => {
         </SimpleGrid>
       </CContainer>
 
-      {hasTableFooter && (
+      {hasFooter && (
         <>
           <HStack
             p={3}

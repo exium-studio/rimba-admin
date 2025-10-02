@@ -9,54 +9,24 @@ import {
   DisclosureRoot,
 } from "@/components/ui/disclosure";
 import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-content";
-import { Img } from "@/components/ui/img";
 import { P } from "@/components/ui/p";
 import SearchInput from "@/components/ui/search-input";
 import BackButton from "@/components/widget/BackButton";
-import { DeletedStatus } from "@/components/widget/DeletedStatus";
 import FeedbackNotFound from "@/components/widget/FeedbackNotFound";
-import { ImgViewer } from "@/components/widget/ImgViewer";
 import useBackOnClose from "@/hooks/useBackOnClose";
 import { isEmptyArray } from "@/utils/array";
 import { disclosureId } from "@/utils/disclosure";
-import { formatDate, formatNumber, formatTime } from "@/utils/formatter";
-import { imgUrl } from "@/utils/url";
 import { StackProps, useDisclosure } from "@chakra-ui/react";
 import { useState } from "react";
 
-const RenderData = (props: any) => {
-  // Props
-  const { data, dataType } = props;
-
-  switch (dataType) {
-    case "image":
-      return (
-        <ImgViewer src={imgUrl(data?.[0]?.filePath)}>
-          <Img src={imgUrl(data?.[0]?.filePath)} w={"full"} h={"auto"} fluid />
-        </ImgViewer>
-      );
-    case "date":
-      return <P>{formatDate(data)}</P>;
-    case "timestamp":
-      return <P>{formatDate(data, { variant: "numeric", withTime: true })}</P>;
-    case "deletedAt":
-      return <DeletedStatus deletedAt={data} />;
-    case "time":
-      return <P>{formatTime(data)}</P>;
-    case "number":
-      return <P>{formatNumber(data)}</P>;
-    default: // string
-      return <P>{`${data}`}</P>;
-  }
-};
 export const DataGridDetailDisclosure = (props: any) => {
   // Props
-  const { open, title, data, specs } = props;
+  const { open, title, data, details } = props;
 
   // States
   const [search, setSearch] = useState<string>("");
-  const resolvedDataKeys = Object.keys(data).filter((key) => {
-    return specs[key]?.label?.toLowerCase()?.includes(search.toLowerCase());
+  const resolvedDetails = details.filter((detail: any) => {
+    return detail.label.toLowerCase().includes(search.toLowerCase());
   });
 
   return (
@@ -83,14 +53,14 @@ export const DataGridDetailDisclosure = (props: any) => {
           <CContainer px={2}>
             {data && (
               <>
-                {isEmptyArray(resolvedDataKeys) && <FeedbackNotFound />}
+                {isEmptyArray(resolvedDetails) && <FeedbackNotFound />}
 
-                {resolvedDataKeys.map((key) => {
-                  const isLast = key === Object.keys(data).at(-1);
+                {resolvedDetails?.map((detail: any, idx: number) => {
+                  const isLast = idx === resolvedDetails.length - 1;
 
                   return (
                     <CContainer
-                      key={key}
+                      key={idx}
                       gap={2}
                       px={4}
                       py={3}
@@ -98,13 +68,10 @@ export const DataGridDetailDisclosure = (props: any) => {
                       borderColor={"d1"}
                     >
                       <P fontWeight={"medium"} color={"fg.subtle"}>
-                        {specs[key].label}
+                        {detail.label}
                       </P>
 
-                      <RenderData
-                        data={data[key]}
-                        dataType={specs[key].dataType}
-                      />
+                      {detail.render}
                     </CContainer>
                   );
                 })}
@@ -125,17 +92,14 @@ interface TirggerProps extends StackProps {
   id: string;
   title: string;
   data: any;
-  specs: Record<
-    string,
-    {
-      label: string;
-      dataType: string; // "string" | "number" | "date" | "timestap" | "time" | "deletedAt"
-    }
-  >;
+  details: {
+    label: string;
+    render: any;
+  }[];
 }
 export const DataGridDetailDisclosureTrigger = (props: TirggerProps) => {
   // Props
-  const { children, id, title, data, specs, ...restProps } = props;
+  const { children, id, title, data, details, ...restProps } = props;
 
   // Hooks
   const { open, onOpen, onClose } = useDisclosure();
@@ -151,7 +115,7 @@ export const DataGridDetailDisclosureTrigger = (props: TirggerProps) => {
         open={open}
         title={title}
         data={data}
-        specs={specs}
+        details={details}
       />
     </>
   );

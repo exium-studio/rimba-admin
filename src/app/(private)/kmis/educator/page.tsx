@@ -24,6 +24,7 @@ import { DataTable } from "@/components/widget/DataTable";
 import { DeletedStatus } from "@/components/widget/DeletedStatus";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
+import { ImgViewer } from "@/components/widget/ImgViewer";
 import { DotIndicator } from "@/components/widget/Indicator";
 import { Limitation } from "@/components/widget/Limitation";
 import { MiniUser } from "@/components/widget/MiniUser";
@@ -589,35 +590,75 @@ const DataGrid = (props: any) => {
   const iss = useIsSmScreenWidth();
 
   // States
-  const detailSpecs = {
-    id: {
-      label: "ID",
-      dataType: "string",
-    },
-    totalMaterial: {
-      label: l.total_material,
-      dataType: "number",
-    },
-    createdAt: {
-      label: l.added,
-      dataType: "timestamp",
-    },
-    updatedAt: {
-      label: l.updated,
-      dataType: "timestamp",
-    },
-    deletedAt: {
-      label: l.deleted,
-      dataType: "deletedAt",
-    },
-  };
-  const hasTableFooter = limit && setLimit && page && setPage;
+  const hasFooter = limit && setLimit && page && setPage;
 
   return (
     <>
       <CContainer className="scrollY" flex={1} p={4} {...restProps}>
         <SimpleGrid columns={[1, null, 2, 3, 4, 5]} gap={4}>
           {data.map((item: Interface__KMISEducator) => {
+            const details = [
+              {
+                label: "ID",
+                render: <P>{item.id}</P>,
+              },
+              {
+                label: "Avatar",
+                render: (
+                  <ImgViewer
+                    src={imgUrl(item.user.photoProfile?.[0]?.filePath)}
+                    w={"full"}
+                  >
+                    <Img
+                      src={imgUrl(item.user.photoProfile?.[0]?.filePath)}
+                      fallbackSrc={`${SVGS_PATH}/no-avatar.svg`}
+                      fluid
+                    />
+                  </ImgViewer>
+                ),
+              },
+              {
+                label: l.name,
+                render: <P>{item.user.name}</P>,
+              },
+              {
+                label: "Email",
+                render: <P>{item.user.email}</P>,
+              },
+              {
+                label: l.total_material,
+                render: <P>{formatNumber(item.totalMaterial)}</P>,
+              },
+              {
+                label: l.added,
+                render: (
+                  <P>
+                    {formatDate(item.createdAt, {
+                      variant: "numeric",
+                      withTime: true,
+                      dashEmpty: true,
+                    })}
+                  </P>
+                ),
+              },
+              {
+                label: l.updated,
+                render: (
+                  <P>
+                    {formatDate(item.updatedAt, {
+                      variant: "numeric",
+                      withTime: true,
+                      dashEmpty: true,
+                    })}
+                  </P>
+                ),
+              },
+              {
+                label: l.deleted,
+                render: <DeletedStatus deletedAt={item.deletedAt} />,
+              },
+            ];
+
             return (
               <DataGridDetailDisclosureTrigger
                 key={item.id}
@@ -625,7 +666,7 @@ const DataGrid = (props: any) => {
                 id={`${item.id}`}
                 title={item.user.name}
                 data={item}
-                specs={detailSpecs}
+                details={details}
                 w={"full"}
                 cursor={"pointer"}
                 _hover={{
@@ -669,7 +710,7 @@ const DataGrid = (props: any) => {
         </SimpleGrid>
       </CContainer>
 
-      {hasTableFooter && (
+      {hasFooter && (
         <>
           <HStack
             p={3}
@@ -737,7 +778,6 @@ const Data = (props: any) => {
     params: filter,
     dependencies: [filter],
   });
-  console.log(data);
   const tableProps = {
     headers: [
       {
