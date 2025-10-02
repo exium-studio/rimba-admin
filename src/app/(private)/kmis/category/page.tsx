@@ -56,7 +56,6 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import {
-  IconArrowRight,
   IconLayoutGrid,
   IconPencilMinus,
   IconPlus,
@@ -641,15 +640,9 @@ const DataGrid = (props: any) => {
                   />
 
                   <CContainer flex={1} gap={2} px={3} my={3}>
-                    <HStack justify={"space-between"}>
-                      <P fontWeight={"semibold"} lineClamp={1}>
-                        {item.title}
-                      </P>
-
-                      <Icon boxSize={5} color={"fg.subtle"} mb={"1px"}>
-                        <IconArrowRight stroke={1.5} />
-                      </Icon>
-                    </HStack>
+                    <P fontWeight={"semibold"} lineClamp={1}>
+                      {item.title}
+                    </P>
 
                     <P color={"fg.subtle"} lineClamp={2}>
                       {item.description}
