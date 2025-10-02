@@ -33,7 +33,7 @@ import { Pagination } from "@/components/widget/Pagination";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
 import {
   Interface__BatchOptionsTableOptionGenerator,
-  Interface__KMISCourseCategory,
+  Interface__KMISTopicCategory,
   Interface__RowOptionsTableOptionGenerator,
 } from "@/constants/interfaces";
 import { SVGS_PATH } from "@/constants/paths";
@@ -73,7 +73,7 @@ import * as yup from "yup";
 
 const BASE_ENDPOINT = "/api/kmis/category";
 const PREFIX_ID = "course_category";
-type Interface__Data = Interface__KMISCourseCategory;
+type Interface__Data = Interface__KMISTopicCategory;
 
 const Create = (props: any) => {
   const ID = `${PREFIX_ID}_create`;
@@ -223,7 +223,7 @@ const Update = (props: any) => {
 
   // Props
   const { data, disclosureTitle } = props;
-  const resolvedData = data as Interface__KMISCourseCategory;
+  const resolvedData = data as Interface__KMISTopicCategory;
 
   // Contexts
   const { l } = useLang();

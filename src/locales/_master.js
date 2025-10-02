@@ -587,6 +587,10 @@ export const total_material = {
   id: "Total Materi",
   en: "Total Material",
 };
+export const count = {
+  id: "Jumlah",
+  en: "Count",
+};
 
 // Message
 export const msg_location_test_helper = {
@@ -717,8 +721,8 @@ export const alert_no_data = {
     en: "No data available",
   },
   description: {
-    id: "Silakan perbarui data atau sesuaikan filter.",
-    en: "Please refresh the data or adjust your filters.",
+    id: "Perbarui data atau sesuaikan filter.",
+    en: "Update data or adjust filters.",
   },
 };
 export const alert_forbidden = {

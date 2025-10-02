@@ -33,7 +33,7 @@ import { Pagination } from "@/components/widget/Pagination";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
 import {
   Interface__BatchOptionsTableOptionGenerator,
-  Interface__KMISCourseCategory,
+  Interface__KMISTopicCategory,
   Interface__KMISEducator,
   Interface__RowOptionsTableOptionGenerator,
 } from "@/constants/interfaces";
@@ -224,7 +224,7 @@ const Update = (props: any) => {
 
   // Props
   const { data, disclosureTitle } = props;
-  const resolvedData = data as Interface__KMISCourseCategory;
+  const resolvedData = data as Interface__KMISTopicCategory;
 
   // Contexts
   const { l } = useLang();

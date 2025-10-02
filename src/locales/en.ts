@@ -12,7 +12,7 @@ const translations = {
   },
   "alert_no_data": {
     "title": "No data available",
-    "description": "Please refresh the data or adjust your filters."
+    "description": "Update data or adjust filters."
   },
   "alert_not_found": {
     "title": "Not found",
@@ -41,6 +41,7 @@ const translations = {
   "close": "Close",
   "component": "Component",
   "confirm": "Confirm",
+  "count": "Count",
   "created": "Created",
   "dark_mode": "Dark mode",
   "date_format": "Date format",

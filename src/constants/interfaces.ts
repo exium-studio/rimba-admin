@@ -17,18 +17,37 @@ import {
 } from "./types";
 import { ReactNode } from "react";
 
+export interface Interface__KMISQuiz extends Interface__CUD {
+  id: string;
+  topic: Interface__KMISTopic;
+  question: string;
+  answerA: string;
+  answerB: string;
+  answerC: string;
+  answerD: string;
+  correctOption: string;
+  explanation: string;
+}
 export interface Interface__KMISEducator extends Interface__CUD {
   id: string;
   user: Interface__User;
   totalMaterial: number;
 }
-export interface Interface__KMISCourse extends Interface__CUD {
+// TODO adjust kmis student
+export interface Interface__KMISStudent extends Interface__CUD {
   id: string;
-  category: Interface__KMISCourseCategory[];
+  user: Interface__User;
+  totalMaterial: number;
+}
+export interface Interface__KMISTopic extends Interface__CUD {
+  id: string;
+  category: Interface__KMISTopicCategory[];
+  topicCover: Interface__StorageFile[];
   title: string;
   description: string;
+  totalQuiz: number;
 }
-export interface Interface__KMISCourseCategory extends Interface__CUD {
+export interface Interface__KMISTopicCategory extends Interface__CUD {
   id: string;
   categoryCover: Interface__StorageFile[];
   title: string;
