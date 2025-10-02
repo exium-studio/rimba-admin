@@ -68,6 +68,8 @@ import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import * as yup from "yup";
 
+const BASE_ENDPOINT = "/api/kmis/category";
+
 const Create = () => {
   const ID = "create_topic_category";
 
@@ -108,7 +110,7 @@ const Create = () => {
       payload.append("description", values.description);
 
       const config = {
-        url: `/api/kmis/category/create`,
+        url: `${BASE_ENDPOINT}/create`,
         method: "POST",
         data: payload,
       };
@@ -269,7 +271,7 @@ const Update = (props: any) => {
       );
 
       const config = {
-        url: `/api/kmis/category/update/${resolvedData.id}`,
+        url: `${BASE_ENDPOINT}/update/${resolvedData.id}`,
         method: "PATCH",
         data: payload,
       };
@@ -415,7 +417,7 @@ const Restore = (props: any) => {
     back();
     req({
       config: {
-        url: `/api/kmis/category/restore`,
+        url: `${BASE_ENDPOINT}/restore`,
         method: "PATCH",
         data: {
           restoreIds: restoreIds,
@@ -473,7 +475,7 @@ const Delete = (props: any) => {
     back();
     req({
       config: {
-        url: `/api/kmis/category/delete`,
+        url: `${BASE_ENDPOINT}/delete`,
         method: "DELETE",
         data: {
           deleteIds: deleteIds,
@@ -542,7 +544,7 @@ const ToggleDataDisplay = (props: any) => {
     </Btn>
   );
 };
-const TableUtils = (props: any) => {
+const DataUtils = (props: any) => {
   // Props
   const { filter, setFilter, displayTable, setDisplayTable, ...restProps } =
     props;
@@ -738,7 +740,7 @@ const Data = (props: any) => {
     pagination,
   } = useDataState<Interface__KMISCourseCategory[]>({
     initialData: undefined,
-    url: `/api/kmis/category/index`,
+    url: `${BASE_ENDPOINT}/index`,
     params: filter,
     dependencies: [filter],
   });
@@ -909,7 +911,7 @@ const Data = (props: any) => {
   );
 };
 
-export default function KMISCategoryPage() {
+export default function KMISStudentPage() {
   // States
   const DEFAULT_FILTER = {
     search: "",
@@ -920,7 +922,7 @@ export default function KMISCategoryPage() {
   return (
     <PageContainer>
       <PageContent>
-        <TableUtils
+        <DataUtils
           filter={filter}
           setFilter={setFilter}
           displayTable={displayTable}
