@@ -71,9 +71,10 @@ import { useEffect, useState } from "react";
 import * as yup from "yup";
 
 const BASE_ENDPOINT = "/api/kmis/educator";
+const PREFIX_ID = "educator";
 
 const Create = () => {
-  const ID = "create_topic_category";
+  const ID = `${PREFIX_ID}_create`;
 
   // Contexts
   const { l } = useLang();
@@ -215,7 +216,7 @@ const Create = () => {
   );
 };
 const Update = (props: any) => {
-  const ID = "edit_student";
+  const ID = `${PREFIX_ID}_update`;
 
   // Props
   const { data } = props;
@@ -397,7 +398,7 @@ const Update = (props: any) => {
   );
 };
 const Restore = (props: any) => {
-  const ID = "restore_student";
+  const ID = `${PREFIX_ID}_restore`;
 
   // Props
   const { restoreIds, clearSelectedRows, disabled } = props;
@@ -455,7 +456,7 @@ const Restore = (props: any) => {
   );
 };
 const Delete = (props: any) => {
-  const ID = "delete_student";
+  const ID = `${PREFIX_ID}_delete`;
 
   // Props
   const { deleteIds, clearSelectedRows, disabled } = props;
@@ -781,7 +782,7 @@ const Data = (props: any) => {
   const tableProps = {
     headers: [
       {
-        th: l.student,
+        th: l.educator,
         sortable: true,
       },
       {
