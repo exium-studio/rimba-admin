@@ -559,6 +559,7 @@ const TableUtils = (props: any) => {
       <ToggleDataDisplay
         displayTable={displayTable}
         setDisplayTable={setDisplayTable}
+        display={"none"}
       />
 
       <Create />
