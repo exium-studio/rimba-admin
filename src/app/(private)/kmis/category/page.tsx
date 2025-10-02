@@ -841,6 +841,7 @@ const Data = (props: any) => {
           td: formatDate(item.createdAt, {
             variant: "numeric",
             withTime: true,
+            dashEmpty: true,
           }),
           value: item.createdAt,
           dataType: "date",
@@ -849,6 +850,7 @@ const Data = (props: any) => {
           td: formatDate(item.updatedAt, {
             variant: "numeric",
             withTime: true,
+            dashEmpty: true,
           }),
           value: item.updatedAt,
           dataType: "date",

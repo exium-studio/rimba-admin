@@ -806,6 +806,10 @@ const Data = (props: any) => {
         sortable: true,
       },
       {
+        th: l.updated,
+        sortable: true,
+      },
+      {
         th: l.deleted,
         sortable: true,
       },
@@ -832,6 +836,16 @@ const Data = (props: any) => {
             withTime: true,
           }),
           value: item.createdAt,
+          dataType: "date",
+          dashEmpty: true,
+        },
+        {
+          td: formatDate(item.updatedAt, {
+            variant: "numeric",
+            withTime: true,
+            dashEmpty: true,
+          }),
+          value: item.updatedAt,
           dataType: "date",
         },
         {
