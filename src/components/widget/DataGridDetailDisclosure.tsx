@@ -44,7 +44,7 @@ const RenderData = (props: any) => {
 };
 export const DataGridDetailDisclosure = (props: any) => {
   // Props
-  const { open, data, specs } = props;
+  const { open, title, data, specs } = props;
 
   // States
   const [search, setSearch] = useState<string>("");
@@ -56,9 +56,7 @@ export const DataGridDetailDisclosure = (props: any) => {
     <DisclosureRoot open={open} lazyLoad size={"xs"}>
       <DisclosureContent>
         <DisclosureHeader>
-          <DisclosureHeaderContent
-            title={`Detail ${specs?.["title"]?.label}`}
-          />
+          <DisclosureHeaderContent title={`Detail ${title}`} />
         </DisclosureHeader>
 
         <DisclosureBody p={0}>
@@ -113,6 +111,7 @@ export const DataGridDetailDisclosure = (props: any) => {
 
 interface TirggerProps extends StackProps {
   id: string;
+  title: string;
   data: any;
   specs: Record<
     string,
@@ -124,7 +123,7 @@ interface TirggerProps extends StackProps {
 }
 export const DataGridDetailDisclosureTrigger = (props: TirggerProps) => {
   // Props
-  const { children, id, data, specs, ...restProps } = props;
+  const { children, id, title, data, specs, ...restProps } = props;
 
   // Hooks
   const { open, onOpen, onClose } = useDisclosure();
@@ -136,7 +135,12 @@ export const DataGridDetailDisclosureTrigger = (props: TirggerProps) => {
         {children}
       </CContainer>
 
-      <DataGridDetailDisclosure open={open} data={data} specs={specs} />
+      <DataGridDetailDisclosure
+        open={open}
+        title={title}
+        data={data}
+        specs={specs}
+      />
     </>
   );
 };

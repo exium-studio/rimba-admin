@@ -629,8 +629,9 @@ const DataGrid = (props: any) => {
             return (
               <DataGridDetailDisclosureTrigger
                 key={item.id}
-                className="clicky"
+                className="lg-clicky"
                 id={`${item.id}`}
+                title={item.title}
                 data={item}
                 specs={detailSpecs}
                 w={"full"}
