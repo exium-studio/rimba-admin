@@ -635,6 +635,9 @@ const DataGrid = (props: any) => {
                 specs={detailSpecs}
                 w={"full"}
                 cursor={"pointer"}
+                _hover={{
+                  bg: "d1",
+                }}
               >
                 <CContainer
                   key={item.id}
