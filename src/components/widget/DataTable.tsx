@@ -335,11 +335,12 @@ export const DataTable = (props: Props__DataTable) => {
                       p={0}
                       position={"sticky"}
                       left={0}
-                      bg={isRowSelected ? selectedColor : tdBg}
+                      bg={"body"}
                       zIndex={2}
                     >
                       <Center
                         h={tdMinH}
+                        bg={isRowSelected ? selectedColor : tdBg}
                         px={"10px"}
                         cursor={"pointer"}
                         borderBottom={
@@ -422,15 +423,16 @@ export const DataTable = (props: Props__DataTable) => {
                     <Table.Cell
                       minW={"0% !important"}
                       h={tdMinH}
+                      bg={"body"}
                       p={0}
                       position={"sticky"}
                       right={"0"}
-                      bg={isRowSelected ? selectedColor : tdBg}
                       zIndex={2}
                     >
                       <Center
                         h={tdMinH}
                         px={"10px"}
+                        bg={isRowSelected ? selectedColor : tdBg}
                         borderBottom={
                           rowIdx !== resolvedTableData.length - 1
                             ? "1px solid"
