@@ -230,6 +230,9 @@ export interface Props__FileInput
 export interface Props__FileInputInputComponent
   extends Omit<Props__FileInput, "removed"> {
   existing: Interface__StorageFile[];
+  showDropzoneIcon?: boolean;
+  showDropzoneLabel?: boolean;
+  showDropzoneDescription?: boolean;
 }
 export interface Props__FileItem extends StackProps {
   fileData: any;
