@@ -1,20 +1,7 @@
 "use client";
 
-import { Btn } from "@/components/ui/btn";
-import {
-  DisclosureBody,
-  DisclosureContent,
-  DisclosureFooter,
-  DisclosureHeader,
-  DisclosureRoot,
-} from "@/components/ui/disclosure";
-import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-content";
-import { Field } from "@/components/ui/field";
-import { FileInput } from "@/components/ui/file-input";
 import { MenuItem } from "@/components/ui/menu";
 import SearchInput from "@/components/ui/search-input";
-import { StringInput } from "@/components/ui/string-input";
-import { Textarea } from "@/components/ui/textarea";
 import { AccountStatus } from "@/components/widget/AccountStatus";
 import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
 import { DataDisplayToggle } from "@/components/widget/DataDisplayToggle";
@@ -31,218 +18,211 @@ import {
   Interface__BatchOptionsTableOptionGenerator,
   Interface__DataProps,
   Interface__KMISStudent,
-  Interface__KMISTopicCategory,
   Interface__RowOptionsTableOptionGenerator,
 } from "@/constants/interfaces";
 import { SVGS_PATH } from "@/constants/paths";
 import { useDataDisplay } from "@/context/useDataDisplay";
 import useLang from "@/context/useLang";
 import useRenderTrigger from "@/context/useRenderTrigger";
-import { useThemeConfig } from "@/context/useThemeConfig";
-import useBackOnClose from "@/hooks/useBackOnClose";
 import useDataState from "@/hooks/useDataState";
 import useRequest from "@/hooks/useRequest";
 import { isEmptyArray, last } from "@/utils/array";
 import { back } from "@/utils/client";
-import { disclosureId } from "@/utils/disclosure";
 import { formatDate, formatNumber } from "@/utils/formatter";
 import { capitalize, pluckString } from "@/utils/string";
 import { getActiveNavs, imgUrl } from "@/utils/url";
-import { fileValidation } from "@/utils/validationSchema";
-import { FieldsetRoot, HStack, Icon, useDisclosure } from "@chakra-ui/react";
-import { IconActivity, IconPencilMinus, IconX } from "@tabler/icons-react";
-import { useFormik } from "formik";
+import { HStack, Icon } from "@chakra-ui/react";
+import { IconActivity, IconX } from "@tabler/icons-react";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import * as yup from "yup";
+import { useState } from "react";
 
 const BASE_ENDPOINT = "/api/kmis/student";
 const PREFIX_ID = "kmis_student";
 type Interface__Data = Interface__KMISStudent;
 
-const Update = (props: any) => {
-  const ID = `${PREFIX_ID}_update`;
+// const Update = (props: any) => {
+//   const ID = `${PREFIX_ID}_update`;
 
-  // Props
-  const { data, routeTitle } = props;
-  const resolvedData = data as Interface__KMISTopicCategory;
+//   // Props
+//   const { data, routeTitle } = props;
+//   const resolvedData = data as Interface__KMISTopicCategory;
 
-  // Contexts
-  const { l } = useLang();
-  const { themeConfig } = useThemeConfig();
-  const setRt = useRenderTrigger((s) => s.setRt);
+//   // Contexts
+//   const { l } = useLang();
+//   const { themeConfig } = useThemeConfig();
+//   const setRt = useRenderTrigger((s) => s.setRt);
 
-  // Hooks
-  const { open, onOpen, onClose } = useDisclosure();
-  useBackOnClose(
-    disclosureId(`${ID}-${resolvedData?.id}`),
-    open,
-    onOpen,
-    onClose
-  );
-  const { req, loading } = useRequest({
-    id: ID,
-    loadingMessage: {
-      title: capitalize(`Edit ${routeTitle}`),
-    },
-    successMessage: {
-      title: capitalize(`Edit ${routeTitle} ${l.successful}`),
-    },
-  });
+//   // Hooks
+//   const { open, onOpen, onClose } = useDisclosure();
+//   useBackOnClose(
+//     disclosureId(`${ID}-${resolvedData?.id}`),
+//     open,
+//     onOpen,
+//     onClose
+//   );
+//   const { req, loading } = useRequest({
+//     id: ID,
+//     loadingMessage: {
+//       title: capitalize(`Edit ${routeTitle}`),
+//     },
+//     successMessage: {
+//       title: capitalize(`Edit ${routeTitle} ${l.successful}`),
+//     },
+//   });
 
-  // States
-  const formik = useFormik({
-    validateOnChange: false,
-    initialValues: {
-      files: null as any,
-      title: "",
-      description: "",
-      deleteDocumentIds: [],
-    },
-    validationSchema: yup.object().shape({
-      files: fileValidation({
-        maxSizeMB: 10,
-        allowedExtensions: ["jpg", "jpeg", "png"],
-      }),
-      title: yup.string().required(l.msg_required_form),
-      description: yup.string().required(l.msg_required_form),
-    }),
-    onSubmit: (values) => {
-      back();
+//   // States
+//   const formik = useFormik({
+//     validateOnChange: false,
+//     initialValues: {
+//       files: null as any,
+//       title: "",
+//       description: "",
+//       deleteDocumentIds: [],
+//     },
+//     validationSchema: yup.object().shape({
+//       files: fileValidation({
+//         maxSizeMB: 10,
+//         allowedExtensions: ["jpg", "jpeg", "png"],
+//       }),
+//       title: yup.string().required(l.msg_required_form),
+//       description: yup.string().required(l.msg_required_form),
+//     }),
+//     onSubmit: (values) => {
+//       back();
 
-      const payload = new FormData();
-      if (values.files?.[0]) {
-        payload.append("files", values.files[0]);
-      }
-      payload.append("title", values.title);
-      payload.append("description", values.description);
-      payload.append(
-        "deletedDocumentIds",
-        JSON.stringify(values.deleteDocumentIds)
-      );
+//       const payload = new FormData();
+//       if (values.files?.[0]) {
+//         payload.append("files", values.files[0]);
+//       }
+//       payload.append("title", values.title);
+//       payload.append("description", values.description);
+//       payload.append(
+//         "deletedDocumentIds",
+//         JSON.stringify(values.deleteDocumentIds)
+//       );
 
-      const config = {
-        url: `${BASE_ENDPOINT}/update/${resolvedData.id}`,
-        method: "PATCH",
-        data: payload,
-      };
+//       const config = {
+//         url: `${BASE_ENDPOINT}/update/${resolvedData.id}`,
+//         method: "PATCH",
+//         data: payload,
+//       };
 
-      req({
-        config,
-        onResolve: {
-          onSuccess: () => {
-            setRt((ps) => !ps);
-          },
-        },
-      });
-    },
-  });
+//       req({
+//         config,
+//         onResolve: {
+//           onSuccess: () => {
+//             setRt((ps) => !ps);
+//           },
+//         },
+//       });
+//     },
+//   });
 
-  useEffect(() => {
-    formik.setValues({
-      files: [],
-      title: resolvedData.title,
-      description: resolvedData.description,
-      deleteDocumentIds: [],
-    });
-  }, [resolvedData]);
+//   useEffect(() => {
+//     formik.setValues({
+//       files: [],
+//       title: resolvedData.title,
+//       description: resolvedData.description,
+//       deleteDocumentIds: [],
+//     });
+//   }, [resolvedData]);
 
-  return (
-    <>
-      <MenuItem value="edit" onClick={onOpen}>
-        Edit
-        <Icon boxSize={"18px"} ml={"auto"}>
-          <IconPencilMinus stroke={1.5} />
-        </Icon>
-      </MenuItem>
+//   return (
+//     <>
+//       <MenuItem value="edit" onClick={onOpen}>
+//         Edit
+//         <Icon boxSize={"18px"} ml={"auto"}>
+//           <IconPencilMinus stroke={1.5} />
+//         </Icon>
+//       </MenuItem>
 
-      <DisclosureRoot open={open} lazyLoad size={"xs"}>
-        <DisclosureContent>
-          <DisclosureHeader>
-            <DisclosureHeaderContent title={`Edit ${routeTitle}`} />
-          </DisclosureHeader>
+//       <DisclosureRoot open={open} lazyLoad size={"xs"}>
+//         <DisclosureContent>
+//           <DisclosureHeader>
+//             <DisclosureHeaderContent title={`Edit ${routeTitle}`} />
+//           </DisclosureHeader>
 
-          <DisclosureBody>
-            <form id={ID} onSubmit={formik.handleSubmit}>
-              <FieldsetRoot disabled={loading}>
-                <Field
-                  label={"Cover"}
-                  invalid={!!formik.errors.files}
-                  errorText={formik.errors.files as string}
-                >
-                  <FileInput
-                    dropzone
-                    inputValue={formik.values.files}
-                    onChange={(inputValue) => {
-                      formik.setFieldValue("files", inputValue);
-                    }}
-                    existingFiles={resolvedData.categoryCover}
-                    onDeleteFile={(fileData) => {
-                      formik.setFieldValue(
-                        "deleteDocumentIds",
-                        Array.from(
-                          new Set([
-                            ...formik.values.deleteDocumentIds,
-                            fileData.id,
-                          ])
-                        )
-                      );
-                    }}
-                    onUndoDeleteFile={(fileData) => {
-                      formik.setFieldValue(
-                        "deleteDocumentIds",
-                        formik.values.deleteDocumentIds.filter(
-                          (id: string) => id !== fileData.id
-                        )
-                      );
-                    }}
-                  />
-                </Field>
+//           <DisclosureBody>
+//             <form id={ID} onSubmit={formik.handleSubmit}>
+//               <FieldsetRoot disabled={loading}>
+//                 <Field
+//                   label={"Cover"}
+//                   invalid={!!formik.errors.files}
+//                   errorText={formik.errors.files as string}
+//                 >
+//                   <FileInput
+//                     dropzone
+//                     inputValue={formik.values.files}
+//                     onChange={(inputValue) => {
+//                       formik.setFieldValue("files", inputValue);
+//                     }}
+//                     existingFiles={resolvedData.categoryCover}
+//                     onDeleteFile={(fileData) => {
+//                       formik.setFieldValue(
+//                         "deleteDocumentIds",
+//                         Array.from(
+//                           new Set([
+//                             ...formik.values.deleteDocumentIds,
+//                             fileData.id,
+//                           ])
+//                         )
+//                       );
+//                     }}
+//                     onUndoDeleteFile={(fileData) => {
+//                       formik.setFieldValue(
+//                         "deleteDocumentIds",
+//                         formik.values.deleteDocumentIds.filter(
+//                           (id: string) => id !== fileData.id
+//                         )
+//                       );
+//                     }}
+//                   />
+//                 </Field>
 
-                <Field
-                  label={l.title}
-                  invalid={!!formik.errors.title}
-                  errorText={formik.errors.title as string}
-                >
-                  <StringInput
-                    inputValue={formik.values.title}
-                    onChange={(inputValue) => {
-                      formik.setFieldValue("title", inputValue);
-                    }}
-                  />
-                </Field>
+//                 <Field
+//                   label={l.title}
+//                   invalid={!!formik.errors.title}
+//                   errorText={formik.errors.title as string}
+//                 >
+//                   <StringInput
+//                     inputValue={formik.values.title}
+//                     onChange={(inputValue) => {
+//                       formik.setFieldValue("title", inputValue);
+//                     }}
+//                   />
+//                 </Field>
 
-                <Field
-                  label={l.description}
-                  invalid={!!formik.errors.description}
-                  errorText={formik.errors.description as string}
-                >
-                  <Textarea
-                    inputValue={formik.values.description}
-                    onChange={(inputValue) => {
-                      formik.setFieldValue("description", inputValue);
-                    }}
-                  />
-                </Field>
-              </FieldsetRoot>
-            </form>
-          </DisclosureBody>
+//                 <Field
+//                   label={l.description}
+//                   invalid={!!formik.errors.description}
+//                   errorText={formik.errors.description as string}
+//                 >
+//                   <Textarea
+//                     inputValue={formik.values.description}
+//                     onChange={(inputValue) => {
+//                       formik.setFieldValue("description", inputValue);
+//                     }}
+//                   />
+//                 </Field>
+//               </FieldsetRoot>
+//             </form>
+//           </DisclosureBody>
 
-          <DisclosureFooter>
-            <Btn
-              type="submit"
-              form={ID}
-              colorPalette={themeConfig.colorPalette}
-              loading={loading}
-            >
-              {l.save}
-            </Btn>
-          </DisclosureFooter>
-        </DisclosureContent>
-      </DisclosureRoot>
-    </>
-  );
-};
+//           <DisclosureFooter>
+//             <Btn
+//               type="submit"
+//               form={ID}
+//               colorPalette={themeConfig.colorPalette}
+//               loading={loading}
+//             >
+//               {l.save}
+//             </Btn>
+//           </DisclosureFooter>
+//         </DisclosureContent>
+//       </DisclosureRoot>
+//     </>
+//   );
+// };
 const Activate = (props: any) => {
   const ID = `${PREFIX_ID}_activate`;
 
@@ -514,9 +494,9 @@ const Data = (props: any) => {
       ],
     })),
     rowOptions: [
-      (row) => ({
-        override: <Update data={row.data} routeTitle={routeTitle} />,
-      }),
+      // (row) => ({
+      //   override: <Update data={row.data} routeTitle={routeTitle} />,
+      // }),
       (row) => ({
         override: (
           <Activate
