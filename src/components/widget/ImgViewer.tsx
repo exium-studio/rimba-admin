@@ -64,14 +64,12 @@ export const ImgViewer = (props: Props) => {
                   }}
                 />
 
-                <NavLink to={src}>
+                <NavLink to={src} w={"fit"} ml={"auto"} external>
                   <Btn
-                    w={"fit"}
                     size={"md"}
                     variant={"ghost"}
                     colorPalette={"light"}
                     pr={3}
-                    ml={"auto"}
                   >
                     {l.open}
                     <Icon>
