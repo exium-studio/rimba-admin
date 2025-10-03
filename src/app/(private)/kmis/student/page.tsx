@@ -421,6 +421,7 @@ const Data = (props: any) => {
         sortable: true,
         align: "center",
       },
+
       // timestamps
       {
         th: l.added,
@@ -428,6 +429,10 @@ const Data = (props: any) => {
       },
       {
         th: l.updated,
+        sortable: true,
+      },
+      {
+        th: l.deleted,
         sortable: true,
       },
       {
@@ -469,6 +474,7 @@ const Data = (props: any) => {
           align: "center",
           dataType: "number",
         },
+
         // timestamps
         {
           td: formatDate(item.createdAt, {
@@ -486,6 +492,11 @@ const Data = (props: any) => {
             dashEmpty: true,
           }),
           value: item.updatedAt,
+          dataType: "date",
+        },
+        {
+          td: <DeletedStatus deletedAt={item.deletedAt} />,
+          value: item.deletedAt,
           dataType: "date",
         },
         {
