@@ -592,7 +592,7 @@ const Data = (props: any) => {
         sortable: true,
       },
       {
-        th: l.deactive,
+        th: l.deleted,
         sortable: true,
       },
     ],
