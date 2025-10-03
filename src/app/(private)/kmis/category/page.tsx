@@ -459,8 +459,7 @@ const Delete = (props: any) => {
   const ID = `${PREFIX_ID}_delete`;
 
   // Props
-  const { deactivateAccountIds, clearSelectedRows, disabled, routeTitle } =
-    props;
+  const { deleteIds, clearSelectedRows, disabled, routeTitle } = props;
 
   // Contexts
   const { l } = useLang();
@@ -482,10 +481,10 @@ const Delete = (props: any) => {
     back();
     req({
       config: {
-        url: `${BASE_ENDPOINT}/deactivate`,
-        method: "PATCH",
+        url: `${BASE_ENDPOINT}/delete`,
+        method: "DELETE",
         data: {
-          deactivateAccountIds: deactivateAccountIds,
+          deleteIds: deleteIds,
         },
       },
       onResolve: {
@@ -500,7 +499,7 @@ const Delete = (props: any) => {
   return (
     <ConfirmationDisclosureTrigger
       w={"full"}
-      id={`${ID}-${deactivateAccountIds}`}
+      id={`${ID}-${deleteIds}`}
       title={`${l.delete_} ${routeTitle}`}
       description={l.msg_soft_delete}
       confirmLabel={`${l.delete_}`}
@@ -668,7 +667,7 @@ const Data = (props: any) => {
       (row) => ({
         override: (
           <Delete
-            deactivateAccountIds={[row.data.id]}
+            deleteIds={[row.data.id]}
             disabled={row.data.deletedAt}
             routeTitle={routeTitle}
           />
@@ -694,7 +693,7 @@ const Data = (props: any) => {
       (ids, { clearSelectedRows }) => ({
         override: (
           <Delete
-            deactivateAccountIds={ids}
+            deleteIds={ids}
             clearSelectedRows={clearSelectedRows}
             disabled={
               isEmptyArray(ids) ||
