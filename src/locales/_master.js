@@ -57,11 +57,11 @@ export const private_navs = {
     },
     educator: {
       id: "Pengajar",
-      en: "Educators",
+      en: "Educator",
     },
     student: {
       id: "Pelajar",
-      en: "Students",
+      en: "Student",
     },
   },
   monev: {

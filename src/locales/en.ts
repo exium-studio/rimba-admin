@@ -279,8 +279,8 @@ const translations = {
       "material": "Learning Material",
       "quiz": "Quiz",
       "quiz_assessment": "Quiz Assessment",
-      "educator": "Educators",
-      "student": "Students"
+      "educator": "Educator",
+      "student": "Student"
     },
     "monev": {
       "index": "Monev",
