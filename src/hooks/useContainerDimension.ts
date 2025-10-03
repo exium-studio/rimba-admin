@@ -4,7 +4,10 @@ export function useContainerDimension(
   ref: React.RefObject<HTMLDivElement | null> | null,
   debounceDelay = 0
 ) {
-  const [size, setSize] = useState({ width: 0, height: 0 });
+  const [size, setSize] = useState({
+    width: ref?.current?.offsetWidth || 0,
+    height: ref?.current?.offsetHeight || 0,
+  });
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   useEffect(() => {

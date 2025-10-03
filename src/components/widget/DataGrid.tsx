@@ -140,36 +140,40 @@ export const DataGrid = (props: Props) => {
         )}
 
         <CContainer className="scrollY" flex={1}>
-          <SimpleGrid columns={gridCols} gap={4} mt={4}>
-            {data?.map((item, idx) => {
-              const row = dataProps.rows?.[idx] as Interface__FormattedTableRow;
-              const details = row.columns.map((col, rowIdx) => ({
-                label: dataProps.headers?.[rowIdx].th,
-                render: col.td,
-              }));
+          {containerWidth > 0 && (
+            <SimpleGrid columns={gridCols} gap={4} mt={4}>
+              {data?.map((item, idx) => {
+                const row = dataProps.rows?.[
+                  idx
+                ] as Interface__FormattedTableRow;
+                const details = row.columns.map((col, rowIdx) => ({
+                  label: dataProps.headers?.[rowIdx].th,
+                  render: col.td,
+                }));
 
-              return (
-                <DataGridItem
-                  key={item.id}
-                  item={{
-                    id: item.id,
-                    showImg: true,
-                    img: imgUrl(item.user.photoProfile?.[0]?.filePath),
-                    imgFallbackSrc: `${SVGS_PATH}/no-avatar.svg`,
-                    title: item.user.name,
-                    description: item.user.email,
-                    deletedAt: item.user.deactiveAt,
-                  }}
-                  dataProps={dataProps}
-                  row={row}
-                  selectedRows={selectedRows}
-                  toggleRowSelection={toggleRowSelection}
-                  routeTitle={routeTitle}
-                  details={details}
-                />
-              );
-            })}
-          </SimpleGrid>
+                return (
+                  <DataGridItem
+                    key={item.id}
+                    item={{
+                      id: item.id,
+                      showImg: true,
+                      img: imgUrl(item.user.photoProfile?.[0]?.filePath),
+                      imgFallbackSrc: `${SVGS_PATH}/no-avatar.svg`,
+                      title: item.user.name,
+                      description: item.user.email,
+                      deletedAt: item.user.deactiveAt,
+                    }}
+                    dataProps={dataProps}
+                    row={row}
+                    selectedRows={selectedRows}
+                    toggleRowSelection={toggleRowSelection}
+                    routeTitle={routeTitle}
+                    details={details}
+                  />
+                );
+              })}
+            </SimpleGrid>
+          )}
         </CContainer>
       </CContainer>
 
