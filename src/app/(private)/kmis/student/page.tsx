@@ -629,7 +629,7 @@ const Data = (props: any) => {
         sortable: true,
         align: "center",
       },
-
+      // timestamps
       {
         th: l.added,
         sortable: true,
@@ -654,24 +654,29 @@ const Data = (props: any) => {
         },
         {
           td: <AccountStatus accountStatusId={item.user.accountStatus} />,
-          value: item.avgScoreFinished,
+          value: item.user.accountStatus,
           align: "center",
+          dataType: "number",
         },
         {
           td: formatNumber(item.totalTopic),
           value: item.totalTopic,
           align: "center",
+          dataType: "number",
         },
         {
           td: formatNumber(item.totalFinished),
           value: item.totalFinished,
           align: "center",
+          dataType: "number",
         },
         {
           td: formatNumber(item.avgScoreFinished),
           value: item.avgScoreFinished,
           align: "center",
+          dataType: "number",
         },
+        // timestamps
         {
           td: formatDate(item.createdAt, {
             variant: "numeric",
@@ -802,7 +807,7 @@ const Data = (props: any) => {
   );
 };
 
-export default function KMISEducatorPage() {
+export default function Page() {
   // Contexts
   const { l } = useLang();
 

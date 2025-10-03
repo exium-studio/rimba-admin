@@ -14,7 +14,7 @@ import { useIsSmScreenWidth } from "@/hooks/useIsSmScreenWidth";
 import useScreen from "@/hooks/useScreen";
 import { isEmptyArray } from "@/utils/array";
 import { hexWithOpacity } from "@/utils/color";
-import { Box, Center, HStack, Table } from "@chakra-ui/react";
+import { Center, HStack, Table } from "@chakra-ui/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 export const DataTable = (props: Props__DataTable) => {
@@ -300,13 +300,13 @@ export const DataTable = (props: Props__DataTable) => {
                     borderColor={thBorderColor}
                     pos={"relative"}
                   >
-                    <Box
+                    {/* <Box
                       h={tdMinH}
                       w={"6px"}
                       bg={"body"}
                       pos={"absolute"}
                       right={"-6px"}
-                    />
+                    /> */}
                     {/* Row Actions !!! */}
                   </HStack>
                 </Table.ColumnHeader>
@@ -443,13 +443,13 @@ export const DataTable = (props: Props__DataTable) => {
                         }}
                         pos={"relative"}
                       >
-                        <Box
+                        {/* <Box
                           h={tdMinH}
                           w={"6px"}
                           bg={"body"}
                           pos={"absolute"}
                           right={"-6px"}
-                        />
+                        /> */}
 
                         <RowOptions
                           row={row}

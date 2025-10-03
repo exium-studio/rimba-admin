@@ -1,7 +1,6 @@
 "use client";
 
 import { Btn } from "@/components/ui/btn";
-import { CContainer } from "@/components/ui/c-container";
 import {
   DisclosureBody,
   DisclosureContent,
@@ -12,32 +11,27 @@ import {
 import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-content";
 import { Field } from "@/components/ui/field";
 import { FileInput } from "@/components/ui/file-input";
-import { Img } from "@/components/ui/img";
 import { MenuItem } from "@/components/ui/menu";
-import { P } from "@/components/ui/p";
 import SearchInput from "@/components/ui/search-input";
 import { StringInput } from "@/components/ui/string-input";
 import { Textarea } from "@/components/ui/textarea";
+import { AccountStatus } from "@/components/widget/AccountStatus";
 import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
-import { DataGridDetailDisclosureTrigger } from "@/components/widget/DataGridDetailDisclosure";
+import { DataGrid } from "@/components/widget/DataGrid";
 import { DataTable } from "@/components/widget/DataTable";
 import { DeletedStatus } from "@/components/widget/DeletedStatus";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
-import { ImgViewer } from "@/components/widget/ImgViewer";
-import { DotIndicator } from "@/components/widget/Indicator";
-import { Limitation } from "@/components/widget/Limitation";
 import { MiniUser } from "@/components/widget/MiniUser";
 import { PageContainer, PageContent } from "@/components/widget/Page";
-import { Pagination } from "@/components/widget/Pagination";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
 import {
   Interface__BatchOptionsTableOptionGenerator,
+  Interface__DataProps,
   Interface__KMISEducator,
   Interface__KMISTopicCategory,
   Interface__RowOptionsTableOptionGenerator,
 } from "@/constants/interfaces";
-import { SVGS_PATH } from "@/constants/paths";
 import useLang from "@/context/useLang";
 import useRenderTrigger from "@/context/useRenderTrigger";
 import { useThemeConfig } from "@/context/useThemeConfig";
@@ -50,15 +44,9 @@ import { back } from "@/utils/client";
 import { disclosureId } from "@/utils/disclosure";
 import { formatDate, formatNumber } from "@/utils/formatter";
 import { capitalize, pluckString } from "@/utils/string";
-import { getActiveNavs, imgUrl } from "@/utils/url";
+import { getActiveNavs } from "@/utils/url";
 import { fileValidation } from "@/utils/validationSchema";
-import {
-  FieldsetRoot,
-  HStack,
-  Icon,
-  SimpleGrid,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { FieldsetRoot, HStack, Icon, useDisclosure } from "@chakra-ui/react";
 import {
   IconActivity,
   IconLayoutGrid,
@@ -97,7 +85,7 @@ const Create = (props: any) => {
       title: capitalize(`${l.add} ${routeTitle}`),
     },
     successMessage: {
-      title: capitalize(`${l.add} ${routeTitle} ${l.successful}`),
+      title: capitalize(`${routeTitle} ${l.successful}`),
     },
   });
 
@@ -534,192 +522,6 @@ const Deactivate = (props: any) => {
   );
 };
 
-const DataGrid = (props: any) => {
-  // Props
-  const {
-    data,
-    limit,
-    setLimit,
-    page,
-    setPage,
-    totalPage,
-    footer,
-    routeTitle,
-    ...restProps
-  } = props;
-
-  // Contexts
-  const { l } = useLang();
-  const { themeConfig } = useThemeConfig();
-
-  // Hooks
-  const iss = useIsSmScreenWidth();
-
-  // States
-  const hasFooter = limit && setLimit && page && setPage;
-
-  return (
-    <>
-      <CContainer className="scrollY" flex={1} p={4} {...restProps}>
-        <SimpleGrid columns={[2, null, 3, null, 4, 5]} gap={4}>
-          {data.map((item: Interface__Data) => {
-            const details = [
-              {
-                label: "ID",
-                render: <P>{item.id}</P>,
-              },
-              {
-                label: "Avatar",
-                render: (
-                  <ImgViewer
-                    src={imgUrl(item.user.photoProfile?.[0]?.filePath)}
-                    w={"full"}
-                  >
-                    <Img
-                      src={imgUrl(item.user.photoProfile?.[0]?.filePath)}
-                      fallbackSrc={`${SVGS_PATH}/no-avatar.svg`}
-                      fluid
-                    />
-                  </ImgViewer>
-                ),
-              },
-              {
-                label: l.name,
-                render: <P>{item.user.name}</P>,
-              },
-              {
-                label: "Email",
-                render: <P>{item.user.email}</P>,
-              },
-              {
-                label: l.total_material,
-                render: <P>{formatNumber(item.totalMaterial)}</P>,
-              },
-              {
-                label: l.added,
-                render: (
-                  <P>
-                    {formatDate(item.createdAt, {
-                      variant: "numeric",
-                      withTime: true,
-                      dashEmpty: true,
-                    })}
-                  </P>
-                ),
-              },
-              {
-                label: l.updated,
-                render: (
-                  <P>
-                    {formatDate(item.updatedAt, {
-                      variant: "numeric",
-                      withTime: true,
-                      dashEmpty: true,
-                    })}
-                  </P>
-                ),
-              },
-              {
-                label: l.deleted,
-                render: <DeletedStatus deletedAt={item.deletedAt} />,
-              },
-            ];
-
-            return (
-              <DataGridDetailDisclosureTrigger
-                key={item.id}
-                className="lg-clicky"
-                id={`${item.id}`}
-                title={routeTitle}
-                data={item}
-                details={details}
-                w={"full"}
-                cursor={"pointer"}
-              >
-                <CContainer
-                  key={item.id}
-                  flex={1}
-                  border={"1px solid"}
-                  borderColor={"border.muted"}
-                  rounded={themeConfig.radii.component}
-                  overflow={"clip"}
-                  _hover={{
-                    bg: "d0",
-                  }}
-                >
-                  <Img
-                    src={imgUrl(item.user.photoProfile?.[0]?.filePath)}
-                    aspectRatio={1}
-                    rounded={themeConfig.radii.component}
-                    fallbackSrc={`${SVGS_PATH}/no-avatar.svg`}
-                  />
-
-                  <CContainer flex={1} gap={1} px={3} my={3}>
-                    <HStack>
-                      <P fontWeight={"semibold"} lineClamp={1}>
-                        {item.user.name}
-                      </P>
-
-                      {item.deletedAt && (
-                        <DotIndicator color={"fg.error"} ml={"auto"} mr={1} />
-                      )}
-                    </HStack>
-
-                    <P color={"fg.subtle"} lineClamp={2}>
-                      {item.user.email}
-                    </P>
-                  </CContainer>
-                </CContainer>
-              </DataGridDetailDisclosureTrigger>
-            );
-          })}
-        </SimpleGrid>
-      </CContainer>
-
-      {hasFooter && (
-        <>
-          <HStack
-            p={3}
-            borderTop={"1px solid"}
-            borderColor={"border.muted"}
-            justify={"space-between"}
-          >
-            <CContainer w={"fit"} mb={[1, null, 0]}>
-              <Limitation limit={limit} setLimit={setLimit} />
-            </CContainer>
-
-            {!iss && (
-              <CContainer
-                w={"fit"}
-                justify={"center"}
-                pl={[2, null, 0]}
-                mt={[footer ? 1 : 0, null, 0]}
-              >
-                {footer}
-              </CContainer>
-            )}
-
-            <CContainer w={"fit"}>
-              <Pagination page={page} setPage={setPage} totalPage={totalPage} />
-            </CContainer>
-          </HStack>
-
-          {iss && (
-            <CContainer
-              w={"fit"}
-              justify={"center"}
-              pl={[2, null, 0]}
-              mt={[footer ? 1 : 0, null, 0]}
-            >
-              {footer}
-            </CContainer>
-          )}
-        </>
-      )}
-    </>
-  );
-};
-
 const ToggleDataDisplay = (props: any) => {
   // Props
   const { displayTable, setDisplayTable, ...restProps } = props;
@@ -802,17 +604,21 @@ const Data = (props: any) => {
     params: filter,
     dependencies: [filter],
   });
-  const dataProps = {
+  const dataProps: Interface__DataProps = {
     headers: [
       {
         th: l.educator,
         sortable: true,
       },
       {
-        th: l.total_material,
+        th: l.account_status,
         sortable: true,
-        align: "center",
       },
+      {
+        th: l.private_navs.kmis.material,
+        sortable: true,
+      },
+      // timestamps
       {
         th: l.added,
         sortable: true,
@@ -836,10 +642,18 @@ const Data = (props: any) => {
           value: item.user.name,
         },
         {
+          td: <AccountStatus accountStatusId={item.user.accountStatus} />,
+          value: item.user.accountStatus,
+          align: "center",
+          dataType: "number",
+        },
+        {
           td: formatNumber(item.totalMaterial),
           value: item.totalMaterial,
+          dataType: "number",
           align: "center",
         },
+        // timestamps
         {
           td: formatDate(item.createdAt, {
             variant: "numeric",
@@ -940,6 +754,7 @@ const Data = (props: any) => {
     ) : (
       <DataGrid
         data={data}
+        dataProps={dataProps}
         limit={limit}
         setLimit={setLimit}
         page={page}
@@ -969,7 +784,7 @@ const Data = (props: any) => {
   );
 };
 
-export default function KMISEducatorPage() {
+export default function Page() {
   // Contexts
   const { l } = useLang();
 
