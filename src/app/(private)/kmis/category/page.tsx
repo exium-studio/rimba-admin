@@ -398,7 +398,7 @@ const Restore = (props: any) => {
   const ID = `${PREFIX_ID}_restore`;
 
   // Props
-  const { activateAccountIds, clearSelectedRows, disabled, routeTitle } = props;
+  const { restoreIds, clearSelectedRows, disabled, routeTitle } = props;
 
   // Contexts
   const { l } = useLang();
@@ -420,10 +420,10 @@ const Restore = (props: any) => {
     back();
     req({
       config: {
-        url: `${BASE_ENDPOINT}/activate`,
+        url: `${BASE_ENDPOINT}/restore`,
         method: "PATCH",
         data: {
-          activateAccountIds: activateAccountIds,
+          restoreIds: restoreIds,
         },
       },
       onResolve: {
@@ -438,7 +438,7 @@ const Restore = (props: any) => {
   return (
     <ConfirmationDisclosureTrigger
       w={"full"}
-      id={`${ID}-${activateAccountIds}`}
+      id={`${ID}-${restoreIds}`}
       title={`${l.restore} ${routeTitle}`}
       description={l.msg_restore}
       confirmLabel={`${l.restore}`}
@@ -658,7 +658,7 @@ const Data = (props: any) => {
       (row) => ({
         override: (
           <Restore
-            activateAccountIds={[row.data.id]}
+            restoreIds={[row.data.id]}
             disabled={!row.data.deletedAt}
             routeTitle={routeTitle}
           />
@@ -678,7 +678,7 @@ const Data = (props: any) => {
       (ids, { clearSelectedRows }) => ({
         override: (
           <Restore
-            activateAccountIds={ids}
+            restoreIds={ids}
             clearSelectedRows={clearSelectedRows}
             disabled={
               isEmptyArray(ids) ||
