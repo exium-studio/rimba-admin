@@ -609,7 +609,7 @@ const Data = (props: any) => {
               <Img
                 src={imgUrl(item?.categoryCover?.[0]?.filePath)}
                 h={"24px"}
-                aspectRatio={1}
+                aspectRatio={1.1}
               />
             </ImgViewer>
           ),
