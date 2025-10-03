@@ -133,6 +133,7 @@ export const DataTable = (props: Props__DataTable) => {
     }
   }
   function handleClearSelectedRows() {
+    setAllRowsSelected(false);
     setSelectedRows([]);
   }
   function toggleRowSelection(row: Interface__FormattedTableRow) {

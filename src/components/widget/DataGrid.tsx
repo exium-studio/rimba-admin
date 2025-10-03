@@ -79,6 +79,7 @@ export const DataGrid = (props: Props) => {
     }
   }
   function handleClearSelectedRows() {
+    setAllRowsSelected(false);
     setSelectedRows([]);
   }
   function toggleRowSelection(row: Interface__FormattedTableRow) {
