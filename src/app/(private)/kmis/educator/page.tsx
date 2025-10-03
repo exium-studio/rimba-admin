@@ -33,8 +33,8 @@ import { Pagination } from "@/components/widget/Pagination";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
 import {
   Interface__BatchOptionsTableOptionGenerator,
-  Interface__KMISTopicCategory,
   Interface__KMISEducator,
+  Interface__KMISTopicCategory,
   Interface__RowOptionsTableOptionGenerator,
 } from "@/constants/interfaces";
 import { SVGS_PATH } from "@/constants/paths";
@@ -60,12 +60,12 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import {
+  IconActivity,
   IconLayoutGrid,
   IconPencilMinus,
   IconPlus,
-  IconRestore,
   IconTable,
-  IconTrash,
+  IconX,
 } from "@tabler/icons-react";
 import { useFormik } from "formik";
 import { usePathname } from "next/navigation";
@@ -80,7 +80,7 @@ const Create = (props: any) => {
   const ID = `${PREFIX_ID}_create`;
 
   // Props
-  const { disclosureTitle } = props;
+  const { routeTitle } = props;
 
   // Contexts
   const { l } = useLang();
@@ -94,7 +94,10 @@ const Create = (props: any) => {
   const { req, loading } = useRequest({
     id: ID,
     loadingMessage: {
-      title: capitalize(`${l.add} ${l.private_navs.kmis.category}`),
+      title: capitalize(`${l.add} ${routeTitle}`),
+    },
+    successMessage: {
+      title: capitalize(`${l.add} ${routeTitle} ${l.successful}`),
     },
   });
 
@@ -155,7 +158,7 @@ const Create = (props: any) => {
       <DisclosureRoot open={open} lazyLoad size={"xs"}>
         <DisclosureContent>
           <DisclosureHeader>
-            <DisclosureHeaderContent title={`${l.add} ${disclosureTitle}`} />
+            <DisclosureHeaderContent title={`${l.add} ${routeTitle}`} />
           </DisclosureHeader>
 
           <DisclosureBody>
@@ -223,7 +226,7 @@ const Update = (props: any) => {
   const ID = `${PREFIX_ID}_update`;
 
   // Props
-  const { data, disclosureTitle } = props;
+  const { data, routeTitle } = props;
   const resolvedData = data as Interface__KMISTopicCategory;
 
   // Contexts
@@ -242,7 +245,10 @@ const Update = (props: any) => {
   const { req, loading } = useRequest({
     id: ID,
     loadingMessage: {
-      title: capitalize(`Edit ${l.private_navs.kmis.category}`),
+      title: capitalize(`Edit ${routeTitle}`),
+    },
+    successMessage: {
+      title: capitalize(`Edit ${routeTitle} ${l.successful}`),
     },
   });
 
@@ -315,7 +321,7 @@ const Update = (props: any) => {
       <DisclosureRoot open={open} lazyLoad size={"xs"}>
         <DisclosureContent>
           <DisclosureHeader>
-            <DisclosureHeaderContent title={`Edit ${disclosureTitle}`} />
+            <DisclosureHeaderContent title={`Edit ${routeTitle}`} />
           </DisclosureHeader>
 
           <DisclosureBody>
@@ -399,11 +405,11 @@ const Update = (props: any) => {
     </>
   );
 };
-const Restore = (props: any) => {
-  const ID = `${PREFIX_ID}_restore`;
+const Activate = (props: any) => {
+  const ID = `${PREFIX_ID}_activate`;
 
   // Props
-  const { restoreIds, clearSelectedRows, disabled, disclosureTitle } = props;
+  const { activateAccountIds, clearSelectedRows, disabled, routeTitle } = props;
 
   // Contexts
   const { l } = useLang();
@@ -413,19 +419,22 @@ const Restore = (props: any) => {
   const { req, loading } = useRequest({
     id: ID,
     loadingMessage: {
-      title: capitalize(`Restore ${l.private_navs.kmis.category}`),
+      title: capitalize(`${l.activate} ${routeTitle}`),
+    },
+    successMessage: {
+      title: capitalize(`${l.activate} ${routeTitle} ${l.successful}`),
     },
   });
 
   // Utils
-  function onDelete() {
+  function onActivate() {
     back();
     req({
       config: {
-        url: `${BASE_ENDPOINT}/restore`,
+        url: `${BASE_ENDPOINT}/activate`,
         method: "PATCH",
         data: {
-          restoreIds: restoreIds,
+          activateAccountIds: activateAccountIds,
         },
       },
       onResolve: {
@@ -440,28 +449,29 @@ const Restore = (props: any) => {
   return (
     <ConfirmationDisclosureTrigger
       w={"full"}
-      id={`${ID}-${restoreIds}`}
-      title={`Restore ${disclosureTitle}`}
+      id={`${ID}-${activateAccountIds}`}
+      title={`${l.activate} ${routeTitle}`}
       description={l.msg_soft_delete}
-      confirmLabel={"Restore"}
-      onConfirm={onDelete}
+      confirmLabel={`${l.activate}`}
+      onConfirm={onActivate}
       loading={loading}
       disabled={disabled}
     >
       <MenuItem value="restore" disabled={disabled}>
-        Restore
+        {l.activate}
         <Icon boxSize={"18px"} ml={"auto"}>
-          <IconRestore stroke={1.5} />
+          <IconActivity stroke={1.5} />
         </Icon>
       </MenuItem>
     </ConfirmationDisclosureTrigger>
   );
 };
-const Delete = (props: any) => {
-  const ID = `${PREFIX_ID}_delete`;
+const Deactivate = (props: any) => {
+  const ID = `${PREFIX_ID}_deactivate`;
 
   // Props
-  const { deleteIds, clearSelectedRows, disabled, disclosureTitle } = props;
+  const { deactivateAccountIds, clearSelectedRows, disabled, routeTitle } =
+    props;
 
   // Contexts
   const { l } = useLang();
@@ -471,19 +481,22 @@ const Delete = (props: any) => {
   const { req, loading } = useRequest({
     id: ID,
     loadingMessage: {
-      title: capitalize(`Delete ${l.private_navs.kmis.category}`),
+      title: capitalize(`${l.deactivate} ${routeTitle}`),
+    },
+    successMessage: {
+      title: capitalize(`${l.deactivate} ${routeTitle} ${l.successful}`),
     },
   });
 
   // Utils
-  function onDelete() {
+  function onDeactivate() {
     back();
     req({
       config: {
-        url: `${BASE_ENDPOINT}/delete`,
-        method: "DELETE",
+        url: `${BASE_ENDPOINT}/deactivate`,
+        method: "PATCH",
         data: {
-          deleteIds: deleteIds,
+          deactivateAccountIds: deactivateAccountIds,
         },
       },
       onResolve: {
@@ -498,11 +511,11 @@ const Delete = (props: any) => {
   return (
     <ConfirmationDisclosureTrigger
       w={"full"}
-      id={`${ID}-${deleteIds}`}
-      title={`Delete ${disclosureTitle}`}
+      id={`${ID}-${deactivateAccountIds}`}
+      title={`${l.deactivate} ${routeTitle}`}
       description={l.msg_soft_delete}
-      confirmLabel={"Delete"}
-      onConfirm={onDelete}
+      confirmLabel={`${l.deactivate}`}
+      onConfirm={onDeactivate}
       confirmButtonProps={{
         color: "fg.error",
         colorPalette: "gray",
@@ -512,9 +525,9 @@ const Delete = (props: any) => {
       disabled={disabled}
     >
       <MenuItem value="delete" color={"fg.error"} disabled={disabled}>
-        Delete
+        {l.deactivate}
         <Icon boxSize={"18px"} ml={"auto"}>
-          <IconTrash stroke={1.5} />
+          <IconX stroke={1.5} />
         </Icon>
       </MenuItem>
     </ConfirmationDisclosureTrigger>
@@ -531,7 +544,7 @@ const DataGrid = (props: any) => {
     setPage,
     totalPage,
     footer,
-    disclosureTitle,
+    routeTitle,
     ...restProps
   } = props;
 
@@ -617,7 +630,7 @@ const DataGrid = (props: any) => {
                 key={item.id}
                 className="lg-clicky"
                 id={`${item.id}`}
-                title={disclosureTitle}
+                title={routeTitle}
                 data={item}
                 details={details}
                 w={"full"}
@@ -742,7 +755,7 @@ const DataUtils = (props: any) => {
     setFilter,
     displayTable,
     setDisplayTable,
-    disclosureTitle,
+    routeTitle,
     ...restProps
   } = props;
 
@@ -760,13 +773,13 @@ const DataUtils = (props: any) => {
         setDisplayTable={setDisplayTable}
       />
 
-      <Create disclosureTitle={disclosureTitle} />
+      <Create routeTitle={routeTitle} />
     </HStack>
   );
 };
 const Data = (props: any) => {
   // Props
-  const { filter, displayTable, disclosureTitle } = props;
+  const { filter, displayTable, routeTitle } = props;
 
   // Contexts
   const { l } = useLang();
@@ -789,7 +802,7 @@ const Data = (props: any) => {
     params: filter,
     dependencies: [filter],
   });
-  const tableProps = {
+  const dataProps = {
     headers: [
       {
         th: l.educator,
@@ -798,9 +811,7 @@ const Data = (props: any) => {
       {
         th: l.total_material,
         sortable: true,
-        wrapperProps: {
-          justify: "center",
-        },
+        align: "center",
       },
       {
         th: l.added,
@@ -811,7 +822,7 @@ const Data = (props: any) => {
         sortable: true,
       },
       {
-        th: l.deleted,
+        th: l.deactive,
         sortable: true,
       },
     ],
@@ -827,9 +838,7 @@ const Data = (props: any) => {
         {
           td: formatNumber(item.totalMaterial),
           value: item.totalMaterial,
-          wrapperProps: {
-            justify: "center",
-          },
+          align: "center",
         },
         {
           td: formatDate(item.createdAt, {
@@ -850,31 +859,31 @@ const Data = (props: any) => {
           dataType: "date",
         },
         {
-          td: <DeletedStatus deletedAt={item.deletedAt} />,
-          value: item.deletedAt,
+          td: <DeletedStatus deletedAt={item.user.deactiveAt} />,
+          value: item.user.deactiveAt,
           dataType: "date",
         },
       ],
     })),
     rowOptions: [
       (row) => ({
-        override: <Update data={row.data} disclosureTitle={disclosureTitle} />,
+        override: <Update data={row.data} routeTitle={routeTitle} />,
       }),
       (row) => ({
         override: (
-          <Restore
-            restoreIds={[row.data.id]}
-            disabled={!row.data.deletedAt}
-            disclosureTitle={disclosureTitle}
+          <Activate
+            activateAccountIds={[row.data.id]}
+            disabled={!row.data.user.deactiveAt}
+            routeTitle={routeTitle}
           />
         ),
       }),
       (row) => ({
         override: (
-          <Delete
-            deleteIds={[row.data.id]}
-            disabled={row.data.deletedAt}
-            disclosureTitle={disclosureTitle}
+          <Deactivate
+            deactivateAccountIds={[row.data.id]}
+            disabled={row.data.user.deactiveAt}
+            routeTitle={routeTitle}
           />
         ),
       }),
@@ -882,31 +891,31 @@ const Data = (props: any) => {
     batchOptions: [
       (ids, { clearSelectedRows }) => ({
         override: (
-          <Restore
-            restoreIds={ids}
+          <Activate
+            activateAccountIds={ids}
             clearSelectedRows={clearSelectedRows}
             disabled={
               isEmptyArray(ids) ||
               data
                 ?.filter((item) => ids.includes(item.id))
-                .some((item) => !item.deletedAt)
+                .some((item) => !item.user.deactiveAt)
             }
-            disclosureTitle={disclosureTitle}
+            routeTitle={routeTitle}
           />
         ),
       }),
       (ids, { clearSelectedRows }) => ({
         override: (
-          <Delete
-            deleteIds={ids}
+          <Deactivate
+            deactivateAccountIds={ids}
             clearSelectedRows={clearSelectedRows}
             disabled={
               isEmptyArray(ids) ||
               data
                 ?.filter((item) => ids.includes(item.id))
-                .some((item) => item.deletedAt)
+                .some((item) => item.user.deactiveAt)
             }
-            disclosureTitle={disclosureTitle}
+            routeTitle={routeTitle}
           />
         ),
       }),
@@ -918,10 +927,10 @@ const Data = (props: any) => {
     empty: <FeedbackNoData />,
     loaded: displayTable ? (
       <DataTable
-        headers={tableProps.headers}
-        rows={tableProps.rows}
-        rowOptions={tableProps.rowOptions}
-        batchOptions={tableProps.batchOptions}
+        headers={dataProps.headers}
+        rows={dataProps.rows}
+        rowOptions={dataProps.rowOptions}
+        batchOptions={dataProps.batchOptions}
         limit={limit}
         setLimit={setLimit}
         page={page}
@@ -936,7 +945,7 @@ const Data = (props: any) => {
         page={page}
         setPage={setPage}
         totalPage={pagination?.meta?.last_page}
-        disclosureTitle={disclosureTitle}
+        routeTitle={routeTitle}
       />
     ),
   };
@@ -967,7 +976,7 @@ export default function KMISEducatorPage() {
   // States
   const pathname = usePathname();
   const activeNav = getActiveNavs(pathname);
-  const disclosureTitle = pluckString(l, last(activeNav)!.labelKey);
+  const routeTitle = pluckString(l, last(activeNav)!.labelKey);
   const DEFAULT_FILTER = {
     search: "",
   };
@@ -982,12 +991,12 @@ export default function KMISEducatorPage() {
           setFilter={setFilter}
           displayTable={displayTable}
           setDisplayTable={setDisplayTable}
-          disclosureTitle={disclosureTitle}
+          routeTitle={routeTitle}
         />
         <Data
           filter={filter}
           displayTable={displayTable}
-          disclosureTitle={disclosureTitle}
+          routeTitle={routeTitle}
         />
       </PageContent>
     </PageContainer>

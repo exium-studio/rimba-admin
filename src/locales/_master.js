@@ -607,17 +607,29 @@ export const finished_topic = {
   id: "Topik selesai",
   en: "Finished topic",
 };
-export const active = {
-  id: "Aktif",
-  en: "Active",
-};
 export const inactive = {
   id: "Belum aktif",
   en: "Inactive",
 };
-export const disabled = {
-  id: "Disabled",
-  en: "Dinonaktifkan",
+export const active = {
+  id: "Aktif",
+  en: "Active",
+};
+export const deactive = {
+  id: "Dinonaktifkan",
+  en: "Deactivated",
+};
+export const activate = {
+  id: "Aktifkan",
+  en: "Activate",
+};
+export const deactivate = {
+  id: "Nonaktifkan",
+  en: "Deactivate",
+};
+export const successful = {
+  id: "Berhasil",
+  en: "Successful",
 };
 
 // Message

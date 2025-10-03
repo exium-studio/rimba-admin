@@ -26,7 +26,7 @@ export const AccountStatus = (props: Props) => {
         colorPalette: "green",
       },
       3: {
-        label: l.disabled,
+        label: l.deactive,
         colorPalette: "red",
       },
     };

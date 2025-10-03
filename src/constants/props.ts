@@ -15,6 +15,7 @@ import {
   IconProps,
   InputGroupProps,
   InputProps,
+  MenuRootProps,
   StackProps,
   TableRowProps,
   TextProps,
@@ -89,18 +90,20 @@ export interface Props__DataTable extends Omit<StackProps, "page"> {
   footer?: any;
   loading?: boolean;
 }
-export interface Props__BatchOptions {
+export interface Props__BatchOptions extends BtnProps {
   selectedRows: any[];
   clearSelectedRows: () => void;
   batchOptions?: Interface__BatchOptionsTableOptionGenerator[];
-  selectAllRows: boolean;
+  allRowsSelected: boolean;
   handleSelectAllRows: (isChecked: boolean) => void;
   tableContainerRef?: RefObject<HTMLDivElement | null>;
+  menuRootProps?: Omit<MenuRootProps, "children">;
 }
 export interface Props_RowOptions extends BtnProps {
   row: Interface__FormattedTableRow;
   rowOptions?: Interface__RowOptionsTableOptionGenerator<Interface__FormattedTableRow>[];
   tableContainerRef?: RefObject<HTMLDivElement | null>;
+  menuRootProps?: Omit<MenuRootProps, "children">;
 }
 export interface Props__SortIcon extends IconProps {
   columnIndex: number;

@@ -77,7 +77,7 @@ const Create = (props: any) => {
   const ID = `${PREFIX_ID}_create`;
 
   // Props
-  const { disclosureTitle } = props;
+  const { routeTitle } = props;
 
   // Contexts
   const { l } = useLang();
@@ -91,7 +91,7 @@ const Create = (props: any) => {
   const { req, loading } = useRequest({
     id: ID,
     loadingMessage: {
-      title: capitalize(`${l.add} ${disclosureTitle}`),
+      title: capitalize(`${l.add} ${routeTitle}`),
     },
   });
 
@@ -152,7 +152,7 @@ const Create = (props: any) => {
       <DisclosureRoot open={open} lazyLoad size={"xs"}>
         <DisclosureContent>
           <DisclosureHeader>
-            <DisclosureHeaderContent title={`${l.add} ${disclosureTitle}`} />
+            <DisclosureHeaderContent title={`${l.add} ${routeTitle}`} />
           </DisclosureHeader>
 
           <DisclosureBody>
@@ -220,7 +220,7 @@ const Update = (props: any) => {
   const ID = `${PREFIX_ID}_update`;
 
   // Props
-  const { data, disclosureTitle } = props;
+  const { data, routeTitle } = props;
   const resolvedData = data as Interface__KMISTopicCategory;
 
   // Contexts
@@ -239,7 +239,7 @@ const Update = (props: any) => {
   const { req, loading } = useRequest({
     id: ID,
     loadingMessage: {
-      title: capitalize(`Edit ${disclosureTitle}`),
+      title: capitalize(`Edit ${routeTitle}`),
     },
   });
 
@@ -312,7 +312,7 @@ const Update = (props: any) => {
       <DisclosureRoot open={open} lazyLoad size={"xs"}>
         <DisclosureContent>
           <DisclosureHeader>
-            <DisclosureHeaderContent title={`Edit ${disclosureTitle}`} />
+            <DisclosureHeaderContent title={`Edit ${routeTitle}`} />
           </DisclosureHeader>
 
           <DisclosureBody>
@@ -400,7 +400,7 @@ const Restore = (props: any) => {
   const ID = `${PREFIX_ID}_restore`;
 
   // Props
-  const { restoreIds, clearSelectedRows, disabled, disclosureTitle } = props;
+  const { restoreIds, clearSelectedRows, disabled, routeTitle } = props;
 
   // Contexts
   const { l } = useLang();
@@ -410,7 +410,7 @@ const Restore = (props: any) => {
   const { req, loading } = useRequest({
     id: ID,
     loadingMessage: {
-      title: capitalize(`Restore ${disclosureTitle}`),
+      title: capitalize(`Restore ${routeTitle}`),
     },
   });
 
@@ -438,7 +438,7 @@ const Restore = (props: any) => {
     <ConfirmationDisclosureTrigger
       w={"full"}
       id={`${ID}-${restoreIds}`}
-      title={`Restore ${disclosureTitle}`}
+      title={`Restore ${routeTitle}`}
       description={l.msg_soft_delete}
       confirmLabel={"Restore"}
       onConfirm={onDelete}
@@ -458,7 +458,7 @@ const Delete = (props: any) => {
   const ID = `${PREFIX_ID}_delete`;
 
   // Props
-  const { deleteIds, clearSelectedRows, disabled, disclosureTitle } = props;
+  const { deleteIds, clearSelectedRows, disabled, routeTitle } = props;
 
   // Contexts
   const { l } = useLang();
@@ -468,7 +468,7 @@ const Delete = (props: any) => {
   const { req, loading } = useRequest({
     id: ID,
     loadingMessage: {
-      title: capitalize(`Delete ${disclosureTitle}`),
+      title: capitalize(`Delete ${routeTitle}`),
     },
   });
 
@@ -496,7 +496,7 @@ const Delete = (props: any) => {
     <ConfirmationDisclosureTrigger
       w={"full"}
       id={`${ID}-${deleteIds}`}
-      title={`Delete ${disclosureTitle}`}
+      title={`Delete ${routeTitle}`}
       description={l.msg_soft_delete}
       confirmLabel={"Delete"}
       onConfirm={onDelete}
@@ -528,7 +528,7 @@ const DataGrid = (props: any) => {
     setPage,
     totalPage,
     footer,
-    disclosureTitle,
+    routeTitle,
     ...restProps
   } = props;
 
@@ -599,7 +599,7 @@ const DataGrid = (props: any) => {
                 key={item.id}
                 className="lg-clicky"
                 id={`${item.id}`}
-                title={disclosureTitle}
+                title={routeTitle}
                 data={item}
                 details={details}
                 w={"full"}
@@ -717,7 +717,7 @@ const DataUtils = (props: any) => {
     setFilter,
     displayTable,
     setDisplayTable,
-    disclosureTitle,
+    routeTitle,
     ...restProps
   } = props;
 
@@ -735,13 +735,13 @@ const DataUtils = (props: any) => {
         setDisplayTable={setDisplayTable}
       />
 
-      <Create disclosureTitle={disclosureTitle} />
+      <Create routeTitle={routeTitle} />
     </HStack>
   );
 };
 const Data = (props: any) => {
   // Props
-  const { filter, displayTable, disclosureTitle } = props;
+  const { filter, displayTable, routeTitle } = props;
 
   // Contexts
   const { l } = useLang();
@@ -777,9 +777,7 @@ const Data = (props: any) => {
       {
         th: l.count,
         sortable: true,
-        wrapperProps: {
-          justify: "center",
-        },
+        align: "center",
       },
       {
         th: l.added,
@@ -812,9 +810,7 @@ const Data = (props: any) => {
             <ClampText>{formatNumber(item.topic.totalQuiz) || "-"}</ClampText>
           ),
           value: item.topic.totalQuiz,
-          wrapperProps: {
-            justify: "center",
-          },
+          align: "center",
         },
         {
           td: formatDate(item.createdAt, {
@@ -843,14 +839,14 @@ const Data = (props: any) => {
     })),
     rowOptions: [
       (row) => ({
-        override: <Update data={row.data} disclosureTitle={disclosureTitle} />,
+        override: <Update data={row.data} routeTitle={routeTitle} />,
       }),
       (row) => ({
         override: (
           <Restore
             restoreIds={[row.data.id]}
             disabled={!row.data.deletedAt}
-            disclosureTitle={disclosureTitle}
+            routeTitle={routeTitle}
           />
         ),
       }),
@@ -859,7 +855,7 @@ const Data = (props: any) => {
           <Delete
             deleteIds={[row.data.id]}
             disabled={row.data.deletedAt}
-            disclosureTitle={disclosureTitle}
+            routeTitle={routeTitle}
           />
         ),
       }),
@@ -876,7 +872,7 @@ const Data = (props: any) => {
                 ?.filter((item) => ids.includes(item.id))
                 .some((item) => !item.deletedAt)
             }
-            disclosureTitle={disclosureTitle}
+            routeTitle={routeTitle}
           />
         ),
       }),
@@ -891,7 +887,7 @@ const Data = (props: any) => {
                 ?.filter((item) => ids.includes(item.id))
                 .some((item) => item.deletedAt)
             }
-            disclosureTitle={disclosureTitle}
+            routeTitle={routeTitle}
           />
         ),
       }),
@@ -921,7 +917,7 @@ const Data = (props: any) => {
         page={page}
         setPage={setPage}
         totalPage={pagination?.meta?.last_page}
-        disclosureTitle={disclosureTitle}
+        routeTitle={routeTitle}
       />
     ),
   };
@@ -952,7 +948,7 @@ export default function KMISQuizPage() {
   // States
   const pathname = usePathname();
   const activeNav = getActiveNavs(pathname);
-  const disclosureTitle = pluckString(l, last(activeNav)!.labelKey);
+  const routeTitle = pluckString(l, last(activeNav)!.labelKey);
   const DEFAULT_FILTER = {
     search: "",
   };
@@ -967,12 +963,12 @@ export default function KMISQuizPage() {
           setFilter={setFilter}
           displayTable={displayTable}
           setDisplayTable={setDisplayTable}
-          disclosureTitle={disclosureTitle}
+          routeTitle={routeTitle}
         />
         <Data
           filter={filter}
           displayTable={displayTable}
-          disclosureTitle={disclosureTitle}
+          routeTitle={routeTitle}
         />
       </PageContent>
     </PageContainer>

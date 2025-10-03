@@ -100,11 +100,18 @@ export interface Interface__NavItem {
 }
 
 // Data Table
+export interface Interface__DataProps {
+  headers?: Interface__FormattedTableHeader[];
+  rows?: Interface__FormattedTableRow[];
+  rowOptions?: Interface__RowOptionsTableOptionGenerator[];
+  batchOptions?: Interface__BatchOptionsTableOptionGenerator[];
+}
 export interface Interface__FormattedTableHeader {
   th: string;
   sortable?: boolean;
   headerProps?: TableColumnHeaderProps;
   wrapperProps?: StackProps;
+  align?: string;
 }
 export interface Interface__FormattedTableRow<T = any> {
   id: string;
@@ -116,6 +123,7 @@ export interface Interface__FormattedTableRow<T = any> {
     dataType?: string; // "string" | "number" | "date" | "time" |
     tableCellProps?: TableCellProps;
     wrapperProps?: StackProps;
+    align?: string;
   }[];
 }
 export interface Interface__TableOption {

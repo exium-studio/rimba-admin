@@ -1,7 +1,6 @@
 "use client";
 
 import { Btn } from "@/components/ui/btn";
-import { CContainer } from "@/components/ui/c-container";
 import {
   DisclosureBody,
   DisclosureContent,
@@ -12,33 +11,27 @@ import {
 import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-content";
 import { Field } from "@/components/ui/field";
 import { FileInput } from "@/components/ui/file-input";
-import { Img } from "@/components/ui/img";
 import { MenuItem } from "@/components/ui/menu";
-import { P } from "@/components/ui/p";
 import SearchInput from "@/components/ui/search-input";
 import { StringInput } from "@/components/ui/string-input";
 import { Textarea } from "@/components/ui/textarea";
 import { AccountStatus } from "@/components/widget/AccountStatus";
 import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
-import { DataGridDetailDisclosureTrigger } from "@/components/widget/DataGridDetailDisclosure";
+import { DataGrid } from "@/components/widget/DataGrid";
 import { DataTable } from "@/components/widget/DataTable";
 import { DeletedStatus } from "@/components/widget/DeletedStatus";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
-import { ImgViewer } from "@/components/widget/ImgViewer";
-import { DotIndicator } from "@/components/widget/Indicator";
-import { Limitation } from "@/components/widget/Limitation";
 import { MiniUser } from "@/components/widget/MiniUser";
 import { PageContainer, PageContent } from "@/components/widget/Page";
-import { Pagination } from "@/components/widget/Pagination";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
 import {
   Interface__BatchOptionsTableOptionGenerator,
+  Interface__DataProps,
   Interface__KMISStudent,
   Interface__KMISTopicCategory,
   Interface__RowOptionsTableOptionGenerator,
 } from "@/constants/interfaces";
-import { SVGS_PATH } from "@/constants/paths";
 import useLang from "@/context/useLang";
 import useRenderTrigger from "@/context/useRenderTrigger";
 import { useThemeConfig } from "@/context/useThemeConfig";
@@ -51,22 +44,16 @@ import { back } from "@/utils/client";
 import { disclosureId } from "@/utils/disclosure";
 import { formatDate, formatNumber } from "@/utils/formatter";
 import { capitalize, pluckString } from "@/utils/string";
-import { getActiveNavs, imgUrl } from "@/utils/url";
+import { getActiveNavs } from "@/utils/url";
 import { fileValidation } from "@/utils/validationSchema";
+import { FieldsetRoot, HStack, Icon, useDisclosure } from "@chakra-ui/react";
 import {
-  FieldsetRoot,
-  HStack,
-  Icon,
-  SimpleGrid,
-  useDisclosure,
-} from "@chakra-ui/react";
-import {
+  IconActivity,
   IconLayoutGrid,
   IconPencilMinus,
   IconPlus,
-  IconRestore,
   IconTable,
-  IconTrash,
+  IconX,
 } from "@tabler/icons-react";
 import { useFormik } from "formik";
 import { usePathname } from "next/navigation";
@@ -81,7 +68,7 @@ const Create = (props: any) => {
   const ID = `${PREFIX_ID}_create`;
 
   // Props
-  const { disclosureTitle } = props;
+  const { routeTitle } = props;
 
   // Contexts
   const { l } = useLang();
@@ -95,7 +82,10 @@ const Create = (props: any) => {
   const { req, loading } = useRequest({
     id: ID,
     loadingMessage: {
-      title: capitalize(`${l.add} ${l.private_navs.kmis.category}`),
+      title: capitalize(`${l.add} ${routeTitle}`),
+    },
+    successMessage: {
+      title: capitalize(`${routeTitle} ${l.successful}`),
     },
   });
 
@@ -156,7 +146,7 @@ const Create = (props: any) => {
       <DisclosureRoot open={open} lazyLoad size={"xs"}>
         <DisclosureContent>
           <DisclosureHeader>
-            <DisclosureHeaderContent title={`${l.add} ${disclosureTitle}`} />
+            <DisclosureHeaderContent title={`${l.add} ${routeTitle}`} />
           </DisclosureHeader>
 
           <DisclosureBody>
@@ -224,7 +214,7 @@ const Update = (props: any) => {
   const ID = `${PREFIX_ID}_update`;
 
   // Props
-  const { data, disclosureTitle } = props;
+  const { data, routeTitle } = props;
   const resolvedData = data as Interface__KMISTopicCategory;
 
   // Contexts
@@ -243,7 +233,10 @@ const Update = (props: any) => {
   const { req, loading } = useRequest({
     id: ID,
     loadingMessage: {
-      title: capitalize(`Edit ${l.private_navs.kmis.category}`),
+      title: capitalize(`Edit ${routeTitle}`),
+    },
+    successMessage: {
+      title: capitalize(`Edit ${routeTitle} ${l.successful}`),
     },
   });
 
@@ -316,7 +309,7 @@ const Update = (props: any) => {
       <DisclosureRoot open={open} lazyLoad size={"xs"}>
         <DisclosureContent>
           <DisclosureHeader>
-            <DisclosureHeaderContent title={`Edit ${disclosureTitle}`} />
+            <DisclosureHeaderContent title={`Edit ${routeTitle}`} />
           </DisclosureHeader>
 
           <DisclosureBody>
@@ -400,11 +393,11 @@ const Update = (props: any) => {
     </>
   );
 };
-const Restore = (props: any) => {
-  const ID = `${PREFIX_ID}_restore`;
+const Activate = (props: any) => {
+  const ID = `${PREFIX_ID}_activate`;
 
   // Props
-  const { restoreIds, clearSelectedRows, disabled, disclosureTitle } = props;
+  const { activateAccountIds, clearSelectedRows, disabled, routeTitle } = props;
 
   // Contexts
   const { l } = useLang();
@@ -414,19 +407,22 @@ const Restore = (props: any) => {
   const { req, loading } = useRequest({
     id: ID,
     loadingMessage: {
-      title: capitalize(`Restore ${l.private_navs.kmis.category}`),
+      title: capitalize(`${l.activate} ${routeTitle}`),
+    },
+    successMessage: {
+      title: capitalize(`${l.activate} ${routeTitle} ${l.successful}`),
     },
   });
 
   // Utils
-  function onDelete() {
+  function onActivate() {
     back();
     req({
       config: {
-        url: `${BASE_ENDPOINT}/restore`,
+        url: `${BASE_ENDPOINT}/activate`,
         method: "PATCH",
         data: {
-          restoreIds: restoreIds,
+          activateAccountIds: activateAccountIds,
         },
       },
       onResolve: {
@@ -441,28 +437,29 @@ const Restore = (props: any) => {
   return (
     <ConfirmationDisclosureTrigger
       w={"full"}
-      id={`${ID}-${restoreIds}`}
-      title={`Restore ${disclosureTitle}`}
+      id={`${ID}-${activateAccountIds}`}
+      title={`${l.activate} ${routeTitle}`}
       description={l.msg_soft_delete}
-      confirmLabel={"Restore"}
-      onConfirm={onDelete}
+      confirmLabel={`${l.activate}`}
+      onConfirm={onActivate}
       loading={loading}
       disabled={disabled}
     >
       <MenuItem value="restore" disabled={disabled}>
-        Restore
+        {l.activate}
         <Icon boxSize={"18px"} ml={"auto"}>
-          <IconRestore stroke={1.5} />
+          <IconActivity stroke={1.5} />
         </Icon>
       </MenuItem>
     </ConfirmationDisclosureTrigger>
   );
 };
-const Delete = (props: any) => {
-  const ID = `${PREFIX_ID}_delete`;
+const Deactivate = (props: any) => {
+  const ID = `${PREFIX_ID}_deactivate`;
 
   // Props
-  const { deleteIds, clearSelectedRows, disabled, disclosureTitle } = props;
+  const { deactivateAccountIds, clearSelectedRows, disabled, routeTitle } =
+    props;
 
   // Contexts
   const { l } = useLang();
@@ -472,19 +469,22 @@ const Delete = (props: any) => {
   const { req, loading } = useRequest({
     id: ID,
     loadingMessage: {
-      title: capitalize(`Delete ${l.private_navs.kmis.category}`),
+      title: capitalize(`${l.deactivate} ${routeTitle}`),
+    },
+    successMessage: {
+      title: capitalize(`${l.deactivate} ${routeTitle} ${l.successful}`),
     },
   });
 
   // Utils
-  function onDelete() {
+  function onDeactivate() {
     back();
     req({
       config: {
-        url: `${BASE_ENDPOINT}/delete`,
-        method: "DELETE",
+        url: `${BASE_ENDPOINT}/deactivate`,
+        method: "PATCH",
         data: {
-          deleteIds: deleteIds,
+          deactivateAccountIds: deactivateAccountIds,
         },
       },
       onResolve: {
@@ -499,11 +499,11 @@ const Delete = (props: any) => {
   return (
     <ConfirmationDisclosureTrigger
       w={"full"}
-      id={`${ID}-${deleteIds}`}
-      title={`Delete ${disclosureTitle}`}
+      id={`${ID}-${deactivateAccountIds}`}
+      title={`${l.deactivate} ${routeTitle}`}
       description={l.msg_soft_delete}
-      confirmLabel={"Delete"}
-      onConfirm={onDelete}
+      confirmLabel={`${l.deactivate}`}
+      onConfirm={onDeactivate}
       confirmButtonProps={{
         color: "fg.error",
         colorPalette: "gray",
@@ -513,198 +513,12 @@ const Delete = (props: any) => {
       disabled={disabled}
     >
       <MenuItem value="delete" color={"fg.error"} disabled={disabled}>
-        Delete
+        {l.deactivate}
         <Icon boxSize={"18px"} ml={"auto"}>
-          <IconTrash stroke={1.5} />
+          <IconX stroke={1.5} />
         </Icon>
       </MenuItem>
     </ConfirmationDisclosureTrigger>
-  );
-};
-
-const DataGrid = (props: any) => {
-  // Props
-  const {
-    data,
-    limit,
-    setLimit,
-    page,
-    setPage,
-    totalPage,
-    footer,
-    disclosureTitle,
-    ...restProps
-  } = props;
-
-  // Contexts
-  const { l } = useLang();
-  const { themeConfig } = useThemeConfig();
-
-  // Hooks
-  const iss = useIsSmScreenWidth();
-
-  // States
-  const hasFooter = limit && setLimit && page && setPage;
-
-  return (
-    <>
-      <CContainer className="scrollY" flex={1} p={4} {...restProps}>
-        <SimpleGrid columns={[2, null, 3, null, 4, 5]} gap={4}>
-          {data.map((item: Interface__Data) => {
-            const details = [
-              {
-                label: "ID",
-                render: <P>{item.id}</P>,
-              },
-              {
-                label: "Avatar",
-                render: (
-                  <ImgViewer
-                    src={imgUrl(item.user.photoProfile?.[0]?.filePath)}
-                    w={"full"}
-                  >
-                    <Img
-                      src={imgUrl(item.user.photoProfile?.[0]?.filePath)}
-                      fallbackSrc={`${SVGS_PATH}/no-avatar.svg`}
-                      fluid
-                    />
-                  </ImgViewer>
-                ),
-              },
-              {
-                label: l.name,
-                render: <P>{item.user.name}</P>,
-              },
-              {
-                label: "Email",
-                render: <P>{item.user.email}</P>,
-              },
-              {
-                label: l.total_topic,
-                render: <P>{formatNumber(item.totalTopic)}</P>,
-              },
-              {
-                label: l.added,
-                render: (
-                  <P>
-                    {formatDate(item.createdAt, {
-                      variant: "numeric",
-                      withTime: true,
-                      dashEmpty: true,
-                    })}
-                  </P>
-                ),
-              },
-              {
-                label: l.updated,
-                render: (
-                  <P>
-                    {formatDate(item.updatedAt, {
-                      variant: "numeric",
-                      withTime: true,
-                      dashEmpty: true,
-                    })}
-                  </P>
-                ),
-              },
-              {
-                label: l.deleted,
-                render: <DeletedStatus deletedAt={item.deletedAt} />,
-              },
-            ];
-
-            return (
-              <DataGridDetailDisclosureTrigger
-                key={item.id}
-                className="lg-clicky"
-                id={`${item.id}`}
-                title={disclosureTitle}
-                data={item}
-                details={details}
-                w={"full"}
-                cursor={"pointer"}
-              >
-                <CContainer
-                  key={item.id}
-                  flex={1}
-                  border={"1px solid"}
-                  borderColor={"border.muted"}
-                  rounded={themeConfig.radii.component}
-                  overflow={"clip"}
-                  _hover={{
-                    bg: "d0",
-                  }}
-                >
-                  <Img
-                    src={imgUrl(item.user.photoProfile?.[0]?.filePath)}
-                    aspectRatio={1}
-                    rounded={themeConfig.radii.component}
-                    fallbackSrc={`${SVGS_PATH}/no-avatar.svg`}
-                  />
-
-                  <CContainer flex={1} gap={1} px={3} my={3}>
-                    <HStack>
-                      <P fontWeight={"semibold"} lineClamp={1}>
-                        {item.user.name}
-                      </P>
-
-                      {item.deletedAt && (
-                        <DotIndicator color={"fg.error"} ml={"auto"} mr={1} />
-                      )}
-                    </HStack>
-
-                    <P color={"fg.subtle"} lineClamp={2}>
-                      {item.user.email}
-                    </P>
-                  </CContainer>
-                </CContainer>
-              </DataGridDetailDisclosureTrigger>
-            );
-          })}
-        </SimpleGrid>
-      </CContainer>
-
-      {hasFooter && (
-        <>
-          <HStack
-            p={3}
-            borderTop={"1px solid"}
-            borderColor={"border.muted"}
-            justify={"space-between"}
-          >
-            <CContainer w={"fit"} mb={[1, null, 0]}>
-              <Limitation limit={limit} setLimit={setLimit} />
-            </CContainer>
-
-            {!iss && (
-              <CContainer
-                w={"fit"}
-                justify={"center"}
-                pl={[2, null, 0]}
-                mt={[footer ? 1 : 0, null, 0]}
-              >
-                {footer}
-              </CContainer>
-            )}
-
-            <CContainer w={"fit"}>
-              <Pagination page={page} setPage={setPage} totalPage={totalPage} />
-            </CContainer>
-          </HStack>
-
-          {iss && (
-            <CContainer
-              w={"fit"}
-              justify={"center"}
-              pl={[2, null, 0]}
-              mt={[footer ? 1 : 0, null, 0]}
-            >
-              {footer}
-            </CContainer>
-          )}
-        </>
-      )}
-    </>
   );
 };
 
@@ -743,7 +557,7 @@ const DataUtils = (props: any) => {
     setFilter,
     displayTable,
     setDisplayTable,
-    disclosureTitle,
+    routeTitle,
     ...restProps
   } = props;
 
@@ -761,13 +575,13 @@ const DataUtils = (props: any) => {
         setDisplayTable={setDisplayTable}
       />
 
-      <Create disclosureTitle={disclosureTitle} />
+      <Create routeTitle={routeTitle} />
     </HStack>
   );
 };
 const Data = (props: any) => {
   // Props
-  const { filter, displayTable, disclosureTitle } = props;
+  const { filter, displayTable, routeTitle } = props;
 
   // Contexts
   const { l } = useLang();
@@ -790,7 +604,7 @@ const Data = (props: any) => {
     params: filter,
     dependencies: [filter],
   });
-  const tableProps = {
+  const dataProps: Interface__DataProps = {
     headers: [
       {
         th: l.educator,
@@ -803,23 +617,17 @@ const Data = (props: any) => {
       {
         th: l.private_navs.kmis.topic,
         sortable: true,
-        wrapperProps: {
-          justify: "center",
-        },
+        align: "center",
       },
       {
         th: l.finished_topic,
         sortable: true,
-        wrapperProps: {
-          justify: "center",
-        },
+        align: "center",
       },
       {
         th: l.avg_kmis_score,
         sortable: true,
-        wrapperProps: {
-          justify: "center",
-        },
+        align: "center",
       },
 
       {
@@ -831,7 +639,7 @@ const Data = (props: any) => {
         sortable: true,
       },
       {
-        th: l.deleted,
+        th: l.deactive,
         sortable: true,
       },
     ],
@@ -847,30 +655,22 @@ const Data = (props: any) => {
         {
           td: <AccountStatus accountStatusId={item.user.accountStatus} />,
           value: item.avgScoreFinished,
-          wrapperProps: {
-            justify: "center",
-          },
+          align: "center",
         },
         {
           td: formatNumber(item.totalTopic),
           value: item.totalTopic,
-          wrapperProps: {
-            justify: "center",
-          },
+          align: "center",
         },
         {
           td: formatNumber(item.totalFinished),
           value: item.totalFinished,
-          wrapperProps: {
-            justify: "center",
-          },
+          align: "center",
         },
         {
           td: formatNumber(item.avgScoreFinished),
           value: item.avgScoreFinished,
-          wrapperProps: {
-            justify: "center",
-          },
+          align: "center",
         },
         {
           td: formatDate(item.createdAt, {
@@ -891,31 +691,31 @@ const Data = (props: any) => {
           dataType: "date",
         },
         {
-          td: <DeletedStatus deletedAt={item.deletedAt} />,
-          value: item.deletedAt,
+          td: <DeletedStatus deletedAt={item.user.deactiveAt} />,
+          value: item.user.deactiveAt,
           dataType: "date",
         },
       ],
     })),
     rowOptions: [
       (row) => ({
-        override: <Update data={row.data} disclosureTitle={disclosureTitle} />,
+        override: <Update data={row.data} routeTitle={routeTitle} />,
       }),
       (row) => ({
         override: (
-          <Restore
-            restoreIds={[row.data.id]}
-            disabled={!row.data.deletedAt}
-            disclosureTitle={disclosureTitle}
+          <Activate
+            activateAccountIds={[row.data.id]}
+            disabled={!row.data.user.deactiveAt}
+            routeTitle={routeTitle}
           />
         ),
       }),
       (row) => ({
         override: (
-          <Delete
-            deleteIds={[row.data.id]}
-            disabled={row.data.deletedAt}
-            disclosureTitle={disclosureTitle}
+          <Deactivate
+            deactivateAccountIds={[row.data.id]}
+            disabled={row.data.user.deactiveAt}
+            routeTitle={routeTitle}
           />
         ),
       }),
@@ -923,31 +723,31 @@ const Data = (props: any) => {
     batchOptions: [
       (ids, { clearSelectedRows }) => ({
         override: (
-          <Restore
-            restoreIds={ids}
+          <Activate
+            activateAccountIds={ids}
             clearSelectedRows={clearSelectedRows}
             disabled={
               isEmptyArray(ids) ||
               data
                 ?.filter((item) => ids.includes(item.id))
-                .some((item) => !item.deletedAt)
+                .some((item) => !item.user.deactiveAt)
             }
-            disclosureTitle={disclosureTitle}
+            routeTitle={routeTitle}
           />
         ),
       }),
       (ids, { clearSelectedRows }) => ({
         override: (
-          <Delete
-            deleteIds={ids}
+          <Deactivate
+            deactivateAccountIds={ids}
             clearSelectedRows={clearSelectedRows}
             disabled={
               isEmptyArray(ids) ||
               data
                 ?.filter((item) => ids.includes(item.id))
-                .some((item) => item.deletedAt)
+                .some((item) => item.user.deactiveAt)
             }
-            disclosureTitle={disclosureTitle}
+            routeTitle={routeTitle}
           />
         ),
       }),
@@ -959,10 +759,10 @@ const Data = (props: any) => {
     empty: <FeedbackNoData />,
     loaded: displayTable ? (
       <DataTable
-        headers={tableProps.headers}
-        rows={tableProps.rows}
-        rowOptions={tableProps.rowOptions}
-        batchOptions={tableProps.batchOptions}
+        headers={dataProps.headers}
+        rows={dataProps.rows}
+        rowOptions={dataProps.rowOptions}
+        batchOptions={dataProps.batchOptions}
         limit={limit}
         setLimit={setLimit}
         page={page}
@@ -972,12 +772,13 @@ const Data = (props: any) => {
     ) : (
       <DataGrid
         data={data}
+        dataProps={dataProps}
         limit={limit}
         setLimit={setLimit}
         page={page}
         setPage={setPage}
         totalPage={pagination?.meta?.last_page}
-        disclosureTitle={disclosureTitle}
+        routeTitle={routeTitle}
       />
     ),
   };
@@ -1008,7 +809,7 @@ export default function KMISEducatorPage() {
   // States
   const pathname = usePathname();
   const activeNav = getActiveNavs(pathname);
-  const disclosureTitle = pluckString(l, last(activeNav)!.labelKey);
+  const routeTitle = pluckString(l, last(activeNav)!.labelKey);
   const DEFAULT_FILTER = {
     search: "",
   };
@@ -1023,12 +824,12 @@ export default function KMISEducatorPage() {
           setFilter={setFilter}
           displayTable={displayTable}
           setDisplayTable={setDisplayTable}
-          disclosureTitle={disclosureTitle}
+          routeTitle={routeTitle}
         />
         <Data
           filter={filter}
           displayTable={displayTable}
-          disclosureTitle={disclosureTitle}
+          routeTitle={routeTitle}
         />
       </PageContent>
     </PageContainer>
