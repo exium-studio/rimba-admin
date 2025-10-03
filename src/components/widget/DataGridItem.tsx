@@ -62,7 +62,12 @@ export const DataGridItem = (props: Props) => {
       {...restProps}
     >
       {item.showImg && (
-        <ImgViewer w={"full"} src={item.img} aspectRatio={1.1}>
+        <ImgViewer
+          w={"full"}
+          src={item.img}
+          aspectRatio={1.1}
+          fallbackSrc={item.imgFallbackSrc}
+        >
           <Img
             src={item.img}
             aspectRatio={1.1}
