@@ -587,9 +587,37 @@ export const total_material = {
   id: "Total Materi",
   en: "Total Material",
 };
+export const total_topic = {
+  id: "Total Topik",
+  en: "Total Topic",
+};
 export const count = {
   id: "Jumlah",
   en: "Count",
+};
+export const account_status = {
+  id: "Status akun",
+  en: "Account status",
+};
+export const avg_kmis_score = {
+  id: "Nilai rata-rata",
+  en: "Average score",
+};
+export const finished_topic = {
+  id: "Topik selesai",
+  en: "Finished topic",
+};
+export const active = {
+  id: "Aktif",
+  en: "Active",
+};
+export const inactive = {
+  id: "Belum aktif",
+  en: "Inactive",
+};
+export const disabled = {
+  id: "Disabled",
+  en: "Dinonaktifkan",
 };
 
 // Message

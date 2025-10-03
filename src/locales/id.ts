@@ -1,6 +1,8 @@
 const translations = {
   "UOM_format": "Format satuan",
   "access": "Akses",
+  "account_status": "Status akun",
+  "active": "Aktif",
   "adaptive_dark_mode": "Mode gelap adaptif",
   "add": "Tambah",
   "added": "Ditambahkan",
@@ -34,6 +36,7 @@ const translations = {
   "apply": "Terapkan",
   "april": "April",
   "august": "Agustus",
+  "avg_kmis_score": "Nilai rata-rata",
   "back": "Kembali",
   "camera": "Kamera",
   "cancel": "Batal",
@@ -51,6 +54,7 @@ const translations = {
   "deleted": "Dihapus",
   "deleted_file": "File dihapus",
   "description": "Deskripsi",
+  "disabled": "Disabled",
   "educator": "Pengajar",
   "error_400_default": {
     "title": "Bad request",
@@ -146,9 +150,11 @@ const translations = {
   },
   "example_UI": "Contoh UI",
   "february": "Februari",
+  "finished_topic": "Topik selesai",
   "friday": "Jumat",
   "get": "Dapatkan",
   "hide": "Sembunyikan",
+  "inactive": "Belum aktif",
   "info_timezone_auto": {
     "title": "Zona waktu diatur secara otomatis",
     "description": "${timezone}"
@@ -400,6 +406,7 @@ const translations = {
   "timezone": "Zona waktu",
   "title": "Judul",
   "total_material": "Total Materi",
+  "total_topic": "Total Topik",
   "try_camera": "Coba Kamera",
   "try_location": "Coba Lokasi",
   "try_mic": "Coba Mic",

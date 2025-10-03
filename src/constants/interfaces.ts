@@ -8,14 +8,13 @@ import {
   TableColumnHeaderProps,
 } from "@chakra-ui/react";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
+import { ReactNode } from "react";
 import {
-  Type__AccountStatus,
   Type__DateRange,
   Type__DateRangePresets,
   Type__DisclosureSizes,
   Type__TimeRange,
 } from "./types";
-import { ReactNode } from "react";
 
 export interface Interface__KMISQuiz extends Interface__CUD {
   id: string;
@@ -33,11 +32,13 @@ export interface Interface__KMISEducator extends Interface__CUD {
   user: Interface__User;
   totalMaterial: number;
 }
-// TODO adjust kmis student
 export interface Interface__KMISStudent extends Interface__CUD {
   id: string;
   user: Interface__User;
-  totalMaterial: number;
+  totalTopic: number;
+  totalAttempts: number;
+  totalFinished: number;
+  avgScoreFinished: number;
 }
 export interface Interface__KMISTopic extends Interface__CUD {
   id: string;
@@ -61,12 +62,12 @@ export interface Interface__User extends Interface__CUD {
   name: string;
   email: string;
   role: Interface__Role;
-  accountStatus: Type__AccountStatus;
+  accountStatus: string;
   // optional
-  gender?: boolean | null; // 1 male, 0 female
-  phoneNumber?: string | null;
-  birthDate?: string | null;
-  address?: string | null;
+  gender: boolean | null; // 1 male, 0 female
+  phoneNumber: string | null;
+  birthDate: string | null;
+  address: string | null;
   // audit timestamps
   registeredAt: string;
   lastLogin: string | null;
@@ -161,9 +162,9 @@ export interface Interface__Req<T = any> {
 
 // CUD
 export interface Interface__CUD {
-  createdAt?: string;
-  updatedAt?: string | null;
-  deletedAt?: string | null;
+  createdAt: string;
+  updatedAt: string | null;
+  deletedAt: string | null;
 }
 
 // Storage

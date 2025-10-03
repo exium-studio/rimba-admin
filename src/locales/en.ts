@@ -1,6 +1,8 @@
 const translations = {
   "UOM_format": "UOM format",
   "access": "Access",
+  "account_status": "Account status",
+  "active": "Active",
   "adaptive_dark_mode": "Adaptive dark mode",
   "add": "Add",
   "added": "Added",
@@ -34,6 +36,7 @@ const translations = {
   "apply": "Apply",
   "april": "April",
   "august": "August",
+  "avg_kmis_score": "Average score",
   "back": "Back",
   "camera": "Camera",
   "cancel": "Cancel",
@@ -51,6 +54,7 @@ const translations = {
   "deleted": "Deleted",
   "deleted_file": "Removed file",
   "description": "Description",
+  "disabled": "Dinonaktifkan",
   "educator": "Educator",
   "error_400_default": {
     "title": "Bad request",
@@ -146,9 +150,11 @@ const translations = {
   },
   "example_UI": "Example UI",
   "february": "February",
+  "finished_topic": "Finished topic",
   "friday": "Friday",
   "get": "Get",
   "hide": "Hide",
+  "inactive": "Inactive",
   "info_timezone_auto": {
     "title": "Timezone automatically set",
     "description": "${timezone}"
@@ -400,6 +406,7 @@ const translations = {
   "timezone": "Timezone",
   "title": "Title",
   "total_material": "Total Material",
+  "total_topic": "Total Topic",
   "try_camera": "Try Camera",
   "try_location": "Try Location",
   "try_mic": "Try Mic",

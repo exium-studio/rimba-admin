@@ -1,12 +1,5 @@
 import { ButtonProps, MenuItemProps } from "@chakra-ui/react";
 
-export enum Type__AccountStatus {
-  Inactive = 0,
-  Pending = 1,
-  Active = 2,
-  Suspended = 3,
-}
-
 export type Type__ExtendedPermissionState =
   | "prompt"
   | "denied"

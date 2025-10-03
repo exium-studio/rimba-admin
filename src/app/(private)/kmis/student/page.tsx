@@ -18,6 +18,7 @@ import { P } from "@/components/ui/p";
 import SearchInput from "@/components/ui/search-input";
 import { StringInput } from "@/components/ui/string-input";
 import { Textarea } from "@/components/ui/textarea";
+import { AccountStatus } from "@/components/widget/AccountStatus";
 import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
 import { DataGridDetailDisclosureTrigger } from "@/components/widget/DataGridDetailDisclosure";
 import { DataTable } from "@/components/widget/DataTable";
@@ -33,8 +34,8 @@ import { Pagination } from "@/components/widget/Pagination";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
 import {
   Interface__BatchOptionsTableOptionGenerator,
+  Interface__KMISStudent,
   Interface__KMISTopicCategory,
-  Interface__KMISEducator,
   Interface__RowOptionsTableOptionGenerator,
 } from "@/constants/interfaces";
 import { SVGS_PATH } from "@/constants/paths";
@@ -72,9 +73,9 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import * as yup from "yup";
 
-const BASE_ENDPOINT = "/api/kmis/educator";
-const PREFIX_ID = "educator";
-type Interface__Data = Interface__KMISEducator;
+const BASE_ENDPOINT = "/api/kmis/student";
+const PREFIX_ID = "student";
+type Interface__Data = Interface__KMISStudent;
 
 const Create = (props: any) => {
   const ID = `${PREFIX_ID}_create`;
@@ -579,8 +580,8 @@ const DataGrid = (props: any) => {
                 render: <P>{item.user.email}</P>,
               },
               {
-                label: l.total_material,
-                render: <P>{formatNumber(item.totalMaterial)}</P>,
+                label: l.total_topic,
+                render: <P>{formatNumber(item.totalTopic)}</P>,
               },
               {
                 label: l.added,
@@ -622,9 +623,6 @@ const DataGrid = (props: any) => {
                 details={details}
                 w={"full"}
                 cursor={"pointer"}
-                _hover={{
-                  bg: "d1",
-                }}
               >
                 <CContainer
                   key={item.id}
@@ -633,6 +631,9 @@ const DataGrid = (props: any) => {
                   borderColor={"border.muted"}
                   rounded={themeConfig.radii.component}
                   overflow={"clip"}
+                  _hover={{
+                    bg: "d0",
+                  }}
                 >
                   <Img
                     src={imgUrl(item.user.photoProfile?.[0]?.filePath)}
@@ -796,12 +797,31 @@ const Data = (props: any) => {
         sortable: true,
       },
       {
-        th: l.total_material,
+        th: l.account_status,
+        sortable: true,
+      },
+      {
+        th: l.private_navs.kmis.topic,
         sortable: true,
         wrapperProps: {
           justify: "center",
         },
       },
+      {
+        th: l.finished_topic,
+        sortable: true,
+        wrapperProps: {
+          justify: "center",
+        },
+      },
+      {
+        th: l.avg_kmis_score,
+        sortable: true,
+        wrapperProps: {
+          justify: "center",
+        },
+      },
+
       {
         th: l.added,
         sortable: true,
@@ -825,8 +845,29 @@ const Data = (props: any) => {
           value: item.user.name,
         },
         {
-          td: formatNumber(item.totalMaterial),
-          value: item.totalMaterial,
+          td: <AccountStatus accountStatusId={item.user.accountStatus} />,
+          value: item.avgScoreFinished,
+          wrapperProps: {
+            justify: "center",
+          },
+        },
+        {
+          td: formatNumber(item.totalTopic),
+          value: item.totalTopic,
+          wrapperProps: {
+            justify: "center",
+          },
+        },
+        {
+          td: formatNumber(item.totalFinished),
+          value: item.totalFinished,
+          wrapperProps: {
+            justify: "center",
+          },
+        },
+        {
+          td: formatNumber(item.avgScoreFinished),
+          value: item.avgScoreFinished,
           wrapperProps: {
             justify: "center",
           },
