@@ -17,6 +17,7 @@ import { StringInput } from "@/components/ui/string-input";
 import { Textarea } from "@/components/ui/textarea";
 import { AccountStatus } from "@/components/widget/AccountStatus";
 import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
+import { DataDisplayToggle } from "@/components/widget/DataDisplayToggle";
 import { DataGrid } from "@/components/widget/DataGrid";
 import { DataTable } from "@/components/widget/DataTable";
 import { DeletedStatus } from "@/components/widget/DeletedStatus";
@@ -32,6 +33,7 @@ import {
   Interface__KMISTopicCategory,
   Interface__RowOptionsTableOptionGenerator,
 } from "@/constants/interfaces";
+import { useDataDisplay } from "@/context/useDataDisplay";
 import useLang from "@/context/useLang";
 import useRenderTrigger from "@/context/useRenderTrigger";
 import { useThemeConfig } from "@/context/useThemeConfig";
@@ -49,10 +51,8 @@ import { fileValidation } from "@/utils/validationSchema";
 import { FieldsetRoot, HStack, Icon, useDisclosure } from "@chakra-ui/react";
 import {
   IconActivity,
-  IconLayoutGrid,
   IconPencilMinus,
   IconPlus,
-  IconTable,
   IconX,
 } from "@tabler/icons-react";
 import { useFormik } from "formik";
@@ -61,7 +61,7 @@ import { useEffect, useState } from "react";
 import * as yup from "yup";
 
 const BASE_ENDPOINT = "/api/kmis/educator";
-const PREFIX_ID = "educator";
+const PREFIX_ID = "kmis_educator";
 type Interface__Data = Interface__KMISEducator;
 
 const Create = (props: any) => {
@@ -522,44 +522,9 @@ const Deactivate = (props: any) => {
   );
 };
 
-const ToggleDataDisplay = (props: any) => {
-  // Props
-  const { displayTable, setDisplayTable, ...restProps } = props;
-
-  // Hooks
-  const iss = useIsSmScreenWidth();
-
-  return (
-    <Btn
-      iconButton={iss ? true : false}
-      size={"md"}
-      w={iss ? "" : "100px"}
-      variant={"outline"}
-      onClick={() => setDisplayTable((ps: boolean) => !ps)}
-      {...restProps}
-    >
-      <Icon>
-        {displayTable ? (
-          <IconTable stroke={1.5} />
-        ) : (
-          <IconLayoutGrid stroke={1.5} />
-        )}
-      </Icon>
-
-      {iss ? "" : displayTable ? "Table" : "Grid"}
-    </Btn>
-  );
-};
 const DataUtils = (props: any) => {
   // Props
-  const {
-    filter,
-    setFilter,
-    displayTable,
-    setDisplayTable,
-    routeTitle,
-    ...restProps
-  } = props;
+  const { filter, setFilter, routeTitle, ...restProps } = props;
 
   return (
     <HStack p={3} {...restProps}>
@@ -570,10 +535,7 @@ const DataUtils = (props: any) => {
         }}
       />
 
-      <ToggleDataDisplay
-        displayTable={displayTable}
-        setDisplayTable={setDisplayTable}
-      />
+      <DataDisplayToggle navKey={PREFIX_ID} />
 
       <Create routeTitle={routeTitle} />
     </HStack>
@@ -581,10 +543,12 @@ const DataUtils = (props: any) => {
 };
 const Data = (props: any) => {
   // Props
-  const { filter, displayTable, routeTitle } = props;
+  const { filter, routeTitle } = props;
 
   // Contexts
   const { l } = useLang();
+  const displayMode = useDataDisplay((s) => s.getDisplay(PREFIX_ID));
+  const displayTable = displayMode === "table";
 
   // States
   // const initialLoading = true;
@@ -796,7 +760,6 @@ export default function Page() {
     search: "",
   };
   const [filter, setFilter] = useState(DEFAULT_FILTER);
-  const [displayTable, setDisplayTable] = useState<boolean>(true);
 
   return (
     <PageContainer>
@@ -804,15 +767,9 @@ export default function Page() {
         <DataUtils
           filter={filter}
           setFilter={setFilter}
-          displayTable={displayTable}
-          setDisplayTable={setDisplayTable}
           routeTitle={routeTitle}
         />
-        <Data
-          filter={filter}
-          displayTable={displayTable}
-          routeTitle={routeTitle}
-        />
+        <Data filter={filter} routeTitle={routeTitle} />
       </PageContent>
     </PageContainer>
   );
