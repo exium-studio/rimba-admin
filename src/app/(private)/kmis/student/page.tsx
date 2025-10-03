@@ -438,6 +438,7 @@ const Data = (props: any) => {
       id: item.id,
       idx: idx,
       data: item,
+      dim: !!item.user.deactiveAt,
       columns: [
         {
           td: <MiniUser user={item.user} />,
@@ -595,6 +596,7 @@ const Data = (props: any) => {
                 description: resolvedItem?.user?.email,
                 deletedAt: resolvedItem?.user?.deactiveAt,
               }}
+              dim={!!resolvedItem.user?.deactiveAt}
               dataProps={dataProps}
               row={row}
               selectedRows={selectedRows}

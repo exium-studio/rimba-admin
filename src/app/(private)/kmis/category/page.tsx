@@ -22,7 +22,6 @@ import { DataDisplayToggle } from "@/components/widget/DataDisplayToggle";
 import { DataGrid } from "@/components/widget/DataGrid";
 import { DataGridItem } from "@/components/widget/DataGridItem";
 import { DataTable } from "@/components/widget/DataTable";
-import { DeletedStatus } from "@/components/widget/DeletedStatus";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
 import { ImgViewer } from "@/components/widget/ImgViewer";
@@ -601,6 +600,7 @@ const Data = (props: any) => {
       id: item.id,
       idx: idx,
       data: item,
+      dim: !!item.deletedAt,
       columns: [
         {
           td: (
@@ -645,7 +645,11 @@ const Data = (props: any) => {
           dataType: "date",
         },
         {
-          td: <DeletedStatus deletedAt={item.deletedAt} />,
+          td: formatDate(item.deletedAt, {
+            variant: "numeric",
+            withTime: true,
+            dashEmpty: true,
+          }),
           value: item.deletedAt,
           dataType: "date",
         },
@@ -668,7 +672,7 @@ const Data = (props: any) => {
         override: (
           <Delete
             deleteIds={[row.data.id]}
-            disabled={row.data.deletedAt}
+            disabled={!!row.data.deletedAt}
             routeTitle={routeTitle}
           />
         ),
@@ -699,7 +703,7 @@ const Data = (props: any) => {
               isEmptyArray(ids) ||
               data
                 ?.filter((item) => ids.includes(item.id))
-                .some((item) => item.deletedAt)
+                .some((item) => !!item.deletedAt)
             }
             routeTitle={routeTitle}
           />
@@ -752,6 +756,7 @@ const Data = (props: any) => {
                 description: resolvedItem.description,
                 deletedAt: resolvedItem.deletedAt,
               }}
+              dim={!!resolvedItem.deletedAt}
               dataProps={dataProps}
               row={row}
               selectedRows={selectedRows}

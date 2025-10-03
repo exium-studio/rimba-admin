@@ -117,6 +117,7 @@ export interface Interface__FormattedTableRow<T = any> {
   id: string;
   idx: number;
   data: T;
+  dim?: boolean;
   columns: {
     td: any;
     value: any;
@@ -124,6 +125,7 @@ export interface Interface__FormattedTableRow<T = any> {
     tableCellProps?: TableCellProps;
     wrapperProps?: StackProps;
     align?: string;
+    dim?: boolean;
   }[];
 }
 export interface Interface__TableOption {

@@ -21,7 +21,6 @@ import { DataDisplayToggle } from "@/components/widget/DataDisplayToggle";
 import { DataGrid } from "@/components/widget/DataGrid";
 import { DataGridItem } from "@/components/widget/DataGridItem";
 import { DataTable } from "@/components/widget/DataTable";
-import { DeletedStatus } from "@/components/widget/DeletedStatus";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
 import { MiniUser } from "@/components/widget/MiniUser";
@@ -603,6 +602,7 @@ const Data = (props: any) => {
       id: item.id,
       idx: idx,
       data: item,
+      dim: !!item.user.deactiveAt,
       columns: [
         {
           td: <MiniUser user={item.user} />,
@@ -641,7 +641,11 @@ const Data = (props: any) => {
           dataType: "date",
         },
         {
-          td: <DeletedStatus deletedAt={item.user.deactiveAt} />,
+          td: formatDate(item.user.deactiveAt, {
+            variant: "numeric",
+            withTime: true,
+            dashEmpty: true,
+          }),
           value: item.user.deactiveAt,
           dataType: "date",
         },
@@ -664,7 +668,7 @@ const Data = (props: any) => {
         override: (
           <Deactivate
             deactivateAccountIds={[row.data.id]}
-            disabled={row.data.user.deactiveAt}
+            disabled={!!row.data.user.deactiveAt}
             routeTitle={routeTitle}
           />
         ),
@@ -695,7 +699,7 @@ const Data = (props: any) => {
               isEmptyArray(ids) ||
               data
                 ?.filter((item) => ids.includes(item.id))
-                .some((item) => item.user.deactiveAt)
+                .some((item) => !!item.user.deactiveAt)
             }
             routeTitle={routeTitle}
           />
@@ -749,6 +753,7 @@ const Data = (props: any) => {
                 description: resolvedItem?.user?.email,
                 deletedAt: resolvedItem?.user?.deactiveAt,
               }}
+              dim={!!resolvedItem.user?.deactiveAt}
               dataProps={dataProps}
               row={row}
               selectedRows={selectedRows}
