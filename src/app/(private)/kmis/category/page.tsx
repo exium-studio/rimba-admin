@@ -1,7 +1,6 @@
 "use client";
 
 import { Btn } from "@/components/ui/btn";
-import { CContainer } from "@/components/ui/c-container";
 import {
   DisclosureBody,
   DisclosureContent,
@@ -14,30 +13,28 @@ import { Field } from "@/components/ui/field";
 import { FileInput } from "@/components/ui/file-input";
 import { Img } from "@/components/ui/img";
 import { MenuItem } from "@/components/ui/menu";
-import { P } from "@/components/ui/p";
 import SearchInput from "@/components/ui/search-input";
 import { StringInput } from "@/components/ui/string-input";
 import { Textarea } from "@/components/ui/textarea";
 import { ClampText } from "@/components/widget/ClampText";
 import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
-import { DataGridDetailDisclosureTrigger } from "@/components/widget/DataGridDetailDisclosure";
+import { DataDisplayToggle } from "@/components/widget/DataDisplayToggle";
+import { DataGrid } from "@/components/widget/DataGrid";
+import { DataGridItem } from "@/components/widget/DataGridItem";
 import { DataTable } from "@/components/widget/DataTable";
 import { DeletedStatus } from "@/components/widget/DeletedStatus";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
 import { ImgViewer } from "@/components/widget/ImgViewer";
-import { DotIndicator } from "@/components/widget/Indicator";
-import { Limitation } from "@/components/widget/Limitation";
 import { PageContainer, PageContent } from "@/components/widget/Page";
-import { Pagination } from "@/components/widget/Pagination";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
 import {
   Interface__BatchOptionsTableOptionGenerator,
+  Interface__DataProps,
   Interface__KMISTopicCategory,
   Interface__RowOptionsTableOptionGenerator,
 } from "@/constants/interfaces";
-import { SVGS_PATH } from "@/constants/paths";
-import { DATA_GRID_COLUMNS } from "@/constants/sizes";
+import { useDataDisplay } from "@/context/useDataDisplay";
 import useLang from "@/context/useLang";
 import useRenderTrigger from "@/context/useRenderTrigger";
 import { useThemeConfig } from "@/context/useThemeConfig";
@@ -52,19 +49,11 @@ import { formatDate } from "@/utils/formatter";
 import { capitalize, pluckString } from "@/utils/string";
 import { getActiveNavs, imgUrl } from "@/utils/url";
 import { fileValidation } from "@/utils/validationSchema";
+import { FieldsetRoot, HStack, Icon, useDisclosure } from "@chakra-ui/react";
 import {
-  FieldsetRoot,
-  HStack,
-  Icon,
-  SimpleGrid,
-  useDisclosure,
-} from "@chakra-ui/react";
-import {
-  IconLayoutGrid,
   IconPencilMinus,
   IconPlus,
   IconRestore,
-  IconTable,
   IconTrash,
 } from "@tabler/icons-react";
 import { useFormik } from "formik";
@@ -73,7 +62,7 @@ import { useEffect, useState } from "react";
 import * as yup from "yup";
 
 const BASE_ENDPOINT = "/api/kmis/category";
-const PREFIX_ID = "course_category";
+const PREFIX_ID = "kmis_category";
 type Interface__Data = Interface__KMISTopicCategory;
 
 const Create = (props: any) => {
@@ -97,7 +86,7 @@ const Create = (props: any) => {
       title: capitalize(`${l.add} ${routeTitle}`),
     },
     successMessage: {
-      title: capitalize(`${l.add} ${routeTitle} ${l.successful}`),
+      title: capitalize(`${routeTitle} ${l.successful}`),
     },
   });
 
@@ -409,7 +398,7 @@ const Restore = (props: any) => {
   const ID = `${PREFIX_ID}_restore`;
 
   // Props
-  const { restoreIds, clearSelectedRows, disabled, routeTitle } = props;
+  const { activateAccountIds, clearSelectedRows, disabled, routeTitle } = props;
 
   // Contexts
   const { l } = useLang();
@@ -419,22 +408,22 @@ const Restore = (props: any) => {
   const { req, loading } = useRequest({
     id: ID,
     loadingMessage: {
-      title: capitalize(`Restore ${routeTitle}`),
+      title: capitalize(`${l.restore} ${routeTitle}`),
     },
     successMessage: {
-      title: capitalize(`Restore ${routeTitle} ${l.successful}`),
+      title: capitalize(`${l.restore} ${routeTitle} ${l.successful}`),
     },
   });
 
   // Utils
-  function onRestore() {
+  function onActivate() {
     back();
     req({
       config: {
-        url: `${BASE_ENDPOINT}/restore`,
+        url: `${BASE_ENDPOINT}/activate`,
         method: "PATCH",
         data: {
-          restoreIds: restoreIds,
+          activateAccountIds: activateAccountIds,
         },
       },
       onResolve: {
@@ -449,16 +438,16 @@ const Restore = (props: any) => {
   return (
     <ConfirmationDisclosureTrigger
       w={"full"}
-      id={`${ID}-${restoreIds}`}
-      title={`Restore ${routeTitle}`}
-      description={l.msg_soft_delete}
-      confirmLabel={"Restore"}
-      onConfirm={onRestore}
+      id={`${ID}-${activateAccountIds}`}
+      title={`${l.restore} ${routeTitle}`}
+      description={l.msg_restore}
+      confirmLabel={`${l.restore}`}
+      onConfirm={onActivate}
       loading={loading}
       disabled={disabled}
     >
       <MenuItem value="restore" disabled={disabled}>
-        Restore
+        {l.restore}
         <Icon boxSize={"18px"} ml={"auto"}>
           <IconRestore stroke={1.5} />
         </Icon>
@@ -470,7 +459,8 @@ const Delete = (props: any) => {
   const ID = `${PREFIX_ID}_delete`;
 
   // Props
-  const { deleteIds, clearSelectedRows, disabled, routeTitle } = props;
+  const { deactivateAccountIds, clearSelectedRows, disabled, routeTitle } =
+    props;
 
   // Contexts
   const { l } = useLang();
@@ -480,10 +470,10 @@ const Delete = (props: any) => {
   const { req, loading } = useRequest({
     id: ID,
     loadingMessage: {
-      title: capitalize(`Delete ${routeTitle}`),
+      title: capitalize(`${l.delete_} ${routeTitle}`),
     },
     successMessage: {
-      title: capitalize(`Delete ${routeTitle} ${l.successful}`),
+      title: capitalize(`${l.delete_} ${routeTitle} ${l.successful}`),
     },
   });
 
@@ -492,10 +482,10 @@ const Delete = (props: any) => {
     back();
     req({
       config: {
-        url: `${BASE_ENDPOINT}/delete`,
-        method: "DELETE",
+        url: `${BASE_ENDPOINT}/deactivate`,
+        method: "PATCH",
         data: {
-          deleteIds: deleteIds,
+          deactivateAccountIds: deactivateAccountIds,
         },
       },
       onResolve: {
@@ -510,10 +500,10 @@ const Delete = (props: any) => {
   return (
     <ConfirmationDisclosureTrigger
       w={"full"}
-      id={`${ID}-${deleteIds}`}
-      title={`Delete ${routeTitle}`}
+      id={`${ID}-${deactivateAccountIds}`}
+      title={`${l.delete_} ${routeTitle}`}
       description={l.msg_soft_delete}
-      confirmLabel={"Delete"}
+      confirmLabel={`${l.delete_}`}
       onConfirm={onDelete}
       confirmButtonProps={{
         color: "fg.error",
@@ -524,7 +514,7 @@ const Delete = (props: any) => {
       disabled={disabled}
     >
       <MenuItem value="delete" color={"fg.error"} disabled={disabled}>
-        Delete
+        {l.delete_}
         <Icon boxSize={"18px"} ml={"auto"}>
           <IconTrash stroke={1.5} />
         </Icon>
@@ -533,226 +523,9 @@ const Delete = (props: any) => {
   );
 };
 
-const DataGrid = (props: any) => {
-  // Props
-  const {
-    data,
-    limit,
-    setLimit,
-    page,
-    setPage,
-    totalPage,
-    footer,
-    routeTitle,
-    ...restProps
-  } = props;
-
-  // Contexts
-  const { l } = useLang();
-  const { themeConfig } = useThemeConfig();
-
-  // Hooks
-  const iss = useIsSmScreenWidth();
-
-  // States
-  const hasFooter = limit && setLimit && page && setPage;
-
-  return (
-    <>
-      <CContainer className="scrollY" flex={1} p={4} {...restProps}>
-        <SimpleGrid columns={DATA_GRID_COLUMNS} gap={4}>
-          {data.map((item: Interface__Data) => {
-            const details = [
-              {
-                label: "ID",
-                render: <P>{item.id}</P>,
-              },
-              {
-                label: "Cover",
-                render: (
-                  <ImgViewer
-                    src={imgUrl(item.categoryCover?.[0]?.filePath)}
-                    w={"full"}
-                  >
-                    <Img
-                      src={imgUrl(item.categoryCover?.[0]?.filePath)}
-                      fallbackSrc={`${SVGS_PATH}/no-avatar.svg`}
-                      fluid
-                    />
-                  </ImgViewer>
-                ),
-              },
-              {
-                label: l.title,
-                render: <P>{item.title}</P>,
-              },
-              {
-                label: l.description,
-                render: <P>{item.description}</P>,
-              },
-              {
-                label: l.added,
-                render: (
-                  <P>
-                    {formatDate(item.createdAt, {
-                      variant: "numeric",
-                      withTime: true,
-                      dashEmpty: true,
-                    })}
-                  </P>
-                ),
-              },
-              {
-                label: l.updated,
-                render: (
-                  <P>
-                    {formatDate(item.updatedAt, {
-                      variant: "numeric",
-                      withTime: true,
-                      dashEmpty: true,
-                    })}
-                  </P>
-                ),
-              },
-              {
-                label: l.deleted,
-                render: <DeletedStatus deletedAt={item.deletedAt} />,
-              },
-            ];
-
-            return (
-              <DataGridDetailDisclosureTrigger
-                key={item.id}
-                className="lg-clicky"
-                id={`${item.id}`}
-                title={routeTitle}
-                data={item}
-                details={details}
-                w={"full"}
-                cursor={"pointer"}
-              >
-                <CContainer
-                  key={item.id}
-                  flex={1}
-                  border={"1px solid"}
-                  borderColor={"border.muted"}
-                  rounded={themeConfig.radii.component}
-                  overflow={"clip"}
-                  _hover={{
-                    bg: "d0",
-                  }}
-                >
-                  <Img
-                    src={imgUrl(item.categoryCover?.[0]?.filePath)}
-                    aspectRatio={1}
-                    rounded={themeConfig.radii.component}
-                    fallbackSrc={`${SVGS_PATH}/no-avatar.svg`}
-                  />
-
-                  <CContainer flex={1} gap={1} px={3} my={3}>
-                    <HStack>
-                      <P fontWeight={"semibold"} lineClamp={1}>
-                        {item.title}
-                      </P>
-
-                      {item.deletedAt && (
-                        <DotIndicator color={"fg.error"} ml={"auto"} mr={1} />
-                      )}
-                    </HStack>
-
-                    <P color={"fg.subtle"} lineClamp={2}>
-                      {item.description}
-                    </P>
-                  </CContainer>
-                </CContainer>
-              </DataGridDetailDisclosureTrigger>
-            );
-          })}
-        </SimpleGrid>
-      </CContainer>
-
-      {hasFooter && (
-        <>
-          <HStack
-            p={3}
-            borderTop={"1px solid"}
-            borderColor={"border.muted"}
-            justify={"space-between"}
-          >
-            <CContainer w={"fit"} mb={[1, null, 0]}>
-              <Limitation limit={limit} setLimit={setLimit} />
-            </CContainer>
-
-            {!iss && (
-              <CContainer
-                w={"fit"}
-                justify={"center"}
-                pl={[2, null, 0]}
-                mt={[footer ? 1 : 0, null, 0]}
-              >
-                {footer}
-              </CContainer>
-            )}
-
-            <CContainer w={"fit"}>
-              <Pagination page={page} setPage={setPage} totalPage={totalPage} />
-            </CContainer>
-          </HStack>
-
-          {iss && (
-            <CContainer
-              w={"fit"}
-              justify={"center"}
-              pl={[2, null, 0]}
-              mt={[footer ? 1 : 0, null, 0]}
-            >
-              {footer}
-            </CContainer>
-          )}
-        </>
-      )}
-    </>
-  );
-};
-
-const ToggleDataDisplay = (props: any) => {
-  // Props
-  const { displayTable, setDisplayTable, ...restProps } = props;
-
-  // Hooks
-  const iss = useIsSmScreenWidth();
-
-  return (
-    <Btn
-      iconButton={iss ? true : false}
-      size={"md"}
-      w={iss ? "" : "100px"}
-      variant={"outline"}
-      onClick={() => setDisplayTable((ps: boolean) => !ps)}
-      {...restProps}
-    >
-      <Icon>
-        {displayTable ? (
-          <IconTable stroke={1.5} />
-        ) : (
-          <IconLayoutGrid stroke={1.5} />
-        )}
-      </Icon>
-
-      {iss ? "" : displayTable ? "Table" : "Grid"}
-    </Btn>
-  );
-};
 const DataUtils = (props: any) => {
   // Props
-  const {
-    filter,
-    setFilter,
-    displayTable,
-    setDisplayTable,
-    routeTitle,
-    ...restProps
-  } = props;
+  const { filter, setFilter, routeTitle, ...restProps } = props;
 
   return (
     <HStack p={3} {...restProps}>
@@ -763,10 +536,7 @@ const DataUtils = (props: any) => {
         }}
       />
 
-      <ToggleDataDisplay
-        displayTable={displayTable}
-        setDisplayTable={setDisplayTable}
-      />
+      <DataDisplayToggle navKey={PREFIX_ID} />
 
       <Create routeTitle={routeTitle} />
     </HStack>
@@ -774,10 +544,12 @@ const DataUtils = (props: any) => {
 };
 const Data = (props: any) => {
   // Props
-  const { filter, displayTable, routeTitle } = props;
+  const { filter, routeTitle } = props;
 
   // Contexts
   const { l } = useLang();
+  const displayMode = useDataDisplay((s) => s.getDisplay(PREFIX_ID));
+  const displayTable = displayMode === "table";
 
   // States
   // const initialLoading = true;
@@ -797,7 +569,7 @@ const Data = (props: any) => {
     params: filter,
     dependencies: [filter],
   });
-  const dataProps = {
+  const dataProps: Interface__DataProps = {
     headers: [
       {
         th: "Cover",
@@ -811,6 +583,8 @@ const Data = (props: any) => {
         th: l.description,
         sortable: true,
       },
+
+      // timestamps
       {
         th: l.added,
         sortable: true,
@@ -820,7 +594,7 @@ const Data = (props: any) => {
         sortable: true,
       },
       {
-        th: l.deleted,
+        th: l.deactive,
         sortable: true,
       },
     ],
@@ -831,33 +605,36 @@ const Data = (props: any) => {
       columns: [
         {
           td: (
-            <ImgViewer src={imgUrl(item.categoryCover?.[0]?.filePath)}>
+            <ImgViewer src={imgUrl(item?.categoryCover?.[0]?.filePath)}>
               <Img
+                src={imgUrl(item?.categoryCover?.[0]?.filePath)}
                 h={"24px"}
                 aspectRatio={1}
-                src={imgUrl(item.categoryCover?.[0]?.filePath)}
               />
             </ImgViewer>
           ),
-          value: item.title,
+          value: imgUrl(item?.categoryCover?.[0]?.filePath),
+          dataType: "image",
           align: "center",
         },
         {
-          td: <ClampText>{item.title}</ClampText>,
+          td: <ClampText>{`${item.title}`}</ClampText>,
           value: item.title,
         },
         {
-          td: <ClampText>{item.description}</ClampText>,
+          td: <ClampText>{`${item.description}`}</ClampText>,
           value: item.description,
         },
+
+        // timestamps
         {
           td: formatDate(item.createdAt, {
             variant: "numeric",
             withTime: true,
-            dashEmpty: true,
           }),
           value: item.createdAt,
           dataType: "date",
+          dashEmpty: true,
         },
         {
           td: formatDate(item.updatedAt, {
@@ -882,7 +659,7 @@ const Data = (props: any) => {
       (row) => ({
         override: (
           <Restore
-            restoreIds={[row.data.id]}
+            activateAccountIds={[row.data.id]}
             disabled={!row.data.deletedAt}
             routeTitle={routeTitle}
           />
@@ -891,7 +668,7 @@ const Data = (props: any) => {
       (row) => ({
         override: (
           <Delete
-            deleteIds={[row.data.id]}
+            deactivateAccountIds={[row.data.id]}
             disabled={row.data.deletedAt}
             routeTitle={routeTitle}
           />
@@ -902,7 +679,7 @@ const Data = (props: any) => {
       (ids, { clearSelectedRows }) => ({
         override: (
           <Restore
-            restoreIds={ids}
+            activateAccountIds={ids}
             clearSelectedRows={clearSelectedRows}
             disabled={
               isEmptyArray(ids) ||
@@ -917,7 +694,7 @@ const Data = (props: any) => {
       (ids, { clearSelectedRows }) => ({
         override: (
           <Delete
-            deleteIds={ids}
+            deactivateAccountIds={ids}
             clearSelectedRows={clearSelectedRows}
             disabled={
               isEmptyArray(ids) ||
@@ -950,12 +727,41 @@ const Data = (props: any) => {
     ) : (
       <DataGrid
         data={data}
+        dataProps={dataProps}
         limit={limit}
         setLimit={setLimit}
         page={page}
         setPage={setPage}
         totalPage={pagination?.meta?.last_page}
-        routeTitle={routeTitle}
+        renderItem={({
+          item,
+          row,
+          details,
+          selectedRows,
+          toggleRowSelection,
+        }: any) => {
+          const resolvedItem: Interface__Data = item;
+
+          return (
+            <DataGridItem
+              key={resolvedItem.id}
+              item={{
+                id: resolvedItem.id,
+                showImg: true,
+                img: imgUrl(resolvedItem.categoryCover?.[0]?.filePath),
+                title: resolvedItem.title,
+                description: resolvedItem.description,
+                deletedAt: resolvedItem.deletedAt,
+              }}
+              dataProps={dataProps}
+              row={row}
+              selectedRows={selectedRows}
+              toggleRowSelection={toggleRowSelection}
+              routeTitle={routeTitle}
+              details={details}
+            />
+          );
+        }}
       />
     ),
   };
@@ -979,7 +785,7 @@ const Data = (props: any) => {
   );
 };
 
-export default function KMISEducatorPage() {
+export default function Page() {
   // Contexts
   const { l } = useLang();
 
@@ -991,7 +797,6 @@ export default function KMISEducatorPage() {
     search: "",
   };
   const [filter, setFilter] = useState(DEFAULT_FILTER);
-  const [displayTable, setDisplayTable] = useState<boolean>(true);
 
   return (
     <PageContainer>
@@ -999,15 +804,9 @@ export default function KMISEducatorPage() {
         <DataUtils
           filter={filter}
           setFilter={setFilter}
-          displayTable={displayTable}
-          setDisplayTable={setDisplayTable}
           routeTitle={routeTitle}
         />
-        <Data
-          filter={filter}
-          displayTable={displayTable}
-          routeTitle={routeTitle}
-        />
+        <Data filter={filter} routeTitle={routeTitle} />
       </PageContent>
     </PageContainer>
   );

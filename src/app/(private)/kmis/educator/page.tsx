@@ -19,6 +19,7 @@ import { AccountStatus } from "@/components/widget/AccountStatus";
 import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
 import { DataDisplayToggle } from "@/components/widget/DataDisplayToggle";
 import { DataGrid } from "@/components/widget/DataGrid";
+import { DataGridItem } from "@/components/widget/DataGridItem";
 import { DataTable } from "@/components/widget/DataTable";
 import { DeletedStatus } from "@/components/widget/DeletedStatus";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
@@ -33,6 +34,7 @@ import {
   Interface__KMISTopicCategory,
   Interface__RowOptionsTableOptionGenerator,
 } from "@/constants/interfaces";
+import { SVGS_PATH } from "@/constants/paths";
 import { useDataDisplay } from "@/context/useDataDisplay";
 import useLang from "@/context/useLang";
 import useRenderTrigger from "@/context/useRenderTrigger";
@@ -46,7 +48,7 @@ import { back } from "@/utils/client";
 import { disclosureId } from "@/utils/disclosure";
 import { formatDate, formatNumber } from "@/utils/formatter";
 import { capitalize, pluckString } from "@/utils/string";
-import { getActiveNavs } from "@/utils/url";
+import { getActiveNavs, imgUrl } from "@/utils/url";
 import { fileValidation } from "@/utils/validationSchema";
 import { FieldsetRoot, HStack, Icon, useDisclosure } from "@chakra-ui/react";
 import {
@@ -439,7 +441,7 @@ const Activate = (props: any) => {
       w={"full"}
       id={`${ID}-${activateAccountIds}`}
       title={`${l.activate} ${routeTitle}`}
-      description={l.msg_soft_delete}
+      description={l.msg_activate}
       confirmLabel={`${l.activate}`}
       onConfirm={onActivate}
       loading={loading}
@@ -501,7 +503,7 @@ const Deactivate = (props: any) => {
       w={"full"}
       id={`${ID}-${deactivateAccountIds}`}
       title={`${l.deactivate} ${routeTitle}`}
-      description={l.msg_soft_delete}
+      description={l.msg_deactivate}
       confirmLabel={`${l.deactivate}`}
       onConfirm={onDeactivate}
       confirmButtonProps={{
@@ -582,6 +584,7 @@ const Data = (props: any) => {
         th: l.private_navs.kmis.material,
         sortable: true,
       },
+
       // timestamps
       {
         th: l.added,
@@ -617,6 +620,7 @@ const Data = (props: any) => {
           dataType: "number",
           align: "center",
         },
+
         // timestamps
         {
           td: formatDate(item.createdAt, {
@@ -724,7 +728,36 @@ const Data = (props: any) => {
         page={page}
         setPage={setPage}
         totalPage={pagination?.meta?.last_page}
-        routeTitle={routeTitle}
+        renderItem={({
+          item,
+          row,
+          details,
+          selectedRows,
+          toggleRowSelection,
+        }: any) => {
+          const resolvedItem: Interface__Data = item;
+
+          return (
+            <DataGridItem
+              key={resolvedItem.id}
+              item={{
+                id: resolvedItem.id,
+                showImg: true,
+                img: imgUrl(resolvedItem.user.photoProfile?.[0]?.filePath),
+                imgFallbackSrc: `${SVGS_PATH}/no-avatar.svg`,
+                title: resolvedItem?.user?.name,
+                description: resolvedItem?.user?.email,
+                deletedAt: resolvedItem?.user?.deactiveAt,
+              }}
+              dataProps={dataProps}
+              row={row}
+              selectedRows={selectedRows}
+              toggleRowSelection={toggleRowSelection}
+              routeTitle={routeTitle}
+              details={details}
+            />
+          );
+        }}
       />
     ),
   };
