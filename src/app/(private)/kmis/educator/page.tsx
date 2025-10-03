@@ -622,9 +622,6 @@ const DataGrid = (props: any) => {
                 details={details}
                 w={"full"}
                 cursor={"pointer"}
-                _hover={{
-                  bg: "d1",
-                }}
               >
                 <CContainer
                   key={item.id}
@@ -633,6 +630,9 @@ const DataGrid = (props: any) => {
                   borderColor={"border.muted"}
                   rounded={themeConfig.radii.component}
                   overflow={"clip"}
+                  _hover={{
+                    bg: "d0",
+                  }}
                 >
                   <Img
                     src={imgUrl(item.user.photoProfile?.[0]?.filePath)}
