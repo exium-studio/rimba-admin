@@ -14,6 +14,7 @@ import {
 } from "@/constants/interfaces";
 import { useThemeConfig } from "@/context/useThemeConfig";
 import { Box, HStack, StackProps } from "@chakra-ui/react";
+import React from "react";
 
 interface Props extends StackProps {
   item: {
@@ -21,9 +22,9 @@ interface Props extends StackProps {
     img?: string;
     showImg?: boolean;
     imgFallbackSrc?: string;
-    title: string;
-    description: string;
-    deletedAt: string | null;
+    title: string | React.ReactNode;
+    description: string | React.ReactNode;
+    deletedAt?: string | null;
   };
   dim?: boolean;
   dataProps: Interface__DataProps;
@@ -62,6 +63,22 @@ export const DataGridItem = (props: Props) => {
       pos={"relative"}
       {...restProps}
     >
+      <Box
+        onClick={(e) => {
+          e.stopPropagation();
+          toggleRowSelection(row);
+        }}
+      >
+        <Checkbox
+          checked={selectedRows.includes(row.id)}
+          subtle
+          pos={"absolute"}
+          top={2}
+          right={2}
+          zIndex={2}
+        />
+      </Box>
+
       {item.showImg && (
         <ImgViewer
           w={"full"}
@@ -79,32 +96,24 @@ export const DataGridItem = (props: Props) => {
         </ImgViewer>
       )}
 
-      <CContainer flex={1} gap={1} px={3} my={3}>
+      <CContainer flex={1} gap={1} px={3} opacity={dim ? 0.4 : 1} my={3}>
         <HStack maxW={"calc(100% - 32px)"}>
-          <P fontWeight={"semibold"} lineClamp={1} opacity={dim ? 0.4 : 1}>
-            {item.title}
-          </P>
-
-          <Box
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleRowSelection(row);
-            }}
-          >
-            <Checkbox
-              checked={selectedRows.includes(row.id)}
-              subtle
-              pos={"absolute"}
-              top={2}
-              right={2}
-              zIndex={2}
-            />
-          </Box>
+          {typeof item.title === "string" ? (
+            <P fontWeight={"semibold"} lineClamp={1}>
+              {item.title}
+            </P>
+          ) : (
+            item.title
+          )}
         </HStack>
 
-        <P color={"fg.subtle"} lineClamp={1} opacity={dim ? 0.4 : 1}>
-          {item.description}
-        </P>
+        {typeof item.description === "string" ? (
+          <P color={"fg.subtle"} lineClamp={1}>
+            {item.description}
+          </P>
+        ) : (
+          item.description
+        )}
       </CContainer>
 
       <HStack p={2}>

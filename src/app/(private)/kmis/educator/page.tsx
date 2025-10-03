@@ -12,6 +12,7 @@ import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-conte
 import { Field } from "@/components/ui/field";
 import { FileInput } from "@/components/ui/file-input";
 import { MenuItem } from "@/components/ui/menu";
+import { P } from "@/components/ui/p";
 import SearchInput from "@/components/ui/search-input";
 import { StringInput } from "@/components/ui/string-input";
 import { Textarea } from "@/components/ui/textarea";
@@ -602,7 +603,7 @@ const Data = (props: any) => {
       id: item.id,
       idx: idx,
       data: item,
-      dim: !!item.user.deactiveAt,
+      dim: !!item.deletedAt,
       columns: [
         {
           td: <MiniUser user={item.user} />,
@@ -749,11 +750,21 @@ const Data = (props: any) => {
                 showImg: true,
                 img: imgUrl(resolvedItem.user.photoProfile?.[0]?.filePath),
                 imgFallbackSrc: `${SVGS_PATH}/no-avatar.svg`,
-                title: resolvedItem?.user?.name,
+                title: (
+                  <HStack>
+                    <P fontWeight={"semibold"}>{resolvedItem?.user?.name}</P>
+
+                    <AccountStatus
+                      accountStatusId={resolvedItem.user.accountStatus}
+                      pos={"absolute"}
+                      top={2}
+                      left={2}
+                    />
+                  </HStack>
+                ),
                 description: resolvedItem?.user?.email,
-                deletedAt: resolvedItem?.user?.deactiveAt,
               }}
-              dim={!!resolvedItem.user?.deactiveAt}
+              dim={!!resolvedItem.deletedAt}
               dataProps={dataProps}
               row={row}
               selectedRows={selectedRows}
