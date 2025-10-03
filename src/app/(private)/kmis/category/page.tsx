@@ -25,7 +25,6 @@ import { DataTable } from "@/components/widget/DataTable";
 import { DeletedStatus } from "@/components/widget/DeletedStatus";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
-import { ImgInput } from "@/components/ui/img-input";
 import { ImgViewer } from "@/components/widget/ImgViewer";
 import { PageContainer, PageContent } from "@/components/widget/Page";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
@@ -159,7 +158,8 @@ const Create = (props: any) => {
                   invalid={!!formik.errors.files}
                   errorText={formik.errors.files as string}
                 >
-                  <ImgInput
+                  <FileInput
+                    dropzone
                     inputValue={formik.values.files}
                     onChange={(inputValue) => {
                       formik.setFieldValue("files", inputValue);
