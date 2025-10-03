@@ -51,7 +51,6 @@ import {
   IconActivity,
   IconLayoutGrid,
   IconPencilMinus,
-  IconPlus,
   IconTable,
   IconX,
 } from "@tabler/icons-react";
@@ -64,152 +63,6 @@ const BASE_ENDPOINT = "/api/kmis/student";
 const PREFIX_ID = "student";
 type Interface__Data = Interface__KMISStudent;
 
-const Create = (props: any) => {
-  const ID = `${PREFIX_ID}_create`;
-
-  // Props
-  const { routeTitle } = props;
-
-  // Contexts
-  const { l } = useLang();
-  const { themeConfig } = useThemeConfig();
-  const setRt = useRenderTrigger((s) => s.setRt);
-
-  // Hooks
-  const iss = useIsSmScreenWidth();
-  const { open, onOpen, onClose } = useDisclosure();
-  useBackOnClose(disclosureId(ID), open, onOpen, onClose);
-  const { req, loading } = useRequest({
-    id: ID,
-    loadingMessage: {
-      title: capitalize(`${l.add} ${routeTitle}`),
-    },
-    successMessage: {
-      title: capitalize(`${routeTitle} ${l.successful}`),
-    },
-  });
-
-  // States
-  const formik = useFormik({
-    validateOnChange: false,
-    initialValues: { files: null as any, title: "", description: "" },
-    validationSchema: yup.object().shape({
-      files: fileValidation({
-        maxSizeMB: 10,
-        allowedExtensions: ["jpg", "jpeg", "png"],
-      }).required(l.msg_required_form),
-      title: yup.string().required(l.msg_required_form),
-      description: yup.string().required(l.msg_required_form),
-    }),
-    onSubmit: (values, { resetForm }) => {
-      back();
-
-      const payload = new FormData();
-      payload.append("files", values.files[0]);
-      payload.append("title", values.title);
-      payload.append("description", values.description);
-
-      const config = {
-        url: `${BASE_ENDPOINT}/create`,
-        method: "POST",
-        data: payload,
-      };
-
-      req({
-        config,
-        onResolve: {
-          onSuccess: () => {
-            resetForm();
-            setRt((ps) => !ps);
-          },
-        },
-      });
-    },
-  });
-
-  return (
-    <>
-      <Btn
-        iconButton={iss ? true : false}
-        size={"md"}
-        pl={iss ? "" : 3}
-        colorPalette={themeConfig.colorPalette}
-        onClick={onOpen}
-      >
-        <Icon>
-          <IconPlus stroke={1.5} />
-        </Icon>
-
-        {!iss && l.add}
-      </Btn>
-
-      <DisclosureRoot open={open} lazyLoad size={"xs"}>
-        <DisclosureContent>
-          <DisclosureHeader>
-            <DisclosureHeaderContent title={`${l.add} ${routeTitle}`} />
-          </DisclosureHeader>
-
-          <DisclosureBody>
-            <form id={ID} onSubmit={formik.handleSubmit}>
-              <FieldsetRoot disabled={loading}>
-                <Field
-                  label={"Cover"}
-                  invalid={!!formik.errors.files}
-                  errorText={formik.errors.files as string}
-                >
-                  <FileInput
-                    dropzone
-                    inputValue={formik.values.files}
-                    onChange={(inputValue) => {
-                      formik.setFieldValue("files", inputValue);
-                    }}
-                  />
-                </Field>
-
-                <Field
-                  label={l.title}
-                  invalid={!!formik.errors.title}
-                  errorText={formik.errors.title as string}
-                >
-                  <StringInput
-                    inputValue={formik.values.title}
-                    onChange={(inputValue) => {
-                      formik.setFieldValue("title", inputValue);
-                    }}
-                  />
-                </Field>
-
-                <Field
-                  label={l.description}
-                  invalid={!!formik.errors.description}
-                  errorText={formik.errors.description as string}
-                >
-                  <Textarea
-                    inputValue={formik.values.description}
-                    onChange={(inputValue) => {
-                      formik.setFieldValue("description", inputValue);
-                    }}
-                  />
-                </Field>
-              </FieldsetRoot>
-            </form>
-          </DisclosureBody>
-
-          <DisclosureFooter>
-            <Btn
-              type="submit"
-              form={ID}
-              colorPalette={themeConfig.colorPalette}
-              loading={loading}
-            >
-              {l.add}
-            </Btn>
-          </DisclosureFooter>
-        </DisclosureContent>
-      </DisclosureRoot>
-    </>
-  );
-};
 const Update = (props: any) => {
   const ID = `${PREFIX_ID}_update`;
 
@@ -552,14 +405,8 @@ const ToggleDataDisplay = (props: any) => {
 };
 const DataUtils = (props: any) => {
   // Props
-  const {
-    filter,
-    setFilter,
-    displayTable,
-    setDisplayTable,
-    routeTitle,
-    ...restProps
-  } = props;
+  const { filter, setFilter, displayTable, setDisplayTable, ...restProps } =
+    props;
 
   return (
     <HStack p={3} {...restProps}>
@@ -574,8 +421,6 @@ const DataUtils = (props: any) => {
         displayTable={displayTable}
         setDisplayTable={setDisplayTable}
       />
-
-      <Create routeTitle={routeTitle} />
     </HStack>
   );
 };
