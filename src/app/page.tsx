@@ -14,57 +14,69 @@ export default function IndexRoute() {
   const { themeConfig } = useThemeConfig();
 
   return (
-    <CContainer h={"100dvh"} align={"center"} overflowY={"auto"}>
+    <CContainer
+      h={"100dvh"}
+      align={"start"}
+      bg={themeConfig.primaryColor}
+      overflowY={"auto"}
+    >
+      <CContainer pos={"relative"} overflow={"clip"}>
+        <Box
+          w={"50%"}
+          aspectRatio={1.2}
+          rounded={"40%"}
+          bg={`${themeConfig.colorPalette}.300`}
+          animation={"rotate360 5s linear infinite"}
+        />
+        <Box
+          w={"50%"}
+          aspectRatio={1.2}
+          rounded={"40%"}
+          bg={`${themeConfig.colorPalette}.600`}
+          animation={"rotate360 5s linear infinite"}
+        />
+      </CContainer>
+
       <SimpleGrid
-        p={2}
+        p={[2, null, 4]}
         columns={[1, null, 2]}
         flex={1}
         w={"full"}
+        h={"full"}
         overflowY={"auto"}
+        pos={"absolute"}
+        zIndex={10}
+        bg={"blackAlpha.300"}
+        backdropFilter={"blur(70px)"}
+        gap={4}
       >
         <CContainer
-          display={["none", null, "flex"]}
-          bg={themeConfig.primaryColor}
           bgPos={"center"}
           bgSize={"cover"}
           pos={"relative"}
-          justify={"center"}
           overflow={"clip"}
           rounded={themeConfig.radii.container}
           maxH={"calc(100dvh - 16px)"}
         >
-          <CContainer
-            h={"full"}
+          <Center
+            w={["full", null, "fit"]}
+            bg={"body"}
             p={3}
-            align={"start"}
-            bg={"blackAlpha.300"}
             rounded={themeConfig.radii.component}
-            backdropFilter={"blur(60px)"}
-            pos={"absolute"}
-            zIndex={10}
           >
-            <Center bg={"body"} p={3} rounded={themeConfig.radii.component}>
-              <PartnersLogo />
-            </Center>
-          </CContainer>
+            <PartnersLogo />
+          </Center>
 
-          <Box
-            w={"120%"}
-            aspectRatio={1}
-            rounded={"40%"}
-            bg={`${themeConfig.colorPalette}.300`}
-            animation={"rotate360 5s linear infinite"}
-          />
-          <Box
-            w={"120%"}
-            aspectRatio={1}
-            rounded={"40%"}
-            bg={`${themeConfig.colorPalette}.600`}
-            animation={"rotate360 5s linear infinite"}
-          />
+          <CContainer></CContainer>
         </CContainer>
 
-        <CContainer p={[2, null, 8]} gap={16} overflowY={"auto"}>
+        <CContainer
+          p={8}
+          gap={16}
+          overflowY={"auto"}
+          bg={"body"}
+          rounded={themeConfig.radii.container}
+        >
           <HStack justify={"center"}>
             <ColorModeButton />
 

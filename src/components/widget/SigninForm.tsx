@@ -467,7 +467,7 @@ const SigninForm = (props: Props) => {
     <CContainer
       w={"full"}
       maxW={"400px"}
-      h={"400px"}
+      minH={"400px"}
       m={"auto"}
       gap={8}
       rounded={themeConfig.radii.container}
