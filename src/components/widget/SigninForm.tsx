@@ -502,7 +502,7 @@ const SigninForm = (props: Props) => {
                       key={role.key}
                       gap={2}
                       p={4}
-                      color={isActive ? themeConfig.primaryColor : ""}
+                      color={isActive ? `${themeConfig.colorPalette}.fg` : ""}
                       border={"1px solid"}
                       borderColor={
                         isActive ? themeConfig.primaryColor : "border.muted"
