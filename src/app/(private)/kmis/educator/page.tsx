@@ -493,6 +493,7 @@ const Data = (props: any) => {
     params: filter,
     dependencies: [filter],
   });
+  console.debug(data?.[0]?.user?.accountStatus);
   const dataProps: Interface__DataProps = {
     headers: [
       {
@@ -596,7 +597,7 @@ const Data = (props: any) => {
         override: (
           <Activate
             activateAccountIds={[row.data.id]}
-            disabled={!row.data.user.deactiveAt}
+            disabled={row.data.user.accountStatus == `2`}
             routeTitle={routeTitle}
           />
         ),
@@ -605,7 +606,7 @@ const Data = (props: any) => {
         override: (
           <Deactivate
             deactivateAccountIds={[row.data.id]}
-            disabled={!!row.data.user.deactiveAt}
+            disabled={row.data.user.accountStatus != `2`}
             routeTitle={routeTitle}
           />
         ),
@@ -621,7 +622,7 @@ const Data = (props: any) => {
               isEmptyArray(ids) ||
               data
                 ?.filter((item) => ids.includes(item.id))
-                .some((item) => !item.user.deactiveAt)
+                .some((item) => item.user.accountStatus == `2`)
             }
             routeTitle={routeTitle}
           />
@@ -636,7 +637,7 @@ const Data = (props: any) => {
               isEmptyArray(ids) ||
               data
                 ?.filter((item) => ids.includes(item.id))
-                .some((item) => !!item.user.deactiveAt)
+                .some((item) => item.user.accountStatus != `2`)
             }
             routeTitle={routeTitle}
           />
@@ -688,7 +689,9 @@ const Data = (props: any) => {
                 imgFallbackSrc: `${SVGS_PATH}/no-avatar.svg`,
                 title: (
                   <HStack>
-                    <P fontWeight={"semibold"}>{resolvedItem?.user?.name}</P>
+                    <P fontWeight={"semibold"} lineClamp={1}>
+                      {resolvedItem?.user?.name}
+                    </P>
 
                     <AccountStatus
                       accountStatusId={resolvedItem.user.accountStatus}

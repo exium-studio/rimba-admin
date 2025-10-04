@@ -4,7 +4,7 @@ import useLang from "@/context/useLang";
 import { Badge, BadgeProps } from "@chakra-ui/react";
 
 interface Props extends BadgeProps {
-  accountStatusId: string;
+  accountStatusId: string | number;
 }
 
 export const AccountStatus = (props: Props) => {

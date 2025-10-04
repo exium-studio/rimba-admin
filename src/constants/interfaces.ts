@@ -62,7 +62,7 @@ export interface Interface__User extends Interface__CUD {
   name: string;
   email: string;
   role: Interface__Role;
-  accountStatus: string;
+  accountStatus: string | number;
   // optional
   gender: boolean | null; // 1 male, 0 female
   phoneNumber: string | null;
