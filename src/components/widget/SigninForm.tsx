@@ -40,6 +40,7 @@ import { P } from "../ui/p";
 import { PasswordInput } from "../ui/password-input";
 import { StringInput } from "../ui/string-input";
 import ResetPasswordDisclosure from "./ResetPasswordDisclosure";
+import { H1 } from "@/components/ui/heading";
 
 interface Props extends StackProps {}
 
@@ -476,12 +477,12 @@ const SigninForm = (props: Props) => {
         <Signedin indexRoute={indexRoute} />
       ) : (
         <>
-          <CContainer gap={1} align={"center"}>
-            <P fontSize={"xl"} fontWeight={"bold"} textAlign={"center"}>
+          <CContainer gap={1}>
+            <H1 fontSize={"3xl"} fontWeight={"bold"}>
               {l.msg_signin_title}
-            </P>
+            </H1>
 
-            <P textAlign={"center"}>{activeRoleId ? msg : l.msg_signin}</P>
+            <P color={"fg.subtle"}>{activeRoleId ? msg : l.msg_signin}</P>
           </CContainer>
 
           {!activeRoleId && (

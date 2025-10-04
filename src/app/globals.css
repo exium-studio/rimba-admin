@@ -310,6 +310,14 @@ tspan {
 }
 
 /* Keyframes */
+@keyframes rotate360 {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 @keyframes flyInFromTop {
   0% {
     transform: translateY(-100%);
