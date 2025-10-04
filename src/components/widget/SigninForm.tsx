@@ -372,9 +372,13 @@ const Signedin = (props: any) => {
     <VStack gap={4} m={"auto"} {...restProps}>
       <Avatar size={"2xl"} src={user?.photoProfile?.[0]?.fileUrl} />
 
-      <VStack gap={0}>
-        <P fontWeight={"semibold"}>Admin</P>
-        <P>admin@gmail.com</P>
+      <VStack gap={1}>
+        <P fontSize={"lg"} fontWeight={"semibold"} textAlign={"center"}>
+          Admin
+        </P>
+        <P color={"fg.muted"} textAlign={"center"}>
+          admin@gmail.com
+        </P>
       </VStack>
 
       <VStack>
