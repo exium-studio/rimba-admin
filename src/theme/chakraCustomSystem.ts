@@ -49,21 +49,6 @@ const customConfig = defineConfig({
           900: { value: "#101e13" },
           "900a": { value: "#101e13dd" },
         },
-        jade: {
-          50: { value: "#E8FAF1" },
-          100: { value: "#C9F1DB" },
-          200: { value: "#9DE9C2" },
-          300: { value: "#6FDEA5" },
-          400: { value: "#46D58D" },
-          500: { value: "#2ECC71" },
-          "500a": { value: "#2ECC7120" },
-          600: { value: "#26A75C" },
-          700: { value: "#1E8449" },
-          800: { value: "#166037" },
-          900: { value: "#0F3E23" },
-          1000: { value: "#092214" },
-          1100: { value: "#041009" },
-        },
         s: {
           50: { value: "#fffbea" },
           100: { value: "#fff3c4" },
@@ -136,6 +121,21 @@ const customConfig = defineConfig({
           700: { value: "#637726" },
           800: { value: "#506321" },
           900: { value: "#3D4F1C" },
+        },
+        jade: {
+          50: { value: "#E8FAF1" },
+          100: { value: "#C9F1DB" },
+          200: { value: "#9DE9C2" },
+          300: { value: "#6FDEA5" },
+          400: { value: "#46D58D" },
+          500: { value: "#2ECC71" },
+          "500a": { value: "#2ECC7120" },
+          600: { value: "#26A75C" },
+          700: { value: "#1E8449" },
+          800: { value: "#166037" },
+          900: { value: "#0F3E23" },
+          1000: { value: "#092214" },
+          1100: { value: "#041009" },
         },
         kemenkes: {
           50: { value: "#E9FFF6" },
@@ -453,6 +453,42 @@ const customConfig = defineConfig({
           subtle: { value: "{white}" },
           emphasized: { value: "{white}" },
           focusRing: { value: "{white}" },
+        },
+        gray: {
+          solid: {
+            value: {
+              base: "{colors.gray.500} !important",
+              _dark: "{colors.gray.500}",
+            },
+          },
+          contrast: {
+            value: { base: "{colors.gray.50}", _dark: "{colors.gray.900}" },
+          },
+          fg: {
+            value: {
+              base: "{colors.gray.500}",
+              _dark: "{colors.gray.200}",
+            },
+          },
+          muted: {
+            value: {
+              base: "{colors.gray.300}",
+              _dark: "{colors.gray.800}",
+            },
+          },
+          subtle: {
+            value: {
+              base: "{colors.gray.100}",
+              _dark: "{colors.gray.900}",
+            },
+          },
+          emphasized: { value: "{colors.gray.400}" },
+          focusRing: {
+            value: {
+              base: "{colors.gray.600}",
+              _dark: "{colors.gray.700}",
+            },
+          },
         },
         brown: {
           solid: {
