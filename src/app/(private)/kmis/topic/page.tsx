@@ -278,7 +278,7 @@ const Update = (props: any) => {
       files: fileValidation({
         maxSizeMB: 10,
         allowedExtensions: ["jpg", "jpeg", "png"],
-      }).required(l.msg_required_form),
+      }),
       category: yup.array().required(l.msg_required_form),
       title: yup.string().required(l.msg_required_form),
       description: yup.string().required(l.msg_required_form),
