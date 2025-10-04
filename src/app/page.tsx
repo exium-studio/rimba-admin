@@ -15,7 +15,13 @@ export default function IndexRoute() {
 
   return (
     <CContainer h={"100dvh"} align={"center"} overflowY={"auto"}>
-      <SimpleGrid columns={[1, null, 2]} flex={1} w={"full"} overflowY={"auto"}>
+      <SimpleGrid
+        p={2}
+        columns={[1, null, 2]}
+        flex={1}
+        w={"full"}
+        overflowY={"auto"}
+      >
         <CContainer
           display={["none", null, "flex"]}
           bg={themeConfig.primaryColor}
@@ -24,7 +30,8 @@ export default function IndexRoute() {
           pos={"relative"}
           justify={"center"}
           overflow={"clip"}
-          maxH={"100dvh"}
+          rounded={themeConfig.radii.container}
+          maxH={"calc(100dvh - 16px)"}
         >
           <CContainer
             h={"full"}

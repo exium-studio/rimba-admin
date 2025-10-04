@@ -215,6 +215,7 @@ export interface Props__FileInput
   inputValue?: File[];
   onChange?: (inputValue: Props__FileInput["inputValue"]) => void;
   accept?: string;
+  acceptPlaceholder?: string;
   invalid?: boolean;
   placeholder?: string;
   label?: string;
@@ -233,9 +234,12 @@ export interface Props__FileInputInputComponent
   showDropzoneIcon?: boolean;
   showDropzoneLabel?: boolean;
   showDropzoneDescription?: boolean;
+  acceptPlaceholder?: string;
+  imgInput?: boolean;
 }
 export interface Props__FileItem extends StackProps {
   fileData: any;
+  idx?: number;
   actions?: {
     type: "remove" | "delete" | "undo_delete";
     onClick: () => void;

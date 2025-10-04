@@ -297,7 +297,7 @@ const Update = (props: any) => {
       description: resolvedData.description,
       deleteDocumentIds: [],
     });
-  }, [resolvedData]);
+  }, [open, resolvedData]);
 
   return (
     <>

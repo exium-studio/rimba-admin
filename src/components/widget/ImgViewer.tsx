@@ -35,7 +35,14 @@ export const ImgViewer = (props: Props) => {
       <CContainer
         w={"fit"}
         cursor={disabled ? "" : "pointer"}
-        onClick={disabled ? () => {} : onOpen}
+        onClick={
+          disabled
+            ? () => {}
+            : (e) => {
+                e.stopPropagation();
+                onOpen();
+              }
+        }
         {...restProps}
       >
         {children}

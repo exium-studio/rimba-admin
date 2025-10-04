@@ -56,24 +56,11 @@ const DisclosureRoot = ({ children, ...props }: any) => {
   const iss = sw < SM_SCREEN_W_NUMBER;
 
   return iss ? (
-    <DrawerRoot
-      onEscapeKeyDown={() => {
-        back();
-      }}
-      placement={"bottom"}
-      {...props}
-    >
+    <DrawerRoot placement={"bottom"} {...props}>
       {children}
     </DrawerRoot>
   ) : (
-    <DialogRoot
-      onEscapeKeyDown={() => {
-        back();
-      }}
-      placement={"center"}
-      scrollBehavior={"inside"}
-      {...props}
-    >
+    <DialogRoot placement={"center"} scrollBehavior={"inside"} {...props}>
       {children}
     </DialogRoot>
   );

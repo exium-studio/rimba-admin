@@ -224,6 +224,7 @@ type Interface__Data = Interface__KMISStudent;
 //     </>
 //   );
 // };
+
 const Activate = (props: any) => {
   const ID = `${PREFIX_ID}_activate`;
 

@@ -10,8 +10,8 @@ import {
 } from "@/components/ui/disclosure";
 import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-content";
 import { Field } from "@/components/ui/field";
-import { FileInput } from "@/components/ui/file-input";
 import { Img } from "@/components/ui/img";
+import { ImgInput } from "@/components/ui/img-input";
 import { MenuItem } from "@/components/ui/menu";
 import SearchInput from "@/components/ui/search-input";
 import { StringInput } from "@/components/ui/string-input";
@@ -157,8 +157,10 @@ const Create = (props: any) => {
                   invalid={!!formik.errors.files}
                   errorText={formik.errors.files as string}
                 >
-                  <FileInput
-                    dropzone
+                  <ImgInput
+                    maxFiles={10}
+                    accept="image/png, image/jpeg, image/webp"
+                    acceptPlaceholder=".jpg, .jpeg, .png"
                     inputValue={formik.values.files}
                     onChange={(inputValue) => {
                       formik.setFieldValue("files", inputValue);
@@ -295,7 +297,7 @@ const Update = (props: any) => {
       description: resolvedData.description,
       deleteDocumentIds: [],
     });
-  }, [resolvedData]);
+  }, [open, resolvedData]);
 
   return (
     <>
@@ -320,8 +322,10 @@ const Update = (props: any) => {
                   invalid={!!formik.errors.files}
                   errorText={formik.errors.files as string}
                 >
-                  <FileInput
-                    dropzone
+                  <ImgInput
+                    maxFiles={10}
+                    accept="image/png, image/jpeg, image/webp"
+                    acceptPlaceholder=".jpg, .jpeg, .png"
                     inputValue={formik.values.files}
                     onChange={(inputValue) => {
                       formik.setFieldValue("files", inputValue);
