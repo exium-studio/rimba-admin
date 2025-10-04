@@ -477,12 +477,14 @@ const SigninForm = (props: Props) => {
         <Signedin indexRoute={indexRoute} />
       ) : (
         <>
-          <CContainer gap={1}>
-            <H1 fontSize={"3xl"} fontWeight={"bold"}>
+          <CContainer gap={2}>
+            <H1 fontSize={"3xl"} fontWeight={"bold"} textAlign={"center"}>
               {l.msg_signin_title}
             </H1>
 
-            <P color={"fg.subtle"}>{activeRoleId ? msg : l.msg_signin}</P>
+            <P color={"fg.subtle"} textAlign={"center"}>
+              {activeRoleId ? msg : l.msg_signin}
+            </P>
           </CContainer>
 
           {!activeRoleId && (
