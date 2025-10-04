@@ -85,7 +85,7 @@ export const DataGridItem = (props: Props) => {
           src={item.img}
           aspectRatio={1.1}
           fallbackSrc={item.imgFallbackSrc}
-          opacity={dim ? 0.4 : 1}
+          opacity={dim || row.dim ? 0.4 : 1}
         >
           <Img
             src={item.img}
@@ -96,7 +96,13 @@ export const DataGridItem = (props: Props) => {
         </ImgViewer>
       )}
 
-      <CContainer flex={1} gap={1} px={3} opacity={dim ? 0.4 : 1} my={3}>
+      <CContainer
+        flex={1}
+        gap={1}
+        px={3}
+        opacity={dim || row.dim ? 0.4 : 1}
+        my={3}
+      >
         <HStack maxW={"calc(100% - 32px)"}>
           {typeof item.title === "string" ? (
             <P fontWeight={"semibold"} lineClamp={1}>

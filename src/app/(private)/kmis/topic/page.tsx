@@ -283,7 +283,7 @@ const Update = (props: any) => {
       title: yup.string().required(l.msg_required_form),
       description: yup.string().required(l.msg_required_form),
     }),
-    onSubmit: (values, { resetForm }) => {
+    onSubmit: (values) => {
       const payload = new FormData();
       payload.append("files", values.files?.[0]);
       payload.append("categoryId", `${values.category?.[0]?.id}`);
@@ -301,9 +301,8 @@ const Update = (props: any) => {
         config,
         onResolve: {
           onSuccess: () => {
-            resetForm();
-            back();
             setRt((ps) => !ps);
+            back();
           },
         },
       });
@@ -579,7 +578,6 @@ const Data = (props: any) => {
   const displayTable = displayMode === "table";
 
   // States
-
   const {
     error,
     initialLoading,
@@ -785,7 +783,6 @@ const Data = (props: any) => {
                 description: resolvedItem.description,
                 deletedAt: resolvedItem.deletedAt,
               }}
-              dim={!!resolvedItem.deletedAt}
               dataProps={dataProps}
               row={row}
               selectedRows={selectedRows}

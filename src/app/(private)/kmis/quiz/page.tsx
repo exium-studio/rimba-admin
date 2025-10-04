@@ -912,7 +912,6 @@ const Data = (props: any) => {
                 title: resolvedItem.question,
                 description: resolvedItem.topic.title,
               }}
-              dim={!!resolvedItem.deletedAt}
               dataProps={dataProps}
               row={row}
               selectedRows={selectedRows}

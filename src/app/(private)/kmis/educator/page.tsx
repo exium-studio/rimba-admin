@@ -95,7 +95,7 @@ const Create = (props: any) => {
       name: yup.string().required(l.msg_required_form),
       email: yup.string().required(l.msg_required_form),
     }),
-    onSubmit: (values, { resetForm }) => {
+    onSubmit: (values) => {
       const payload = new FormData();
       payload.append("name", values.name);
       payload.append("email", values.email);
@@ -110,9 +110,8 @@ const Create = (props: any) => {
         config,
         onResolve: {
           onSuccess: () => {
-            resetForm();
-            back();
             setRt((ps) => !ps);
+            back();
           },
         },
       });
@@ -242,8 +241,8 @@ const Update = (props: any) => {
         config,
         onResolve: {
           onSuccess: () => {
-            back();
             setRt((ps) => !ps);
+            back();
           },
         },
       });
@@ -703,7 +702,6 @@ const Data = (props: any) => {
                 ),
                 description: resolvedItem?.user?.email,
               }}
-              dim={!!resolvedItem.deletedAt}
               dataProps={dataProps}
               row={row}
               selectedRows={selectedRows}

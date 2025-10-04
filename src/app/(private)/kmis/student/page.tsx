@@ -628,7 +628,6 @@ const Data = (props: any) => {
                 ),
                 description: resolvedItem?.user?.email,
               }}
-              dim={!!resolvedItem.deletedAt}
               dataProps={dataProps}
               row={row}
               selectedRows={selectedRows}
