@@ -1,6 +1,5 @@
 "use client";
 
-// TODO hiatus
 import { CContainer } from "@/components/ui/c-container";
 import { InputComponent } from "@/components/ui/file-input";
 import { Img } from "@/components/ui/img";
