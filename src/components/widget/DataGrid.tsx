@@ -22,7 +22,7 @@ import {
   StackProps,
 } from "@chakra-ui/react";
 import { IconMenu } from "@tabler/icons-react";
-import { useRef, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 
 interface RenderItemProps {
   item: any;
@@ -194,14 +194,18 @@ export const DataGrid = (props: Props) => {
                   }
                 });
 
-                return props.renderItem({
-                  item,
-                  row,
-                  idx,
-                  details,
-                  selectedRows,
-                  toggleRowSelection,
-                });
+                return (
+                  <Fragment key={idx}>
+                    {props.renderItem({
+                      item,
+                      row,
+                      idx,
+                      details,
+                      selectedRows,
+                      toggleRowSelection,
+                    })}
+                  </Fragment>
+                );
               })}
             </SimpleGrid>
           )}

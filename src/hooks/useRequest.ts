@@ -124,6 +124,8 @@ export default function useRequest<T = any>(props: Props) {
 
       case 422:
         switch (errorCase) {
+          case "DUPLICATE_TITLE":
+            return l.error_422_duplicate_title;
           default:
             return l.error_422_default;
         }

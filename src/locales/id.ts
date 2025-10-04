@@ -99,6 +99,10 @@ const translations = {
     "title": "Validation failed",
     "description": "Beberapa data tidak valid, periksa kembali."
   },
+  "error_422_duplicate_title": {
+    "title": "Data duplikat",
+    "description": "Judul yang sama sudah ada, periksa kembali."
+  },
   "error_429_default": {
     "title": "Too many requests",
     "description": "Silakan coba lagi nanti."

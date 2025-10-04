@@ -1110,6 +1110,13 @@ export const error_422_default = {
     en: "Some data is invalid, please review.",
   },
 };
+export const error_422_duplicate_title = {
+  title: { id: "Data duplikat", en: "Duplicate data" },
+  description: {
+    id: "Judul yang sama sudah ada, periksa kembali.",
+    en: "The title already exists, please review.",
+  },
+};
 export const error_429_default = {
   title: { id: "Too many requests", en: "Too many requests" },
   description: {
