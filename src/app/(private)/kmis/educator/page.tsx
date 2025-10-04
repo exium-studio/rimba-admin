@@ -230,6 +230,7 @@ const Update = (props: any) => {
       const payload = new FormData();
       payload.append("name", values.name);
       payload.append("email", values.email);
+      payload.append("accountStatus", `${resolvedData?.user?.accountStatus}`);
 
       const config = {
         url: `${BASE_ENDPOINT}/update/${resolvedData.id}`,
