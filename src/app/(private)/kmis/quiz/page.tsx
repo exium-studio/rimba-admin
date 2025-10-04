@@ -1,7 +1,6 @@
 "use client";
 
 import { Btn } from "@/components/ui/btn";
-import { CContainer } from "@/components/ui/c-container";
 import {
   DisclosureBody,
   DisclosureContent,
@@ -11,30 +10,29 @@ import {
 } from "@/components/ui/disclosure";
 import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-content";
 import { Field } from "@/components/ui/field";
-import { FileInput } from "@/components/ui/file-input";
 import { MenuItem } from "@/components/ui/menu";
-import { P } from "@/components/ui/p";
 import SearchInput from "@/components/ui/search-input";
 import { StringInput } from "@/components/ui/string-input";
 import { Textarea } from "@/components/ui/textarea";
 import { ClampText } from "@/components/widget/ClampText";
 import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
-import { DataGridDetailDisclosureTrigger } from "@/components/widget/DataGridDetailDisclosure";
+import { DataDisplayToggle } from "@/components/widget/DataDisplayToggle";
+import { DataGrid } from "@/components/widget/DataGrid";
+import { DataGridItem } from "@/components/widget/DataGridItem";
 import { DataTable } from "@/components/widget/DataTable";
-import { DeletedStatus } from "@/components/widget/DeletedStatus";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
-import { DotIndicator } from "@/components/widget/Indicator";
-import { Limitation } from "@/components/widget/Limitation";
 import { PageContainer, PageContent } from "@/components/widget/Page";
-import { Pagination } from "@/components/widget/Pagination";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
 import {
   Interface__BatchOptionsTableOptionGenerator,
+  Interface__DataProps,
   Interface__KMISQuiz,
-  Interface__KMISTopicCategory,
   Interface__RowOptionsTableOptionGenerator,
+  Interface__SelectOption,
 } from "@/constants/interfaces";
+import { SVGS_PATH } from "@/constants/paths";
+import { useDataDisplay } from "@/context/useDataDisplay";
 import useLang from "@/context/useLang";
 import useRenderTrigger from "@/context/useRenderTrigger";
 import { useThemeConfig } from "@/context/useThemeConfig";
@@ -45,24 +43,15 @@ import useRequest from "@/hooks/useRequest";
 import { isEmptyArray, last } from "@/utils/array";
 import { back } from "@/utils/client";
 import { disclosureId } from "@/utils/disclosure";
-import { formatDate, formatNumber } from "@/utils/formatter";
+import { formatDate } from "@/utils/formatter";
 import { capitalize, pluckString } from "@/utils/string";
-import { getActiveNavs } from "@/utils/url";
-import { fileValidation } from "@/utils/validationSchema";
+import { getActiveNavs, imgUrl } from "@/utils/url";
+import { FieldsetRoot, HStack, Icon, useDisclosure } from "@chakra-ui/react";
 import {
-  FieldsetRoot,
-  HStack,
-  Icon,
-  SimpleGrid,
-  useDisclosure,
-} from "@chakra-ui/react";
-import {
-  IconLayoutGrid,
+  IconActivity,
   IconPencilMinus,
   IconPlus,
-  IconRestore,
-  IconTable,
-  IconTrash,
+  IconX,
 } from "@tabler/icons-react";
 import { useFormik } from "formik";
 import { usePathname } from "next/navigation";
@@ -70,7 +59,7 @@ import { useEffect, useState } from "react";
 import * as yup from "yup";
 
 const BASE_ENDPOINT = "/api/kmis/quiz";
-const PREFIX_ID = "quiz";
+const PREFIX_ID = "kmis_quiz";
 type Interface__Data = Interface__KMISQuiz;
 
 const Create = (props: any) => {
@@ -93,27 +82,44 @@ const Create = (props: any) => {
     loadingMessage: {
       title: capitalize(`${l.add} ${routeTitle}`),
     },
+    successMessage: {
+      title: capitalize(`${routeTitle} ${l.successful}`),
+    },
   });
 
   // States
   const formik = useFormik({
     validateOnChange: false,
-    initialValues: { files: null as any, title: "", description: "" },
+    initialValues: {
+      topic: null as unknown as Interface__SelectOption[],
+      question: "",
+      answerA: "",
+      answerB: "",
+      answerC: "",
+      answerD: "",
+      correctOption: "",
+      explanation: "",
+    },
     validationSchema: yup.object().shape({
-      files: fileValidation({
-        maxSizeMB: 10,
-        allowedExtensions: ["jpg", "jpeg", "png"],
-      }).required(l.msg_required_form),
-      title: yup.string().required(l.msg_required_form),
-      description: yup.string().required(l.msg_required_form),
+      topic: yup.array().required(l.msg_required_form),
+      question: yup.string().required(l.msg_required_form),
+      answerA: yup.string().required(l.msg_required_form),
+      answerB: yup.string().required(l.msg_required_form),
+      answerC: yup.string().required(l.msg_required_form),
+      answerD: yup.string().required(l.msg_required_form),
+      correctOption: yup.string().required(l.msg_required_form),
+      explanation: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values, { resetForm }) => {
-      back();
-
       const payload = new FormData();
-      payload.append("files", values.files[0]);
-      payload.append("title", values.title);
-      payload.append("description", values.description);
+      payload.append("topic", `${values.topic?.[0]?.id}`);
+      payload.append("question", values.question);
+      payload.append("answerA", values.answerA);
+      payload.append("answerB", values.answerB);
+      payload.append("answerC", values.answerC);
+      payload.append("answerD", values.answerD);
+      payload.append("correctOption", values.correctOption);
+      payload.append("explanation", values.explanation);
 
       const config = {
         url: `${BASE_ENDPOINT}/create`,
@@ -126,6 +132,7 @@ const Create = (props: any) => {
         onResolve: {
           onSuccess: () => {
             resetForm();
+            back();
             setRt((ps) => !ps);
           },
         },
@@ -159,41 +166,100 @@ const Create = (props: any) => {
             <form id={ID} onSubmit={formik.handleSubmit}>
               <FieldsetRoot disabled={loading}>
                 <Field
-                  label={"Cover"}
-                  invalid={!!formik.errors.files}
-                  errorText={formik.errors.files as string}
+                  label={l.private_navs.kmis.topic}
+                  invalid={!!formik.errors.topic}
+                  errorText={formik.errors.topic as string}
                 >
-                  <FileInput
-                    dropzone
-                    inputValue={formik.values.files}
-                    onChange={(inputValue) => {
-                      formik.setFieldValue("files", inputValue);
-                    }}
-                  />
+                  {/* <SelectTopic /> */}
                 </Field>
 
                 <Field
-                  label={l.title}
-                  invalid={!!formik.errors.title}
-                  errorText={formik.errors.title as string}
-                >
-                  <StringInput
-                    inputValue={formik.values.title}
-                    onChange={(inputValue) => {
-                      formik.setFieldValue("title", inputValue);
-                    }}
-                  />
-                </Field>
-
-                <Field
-                  label={l.description}
-                  invalid={!!formik.errors.description}
-                  errorText={formik.errors.description as string}
+                  label={l.question}
+                  invalid={!!formik.errors.question}
+                  errorText={formik.errors.question as string}
                 >
                   <Textarea
-                    inputValue={formik.values.description}
+                    inputValue={formik.values.question}
                     onChange={(inputValue) => {
-                      formik.setFieldValue("description", inputValue);
+                      formik.setFieldValue("question", inputValue);
+                    }}
+                  />
+                </Field>
+
+                <Field
+                  label={`${l.option} A`}
+                  invalid={!!formik.errors.answerA}
+                  errorText={formik.errors.answerA as string}
+                >
+                  <StringInput
+                    inputValue={formik.values.answerA}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("answerA", inputValue);
+                    }}
+                  />
+                </Field>
+
+                <Field
+                  label={`${l.option} B`}
+                  invalid={!!formik.errors.answerB}
+                  errorText={formik.errors.answerB as string}
+                >
+                  <StringInput
+                    inputValue={formik.values.answerB}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("answerB", inputValue);
+                    }}
+                  />
+                </Field>
+
+                <Field
+                  label={`${l.option} C`}
+                  invalid={!!formik.errors.answerC}
+                  errorText={formik.errors.answerC as string}
+                >
+                  <StringInput
+                    inputValue={formik.values.answerC}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("answerC", inputValue);
+                    }}
+                  />
+                </Field>
+
+                <Field
+                  label={`${l.option} D`}
+                  invalid={!!formik.errors.answerD}
+                  errorText={formik.errors.answerD as string}
+                >
+                  <StringInput
+                    inputValue={formik.values.answerD}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("answerD", inputValue);
+                    }}
+                  />
+                </Field>
+
+                <Field
+                  label={`${l.correct_answer}`}
+                  invalid={!!formik.errors.correctOption}
+                  errorText={formik.errors.correctOption as string}
+                >
+                  <StringInput
+                    inputValue={formik.values.correctOption}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("correctOption", inputValue);
+                    }}
+                  />
+                </Field>
+
+                <Field
+                  label={l.explanation}
+                  invalid={!!formik.errors.explanation}
+                  errorText={formik.errors.explanation as string}
+                >
+                  <Textarea
+                    inputValue={formik.values.explanation}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("explanation", inputValue);
                     }}
                   />
                 </Field>
@@ -221,7 +287,7 @@ const Update = (props: any) => {
 
   // Props
   const { data, routeTitle } = props;
-  const resolvedData = data as Interface__KMISTopicCategory;
+  const resolvedData = data as Interface__Data;
 
   // Contexts
   const { l } = useLang();
@@ -241,42 +307,48 @@ const Update = (props: any) => {
     loadingMessage: {
       title: capitalize(`Edit ${routeTitle}`),
     },
+    successMessage: {
+      title: capitalize(`Edit ${routeTitle} ${l.successful}`),
+    },
   });
 
   // States
   const formik = useFormik({
     validateOnChange: false,
     initialValues: {
-      files: null as any,
-      title: "",
-      description: "",
-      deleteDocumentIds: [],
+      topic: null as unknown as Interface__SelectOption[],
+      question: "",
+      answerA: "",
+      answerB: "",
+      answerC: "",
+      answerD: "",
+      correctOption: "",
+      explanation: "",
     },
     validationSchema: yup.object().shape({
-      files: fileValidation({
-        maxSizeMB: 10,
-        allowedExtensions: ["jpg", "jpeg", "png"],
-      }),
-      title: yup.string().required(l.msg_required_form),
-      description: yup.string().required(l.msg_required_form),
+      topic: yup.array().required(l.msg_required_form),
+      question: yup.string().required(l.msg_required_form),
+      answerA: yup.string().required(l.msg_required_form),
+      answerB: yup.string().required(l.msg_required_form),
+      answerC: yup.string().required(l.msg_required_form),
+      answerD: yup.string().required(l.msg_required_form),
+      correctOption: yup.string().required(l.msg_required_form),
+      explanation: yup.string().required(l.msg_required_form),
     }),
-    onSubmit: (values) => {
-      back();
-
+    onSubmit: (values, { resetForm }) => {
       const payload = new FormData();
-      if (values.files?.[0]) {
-        payload.append("files", values.files[0]);
-      }
-      payload.append("title", values.title);
-      payload.append("description", values.description);
-      payload.append(
-        "deletedDocumentIds",
-        JSON.stringify(values.deleteDocumentIds)
-      );
+      payload.append("topic", `${values.topic?.[0]?.id}`);
+      payload.append("question", values.question);
+      payload.append("answerA", values.answerA);
+      payload.append("answerB", values.answerB);
+      payload.append("answerC", values.answerC);
+      payload.append("answerD", values.answerD);
+      payload.append("correctOption", values.correctOption);
+      payload.append("explanation", values.explanation);
 
       const config = {
-        url: `${BASE_ENDPOINT}/update/${resolvedData.id}`,
-        method: "PATCH",
+        url: `${BASE_ENDPOINT}/create`,
+        method: "POST",
         data: payload,
       };
 
@@ -284,6 +356,8 @@ const Update = (props: any) => {
         config,
         onResolve: {
           onSuccess: () => {
+            resetForm();
+            back();
             setRt((ps) => !ps);
           },
         },
@@ -293,12 +367,21 @@ const Update = (props: any) => {
 
   useEffect(() => {
     formik.setValues({
-      files: [],
-      title: resolvedData.title,
-      description: resolvedData.description,
-      deleteDocumentIds: [],
+      topic: [
+        {
+          id: resolvedData.topic.id,
+          label: resolvedData.topic.title,
+        },
+      ],
+      question: resolvedData.question,
+      answerA: resolvedData.answerA,
+      answerB: resolvedData.answerB,
+      answerC: resolvedData.answerC,
+      answerD: resolvedData.answerD,
+      correctOption: resolvedData.correctOption,
+      explanation: resolvedData.explanation,
     });
-  }, [resolvedData]);
+  }, [open, resolvedData]);
 
   return (
     <>
@@ -319,61 +402,100 @@ const Update = (props: any) => {
             <form id={ID} onSubmit={formik.handleSubmit}>
               <FieldsetRoot disabled={loading}>
                 <Field
-                  label={"Cover"}
-                  invalid={!!formik.errors.files}
-                  errorText={formik.errors.files as string}
+                  label={l.private_navs.kmis.topic}
+                  invalid={!!formik.errors.topic}
+                  errorText={formik.errors.topic as string}
                 >
-                  <FileInput
-                    dropzone
-                    inputValue={formik.values.files}
-                    onChange={(inputValue) => {
-                      formik.setFieldValue("files", inputValue);
-                    }}
-                    existingFiles={resolvedData.categoryCover}
-                    onDeleteFile={(fileData) => {
-                      formik.setFieldValue(
-                        "deleteDocumentIds",
-                        Array.from(
-                          new Set([
-                            ...formik.values.deleteDocumentIds,
-                            fileData.id,
-                          ])
-                        )
-                      );
-                    }}
-                    onUndoDeleteFile={(fileData) => {
-                      formik.setFieldValue(
-                        "deleteDocumentIds",
-                        formik.values.deleteDocumentIds.filter(
-                          (id: string) => id !== fileData.id
-                        )
-                      );
-                    }}
-                  />
+                  {/* <SelectTopic /> */}
                 </Field>
 
                 <Field
-                  label={l.title}
-                  invalid={!!formik.errors.title}
-                  errorText={formik.errors.title as string}
-                >
-                  <StringInput
-                    inputValue={formik.values.title}
-                    onChange={(inputValue) => {
-                      formik.setFieldValue("title", inputValue);
-                    }}
-                  />
-                </Field>
-
-                <Field
-                  label={l.description}
-                  invalid={!!formik.errors.description}
-                  errorText={formik.errors.description as string}
+                  label={l.question}
+                  invalid={!!formik.errors.question}
+                  errorText={formik.errors.question as string}
                 >
                   <Textarea
-                    inputValue={formik.values.description}
+                    inputValue={formik.values.question}
                     onChange={(inputValue) => {
-                      formik.setFieldValue("description", inputValue);
+                      formik.setFieldValue("question", inputValue);
+                    }}
+                  />
+                </Field>
+
+                <Field
+                  label={`${l.option} A`}
+                  invalid={!!formik.errors.answerA}
+                  errorText={formik.errors.answerA as string}
+                >
+                  <StringInput
+                    inputValue={formik.values.answerA}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("answerA", inputValue);
+                    }}
+                  />
+                </Field>
+
+                <Field
+                  label={`${l.option} B`}
+                  invalid={!!formik.errors.answerB}
+                  errorText={formik.errors.answerB as string}
+                >
+                  <StringInput
+                    inputValue={formik.values.answerB}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("answerB", inputValue);
+                    }}
+                  />
+                </Field>
+
+                <Field
+                  label={`${l.option} C`}
+                  invalid={!!formik.errors.answerC}
+                  errorText={formik.errors.answerC as string}
+                >
+                  <StringInput
+                    inputValue={formik.values.answerC}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("answerC", inputValue);
+                    }}
+                  />
+                </Field>
+
+                <Field
+                  label={`${l.option} D`}
+                  invalid={!!formik.errors.answerD}
+                  errorText={formik.errors.answerD as string}
+                >
+                  <StringInput
+                    inputValue={formik.values.answerD}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("answerD", inputValue);
+                    }}
+                  />
+                </Field>
+
+                <Field
+                  label={`${l.correct_answer}`}
+                  invalid={!!formik.errors.correctOption}
+                  errorText={formik.errors.correctOption as string}
+                >
+                  <StringInput
+                    inputValue={formik.values.correctOption}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("correctOption", inputValue);
+                    }}
+                  />
+                </Field>
+
+                <Field
+                  label={l.explanation}
+                  invalid={!!formik.errors.explanation}
+                  errorText={formik.errors.explanation as string}
+                >
+                  <Textarea
+                    inputValue={formik.values.explanation}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("explanation", inputValue);
                     }}
                   />
                 </Field>
@@ -396,11 +518,11 @@ const Update = (props: any) => {
     </>
   );
 };
-const Restore = (props: any) => {
-  const ID = `${PREFIX_ID}_restore`;
+const Activate = (props: any) => {
+  const ID = `${PREFIX_ID}_activate`;
 
   // Props
-  const { restoreIds, clearSelectedRows, disabled, routeTitle } = props;
+  const { activateAccountIds, clearSelectedRows, disabled, routeTitle } = props;
 
   // Contexts
   const { l } = useLang();
@@ -410,19 +532,22 @@ const Restore = (props: any) => {
   const { req, loading } = useRequest({
     id: ID,
     loadingMessage: {
-      title: capitalize(`Restore ${routeTitle}`),
+      title: capitalize(`${l.activate} ${routeTitle}`),
+    },
+    successMessage: {
+      title: capitalize(`${l.activate} ${routeTitle} ${l.successful}`),
     },
   });
 
   // Utils
-  function onDelete() {
+  function onActivate() {
     back();
     req({
       config: {
-        url: `${BASE_ENDPOINT}/restore`,
+        url: `${BASE_ENDPOINT}/activate`,
         method: "PATCH",
         data: {
-          restoreIds: restoreIds,
+          activateAccountIds: activateAccountIds,
         },
       },
       onResolve: {
@@ -437,28 +562,29 @@ const Restore = (props: any) => {
   return (
     <ConfirmationDisclosureTrigger
       w={"full"}
-      id={`${ID}-${restoreIds}`}
-      title={`Restore ${routeTitle}`}
-      description={l.msg_soft_delete}
-      confirmLabel={"Restore"}
-      onConfirm={onDelete}
+      id={`${ID}-${activateAccountIds}`}
+      title={`${l.activate} ${routeTitle}`}
+      description={l.msg_activate}
+      confirmLabel={`${l.activate}`}
+      onConfirm={onActivate}
       loading={loading}
       disabled={disabled}
     >
       <MenuItem value="restore" disabled={disabled}>
-        Restore
+        {l.activate}
         <Icon boxSize={"18px"} ml={"auto"}>
-          <IconRestore stroke={1.5} />
+          <IconActivity stroke={1.5} />
         </Icon>
       </MenuItem>
     </ConfirmationDisclosureTrigger>
   );
 };
-const Delete = (props: any) => {
-  const ID = `${PREFIX_ID}_delete`;
+const Deactivate = (props: any) => {
+  const ID = `${PREFIX_ID}_deactivate`;
 
   // Props
-  const { deleteIds, clearSelectedRows, disabled, routeTitle } = props;
+  const { deactivateAccountIds, clearSelectedRows, disabled, routeTitle } =
+    props;
 
   // Contexts
   const { l } = useLang();
@@ -468,19 +594,22 @@ const Delete = (props: any) => {
   const { req, loading } = useRequest({
     id: ID,
     loadingMessage: {
-      title: capitalize(`Delete ${routeTitle}`),
+      title: capitalize(`${l.deactivate} ${routeTitle}`),
+    },
+    successMessage: {
+      title: capitalize(`${l.deactivate} ${routeTitle} ${l.successful}`),
     },
   });
 
   // Utils
-  function onDelete() {
+  function onDeactivate() {
     back();
     req({
       config: {
-        url: `${BASE_ENDPOINT}/delete`,
-        method: "DELETE",
+        url: `${BASE_ENDPOINT}/deactivate`,
+        method: "PATCH",
         data: {
-          deleteIds: deleteIds,
+          deactivateAccountIds: deactivateAccountIds,
         },
       },
       onResolve: {
@@ -495,11 +624,11 @@ const Delete = (props: any) => {
   return (
     <ConfirmationDisclosureTrigger
       w={"full"}
-      id={`${ID}-${deleteIds}`}
-      title={`Delete ${routeTitle}`}
-      description={l.msg_soft_delete}
-      confirmLabel={"Delete"}
-      onConfirm={onDelete}
+      id={`${ID}-${deactivateAccountIds}`}
+      title={`${l.deactivate} ${routeTitle}`}
+      description={l.msg_deactivate}
+      confirmLabel={`${l.deactivate}`}
+      onConfirm={onDeactivate}
       confirmButtonProps={{
         color: "fg.error",
         colorPalette: "gray",
@@ -509,217 +638,18 @@ const Delete = (props: any) => {
       disabled={disabled}
     >
       <MenuItem value="delete" color={"fg.error"} disabled={disabled}>
-        Delete
+        {l.deactivate}
         <Icon boxSize={"18px"} ml={"auto"}>
-          <IconTrash stroke={1.5} />
+          <IconX stroke={1.5} />
         </Icon>
       </MenuItem>
     </ConfirmationDisclosureTrigger>
   );
 };
 
-const DataGrid = (props: any) => {
-  // Props
-  const {
-    data,
-    limit,
-    setLimit,
-    page,
-    setPage,
-    totalPage,
-    footer,
-    routeTitle,
-    ...restProps
-  } = props;
-
-  // Contexts
-  const { l } = useLang();
-  const { themeConfig } = useThemeConfig();
-
-  // Hooks
-  const iss = useIsSmScreenWidth();
-
-  // States
-  const hasFooter = limit && setLimit && page && setPage;
-
-  return (
-    <>
-      <CContainer className="scrollY" flex={1} p={4} {...restProps}>
-        <SimpleGrid columns={[1, null, 2, 3, 4, 5]} gap={4}>
-          {data.map((item: Interface__Data) => {
-            const details = [
-              {
-                label: "ID",
-                render: <P>{item.id}</P>,
-              },
-              {
-                label: l.private_navs.kmis.category,
-                render: <P>{item.topic.category?.[0]?.title}</P>,
-              },
-              {
-                label: l.private_navs.kmis.topic,
-                render: <P>{item.topic.title}</P>,
-              },
-              {
-                label: l.count,
-                render: <P>{item.topic.totalQuiz}</P>,
-              },
-              {
-                label: l.added,
-                render: (
-                  <P>
-                    {formatDate(item.createdAt, {
-                      variant: "numeric",
-                      withTime: true,
-                      dashEmpty: true,
-                    })}
-                  </P>
-                ),
-              },
-              {
-                label: l.updated,
-                render: (
-                  <P>
-                    {formatDate(item.updatedAt, {
-                      variant: "numeric",
-                      withTime: true,
-                      dashEmpty: true,
-                    })}
-                  </P>
-                ),
-              },
-              {
-                label: l.deleted,
-                render: <DeletedStatus deletedAt={item.deletedAt} />,
-              },
-            ];
-
-            return (
-              <DataGridDetailDisclosureTrigger
-                key={item.id}
-                className="lg-clicky"
-                id={`${item.id}`}
-                title={routeTitle}
-                data={item}
-                details={details}
-                w={"full"}
-                cursor={"pointer"}
-                _hover={{
-                  bg: "d1",
-                }}
-              >
-                <CContainer
-                  key={item.id}
-                  flex={1}
-                  border={"1px solid"}
-                  borderColor={"border.muted"}
-                  rounded={themeConfig.radii.component}
-                  overflow={"clip"}
-                >
-                  <CContainer flex={1} gap={1} px={3} my={3}>
-                    <HStack>
-                      <P fontWeight={"semibold"} lineClamp={1}>
-                        {item.topic.title}
-                      </P>
-
-                      {item.deletedAt && (
-                        <DotIndicator color={"fg.error"} ml={"auto"} mr={1} />
-                      )}
-                    </HStack>
-
-                    <P color={"fg.subtle"} lineClamp={2}>
-                      {item.topic.category?.[0]?.title}
-                    </P>
-                  </CContainer>
-                </CContainer>
-              </DataGridDetailDisclosureTrigger>
-            );
-          })}
-        </SimpleGrid>
-      </CContainer>
-
-      {hasFooter && (
-        <>
-          <HStack
-            p={3}
-            borderTop={"1px solid"}
-            borderColor={"border.muted"}
-            justify={"space-between"}
-          >
-            <CContainer w={"fit"} mb={[1, null, 0]}>
-              <Limitation limit={limit} setLimit={setLimit} />
-            </CContainer>
-
-            {!iss && (
-              <CContainer
-                w={"fit"}
-                justify={"center"}
-                pl={[2, null, 0]}
-                mt={[footer ? 1 : 0, null, 0]}
-              >
-                {footer}
-              </CContainer>
-            )}
-
-            <CContainer w={"fit"}>
-              <Pagination page={page} setPage={setPage} totalPage={totalPage} />
-            </CContainer>
-          </HStack>
-
-          {iss && (
-            <CContainer
-              w={"fit"}
-              justify={"center"}
-              pl={[2, null, 0]}
-              mt={[footer ? 1 : 0, null, 0]}
-            >
-              {footer}
-            </CContainer>
-          )}
-        </>
-      )}
-    </>
-  );
-};
-
-const ToggleDataDisplay = (props: any) => {
-  // Props
-  const { displayTable, setDisplayTable, ...restProps } = props;
-
-  // Hooks
-  const iss = useIsSmScreenWidth();
-
-  return (
-    <Btn
-      iconButton={iss ? true : false}
-      size={"md"}
-      w={iss ? "" : "100px"}
-      variant={"outline"}
-      onClick={() => setDisplayTable((ps: boolean) => !ps)}
-      {...restProps}
-    >
-      <Icon>
-        {displayTable ? (
-          <IconTable stroke={1.5} />
-        ) : (
-          <IconLayoutGrid stroke={1.5} />
-        )}
-      </Icon>
-
-      {iss ? "" : displayTable ? "Table" : "Grid"}
-    </Btn>
-  );
-};
 const DataUtils = (props: any) => {
   // Props
-  const {
-    filter,
-    setFilter,
-    displayTable,
-    setDisplayTable,
-    routeTitle,
-    ...restProps
-  } = props;
+  const { filter, setFilter, routeTitle, ...restProps } = props;
 
   return (
     <HStack p={3} {...restProps}>
@@ -730,10 +660,7 @@ const DataUtils = (props: any) => {
         }}
       />
 
-      <ToggleDataDisplay
-        displayTable={displayTable}
-        setDisplayTable={setDisplayTable}
-      />
+      <DataDisplayToggle navKey={PREFIX_ID} />
 
       <Create routeTitle={routeTitle} />
     </HStack>
@@ -741,10 +668,12 @@ const DataUtils = (props: any) => {
 };
 const Data = (props: any) => {
   // Props
-  const { filter, displayTable, routeTitle } = props;
+  const { filter, routeTitle } = props;
 
   // Contexts
   const { l } = useLang();
+  const displayMode = useDataDisplay((s) => s.getDisplay(PREFIX_ID));
+  const displayTable = displayMode === "table";
 
   // States
   // const initialLoading = true;
@@ -764,21 +693,42 @@ const Data = (props: any) => {
     params: filter,
     dependencies: [filter],
   });
-  const tableProps = {
+  const dataProps: Interface__DataProps = {
     headers: [
-      {
-        th: l.private_navs.kmis.category,
-        sortable: true,
-      },
       {
         th: l.private_navs.kmis.topic,
         sortable: true,
       },
       {
-        th: l.count,
+        th: l.question,
         sortable: true,
-        align: "center",
       },
+      {
+        th: `${l.option} A`,
+        sortable: true,
+      },
+      {
+        th: `${l.option} B`,
+        sortable: true,
+      },
+      {
+        th: `${l.option} C`,
+        sortable: true,
+      },
+      {
+        th: `${l.option} D`,
+        sortable: true,
+      },
+      {
+        th: l.correct_answer,
+        sortable: true,
+      },
+      {
+        th: l.explanation,
+        sortable: true,
+      },
+
+      // timestamps
       {
         th: l.added,
         sortable: true,
@@ -796,30 +746,50 @@ const Data = (props: any) => {
       id: item.id,
       idx: idx,
       data: item,
+      dim: !!item.deletedAt,
       columns: [
-        {
-          td: <ClampText>{item.topic.category?.[0]?.title}</ClampText>,
-          value: item.topic.category?.[0]?.title,
-        },
         {
           td: <ClampText>{item.topic.title}</ClampText>,
           value: item.topic.title,
         },
         {
-          td: (
-            <ClampText>{formatNumber(item.topic.totalQuiz) || "-"}</ClampText>
-          ),
-          value: item.topic.totalQuiz,
-          align: "center",
+          td: <ClampText>{item.question}</ClampText>,
+          value: item.question,
         },
+        {
+          td: <ClampText>{item.answerA}</ClampText>,
+          value: item.answerA,
+        },
+        {
+          td: <ClampText>{item.answerB}</ClampText>,
+          value: item.answerB,
+        },
+        {
+          td: <ClampText>{item.answerB}</ClampText>,
+          value: item.answerB,
+        },
+        {
+          td: <ClampText>{item.answerD}</ClampText>,
+          value: item.answerD,
+        },
+        {
+          td: <ClampText>{item.correctOption}</ClampText>,
+          value: item.correctOption,
+        },
+        {
+          td: <ClampText>{item.explanation}</ClampText>,
+          value: item.explanation,
+        },
+
+        // timestamps
         {
           td: formatDate(item.createdAt, {
             variant: "numeric",
             withTime: true,
-            dashEmpty: true,
           }),
           value: item.createdAt,
           dataType: "date",
+          dashEmpty: true,
         },
         {
           td: formatDate(item.updatedAt, {
@@ -831,7 +801,11 @@ const Data = (props: any) => {
           dataType: "date",
         },
         {
-          td: <DeletedStatus deletedAt={item.deletedAt} />,
+          td: formatDate(item.deletedAt, {
+            variant: "numeric",
+            withTime: true,
+            dashEmpty: true,
+          }),
           value: item.deletedAt,
           dataType: "date",
         },
@@ -843,8 +817,8 @@ const Data = (props: any) => {
       }),
       (row) => ({
         override: (
-          <Restore
-            restoreIds={[row.data.id]}
+          <Activate
+            activateAccountIds={[row.data.id]}
             disabled={!row.data.deletedAt}
             routeTitle={routeTitle}
           />
@@ -852,9 +826,9 @@ const Data = (props: any) => {
       }),
       (row) => ({
         override: (
-          <Delete
-            deleteIds={[row.data.id]}
-            disabled={row.data.deletedAt}
+          <Deactivate
+            deactivateAccountIds={[row.data.id]}
+            disabled={!!row.data.deletedAt}
             routeTitle={routeTitle}
           />
         ),
@@ -863,8 +837,8 @@ const Data = (props: any) => {
     batchOptions: [
       (ids, { clearSelectedRows }) => ({
         override: (
-          <Restore
-            restoreIds={ids}
+          <Activate
+            activateAccountIds={ids}
             clearSelectedRows={clearSelectedRows}
             disabled={
               isEmptyArray(ids) ||
@@ -878,14 +852,14 @@ const Data = (props: any) => {
       }),
       (ids, { clearSelectedRows }) => ({
         override: (
-          <Delete
-            deleteIds={ids}
+          <Deactivate
+            deactivateAccountIds={ids}
             clearSelectedRows={clearSelectedRows}
             disabled={
               isEmptyArray(ids) ||
               data
                 ?.filter((item) => ids.includes(item.id))
-                .some((item) => item.deletedAt)
+                .some((item) => !!item.deletedAt)
             }
             routeTitle={routeTitle}
           />
@@ -899,10 +873,10 @@ const Data = (props: any) => {
     empty: <FeedbackNoData />,
     loaded: displayTable ? (
       <DataTable
-        headers={tableProps.headers}
-        rows={tableProps.rows}
-        rowOptions={tableProps.rowOptions}
-        batchOptions={tableProps.batchOptions}
+        headers={dataProps.headers}
+        rows={dataProps.rows}
+        rowOptions={dataProps.rowOptions}
+        batchOptions={dataProps.batchOptions}
         limit={limit}
         setLimit={setLimit}
         page={page}
@@ -912,12 +886,42 @@ const Data = (props: any) => {
     ) : (
       <DataGrid
         data={data}
+        dataProps={dataProps}
         limit={limit}
         setLimit={setLimit}
         page={page}
         setPage={setPage}
         totalPage={pagination?.meta?.last_page}
-        routeTitle={routeTitle}
+        renderItem={({
+          item,
+          row,
+          details,
+          selectedRows,
+          toggleRowSelection,
+        }: any) => {
+          const resolvedItem: Interface__Data = item;
+
+          return (
+            <DataGridItem
+              key={resolvedItem.id}
+              item={{
+                id: resolvedItem.id,
+                showImg: true,
+                img: imgUrl(resolvedItem.topic.topicCover?.[0]?.filePath),
+                imgFallbackSrc: `${SVGS_PATH}/no-avatar.svg`,
+                title: resolvedItem.question,
+                description: resolvedItem.topic.title,
+              }}
+              dim={!!resolvedItem.deletedAt}
+              dataProps={dataProps}
+              row={row}
+              selectedRows={selectedRows}
+              toggleRowSelection={toggleRowSelection}
+              routeTitle={routeTitle}
+              details={details}
+            />
+          );
+        }}
       />
     ),
   };
@@ -941,7 +945,7 @@ const Data = (props: any) => {
   );
 };
 
-export default function KMISQuizPage() {
+export default function Page() {
   // Contexts
   const { l } = useLang();
 
@@ -953,7 +957,6 @@ export default function KMISQuizPage() {
     search: "",
   };
   const [filter, setFilter] = useState(DEFAULT_FILTER);
-  const [displayTable, setDisplayTable] = useState<boolean>(true);
 
   return (
     <PageContainer>
@@ -961,15 +964,9 @@ export default function KMISQuizPage() {
         <DataUtils
           filter={filter}
           setFilter={setFilter}
-          displayTable={displayTable}
-          setDisplayTable={setDisplayTable}
           routeTitle={routeTitle}
         />
-        <Data
-          filter={filter}
-          displayTable={displayTable}
-          routeTitle={routeTitle}
-        />
+        <Data filter={filter} routeTitle={routeTitle} />
       </PageContent>
     </PageContainer>
   );

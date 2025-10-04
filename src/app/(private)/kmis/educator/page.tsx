@@ -494,7 +494,6 @@ const Data = (props: any) => {
     params: filter,
     dependencies: [filter],
   });
-  console.debug(data?.[0]?.user?.accountStatus);
   const dataProps: Interface__DataProps = {
     headers: [
       {

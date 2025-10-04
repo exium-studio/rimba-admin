@@ -45,6 +45,7 @@ const translations = {
   "close": "Tutup",
   "component": "Komponen",
   "confirm": "Konfirmasi",
+  "correct_answer": "Jawaban benar",
   "count": "Jumlah",
   "created": "Dibuat",
   "dark_mode": "Mode gelap",
@@ -151,6 +152,7 @@ const translations = {
     "description": "Perangkat Anda tidak mendukung fitur lokasi."
   },
   "example_UI": "Contoh UI",
+  "explanation": "Penjelasan",
   "february": "Februari",
   "finished_topic": "Topik selesai",
   "friday": "Jumat",
@@ -259,6 +261,7 @@ const translations = {
     "description": "Sepertinya Anda sedang offline. Periksa koneksi internet Anda dan coba lagi."
   },
   "open": "Buka",
+  "option": "Opsi",
   "optional": "Opsional",
   "others": "Lainnya",
   "otp_sent": "OTP telah dikirim",
@@ -299,6 +302,7 @@ const translations = {
   "profile": "Profil",
   "published_at": "Diterbitkan pada",
   "purpose": "Tujuan",
+  "question": "Pertanyaan",
   "read_more": "Baca selengkapnya",
   "recieve": "Terima",
   "related_apps": "Aplikasi Terkait",

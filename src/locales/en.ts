@@ -45,6 +45,7 @@ const translations = {
   "close": "Close",
   "component": "Component",
   "confirm": "Confirm",
+  "correct_answer": "Correct answer",
   "count": "Count",
   "created": "Created",
   "dark_mode": "Dark mode",
@@ -151,6 +152,7 @@ const translations = {
     "description": "Your device does not support location features."
   },
   "example_UI": "Example UI",
+  "explanation": "Explanation",
   "february": "February",
   "finished_topic": "Finished topic",
   "friday": "Friday",
@@ -259,6 +261,7 @@ const translations = {
     "description": "It looks like you are offline. Check your internet connection and try again."
   },
   "open": "Open",
+  "option": "Option",
   "optional": "Optional",
   "others": "Others",
   "otp_sent": "OTP has been sent",
@@ -299,6 +302,7 @@ const translations = {
   "profile": "Profile",
   "published_at": "Published at",
   "purpose": "Purpose",
+  "question": "Question",
   "read_more": "Read more",
   "recieve": "Recieve",
   "related_apps": "Related App",

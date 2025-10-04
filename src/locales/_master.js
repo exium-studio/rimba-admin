@@ -635,6 +635,22 @@ export const successful = {
   id: "Berhasil",
   en: "Successful",
 };
+export const question = {
+  id: "Pertanyaan",
+  en: "Question",
+};
+export const option = {
+  id: "Opsi",
+  en: "Option",
+};
+export const correct_answer = {
+  id: "Jawaban benar",
+  en: "Correct answer",
+};
+export const explanation = {
+  id: "Penjelasan",
+  en: "Explanation",
+};
 
 // Message
 export const msg_location_test_helper = {

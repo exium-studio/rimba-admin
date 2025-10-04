@@ -9,7 +9,6 @@ import { DataDisplayToggle } from "@/components/widget/DataDisplayToggle";
 import { DataGrid } from "@/components/widget/DataGrid";
 import { DataGridItem } from "@/components/widget/DataGridItem";
 import { DataTable } from "@/components/widget/DataTable";
-import { DeletedStatus } from "@/components/widget/DeletedStatus";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
 import { MiniUser } from "@/components/widget/MiniUser";
@@ -496,12 +495,20 @@ const Data = (props: any) => {
           dataType: "date",
         },
         {
-          td: <DeletedStatus deletedAt={item.deletedAt} />,
+          td: formatDate(item.deletedAt, {
+            variant: "numeric",
+            withTime: true,
+            dashEmpty: true,
+          }),
           value: item.deletedAt,
           dataType: "date",
         },
         {
-          td: <DeletedStatus deletedAt={item.user.deactiveAt} />,
+          td: formatDate(item.user.deactiveAt, {
+            variant: "numeric",
+            withTime: true,
+            dashEmpty: true,
+          }),
           value: item.user.deactiveAt,
           dataType: "date",
         },
