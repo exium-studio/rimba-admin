@@ -10,12 +10,10 @@ import {
 } from "@/components/ui/disclosure";
 import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-content";
 import { Field } from "@/components/ui/field";
-import { FileInput } from "@/components/ui/file-input";
 import { MenuItem } from "@/components/ui/menu";
 import { P } from "@/components/ui/p";
 import SearchInput from "@/components/ui/search-input";
 import { StringInput } from "@/components/ui/string-input";
-import { Textarea } from "@/components/ui/textarea";
 import { AccountStatus } from "@/components/widget/AccountStatus";
 import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
 import { DataDisplayToggle } from "@/components/widget/DataDisplayToggle";
@@ -31,7 +29,6 @@ import {
   Interface__BatchOptionsTableOptionGenerator,
   Interface__DataProps,
   Interface__KMISEducator,
-  Interface__KMISTopicCategory,
   Interface__RowOptionsTableOptionGenerator,
 } from "@/constants/interfaces";
 import { SVGS_PATH } from "@/constants/paths";
@@ -49,7 +46,6 @@ import { disclosureId } from "@/utils/disclosure";
 import { formatDate, formatNumber } from "@/utils/formatter";
 import { capitalize, pluckString } from "@/utils/string";
 import { getActiveNavs, imgUrl } from "@/utils/url";
-import { fileValidation } from "@/utils/validationSchema";
 import { FieldsetRoot, HStack, Icon, useDisclosure } from "@chakra-ui/react";
 import {
   IconActivity,
@@ -94,22 +90,15 @@ const Create = (props: any) => {
   // States
   const formik = useFormik({
     validateOnChange: false,
-    initialValues: { files: null as any, title: "", description: "" },
+    initialValues: { name: "", email: "", accountStatus: false },
     validationSchema: yup.object().shape({
-      files: fileValidation({
-        maxSizeMB: 10,
-        allowedExtensions: ["jpg", "jpeg", "png"],
-      }).required(l.msg_required_form),
-      title: yup.string().required(l.msg_required_form),
-      description: yup.string().required(l.msg_required_form),
+      name: yup.string().required(l.msg_required_form),
+      email: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values, { resetForm }) => {
-      back();
-
       const payload = new FormData();
-      payload.append("files", values.files[0]);
-      payload.append("title", values.title);
-      payload.append("description", values.description);
+      payload.append("name", values.name);
+      payload.append("email", values.email);
 
       const config = {
         url: `${BASE_ENDPOINT}/create`,
@@ -122,6 +111,7 @@ const Create = (props: any) => {
         onResolve: {
           onSuccess: () => {
             resetForm();
+            back();
             setRt((ps) => !ps);
           },
         },
@@ -155,41 +145,27 @@ const Create = (props: any) => {
             <form id={ID} onSubmit={formik.handleSubmit}>
               <FieldsetRoot disabled={loading}>
                 <Field
-                  label={"Cover"}
-                  invalid={!!formik.errors.files}
-                  errorText={formik.errors.files as string}
-                >
-                  <FileInput
-                    dropzone
-                    inputValue={formik.values.files}
-                    onChange={(inputValue) => {
-                      formik.setFieldValue("files", inputValue);
-                    }}
-                  />
-                </Field>
-
-                <Field
-                  label={l.title}
-                  invalid={!!formik.errors.title}
-                  errorText={formik.errors.title as string}
+                  label={l.name}
+                  invalid={!!formik.errors.name}
+                  errorText={formik.errors.name as string}
                 >
                   <StringInput
-                    inputValue={formik.values.title}
+                    inputValue={formik.values.name}
                     onChange={(inputValue) => {
-                      formik.setFieldValue("title", inputValue);
+                      formik.setFieldValue("name", inputValue);
                     }}
                   />
                 </Field>
 
                 <Field
-                  label={l.description}
-                  invalid={!!formik.errors.description}
-                  errorText={formik.errors.description as string}
+                  label={"Email"}
+                  invalid={!!formik.errors.email}
+                  errorText={formik.errors.email as string}
                 >
-                  <Textarea
-                    inputValue={formik.values.description}
+                  <StringInput
+                    inputValue={formik.values.email}
                     onChange={(inputValue) => {
-                      formik.setFieldValue("description", inputValue);
+                      formik.setFieldValue("email", inputValue);
                     }}
                   />
                 </Field>
@@ -217,7 +193,7 @@ const Update = (props: any) => {
 
   // Props
   const { data, routeTitle } = props;
-  const resolvedData = data as Interface__KMISTopicCategory;
+  const resolvedData = data as Interface__Data;
 
   // Contexts
   const { l } = useLang();
@@ -245,33 +221,15 @@ const Update = (props: any) => {
   // States
   const formik = useFormik({
     validateOnChange: false,
-    initialValues: {
-      files: null as any,
-      title: "",
-      description: "",
-      deleteDocumentIds: [],
-    },
+    initialValues: { name: "", email: "" },
     validationSchema: yup.object().shape({
-      files: fileValidation({
-        maxSizeMB: 10,
-        allowedExtensions: ["jpg", "jpeg", "png"],
-      }),
-      title: yup.string().required(l.msg_required_form),
-      description: yup.string().required(l.msg_required_form),
+      name: yup.string().required(l.msg_required_form),
+      email: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values) => {
-      back();
-
       const payload = new FormData();
-      if (values.files?.[0]) {
-        payload.append("files", values.files[0]);
-      }
-      payload.append("title", values.title);
-      payload.append("description", values.description);
-      payload.append(
-        "deletedDocumentIds",
-        JSON.stringify(values.deleteDocumentIds)
-      );
+      payload.append("name", values.name);
+      payload.append("email", values.email);
 
       const config = {
         url: `${BASE_ENDPOINT}/update/${resolvedData.id}`,
@@ -283,6 +241,7 @@ const Update = (props: any) => {
         config,
         onResolve: {
           onSuccess: () => {
+            back();
             setRt((ps) => !ps);
           },
         },
@@ -292,10 +251,8 @@ const Update = (props: any) => {
 
   useEffect(() => {
     formik.setValues({
-      files: [],
-      title: resolvedData.title,
-      description: resolvedData.description,
-      deleteDocumentIds: [],
+      name: resolvedData.user.name,
+      email: resolvedData.user.email,
     });
   }, [open, resolvedData]);
 
@@ -318,61 +275,27 @@ const Update = (props: any) => {
             <form id={ID} onSubmit={formik.handleSubmit}>
               <FieldsetRoot disabled={loading}>
                 <Field
-                  label={"Cover"}
-                  invalid={!!formik.errors.files}
-                  errorText={formik.errors.files as string}
-                >
-                  <FileInput
-                    dropzone
-                    inputValue={formik.values.files}
-                    onChange={(inputValue) => {
-                      formik.setFieldValue("files", inputValue);
-                    }}
-                    existingFiles={resolvedData.categoryCover}
-                    onDeleteFile={(fileData) => {
-                      formik.setFieldValue(
-                        "deleteDocumentIds",
-                        Array.from(
-                          new Set([
-                            ...formik.values.deleteDocumentIds,
-                            fileData.id,
-                          ])
-                        )
-                      );
-                    }}
-                    onUndoDeleteFile={(fileData) => {
-                      formik.setFieldValue(
-                        "deleteDocumentIds",
-                        formik.values.deleteDocumentIds.filter(
-                          (id: string) => id !== fileData.id
-                        )
-                      );
-                    }}
-                  />
-                </Field>
-
-                <Field
-                  label={l.title}
-                  invalid={!!formik.errors.title}
-                  errorText={formik.errors.title as string}
+                  label={l.name}
+                  invalid={!!formik.errors.name}
+                  errorText={formik.errors.name as string}
                 >
                   <StringInput
-                    inputValue={formik.values.title}
+                    inputValue={formik.values.name}
                     onChange={(inputValue) => {
-                      formik.setFieldValue("title", inputValue);
+                      formik.setFieldValue("name", inputValue);
                     }}
                   />
                 </Field>
 
                 <Field
-                  label={l.description}
-                  invalid={!!formik.errors.description}
-                  errorText={formik.errors.description as string}
+                  label={"Email"}
+                  invalid={!!formik.errors.email}
+                  errorText={formik.errors.email as string}
                 >
-                  <Textarea
-                    inputValue={formik.values.description}
+                  <StringInput
+                    inputValue={formik.values.email}
                     onChange={(inputValue) => {
-                      formik.setFieldValue("description", inputValue);
+                      formik.setFieldValue("email", inputValue);
                     }}
                   />
                 </Field>

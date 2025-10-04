@@ -46,7 +46,7 @@ type Interface__Data = Interface__KMISStudent;
 
 //   // Props
 //   const { data, routeTitle } = props;
-//   const resolvedData = data as Interface__KMISTopicCategory;
+//   const resolvedData = data as Interface__Data;
 
 //   // Contexts
 //   const { l } = useLang();

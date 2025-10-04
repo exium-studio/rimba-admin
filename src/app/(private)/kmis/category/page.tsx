@@ -102,8 +102,6 @@ const Create = (props: any) => {
       description: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values, { resetForm }) => {
-      back();
-
       const payload = new FormData();
       payload.append("files", values.files[0]);
       payload.append("title", values.title);
@@ -120,6 +118,7 @@ const Create = (props: any) => {
         onResolve: {
           onSuccess: () => {
             resetForm();
+            back();
             setRt((ps) => !ps);
           },
         },
@@ -217,7 +216,7 @@ const Update = (props: any) => {
 
   // Props
   const { data, routeTitle } = props;
-  const resolvedData = data as Interface__KMISTopicCategory;
+  const resolvedData = data as Interface__Data;
 
   // Contexts
   const { l } = useLang();
@@ -260,8 +259,6 @@ const Update = (props: any) => {
       description: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values) => {
-      back();
-
       const payload = new FormData();
       if (values.files?.[0]) {
         payload.append("files", values.files[0]);
@@ -283,6 +280,7 @@ const Update = (props: any) => {
         config,
         onResolve: {
           onSuccess: () => {
+            back();
             setRt((ps) => !ps);
           },
         },
