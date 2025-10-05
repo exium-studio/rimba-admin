@@ -24,3 +24,22 @@ export const KMIS_MATERIAL_TYPES = [
     label: "Dokumen",
   },
 ];
+
+export const KMIS_CORRECT_ANSWER = [
+  {
+    id: "A",
+    label: "A",
+  },
+  {
+    id: "B",
+    label: "B",
+  },
+  {
+    id: "C",
+    label: "C",
+  },
+  {
+    id: "D",
+    label: "D",
+  },
+];

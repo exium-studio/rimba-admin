@@ -23,6 +23,8 @@ import { DataTable } from "@/components/widget/DataTable";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
 import { PageContainer, PageContent } from "@/components/widget/Page";
+import { SelectKMISCorrectAnswer } from "@/components/widget/SelectKMISCorrectAnswer";
+import { SelectKMISTopic } from "@/components/widget/SelectKMISTopic";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
 import {
   Interface__BatchOptionsTableOptionGenerator,
@@ -31,7 +33,6 @@ import {
   Interface__RowOptionsTableOptionGenerator,
   Interface__SelectOption,
 } from "@/constants/interfaces";
-import { SVGS_PATH } from "@/constants/paths";
 import { useDataDisplay } from "@/context/useDataDisplay";
 import useLang from "@/context/useLang";
 import useRenderTrigger from "@/context/useRenderTrigger";
@@ -45,7 +46,7 @@ import { back } from "@/utils/client";
 import { disclosureId } from "@/utils/disclosure";
 import { formatDate } from "@/utils/formatter";
 import { capitalize, pluckString } from "@/utils/string";
-import { getActiveNavs, imgUrl } from "@/utils/url";
+import { getActiveNavs } from "@/utils/url";
 import { FieldsetRoot, HStack, Icon, useDisclosure } from "@chakra-ui/react";
 import {
   IconActivity,
@@ -97,7 +98,7 @@ const Create = (props: any) => {
       answerB: "",
       answerC: "",
       answerD: "",
-      correctOption: "",
+      correctOption: null as unknown as Interface__SelectOption[],
       explanation: "",
     },
     validationSchema: yup.object().shape({
@@ -107,18 +108,18 @@ const Create = (props: any) => {
       answerB: yup.string().required(l.msg_required_form),
       answerC: yup.string().required(l.msg_required_form),
       answerD: yup.string().required(l.msg_required_form),
-      correctOption: yup.string().required(l.msg_required_form),
+      correctOption: yup.array().required(l.msg_required_form),
       explanation: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values, { resetForm }) => {
       const payload = new FormData();
-      payload.append("topic", `${values.topic?.[0]?.id}`);
+      payload.append("topicId", `${values.topic?.[0]?.id}`);
       payload.append("question", values.question);
       payload.append("answerA", values.answerA);
       payload.append("answerB", values.answerB);
       payload.append("answerC", values.answerC);
       payload.append("answerD", values.answerD);
-      payload.append("correctOption", values.correctOption);
+      payload.append("correctOption", values.correctOption?.[0]?.id);
       payload.append("explanation", values.explanation);
 
       const config = {
@@ -170,7 +171,12 @@ const Create = (props: any) => {
                   invalid={!!formik.errors.topic}
                   errorText={formik.errors.topic as string}
                 >
-                  {/* <SelectTopic /> */}
+                  <SelectKMISTopic
+                    inputValue={formik.values.topic}
+                    onConfirm={(inputValue) =>
+                      formik.setFieldValue("topic", inputValue)
+                    }
+                  />
                 </Field>
 
                 <Field
@@ -243,9 +249,9 @@ const Create = (props: any) => {
                   invalid={!!formik.errors.correctOption}
                   errorText={formik.errors.correctOption as string}
                 >
-                  <StringInput
+                  <SelectKMISCorrectAnswer
                     inputValue={formik.values.correctOption}
-                    onChange={(inputValue) => {
+                    onConfirm={(inputValue) => {
                       formik.setFieldValue("correctOption", inputValue);
                     }}
                   />
@@ -322,7 +328,7 @@ const Update = (props: any) => {
       answerB: "",
       answerC: "",
       answerD: "",
-      correctOption: "",
+      correctOption: null as unknown as Interface__SelectOption[],
       explanation: "",
     },
     validationSchema: yup.object().shape({
@@ -332,18 +338,18 @@ const Update = (props: any) => {
       answerB: yup.string().required(l.msg_required_form),
       answerC: yup.string().required(l.msg_required_form),
       answerD: yup.string().required(l.msg_required_form),
-      correctOption: yup.string().required(l.msg_required_form),
+      correctOption: yup.array().required(l.msg_required_form),
       explanation: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values, { resetForm }) => {
       const payload = new FormData();
-      payload.append("topic", `${values.topic?.[0]?.id}`);
+      payload.append("topicId", `${values.topic?.[0]?.id}`);
       payload.append("question", values.question);
       payload.append("answerA", values.answerA);
       payload.append("answerB", values.answerB);
       payload.append("answerC", values.answerC);
       payload.append("answerD", values.answerD);
-      payload.append("correctOption", values.correctOption);
+      payload.append("correctOption", values.correctOption?.[0]?.id);
       payload.append("explanation", values.explanation);
 
       const config = {
@@ -378,7 +384,12 @@ const Update = (props: any) => {
       answerB: resolvedData.answerB,
       answerC: resolvedData.answerC,
       answerD: resolvedData.answerD,
-      correctOption: resolvedData.correctOption,
+      correctOption: [
+        {
+          id: resolvedData.correctOption,
+          label: resolvedData.correctOption,
+        },
+      ],
       explanation: resolvedData.explanation,
     });
   }, [open, resolvedData]);
@@ -406,7 +417,12 @@ const Update = (props: any) => {
                   invalid={!!formik.errors.topic}
                   errorText={formik.errors.topic as string}
                 >
-                  {/* <SelectTopic /> */}
+                  <SelectKMISTopic
+                    inputValue={formik.values.topic}
+                    onConfirm={(inputValue) =>
+                      formik.setFieldValue("topic", inputValue)
+                    }
+                  />
                 </Field>
 
                 <Field
@@ -479,9 +495,9 @@ const Update = (props: any) => {
                   invalid={!!formik.errors.correctOption}
                   errorText={formik.errors.correctOption as string}
                 >
-                  <StringInput
+                  <SelectKMISCorrectAnswer
                     inputValue={formik.values.correctOption}
-                    onChange={(inputValue) => {
+                    onConfirm={(inputValue) => {
                       formik.setFieldValue("correctOption", inputValue);
                     }}
                   />
@@ -518,11 +534,11 @@ const Update = (props: any) => {
     </>
   );
 };
-const Activate = (props: any) => {
+const Restore = (props: any) => {
   const ID = `${PREFIX_ID}_activate`;
 
   // Props
-  const { activateAccountIds, clearSelectedRows, disabled, routeTitle } = props;
+  const { restoreids, clearSelectedRows, disabled, routeTitle } = props;
 
   // Contexts
   const { l } = useLang();
@@ -532,10 +548,10 @@ const Activate = (props: any) => {
   const { req, loading } = useRequest({
     id: ID,
     loadingMessage: {
-      title: capitalize(`${l.activate} ${routeTitle}`),
+      title: capitalize(`${l.restore} ${routeTitle}`),
     },
     successMessage: {
-      title: capitalize(`${l.activate} ${routeTitle} ${l.successful}`),
+      title: capitalize(`${l.restore} ${routeTitle} ${l.successful}`),
     },
   });
 
@@ -547,7 +563,7 @@ const Activate = (props: any) => {
         url: `${BASE_ENDPOINT}/activate`,
         method: "PATCH",
         data: {
-          activateAccountIds: activateAccountIds,
+          restoreids: restoreids,
         },
       },
       onResolve: {
@@ -562,16 +578,16 @@ const Activate = (props: any) => {
   return (
     <ConfirmationDisclosureTrigger
       w={"full"}
-      id={`${ID}-${activateAccountIds}`}
-      title={`${l.activate} ${routeTitle}`}
+      id={`${ID}-${restoreids}`}
+      title={`${l.restore} ${routeTitle}`}
       description={l.msg_activate}
-      confirmLabel={`${l.activate}`}
+      confirmLabel={`${l.restore}`}
       onConfirm={onActivate}
       loading={loading}
       disabled={disabled}
     >
       <MenuItem value="restore" disabled={disabled}>
-        {l.activate}
+        {l.restore}
         <Icon boxSize={"18px"} ml={"auto"}>
           <IconActivity stroke={1.5} />
         </Icon>
@@ -583,8 +599,7 @@ const Deactivate = (props: any) => {
   const ID = `${PREFIX_ID}_deactivate`;
 
   // Props
-  const { deactivateAccountIds, clearSelectedRows, disabled, routeTitle } =
-    props;
+  const { deleteIds, clearSelectedRows, disabled, routeTitle } = props;
 
   // Contexts
   const { l } = useLang();
@@ -594,10 +609,10 @@ const Deactivate = (props: any) => {
   const { req, loading } = useRequest({
     id: ID,
     loadingMessage: {
-      title: capitalize(`${l.deactivate} ${routeTitle}`),
+      title: capitalize(`${l.delete_} ${routeTitle}`),
     },
     successMessage: {
-      title: capitalize(`${l.deactivate} ${routeTitle} ${l.successful}`),
+      title: capitalize(`${l.delete_} ${routeTitle} ${l.successful}`),
     },
   });
 
@@ -609,7 +624,7 @@ const Deactivate = (props: any) => {
         url: `${BASE_ENDPOINT}/deactivate`,
         method: "PATCH",
         data: {
-          deactivateAccountIds: deactivateAccountIds,
+          deleteIds: deleteIds,
         },
       },
       onResolve: {
@@ -624,10 +639,10 @@ const Deactivate = (props: any) => {
   return (
     <ConfirmationDisclosureTrigger
       w={"full"}
-      id={`${ID}-${deactivateAccountIds}`}
-      title={`${l.deactivate} ${routeTitle}`}
+      id={`${ID}-${deleteIds}`}
+      title={`${l.delete_} ${routeTitle}`}
       description={l.msg_deactivate}
-      confirmLabel={`${l.deactivate}`}
+      confirmLabel={`${l.delete_}`}
       onConfirm={onDeactivate}
       confirmButtonProps={{
         color: "fg.error",
@@ -638,7 +653,7 @@ const Deactivate = (props: any) => {
       disabled={disabled}
     >
       <MenuItem value="delete" color={"fg.error"} disabled={disabled}>
-        {l.deactivate}
+        {l.delete_}
         <Icon boxSize={"18px"} ml={"auto"}>
           <IconX stroke={1.5} />
         </Icon>
@@ -817,8 +832,8 @@ const Data = (props: any) => {
       }),
       (row) => ({
         override: (
-          <Activate
-            activateAccountIds={[row.data.id]}
+          <Restore
+            restoreids={[row.data.id]}
             disabled={!row.data.deletedAt}
             routeTitle={routeTitle}
           />
@@ -827,7 +842,7 @@ const Data = (props: any) => {
       (row) => ({
         override: (
           <Deactivate
-            deactivateAccountIds={[row.data.id]}
+            deleteIds={[row.data.id]}
             disabled={!!row.data.deletedAt}
             routeTitle={routeTitle}
           />
@@ -837,8 +852,8 @@ const Data = (props: any) => {
     batchOptions: [
       (ids, { clearSelectedRows }) => ({
         override: (
-          <Activate
-            activateAccountIds={ids}
+          <Restore
+            restoreids={ids}
             clearSelectedRows={clearSelectedRows}
             disabled={
               isEmptyArray(ids) ||
@@ -853,7 +868,7 @@ const Data = (props: any) => {
       (ids, { clearSelectedRows }) => ({
         override: (
           <Deactivate
-            deactivateAccountIds={ids}
+            deleteIds={ids}
             clearSelectedRows={clearSelectedRows}
             disabled={
               isEmptyArray(ids) ||
@@ -906,9 +921,6 @@ const Data = (props: any) => {
               key={resolvedItem.id}
               item={{
                 id: resolvedItem.id,
-                showImg: true,
-                img: imgUrl(resolvedItem.topic.topicCover?.[0]?.filePath),
-                imgFallbackSrc: `${SVGS_PATH}/no-avatar.svg`,
                 title: resolvedItem.question,
                 description: resolvedItem.topic.title,
               }}
