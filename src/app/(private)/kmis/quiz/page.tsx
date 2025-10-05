@@ -49,10 +49,10 @@ import { capitalize, pluckString } from "@/utils/string";
 import { getActiveNavs } from "@/utils/url";
 import { FieldsetRoot, HStack, Icon, useDisclosure } from "@chakra-ui/react";
 import {
-  IconActivity,
   IconPencilMinus,
   IconPlus,
-  IconX,
+  IconRestore,
+  IconTrash,
 } from "@tabler/icons-react";
 import { useFormik } from "formik";
 import { usePathname } from "next/navigation";
@@ -535,10 +535,10 @@ const Update = (props: any) => {
   );
 };
 const Restore = (props: any) => {
-  const ID = `${PREFIX_ID}_activate`;
+  const ID = `${PREFIX_ID}_restore`;
 
   // Props
-  const { restoreids, clearSelectedRows, disabled, routeTitle } = props;
+  const { restoreIds, clearSelectedRows, disabled, routeTitle } = props;
 
   // Contexts
   const { l } = useLang();
@@ -560,10 +560,10 @@ const Restore = (props: any) => {
     back();
     req({
       config: {
-        url: `${BASE_ENDPOINT}/activate`,
+        url: `${BASE_ENDPOINT}/restore`,
         method: "PATCH",
         data: {
-          restoreids: restoreids,
+          restoreIds: restoreIds,
         },
       },
       onResolve: {
@@ -578,7 +578,7 @@ const Restore = (props: any) => {
   return (
     <ConfirmationDisclosureTrigger
       w={"full"}
-      id={`${ID}-${restoreids}`}
+      id={`${ID}-${restoreIds}`}
       title={`${l.restore} ${routeTitle}`}
       description={l.msg_activate}
       confirmLabel={`${l.restore}`}
@@ -589,14 +589,14 @@ const Restore = (props: any) => {
       <MenuItem value="restore" disabled={disabled}>
         {l.restore}
         <Icon boxSize={"18px"} ml={"auto"}>
-          <IconActivity stroke={1.5} />
+          <IconRestore stroke={1.5} />
         </Icon>
       </MenuItem>
     </ConfirmationDisclosureTrigger>
   );
 };
-const Deactivate = (props: any) => {
-  const ID = `${PREFIX_ID}_deactivate`;
+const Delete = (props: any) => {
+  const ID = `${PREFIX_ID}_delete`;
 
   // Props
   const { deleteIds, clearSelectedRows, disabled, routeTitle } = props;
@@ -621,8 +621,8 @@ const Deactivate = (props: any) => {
     back();
     req({
       config: {
-        url: `${BASE_ENDPOINT}/deactivate`,
-        method: "PATCH",
+        url: `${BASE_ENDPOINT}/delete`,
+        method: "DELETE",
         data: {
           deleteIds: deleteIds,
         },
@@ -655,7 +655,7 @@ const Deactivate = (props: any) => {
       <MenuItem value="delete" color={"fg.error"} disabled={disabled}>
         {l.delete_}
         <Icon boxSize={"18px"} ml={"auto"}>
-          <IconX stroke={1.5} />
+          <IconTrash stroke={1.5} />
         </Icon>
       </MenuItem>
     </ConfirmationDisclosureTrigger>
@@ -737,6 +737,7 @@ const Data = (props: any) => {
       {
         th: l.correct_answer,
         sortable: true,
+        align: "center",
       },
       {
         th: l.explanation,
@@ -790,6 +791,7 @@ const Data = (props: any) => {
         {
           td: <ClampText>{item.correctOption}</ClampText>,
           value: item.correctOption,
+          align: "center",
         },
         {
           td: <ClampText>{item.explanation}</ClampText>,
@@ -833,7 +835,7 @@ const Data = (props: any) => {
       (row) => ({
         override: (
           <Restore
-            restoreids={[row.data.id]}
+            restoreIds={[row.data.id]}
             disabled={!row.data.deletedAt}
             routeTitle={routeTitle}
           />
@@ -841,7 +843,7 @@ const Data = (props: any) => {
       }),
       (row) => ({
         override: (
-          <Deactivate
+          <Delete
             deleteIds={[row.data.id]}
             disabled={!!row.data.deletedAt}
             routeTitle={routeTitle}
@@ -853,7 +855,7 @@ const Data = (props: any) => {
       (ids, { clearSelectedRows }) => ({
         override: (
           <Restore
-            restoreids={ids}
+            restoreIds={ids}
             clearSelectedRows={clearSelectedRows}
             disabled={
               isEmptyArray(ids) ||
@@ -867,7 +869,7 @@ const Data = (props: any) => {
       }),
       (ids, { clearSelectedRows }) => ({
         override: (
-          <Deactivate
+          <Delete
             deleteIds={ids}
             clearSelectedRows={clearSelectedRows}
             disabled={

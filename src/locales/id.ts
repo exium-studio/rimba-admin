@@ -99,6 +99,10 @@ const translations = {
     "title": "Validation failed",
     "description": "Beberapa data tidak valid, periksa kembali."
   },
+  "error_422_duplicate_question": {
+    "title": "Data duplikat",
+    "description": "Pertanyaan yang sama di topic tersebut sudah ada, periksa kembali."
+  },
   "error_422_duplicate_title": {
     "title": "Data duplikat",
     "description": "Judul yang sama sudah ada, periksa kembali."

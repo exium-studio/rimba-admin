@@ -1125,6 +1125,13 @@ export const error_422_duplicate_title = {
     en: "The title already exists, please review.",
   },
 };
+export const error_422_duplicate_question = {
+  title: { id: "Data duplikat", en: "Duplicate data" },
+  description: {
+    id: "Pertanyaan yang sama di topic tersebut sudah ada, periksa kembali.",
+    en: "Question already exists in this topic, please review.",
+  },
+};
 export const error_429_default = {
   title: { id: "Too many requests", en: "Too many requests" },
   description: {
