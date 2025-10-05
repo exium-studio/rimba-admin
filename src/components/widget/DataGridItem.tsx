@@ -52,12 +52,16 @@ export const DataGridItem = (props: Props) => {
   // Contexts
   const { themeConfig } = useThemeConfig();
 
+  // States
+  const isRowSelected = selectedRows.includes(row.id);
+  const selectedColor = `${themeConfig.colorPalette}.focusRing`;
+
   return (
     <CContainer
       key={item.id}
       flex={1}
       border={"1px solid"}
-      borderColor={"border.muted"}
+      borderColor={isRowSelected ? selectedColor : "d1"}
       rounded={themeConfig.radii.component}
       overflow={"clip"}
       pos={"relative"}
@@ -70,7 +74,7 @@ export const DataGridItem = (props: Props) => {
         }}
       >
         <Checkbox
-          checked={selectedRows.includes(row.id)}
+          checked={isRowSelected}
           subtle
           pos={"absolute"}
           top={2}
