@@ -6,10 +6,10 @@ import useRequest from "@/hooks/useRequest";
 import { capitalizeWords } from "@/utils/string";
 import { useEffect, useState } from "react";
 
-const SUFFIX_ID = "kmis_category";
-const ENDPOINT = `/api/kmis/category/index`;
+const SUFFIX_ID = "kmis_topic";
+const ENDPOINT = `/api/kmis/topic/index`;
 
-export const SelectKMISCategory = (props: Omit<Props__SelectInput, "id">) => {
+export const SelectKMISTopic = (props: Omit<Props__SelectInput, "id">) => {
   const ID = `select_${SUFFIX_ID}`;
 
   // Props

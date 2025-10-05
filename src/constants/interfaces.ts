@@ -13,9 +13,31 @@ import {
   Type__DateRange,
   Type__DateRangePresets,
   Type__DisclosureSizes,
+  Type__MaterialType,
   Type__TimeRange,
 } from "./types";
 
+export interface Interface__KMISTopic extends Interface__CUD {
+  id: string;
+  category: Interface__KMISTopicCategory;
+  topicCover: Interface__StorageFile[];
+  title: string;
+  description: string;
+  totalQuiz: number;
+}
+export interface Interface__KMISMaterial extends Interface__CUD {
+  id: string;
+  createdUser: Interface__User;
+  uploadedUser: Interface__User;
+  topic: Interface__KMISTopic;
+  materialFile: Interface__StorageFile[];
+  materialCover: Interface__StorageFile[];
+  title: string;
+  materialType: Type__MaterialType;
+  materialData: any;
+  description: string;
+  isPublic: boolean;
+}
 export interface Interface__KMISQuiz extends Interface__CUD {
   id: string;
   topic: Interface__KMISTopic;
@@ -39,14 +61,6 @@ export interface Interface__KMISStudent extends Interface__CUD {
   totalAttempts: number;
   totalFinished: number;
   avgScoreFinished: number;
-}
-export interface Interface__KMISTopic extends Interface__CUD {
-  id: string;
-  category: Interface__KMISTopicCategory;
-  topicCover: Interface__StorageFile[];
-  title: string;
-  description: string;
-  totalQuiz: number;
 }
 export interface Interface__KMISTopicCategory extends Interface__CUD {
   id: string;

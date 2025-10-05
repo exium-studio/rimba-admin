@@ -6,3 +6,21 @@ export const OPTIONS_RELIGION = [
   { id: 5, label: "Konghucu" },
   { id: 6, label: "Kristen" },
 ];
+export const KMIS_MATERIAL_TYPES = [
+  {
+    id: "Text",
+    label: "Text",
+  },
+  {
+    id: "Gambar",
+    label: "Gambar",
+  },
+  {
+    id: "Video",
+    label: "Video",
+  },
+  {
+    id: "Dokumen",
+    label: "Dokumen",
+  },
+];

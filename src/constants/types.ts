@@ -1,5 +1,7 @@
 import { ButtonProps, MenuItemProps } from "@chakra-ui/react";
 
+export type Type__MaterialType = "Text" | "Gambar" | "Video" | "Dokumen";
+
 export type Type__ExtendedPermissionState =
   | "prompt"
   | "denied"

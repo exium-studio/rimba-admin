@@ -1,7 +1,803 @@
 "use client";
 
+import { Btn } from "@/components/ui/btn";
 import { CContainer } from "@/components/ui/c-container";
+import {
+  DisclosureBody,
+  DisclosureContent,
+  DisclosureFooter,
+  DisclosureHeader,
+  DisclosureRoot,
+} from "@/components/ui/disclosure";
+import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-content";
+import { Field } from "@/components/ui/field";
+import { ImgInput } from "@/components/ui/img-input";
+import { MenuItem } from "@/components/ui/menu";
+import SearchInput from "@/components/ui/search-input";
+import { StringInput } from "@/components/ui/string-input";
+import { Textarea } from "@/components/ui/textarea";
+import { ClampText } from "@/components/widget/ClampText";
+import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
+import { DataDisplayToggle } from "@/components/widget/DataDisplayToggle";
+import { DataGrid } from "@/components/widget/DataGrid";
+import { DataGridItem } from "@/components/widget/DataGridItem";
+import { DataTable } from "@/components/widget/DataTable";
+import FeedbackNoData from "@/components/widget/FeedbackNoData";
+import FeedbackRetry from "@/components/widget/FeedbackRetry";
+import { PageContainer, PageContent } from "@/components/widget/Page";
+import { SelectKMISMaterialType } from "@/components/widget/SelectKMISMaterialType";
+import { SelectKMISTopic } from "@/components/widget/SelectKMISTopic";
+import { TableSkeleton } from "@/components/widget/TableSkeleton";
+import {
+  Interface__BatchOptionsTableOptionGenerator,
+  Interface__DataProps,
+  Interface__KMISMaterial,
+  Interface__RowOptionsTableOptionGenerator,
+  Interface__SelectOption,
+} from "@/constants/interfaces";
+import { useDataDisplay } from "@/context/useDataDisplay";
+import useLang from "@/context/useLang";
+import useRenderTrigger from "@/context/useRenderTrigger";
+import { useThemeConfig } from "@/context/useThemeConfig";
+import useBackOnClose from "@/hooks/useBackOnClose";
+import useDataState from "@/hooks/useDataState";
+import { useIsSmScreenWidth } from "@/hooks/useIsSmScreenWidth";
+import useRequest from "@/hooks/useRequest";
+import { isEmptyArray, last } from "@/utils/array";
+import { back } from "@/utils/client";
+import { disclosureId } from "@/utils/disclosure";
+import { formatDate } from "@/utils/formatter";
+import { capitalize, pluckString } from "@/utils/string";
+import { getActiveNavs, imgUrl } from "@/utils/url";
+import {
+  FieldsetRoot,
+  HStack,
+  Icon,
+  SimpleGrid,
+  useDisclosure,
+} from "@chakra-ui/react";
+import {
+  IconActivity,
+  IconPencilMinus,
+  IconPlus,
+  IconX,
+} from "@tabler/icons-react";
+import { useFormik } from "formik";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import * as yup from "yup";
 
-export default function KMISMaterialPage() {
-  return <CContainer></CContainer>;
+const BASE_ENDPOINT = "/api/kmis/material";
+const PREFIX_ID = "kmis_material";
+type Interface__Data = Interface__KMISMaterial;
+
+const Create = (props: any) => {
+  const ID = `${PREFIX_ID}_create`;
+
+  // Props
+  const { routeTitle } = props;
+
+  // Contexts
+  const { l } = useLang();
+  const { themeConfig } = useThemeConfig();
+  const setRt = useRenderTrigger((s) => s.setRt);
+
+  // Hooks
+  const iss = useIsSmScreenWidth();
+  const { open, onOpen, onClose } = useDisclosure();
+  useBackOnClose(disclosureId(ID), open, onOpen, onClose);
+  const { req, loading } = useRequest({
+    id: ID,
+    loadingMessage: {
+      title: capitalize(`${l.add} ${routeTitle}`),
+    },
+    successMessage: {
+      title: capitalize(`${routeTitle} ${l.successful}`),
+    },
+  });
+
+  // States
+  const formik = useFormik({
+    validateOnChange: false,
+    initialValues: {
+      materialCovers: null as any,
+      topic: null as unknown as Interface__SelectOption[],
+      title: "",
+      description: "",
+      materialType: null as unknown as Interface__SelectOption[],
+    },
+    validationSchema: yup.object().shape({
+      materialCovers: yup.array().required(l.msg_required_form),
+      topic: yup.array().required(l.msg_required_form),
+      title: yup.string().required(l.msg_required_form),
+      description: yup.string().required(l.msg_required_form),
+      materialType: yup.string().required(l.msg_required_form),
+    }),
+    onSubmit: (values, { resetForm }) => {
+      const payload = new FormData();
+      payload.append("materialCovers", `${values.materialCovers?.[0]}`);
+      payload.append("topic", `${values.topic?.[0]?.id}`);
+      payload.append("title", values.title);
+      payload.append("description", values.description);
+      payload.append("materialType", values.materialType?.[0]?.id);
+
+      const config = {
+        url: `${BASE_ENDPOINT}/create`,
+        method: "POST",
+        data: payload,
+      };
+
+      req({
+        config,
+        onResolve: {
+          onSuccess: () => {
+            resetForm();
+            back();
+            setRt((ps) => !ps);
+          },
+        },
+      });
+    },
+  });
+
+  return (
+    <>
+      <Btn
+        iconButton={iss ? true : false}
+        size={"md"}
+        pl={iss ? "" : 3}
+        colorPalette={themeConfig.colorPalette}
+        onClick={onOpen}
+      >
+        <Icon>
+          <IconPlus stroke={1.5} />
+        </Icon>
+
+        {!iss && l.add}
+      </Btn>
+
+      <DisclosureRoot open={open} lazyLoad size={"xl"}>
+        <DisclosureContent>
+          <DisclosureHeader>
+            <DisclosureHeaderContent title={`${l.add} ${routeTitle}`} />
+          </DisclosureHeader>
+
+          <DisclosureBody>
+            <form id={ID} onSubmit={formik.handleSubmit}>
+              <FieldsetRoot disabled={loading}>
+                <SimpleGrid columns={[1, null, 2]} gap={8}>
+                  {/* basic info */}
+                  <CContainer gap={4}>
+                    <Field
+                      label={"Thumbnail"}
+                      invalid={!!formik.errors.topic}
+                      errorText={formik.errors.topic as string}
+                    >
+                      <ImgInput
+                        inputValue={formik.values.materialCovers}
+                        onChange={(inputValue) =>
+                          formik.setFieldValue("materialCovers", inputValue)
+                        }
+                      />
+                    </Field>
+
+                    <Field
+                      label={l.private_navs.kmis.topic}
+                      invalid={!!formik.errors.topic}
+                      errorText={formik.errors.topic as string}
+                    >
+                      <SelectKMISTopic
+                        inputValue={formik.values.topic}
+                        onConfirm={(inputValue) =>
+                          formik.setFieldValue("topic", inputValue)
+                        }
+                      />
+                    </Field>
+
+                    <Field
+                      label={l.title}
+                      invalid={!!formik.errors.title}
+                      errorText={formik.errors.title as string}
+                    >
+                      <StringInput
+                        inputValue={formik.values.title}
+                        onChange={(inputValue) =>
+                          formik.setFieldValue("title", inputValue)
+                        }
+                      />
+                    </Field>
+
+                    <Field
+                      label={l.description}
+                      invalid={!!formik.errors.description}
+                      errorText={formik.errors.description as string}
+                    >
+                      <Textarea
+                        inputValue={formik.values.description}
+                        onChange={(inputValue) =>
+                          formik.setFieldValue("description", inputValue)
+                        }
+                      />
+                    </Field>
+                  </CContainer>
+
+                  {/* material info */}
+                  <CContainer gap={4}>
+                    <Field
+                      label={l.type}
+                      invalid={!!formik.errors.topic}
+                      errorText={formik.errors.topic as string}
+                    >
+                      <SelectKMISMaterialType
+                        inputValue={formik.values.materialType}
+                        onConfirm={(inputValue) =>
+                          formik.setFieldValue("materialType", inputValue)
+                        }
+                      />
+                    </Field>
+                  </CContainer>
+                </SimpleGrid>
+              </FieldsetRoot>
+            </form>
+          </DisclosureBody>
+
+          <DisclosureFooter>
+            <Btn
+              type="submit"
+              form={ID}
+              colorPalette={themeConfig.colorPalette}
+              loading={loading}
+            >
+              {l.add}
+            </Btn>
+          </DisclosureFooter>
+        </DisclosureContent>
+      </DisclosureRoot>
+    </>
+  );
+};
+const Update = (props: any) => {
+  const ID = `${PREFIX_ID}_update`;
+
+  // Props
+  const { data, routeTitle } = props;
+  const resolvedData = data as Interface__Data;
+
+  // Contexts
+  const { l } = useLang();
+  const { themeConfig } = useThemeConfig();
+  const setRt = useRenderTrigger((s) => s.setRt);
+
+  // Hooks
+  const { open, onOpen, onClose } = useDisclosure();
+  useBackOnClose(
+    disclosureId(`${ID}-${resolvedData?.id}`),
+    open,
+    onOpen,
+    onClose
+  );
+  const { req, loading } = useRequest({
+    id: ID,
+    loadingMessage: {
+      title: capitalize(`Edit ${routeTitle}`),
+    },
+    successMessage: {
+      title: capitalize(`Edit ${routeTitle} ${l.successful}`),
+    },
+  });
+
+  // States
+  const formik = useFormik({
+    validateOnChange: false,
+    initialValues: {
+      topic: null as unknown as Interface__SelectOption[],
+      title: "",
+      description: "",
+      materialType: "",
+    },
+    validationSchema: yup.object().shape({
+      topic: yup.array().required(l.msg_required_form),
+      title: yup.string().required(l.msg_required_form),
+      description: yup.string().required(l.msg_required_form),
+      materialType: yup.string().required(l.msg_required_form),
+    }),
+    onSubmit: (values, { resetForm }) => {
+      const payload = new FormData();
+      payload.append("topic", `${values.topic?.[0]?.id}`);
+      payload.append("title", values.title);
+      payload.append("description", values.description);
+      payload.append("materialType", values.materialType);
+
+      const config = {
+        url: `${BASE_ENDPOINT}/create`,
+        method: "POST",
+        data: payload,
+      };
+
+      req({
+        config,
+        onResolve: {
+          onSuccess: () => {
+            resetForm();
+            back();
+            setRt((ps) => !ps);
+          },
+        },
+      });
+    },
+  });
+
+  useEffect(() => {
+    formik.setValues({
+      topic: [
+        {
+          id: resolvedData.topic.id,
+          label: resolvedData.topic.title,
+        },
+      ],
+      title: resolvedData.title,
+      description: resolvedData.description,
+      materialType: resolvedData.materialType,
+    });
+  }, [open, resolvedData]);
+
+  return (
+    <>
+      <MenuItem value="edit" onClick={onOpen}>
+        Edit
+        <Icon boxSize={"18px"} ml={"auto"}>
+          <IconPencilMinus stroke={1.5} />
+        </Icon>
+      </MenuItem>
+
+      <DisclosureRoot open={open} lazyLoad size={"xs"}>
+        <DisclosureContent>
+          <DisclosureHeader>
+            <DisclosureHeaderContent title={`Edit ${routeTitle}`} />
+          </DisclosureHeader>
+
+          <DisclosureBody>
+            <form id={ID} onSubmit={formik.handleSubmit}>
+              <FieldsetRoot disabled={loading}>
+                <Field
+                  label={l.private_navs.kmis.topic}
+                  invalid={!!formik.errors.topic}
+                  errorText={formik.errors.topic as string}
+                >
+                  <SelectKMISTopic
+                    inputValue={formik.values.topic}
+                    onChange={(inputValue) =>
+                      formik.setFieldValue("topic", inputValue)
+                    }
+                  />
+                </Field>
+              </FieldsetRoot>
+            </form>
+          </DisclosureBody>
+
+          <DisclosureFooter>
+            <Btn
+              type="submit"
+              form={ID}
+              colorPalette={themeConfig.colorPalette}
+              loading={loading}
+            >
+              {l.save}
+            </Btn>
+          </DisclosureFooter>
+        </DisclosureContent>
+      </DisclosureRoot>
+    </>
+  );
+};
+const Restore = (props: any) => {
+  const ID = `${PREFIX_ID}_activate`;
+
+  // Props
+  const { restoreIds, clearSelectedRows, disabled, routeTitle } = props;
+
+  // Contexts
+  const { l } = useLang();
+  const setRt = useRenderTrigger((s) => s.setRt);
+
+  // Hooks
+  const { req, loading } = useRequest({
+    id: ID,
+    loadingMessage: {
+      title: capitalize(`${l.restore} ${routeTitle}`),
+    },
+    successMessage: {
+      title: capitalize(`${l.restore} ${routeTitle} ${l.successful}`),
+    },
+  });
+
+  // Utils
+  function onActivate() {
+    back();
+    req({
+      config: {
+        url: `${BASE_ENDPOINT}/activate`,
+        method: "PATCH",
+        data: {
+          restoreIds: restoreIds,
+        },
+      },
+      onResolve: {
+        onSuccess: () => {
+          setRt((ps) => !ps);
+          clearSelectedRows?.();
+        },
+      },
+    });
+  }
+
+  return (
+    <ConfirmationDisclosureTrigger
+      w={"full"}
+      id={`${ID}-${restoreIds}`}
+      title={`${l.restore} ${routeTitle}`}
+      description={l.msg_activate}
+      confirmLabel={`${l.restore}`}
+      onConfirm={onActivate}
+      loading={loading}
+      disabled={disabled}
+    >
+      <MenuItem value="restore" disabled={disabled}>
+        {l.restore}
+        <Icon boxSize={"18px"} ml={"auto"}>
+          <IconActivity stroke={1.5} />
+        </Icon>
+      </MenuItem>
+    </ConfirmationDisclosureTrigger>
+  );
+};
+const Delete = (props: any) => {
+  const ID = `${PREFIX_ID}_deactivate`;
+
+  // Props
+  const { deleteIds, clearSelectedRows, disabled, routeTitle } = props;
+
+  // Contexts
+  const { l } = useLang();
+  const setRt = useRenderTrigger((s) => s.setRt);
+
+  // Hooks
+  const { req, loading } = useRequest({
+    id: ID,
+    loadingMessage: {
+      title: capitalize(`${l.delete_} ${routeTitle}`),
+    },
+    successMessage: {
+      title: capitalize(`${l.delete_} ${routeTitle} ${l.successful}`),
+    },
+  });
+
+  // Utils
+  function onDeactivate() {
+    back();
+    req({
+      config: {
+        url: `${BASE_ENDPOINT}/deactivate`,
+        method: "PATCH",
+        data: {
+          deleteIds: deleteIds,
+        },
+      },
+      onResolve: {
+        onSuccess: () => {
+          setRt((ps) => !ps);
+          clearSelectedRows?.();
+        },
+      },
+    });
+  }
+
+  return (
+    <ConfirmationDisclosureTrigger
+      w={"full"}
+      id={`${ID}-${deleteIds}`}
+      title={`${l.delete_} ${routeTitle}`}
+      description={l.msg_deactivate}
+      confirmLabel={`${l.delete_}`}
+      onConfirm={onDeactivate}
+      confirmButtonProps={{
+        color: "fg.error",
+        colorPalette: "gray",
+        variant: "outline",
+      }}
+      loading={loading}
+      disabled={disabled}
+    >
+      <MenuItem value="delete" color={"fg.error"} disabled={disabled}>
+        {l.delete_}
+        <Icon boxSize={"18px"} ml={"auto"}>
+          <IconX stroke={1.5} />
+        </Icon>
+      </MenuItem>
+    </ConfirmationDisclosureTrigger>
+  );
+};
+
+const DataUtils = (props: any) => {
+  // Props
+  const { filter, setFilter, routeTitle, ...restProps } = props;
+
+  return (
+    <HStack p={3} {...restProps}>
+      <SearchInput
+        inputValue={filter.search}
+        onChange={(inputValue) => {
+          setFilter({ ...filter, search: inputValue });
+        }}
+      />
+
+      <DataDisplayToggle navKey={PREFIX_ID} />
+
+      <Create routeTitle={routeTitle} />
+    </HStack>
+  );
+};
+const Data = (props: any) => {
+  // Props
+  const { filter, routeTitle } = props;
+
+  // Contexts
+  const { l } = useLang();
+  const displayMode = useDataDisplay((s) => s.getDisplay(PREFIX_ID));
+  const displayTable = displayMode === "table";
+
+  // States
+
+  const {
+    error,
+    initialLoading,
+    data,
+    onRetry,
+    limit,
+    setLimit,
+    page,
+    setPage,
+    pagination,
+  } = useDataState<Interface__Data[]>({
+    initialData: undefined,
+    url: `${BASE_ENDPOINT}/index`,
+    params: filter,
+    dependencies: [filter],
+  });
+  const dataProps: Interface__DataProps = {
+    headers: [
+      {
+        th: l.private_navs.kmis.topic,
+        sortable: true,
+      },
+      {
+        th: l.title,
+        sortable: true,
+      },
+      {
+        th: l.type,
+        sortable: true,
+      },
+
+      // timestamps
+      {
+        th: l.added,
+        sortable: true,
+      },
+      {
+        th: l.updated,
+        sortable: true,
+      },
+      {
+        th: l.deleted,
+        sortable: true,
+      },
+    ],
+    rows: data?.map((item, idx) => ({
+      id: item.id,
+      idx: idx,
+      data: item,
+      dim: !!item.deletedAt,
+      columns: [
+        {
+          td: <ClampText>{item.topic.title}</ClampText>,
+          value: item.topic.title,
+        },
+
+        {
+          td: <ClampText>{item.title}</ClampText>,
+          value: item.title,
+        },
+        {
+          td: <ClampText>{item.materialType}</ClampText>,
+          value: item.materialType,
+        },
+
+        // timestamps
+        {
+          td: formatDate(item.createdAt, {
+            variant: "numeric",
+            withTime: true,
+          }),
+          value: item.createdAt,
+          dataType: "date",
+          dashEmpty: true,
+        },
+        {
+          td: formatDate(item.updatedAt, {
+            variant: "numeric",
+            withTime: true,
+            dashEmpty: true,
+          }),
+          value: item.updatedAt,
+          dataType: "date",
+        },
+        {
+          td: formatDate(item.deletedAt, {
+            variant: "numeric",
+            withTime: true,
+            dashEmpty: true,
+          }),
+          value: item.deletedAt,
+          dataType: "date",
+        },
+      ],
+    })),
+    rowOptions: [
+      (row) => ({
+        override: <Update data={row.data} routeTitle={routeTitle} />,
+      }),
+      (row) => ({
+        override: (
+          <Restore
+            restoreIds={[row.data.id]}
+            disabled={!row.data.deletedAt}
+            routeTitle={routeTitle}
+          />
+        ),
+      }),
+      (row) => ({
+        override: (
+          <Delete
+            deleteIds={[row.data.id]}
+            disabled={!!row.data.deletedAt}
+            routeTitle={routeTitle}
+          />
+        ),
+      }),
+    ] as Interface__RowOptionsTableOptionGenerator<Interface__Data>[],
+    batchOptions: [
+      (ids, { clearSelectedRows }) => ({
+        override: (
+          <Restore
+            restoreIds={ids}
+            clearSelectedRows={clearSelectedRows}
+            disabled={
+              isEmptyArray(ids) ||
+              data
+                ?.filter((item) => ids.includes(item.id))
+                .some((item) => !item.deletedAt)
+            }
+            routeTitle={routeTitle}
+          />
+        ),
+      }),
+      (ids, { clearSelectedRows }) => ({
+        override: (
+          <Delete
+            deleteIds={ids}
+            clearSelectedRows={clearSelectedRows}
+            disabled={
+              isEmptyArray(ids) ||
+              data
+                ?.filter((item) => ids.includes(item.id))
+                .some((item) => !!item.deletedAt)
+            }
+            routeTitle={routeTitle}
+          />
+        ),
+      }),
+    ] as Interface__BatchOptionsTableOptionGenerator[],
+  };
+  const render = {
+    loading: <TableSkeleton />,
+    error: <FeedbackRetry onRetry={onRetry} />,
+    empty: <FeedbackNoData />,
+    loaded: displayTable ? (
+      <DataTable
+        headers={dataProps.headers}
+        rows={dataProps.rows}
+        rowOptions={dataProps.rowOptions}
+        batchOptions={dataProps.batchOptions}
+        limit={limit}
+        setLimit={setLimit}
+        page={page}
+        setPage={setPage}
+        totalPage={pagination?.meta?.last_page}
+      />
+    ) : (
+      <DataGrid
+        data={data}
+        dataProps={dataProps}
+        limit={limit}
+        setLimit={setLimit}
+        page={page}
+        setPage={setPage}
+        totalPage={pagination?.meta?.last_page}
+        renderItem={({
+          item,
+          row,
+          details,
+          selectedRows,
+          toggleRowSelection,
+        }: any) => {
+          const resolvedItem: Interface__Data = item;
+
+          return (
+            <DataGridItem
+              key={resolvedItem.id}
+              item={{
+                id: resolvedItem.id,
+                showImg: true,
+                img: imgUrl(resolvedItem.topic.topicCover?.[0]?.filePath),
+                title: resolvedItem.title,
+                description: resolvedItem.description,
+              }}
+              dataProps={dataProps}
+              row={row}
+              selectedRows={selectedRows}
+              toggleRowSelection={toggleRowSelection}
+              routeTitle={routeTitle}
+              details={details}
+            />
+          );
+        }}
+      />
+    ),
+  };
+
+  return (
+    <>
+      {initialLoading && render.loading}
+
+      {!initialLoading && (
+        <>
+          {error && render.error}
+          {!error && (
+            <>
+              {data && render.loaded}
+              {(!data || isEmptyArray(data)) && render.empty}
+            </>
+          )}
+        </>
+      )}
+    </>
+  );
+};
+
+export default function Page() {
+  // Contexts
+  const { l } = useLang();
+
+  // States
+  const pathname = usePathname();
+  const activeNav = getActiveNavs(pathname);
+  const routeTitle = pluckString(l, last(activeNav)!.labelKey);
+  const DEFAULT_FILTER = {
+    search: "",
+  };
+  const [filter, setFilter] = useState(DEFAULT_FILTER);
+
+  return (
+    <PageContainer>
+      <PageContent>
+        <DataUtils
+          filter={filter}
+          setFilter={setFilter}
+          routeTitle={routeTitle}
+        />
+        <Data filter={filter} routeTitle={routeTitle} />
+      </PageContent>
+    </PageContainer>
+  );
 }

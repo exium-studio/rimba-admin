@@ -651,6 +651,14 @@ export const explanation = {
   id: "Penjelasan",
   en: "Explanation",
 };
+export const type = {
+  id: "Tipe",
+  en: "Type",
+};
+export const material_type = {
+  id: "Tipe materi",
+  en: "Material type",
+};
 
 // Message
 export const msg_location_test_helper = {
@@ -823,8 +831,8 @@ export const alert_retry = {
     en: "An error occurred",
   },
   description: {
-    id: "Silakan coba lagi.",
-    en: "Please try again.",
+    id: "Maaf, silakan coba lagi.",
+    en: "We're sorry. Please try again.",
   },
 };
 

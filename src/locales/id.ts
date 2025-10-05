@@ -27,7 +27,7 @@ const translations = {
   },
   "alert_retry": {
     "title": "Terjadi kesalahan",
-    "description": "Silakan coba lagi."
+    "description": "Maaf, silakan coba lagi."
   },
   "alert_signin_super_admin": {
     "title": "Super Admin",
@@ -216,6 +216,7 @@ const translations = {
   },
   "map": "Peta",
   "march": "Maret",
+  "material_type": "Tipe materi",
   "maximize": "Maksimalkan",
   "may": "Mei",
   "mic": "Mic",
@@ -426,6 +427,7 @@ const translations = {
   "try_location": "Coba Lokasi",
   "try_mic": "Coba Mic",
   "tuesday": "Selasa",
+  "type": "Tipe",
   "unselect_all": "Batalkan pilihan semua",
   "update": "Ubah",
   "updated": "Diubah",

@@ -27,7 +27,7 @@ const translations = {
   },
   "alert_retry": {
     "title": "An error occurred",
-    "description": "Please try again."
+    "description": "We're sorry. Please try again."
   },
   "alert_signin_super_admin": {
     "title": "Super Admin",
@@ -216,6 +216,7 @@ const translations = {
   },
   "map": "Map",
   "march": "March",
+  "material_type": "Material type",
   "maximize": "Maximize",
   "may": "May",
   "mic": "Mic",
@@ -426,6 +427,7 @@ const translations = {
   "try_location": "Try Location",
   "try_mic": "Try Mic",
   "tuesday": "Tuesday",
+  "type": "Type",
   "unselect_all": "Unselect all",
   "update": "Update",
   "updated": "Updated",

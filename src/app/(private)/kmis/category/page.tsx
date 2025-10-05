@@ -151,7 +151,7 @@ const Create = (props: any) => {
             <form id={ID} onSubmit={formik.handleSubmit}>
               <FieldsetRoot disabled={loading}>
                 <Field
-                  label={"Cover"}
+                  label={"Thumbnail"}
                   invalid={!!formik.errors.files}
                   errorText={formik.errors.files as string}
                 >
@@ -315,7 +315,7 @@ const Update = (props: any) => {
             <form id={ID} onSubmit={formik.handleSubmit}>
               <FieldsetRoot disabled={loading}>
                 <Field
-                  label={"Cover"}
+                  label={"Thumbnail"}
                   invalid={!!formik.errors.files}
                   errorText={formik.errors.files as string}
                 >
@@ -571,7 +571,7 @@ const Data = (props: any) => {
   const dataProps: Interface__DataProps = {
     headers: [
       {
-        th: "Cover",
+        th: "Thumbnail",
         align: "center",
       },
       {
