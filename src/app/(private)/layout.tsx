@@ -545,7 +545,11 @@ const DesktopLayout = (props: any) => {
             <CContainer mb={1}>
               <SearchInput
                 inputRef={searchInputRef}
-                inputProps={{ variant: "flushed", rounded: 0 }}
+                inputProps={{
+                  variant: "flushed",
+                  rounded: 0,
+                  borderColor: "d2",
+                }}
                 inputValue={search}
                 onChange={(inputValue) => {
                   setSearch(inputValue || "");
@@ -595,12 +599,13 @@ const DesktopLayout = (props: any) => {
                                 <Btn
                                   as={AccordionItemTrigger}
                                   clicky={false}
+                                  colorPalette={NAVS_COLOR_PALETTE}
                                   variant={"ghost"}
                                   px={2}
                                   pos={"relative"}
                                   bg={"transparent"}
                                   _hover={{
-                                    bg: "bg.muted",
+                                    bg: "d1",
                                   }}
                                 >
                                   {isMainNavsActive && <LeftIndicator />}

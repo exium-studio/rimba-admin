@@ -49,6 +49,17 @@ export interface Interface__KMISQuiz extends Interface__CUD {
   correctOption: string;
   explanation: string;
 }
+export interface Interface__KMISQuizAssessment extends Interface__CUD {
+  id: string;
+  topic: Interface__KMISTopic;
+  question: string;
+  answerA: string;
+  answerB: string;
+  answerC: string;
+  answerD: string;
+  correctOption: string;
+  explanation: string;
+}
 export interface Interface__KMISEducator extends Interface__CUD {
   id: string;
   user: Interface__User;
