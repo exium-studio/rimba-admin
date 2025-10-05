@@ -21,10 +21,10 @@ export const Pagination = (props: Props_PaginationTableData) => {
 
   // Utils
   function handlePrev() {
-    if (page > 1) setPageTemp((ps) => ps! + 1);
+    if (page > 1) setPageTemp((ps) => ps! - 1);
   }
   function handleNext() {
-    if (page < (totalPage || 1)) setPageTemp((ps) => ps! - 1);
+    if (page < (totalPage || 1)) setPageTemp((ps) => ps! + 1);
   }
 
   // debounce setPage
