@@ -215,35 +215,6 @@ const Data = (props: any) => {
         th: l.private_navs.kmis.topic,
         sortable: true,
       },
-      {
-        th: l.question,
-        sortable: true,
-      },
-      {
-        th: `${l.option} A`,
-        sortable: true,
-      },
-      {
-        th: `${l.option} B`,
-        sortable: true,
-      },
-      {
-        th: `${l.option} C`,
-        sortable: true,
-      },
-      {
-        th: `${l.option} D`,
-        sortable: true,
-      },
-      {
-        th: l.correct_answer,
-        sortable: true,
-        align: "center",
-      },
-      {
-        th: l.explanation,
-        sortable: true,
-      },
 
       // timestamps
       {
@@ -268,35 +239,6 @@ const Data = (props: any) => {
         {
           td: <ClampText>{item.topic.title}</ClampText>,
           value: item.topic.title,
-        },
-        {
-          td: <ClampText>{item.question}</ClampText>,
-          value: item.question,
-        },
-        {
-          td: <ClampText>{item.answerA}</ClampText>,
-          value: item.answerA,
-        },
-        {
-          td: <ClampText>{item.answerB}</ClampText>,
-          value: item.answerB,
-        },
-        {
-          td: <ClampText>{item.answerB}</ClampText>,
-          value: item.answerB,
-        },
-        {
-          td: <ClampText>{item.answerD}</ClampText>,
-          value: item.answerD,
-        },
-        {
-          td: <ClampText>{item.correctOption}</ClampText>,
-          value: item.correctOption,
-          align: "center",
-        },
-        {
-          td: <ClampText>{item.explanation}</ClampText>,
-          value: item.explanation,
         },
 
         // timestamps

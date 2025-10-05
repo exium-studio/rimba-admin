@@ -99,13 +99,17 @@ const translations = {
     "title": "Validation failed",
     "description": "Some data is invalid, please review."
   },
+  "error_422_duplicate_kmis_quiz_option": {
+    "title": "Duplicate data",
+    "description": "Option already exists in this topic, please review."
+  },
+  "error_422_duplicate_kmis_topic_title": {
+    "title": "Duplicate data",
+    "description": "The title already exists, please review."
+  },
   "error_422_duplicate_question": {
     "title": "Duplicate data",
     "description": "Question already exists in this topic, please review."
-  },
-  "error_422_duplicate_title": {
-    "title": "Duplicate data",
-    "description": "The title already exists, please review."
   },
   "error_429_default": {
     "title": "Too many requests",

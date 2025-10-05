@@ -1118,11 +1118,18 @@ export const error_422_default = {
     en: "Some data is invalid, please review.",
   },
 };
-export const error_422_duplicate_title = {
+export const error_422_duplicate_kmis_topic_title = {
   title: { id: "Data duplikat", en: "Duplicate data" },
   description: {
     id: "Judul yang sama sudah ada, periksa kembali.",
     en: "The title already exists, please review.",
+  },
+};
+export const error_422_duplicate_kmis_quiz_option = {
+  title: { id: "Data duplikat", en: "Duplicate data" },
+  description: {
+    id: "Opsi yang sama di topic tersebut sudah ada, periksa kembali.",
+    en: "Option already exists in this topic, please review.",
   },
 };
 export const error_422_duplicate_question = {

@@ -125,7 +125,9 @@ export default function useRequest<T = any>(props: Props) {
       case 422:
         switch (errorCase) {
           case "DUPLICATE_TITLE":
-            return l.error_422_duplicate_title;
+            return l.error_422_duplicate_kmis_topic_title;
+          case "DUPLICATE_ANSWERS":
+            return l.error_422_duplicate_kmis_quiz_option;
           case "DUPLICATE_QUESTION":
             return l.error_422_duplicate_question;
           default:
