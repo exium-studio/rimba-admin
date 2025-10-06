@@ -714,7 +714,6 @@ const Data = (props: any) => {
   const displayTable = displayMode === "table";
 
   // States
-
   const {
     error,
     initialLoading,
