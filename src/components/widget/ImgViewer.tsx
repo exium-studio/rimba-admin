@@ -38,7 +38,7 @@ export const ImgViewer = (props: Props) => {
   // Hooks
   const { open, onOpen, onClose } = useDisclosure();
   useBackOnClose(
-    disclosureId(id || `${getEpochMilliseconds()}`),
+    disclosureId(id || `img-viewer-${getEpochMilliseconds()}`),
     open,
     onOpen,
     onClose
