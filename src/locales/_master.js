@@ -661,6 +661,10 @@ export const material_type = {
 };
 
 // Message
+export const msg_select_material_type_first = {
+  id: "Pilih tipe materi terlebih dahulu.",
+  en: "Please select material type first.",
+};
 export const msg_location_test_helper = {
   id: "Klik dapatkan lokasi untuk mendapatkan data lokasi.",
   en: "Click get location to get location data.",

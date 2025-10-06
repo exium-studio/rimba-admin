@@ -253,6 +253,7 @@ const translations = {
   "msg_reset_password_step_2": "Langkah kedua, verifikasi OTP",
   "msg_reset_password_step_3": "Langkah ketiga, masukkan kata sandi baru Anda",
   "msg_restore": "Data akan dikembalikan ke kondisi semula.",
+  "msg_select_material_type_first": "Pilih tipe materi terlebih dahulu.",
   "msg_settings_index_route": "Silahkan pilih menu pengaturan.",
   "msg_settings_saved_locally": "Pengaturan ini disimpan secara lokal di perangkat Anda dan tidak akan disinkronkan dengan akun Anda.",
   "msg_signin": "Sebelum melanjutkan, silahkan pilih jenis role anda",

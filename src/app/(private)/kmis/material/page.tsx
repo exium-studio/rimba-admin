@@ -13,6 +13,7 @@ import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-conte
 import { Field } from "@/components/ui/field";
 import { ImgInput } from "@/components/ui/img-input";
 import { MenuItem } from "@/components/ui/menu";
+import { P } from "@/components/ui/p";
 import SearchInput from "@/components/ui/search-input";
 import { StringInput } from "@/components/ui/string-input";
 import { Textarea } from "@/components/ui/textarea";
@@ -84,6 +85,28 @@ const MenuTooltip = (props: TooltipProps) => {
       {children}
     </Tooltip>
   );
+};
+const MaterialFormByType = (props: any) => {
+  // Props
+  const { type } = props;
+
+  // Contexts
+  const { l } = useLang();
+
+  if (!type) {
+    return <P color={"fg.subtle"}>{l.msg_select_material_type_first}</P>;
+  }
+
+  switch (type) {
+    case "Gambar":
+      return <>Gambar</>;
+    case "Video":
+      return <>Video</>;
+    case "Document":
+      return <>Docs</>;
+    default: // Text
+      return <>Text</>;
+  }
 };
 
 const Create = (props: any) => {
@@ -183,7 +206,7 @@ const Create = (props: any) => {
             <form id={ID} onSubmit={formik.handleSubmit}>
               <FieldsetRoot disabled={loading}>
                 <SimpleGrid columns={[1, null, 2]} gap={8}>
-                  {/* basic info */}
+                  {/* basic form */}
                   <CContainer gap={4}>
                     <Field
                       label={"Thumbnail"}
@@ -238,7 +261,7 @@ const Create = (props: any) => {
                     </Field>
                   </CContainer>
 
-                  {/* material info */}
+                  {/* material form */}
                   <CContainer gap={4}>
                     <Field
                       label={l.type}
@@ -252,6 +275,8 @@ const Create = (props: any) => {
                         }
                       />
                     </Field>
+
+                    <MaterialFormByType type={formik.values.materialType} />
                   </CContainer>
                 </SimpleGrid>
               </FieldsetRoot>
