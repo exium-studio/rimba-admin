@@ -70,7 +70,11 @@ const ResultDetail = (props: any) => {
     onOpen,
     onClose
   );
+  const dataDisplay = useDataDisplay((s) =>
+    s.getDisplay("kmis_quiz_assessment")
+  );
 
+  // States
   const resolvedAssessment: Interface__Data = assessment;
   const { error, initialLoading, data, onRetry } = useDataState<
     Interface__KMISQuizResponse[]
@@ -276,9 +280,9 @@ const ResultDetail = (props: any) => {
     <>
       <Btn
         size={"xs"}
-        variant={"subtle"}
+        variant={dataDisplay === "table" ? "ghost" : "outline"}
         colorPalette={themeConfig.colorPalette}
-        pl={2}
+        pl={"6px"}
         onClick={onOpen}
         {...restProps}
       >
