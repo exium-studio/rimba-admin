@@ -8,19 +8,19 @@ export const OPTIONS_RELIGION = [
 ];
 export const KMIS_MATERIAL_TYPES = [
   {
-    id: "Text",
+    id: "text",
     label: "Text",
   },
   {
-    id: "Gambar",
+    id: "gambar",
     label: "Gambar",
   },
   {
-    id: "Video",
+    id: "video",
     label: "Video",
   },
   {
-    id: "Dokumen",
+    id: "dokumen",
     label: "Dokumen",
   },
 ];

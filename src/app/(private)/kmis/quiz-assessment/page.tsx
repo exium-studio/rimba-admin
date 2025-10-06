@@ -1,35 +1,57 @@
 "use client";
 
-import { MenuItem } from "@/components/ui/menu";
+import { Btn } from "@/components/ui/btn";
+import { CContainer } from "@/components/ui/c-container";
+import { CSpinner } from "@/components/ui/c-spinner";
+import {
+  DisclosureBody,
+  DisclosureContent,
+  DisclosureFooter,
+  DisclosureHeader,
+  DisclosureRoot,
+} from "@/components/ui/disclosure";
+import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-content";
+import { P } from "@/components/ui/p";
 import SearchInput from "@/components/ui/search-input";
+import BackButton from "@/components/widget/BackButton";
 import { ClampText } from "@/components/widget/ClampText";
-import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
 import { DataDisplayToggle } from "@/components/widget/DataDisplayToggle";
 import { DataGrid } from "@/components/widget/DataGrid";
 import { DataGridItem } from "@/components/widget/DataGridItem";
 import { DataTable } from "@/components/widget/DataTable";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
+import { ItemContainer } from "@/components/widget/ItemContainer";
+import { ItemHeaderContainer } from "@/components/widget/ItemHeaderContainer";
+import ItemHeaderTitle from "@/components/widget/ItemHeaderTitle";
 import { PageContainer, PageContent } from "@/components/widget/Page";
+import { QuizAttempStatus } from "@/components/widget/QuizAttempStatus";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
+import { dummy_quiz_assessment, dummy_quiz_response } from "@/constants/dummy";
 import {
-  Interface__BatchOptionsTableOptionGenerator,
   Interface__DataProps,
   Interface__KMISQuizAssessment,
-  Interface__RowOptionsTableOptionGenerator,
+  Interface__KMISQuizResponse,
 } from "@/constants/interfaces";
 import { useDataDisplay } from "@/context/useDataDisplay";
 import useLang from "@/context/useLang";
-import useRenderTrigger from "@/context/useRenderTrigger";
+import { useThemeConfig } from "@/context/useThemeConfig";
+import useBackOnClose from "@/hooks/useBackOnClose";
 import useDataState from "@/hooks/useDataState";
-import useRequest from "@/hooks/useRequest";
 import { isEmptyArray, last } from "@/utils/array";
-import { back } from "@/utils/client";
-import { formatDate } from "@/utils/formatter";
-import { capitalize, pluckString } from "@/utils/string";
-import { getActiveNavs } from "@/utils/url";
-import { HStack, Icon } from "@chakra-ui/react";
-import { IconRestore, IconTrash } from "@tabler/icons-react";
+import { disclosureId } from "@/utils/disclosure";
+import { formatDate, formatDuration } from "@/utils/formatter";
+import { capitalizeWords, pluckString } from "@/utils/string";
+import { getEpochMilliseconds } from "@/utils/time";
+import { getActiveNavs, imgUrl } from "@/utils/url";
+import {
+  HStack,
+  Icon,
+  SimpleGrid,
+  Stack,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { IconEye } from "@tabler/icons-react";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
@@ -37,131 +59,214 @@ const BASE_ENDPOINT = "/api/kmis/learning-participant";
 const PREFIX_ID = "kmis_quiz_assessment";
 type Interface__Data = Interface__KMISQuizAssessment;
 
-const Restore = (props: any) => {
-  const ID = `${PREFIX_ID}_restore`;
-
+const AnswerDetail = (props: any) => {
   // Props
-  const { restoreIds, clearSelectedRows, disabled, routeTitle } = props;
+  const { assessment, ...restProps } = props;
 
   // Contexts
   const { l } = useLang();
-  const setRt = useRenderTrigger((s) => s.setRt);
+  const { themeConfig } = useThemeConfig();
 
   // Hooks
-  const { req, loading } = useRequest({
-    id: ID,
-    loadingMessage: {
-      title: capitalize(`${l.restore} ${routeTitle}`),
-    },
-    successMessage: {
-      title: capitalize(`${l.restore} ${routeTitle} ${l.successful}`),
-    },
-  });
-
-  // Utils
-  function onActivate() {
-    back();
-    req({
-      config: {
-        url: `${BASE_ENDPOINT}/restore`,
-        method: "PATCH",
-        data: {
-          restoreIds: restoreIds,
-        },
-      },
-      onResolve: {
-        onSuccess: () => {
-          setRt((ps) => !ps);
-          clearSelectedRows?.();
-        },
-      },
-    });
-  }
-
-  return (
-    <ConfirmationDisclosureTrigger
-      w={"full"}
-      id={`${ID}-${restoreIds}`}
-      title={`${l.restore} ${routeTitle}`}
-      description={l.msg_activate}
-      confirmLabel={`${l.restore}`}
-      onConfirm={onActivate}
-      loading={loading}
-      disabled={disabled}
-    >
-      <MenuItem value="restore" disabled={disabled}>
-        {l.restore}
-        <Icon boxSize={"18px"} ml={"auto"}>
-          <IconRestore stroke={1.5} />
-        </Icon>
-      </MenuItem>
-    </ConfirmationDisclosureTrigger>
+  const { open, onOpen, onClose } = useDisclosure();
+  useBackOnClose(
+    disclosureId(`answer-detail-${getEpochMilliseconds()}`),
+    open,
+    onOpen,
+    onClose
   );
-};
-const Delete = (props: any) => {
-  const ID = `${PREFIX_ID}_delete`;
 
-  // Props
-  const { deleteIds, clearSelectedRows, disabled, routeTitle } = props;
-
-  // Contexts
-  const { l } = useLang();
-  const setRt = useRenderTrigger((s) => s.setRt);
-
-  // Hooks
-  const { req, loading } = useRequest({
-    id: ID,
-    loadingMessage: {
-      title: capitalize(`${l.delete_} ${routeTitle}`),
-    },
-    successMessage: {
-      title: capitalize(`${l.delete_} ${routeTitle} ${l.successful}`),
-    },
+  const resolvedAssessment: Interface__Data = assessment;
+  const { error, initialLoading, data, onRetry } = useDataState<
+    Interface__KMISQuizResponse[]
+  >({
+    initialData: dummy_quiz_response,
+    // url: `/api/kmis/learning-participant/show/${assessment.id}`,
+    dependencies: [],
+    dataResource: false,
   });
-
-  // Utils
-  function onDeactivate() {
-    back();
-    req({
-      config: {
-        url: `${BASE_ENDPOINT}/delete`,
-        method: "DELETE",
-        data: {
-          deleteIds: deleteIds,
-        },
-      },
-      onResolve: {
-        onSuccess: () => {
-          setRt((ps) => !ps);
-          clearSelectedRows?.();
-        },
-      },
-    });
-  }
+  const render = {
+    loading: <CSpinner />,
+    error: <FeedbackRetry onRetry={onRetry} />,
+    empty: <FeedbackNoData />,
+    loaded: <></>,
+  };
 
   return (
-    <ConfirmationDisclosureTrigger
-      w={"full"}
-      id={`${ID}-${deleteIds}`}
-      title={`${l.delete_} ${routeTitle}`}
-      description={l.msg_deactivate}
-      confirmLabel={`${l.delete_}`}
-      onConfirm={onDeactivate}
-      confirmButtonProps={{
-        color: "fg.error",
-        colorPalette: "gray",
-        variant: "outline",
-      }}
-      loading={loading}
-      disabled={disabled}
-    >
-      <MenuItem value="delete" color={"fg.error"} disabled={disabled}>
-        {l.delete_}
-        <Icon boxSize={"18px"} ml={"auto"}>
-          <IconTrash stroke={1.5} />
+    <>
+      <Btn
+        size={"xs"}
+        variant={"subtle"}
+        colorPalette={themeConfig.colorPalette}
+        pl={2}
+        onClick={onOpen}
+        {...restProps}
+      >
+        <Icon boxSize={5}>
+          <IconEye stroke={1.5} />
         </Icon>
-      </MenuItem>
-    </ConfirmationDisclosureTrigger>
+
+        {l.view}
+      </Btn>
+
+      <DisclosureRoot open={open} lazyLoad size={"xl"}>
+        <DisclosureContent>
+          <DisclosureHeader>
+            <DisclosureHeaderContent title={`${l.result_detail}`} />
+          </DisclosureHeader>
+
+          <DisclosureBody>
+            <SimpleGrid columns={[1, null, 2]} gap={4}>
+              <ItemContainer
+                rounded={themeConfig.radii.component}
+                border={"1px solid"}
+                borderColor={"border.muted"}
+              >
+                <ItemHeaderContainer>
+                  <ItemHeaderTitle>
+                    {capitalizeWords(l.basic_info)}
+                  </ItemHeaderTitle>
+                </ItemHeaderContainer>
+
+                <CContainer gap={4} p={4}>
+                  <HStack align={"start"}>
+                    <P w={"120px"} color={"fg.muted"} flexShrink={0}>
+                      {l.name}
+                    </P>
+                    <P>:</P>
+                    <P>{resolvedAssessment.attemptUser.name}</P>
+                  </HStack>
+
+                  <HStack align={"start"}>
+                    <P w={"120px"} color={"fg.muted"} flexShrink={0}>
+                      {"Email"}
+                    </P>
+                    <P>:</P>
+                    <P>{resolvedAssessment.attemptUser.email}</P>
+                  </HStack>
+
+                  <HStack align={"start"}>
+                    <P w={"120px"} color={"fg.muted"} flexShrink={0}>
+                      {l.private_navs.kmis.category}
+                    </P>
+                    <P>:</P>
+                    <P>{resolvedAssessment.topic.category.title}</P>
+                  </HStack>
+
+                  <HStack align={"start"}>
+                    <P w={"120px"} color={"fg.muted"} flexShrink={0}>
+                      {l.private_navs.kmis.topic}
+                    </P>
+                    <P>:</P>
+                    <P>{resolvedAssessment.topic.title}</P>
+                  </HStack>
+
+                  <HStack align={"start"}>
+                    <P w={"120px"} color={"fg.muted"} flexShrink={0}>
+                      {l.description}
+                    </P>
+                    <P>:</P>
+                    <P>{resolvedAssessment.topic.description}</P>
+                  </HStack>
+
+                  <HStack align={"start"}>
+                    <P w={"120px"} color={"fg.muted"} flexShrink={0}>
+                      {l.duration}
+                    </P>
+                    <P>:</P>
+                    <P>
+                      {formatDuration(resolvedAssessment.topic.quizDuration)}
+                    </P>
+                  </HStack>
+                </CContainer>
+              </ItemContainer>
+
+              <ItemContainer
+                rounded={themeConfig.radii.component}
+                border={"1px solid"}
+                borderColor={"border.muted"}
+              >
+                <ItemHeaderContainer>
+                  <ItemHeaderTitle>
+                    {capitalizeWords(l.quiz_info)}
+                  </ItemHeaderTitle>
+                </ItemHeaderContainer>
+
+                <CContainer gap={4} p={4}>
+                  <HStack align={"start"}>
+                    <P w={"120px"} color={"fg.muted"} flexShrink={0}>
+                      {l.start_date_time}
+                    </P>
+                    <P>:</P>
+                    <P>{resolvedAssessment.attemptUser.name}</P>
+                  </HStack>
+
+                  <HStack align={"start"}>
+                    <P w={"120px"} color={"fg.muted"} flexShrink={0}>
+                      {l.end_date_time}
+                    </P>
+                    <P>:</P>
+                    <P>{resolvedAssessment.attemptUser.name}</P>
+                  </HStack>
+
+                  <HStack align={"start"}>
+                    <P w={"120px"} color={"fg.muted"} flexShrink={0}>
+                      {l.attemp_status}
+                    </P>
+                    <P>:</P>
+                    <QuizAttempStatus
+                      quizAttempStatus={resolvedAssessment.attemptStatus}
+                    />
+                  </HStack>
+
+                  <HStack align={"start"}>
+                    <P w={"120px"} color={"fg.muted"} flexShrink={0}>
+                      {l.grade}
+                    </P>
+                    <P>:</P>
+                    <P>{`${resolvedAssessment.scoreTotal}`}</P>
+                  </HStack>
+
+                  <HStack align={"start"}>
+                    <P w={"120px"} color={"fg.muted"} flexShrink={0}>
+                      {l.correct_answer}
+                    </P>
+                    <P>:</P>
+                    <P>{`${resolvedAssessment.correctCount}`}</P>
+                  </HStack>
+
+                  <HStack align={"start"}>
+                    <P w={"120px"} color={"fg.muted"} flexShrink={0}>
+                      {l.wrong_answer}
+                    </P>
+                    <P>:</P>
+                    <P>{`${resolvedAssessment.wrongCount}`}</P>
+                  </HStack>
+
+                  <HStack align={"start"}>
+                    <P w={"120px"} color={"fg.muted"} flexShrink={0}>
+                      {l.empty_answer}
+                    </P>
+                    <P>:</P>
+                    <P>{`${resolvedAssessment.emptyCount}`}</P>
+                  </HStack>
+                </CContainer>
+              </ItemContainer>
+            </SimpleGrid>
+
+            <Stack flexDir={["column", null, "row"]}>
+              <CContainer></CContainer>
+
+              <CContainer></CContainer>
+            </Stack>
+          </DisclosureBody>
+
+          <DisclosureFooter>
+            <BackButton />
+          </DisclosureFooter>
+        </DisclosureContent>
+      </DisclosureRoot>
+    </>
   );
 };
 
@@ -188,11 +293,11 @@ const Data = (props: any) => {
 
   // Contexts
   const { l } = useLang();
+  const { themeConfig } = useThemeConfig();
   const displayMode = useDataDisplay((s) => s.getDisplay(PREFIX_ID));
   const displayTable = displayMode === "table";
 
   // States
-
   const {
     error,
     initialLoading,
@@ -204,8 +309,8 @@ const Data = (props: any) => {
     setPage,
     pagination,
   } = useDataState<Interface__Data[]>({
-    initialData: undefined,
-    url: `${BASE_ENDPOINT}/index`,
+    initialData: dummy_quiz_assessment,
+    // url: `${BASE_ENDPOINT}/index`,
     params: filter,
     dependencies: [filter],
   });
@@ -214,6 +319,28 @@ const Data = (props: any) => {
       {
         th: l.private_navs.kmis.topic,
         sortable: true,
+      },
+      {
+        th: l.private_navs.kmis.student,
+        sortable: true,
+      },
+      {
+        th: l.start_date_time,
+        sortable: true,
+      },
+      {
+        th: l.attemp_status,
+        sortable: true,
+        align: "center",
+      },
+      {
+        th: l.grade,
+        sortable: true,
+        align: "center",
+      },
+      {
+        th: l.result_detail,
+        align: "center",
       },
 
       // timestamps
@@ -240,89 +367,81 @@ const Data = (props: any) => {
           td: <ClampText>{item.topic.title}</ClampText>,
           value: item.topic.title,
         },
+        {
+          td: <ClampText>{item.attemptUser.name}</ClampText>,
+          value: item.attemptUser.name,
+        },
+        {
+          td: (
+            <P>
+              {formatDate(item.quizStarted, {
+                variant: "numeric",
+                withTime: true,
+              })}
+            </P>
+          ),
+          value: item.quizStarted,
+        },
+        {
+          td: <QuizAttempStatus quizAttempStatus={item.attemptStatus} />,
+          value: item.attemptStatus,
+          dataType: "number",
+          align: "center",
+        },
+        {
+          td: <P>{`${item.scoreTotal}`}</P>,
+          value: item.scoreTotal,
+          dataType: "number",
+          align: "center",
+        },
+        {
+          td: <AnswerDetail assessment={item} />,
+          value: "",
+          align: "center",
+        },
 
         // timestamps
         {
-          td: formatDate(item.createdAt, {
-            variant: "numeric",
-            withTime: true,
-          }),
+          td: (
+            <P>
+              {formatDate(item.createdAt, {
+                variant: "numeric",
+                withTime: true,
+              })}
+            </P>
+          ),
           value: item.createdAt,
           dataType: "date",
           dashEmpty: true,
         },
         {
-          td: formatDate(item.updatedAt, {
-            variant: "numeric",
-            withTime: true,
-            dashEmpty: true,
-          }),
+          td: (
+            <P>
+              {formatDate(item.updatedAt, {
+                variant: "numeric",
+                withTime: true,
+                dashEmpty: true,
+              })}
+            </P>
+          ),
           value: item.updatedAt,
           dataType: "date",
         },
         {
-          td: formatDate(item.deletedAt, {
-            variant: "numeric",
-            withTime: true,
-            dashEmpty: true,
-          }),
+          td: (
+            <P>
+              {formatDate(item.deletedAt, {
+                variant: "numeric",
+                withTime: true,
+                dashEmpty: true,
+              })}
+            </P>
+          ),
           value: item.deletedAt,
           dataType: "date",
         },
       ],
     })),
-    rowOptions: [
-      (row) => ({
-        override: (
-          <Restore
-            restoreIds={[row.data.id]}
-            disabled={!row.data.deletedAt}
-            routeTitle={routeTitle}
-          />
-        ),
-      }),
-      (row) => ({
-        override: (
-          <Delete
-            deleteIds={[row.data.id]}
-            disabled={!!row.data.deletedAt}
-            routeTitle={routeTitle}
-          />
-        ),
-      }),
-    ] as Interface__RowOptionsTableOptionGenerator<Interface__Data>[],
-    batchOptions: [
-      (ids, { clearSelectedRows }) => ({
-        override: (
-          <Restore
-            restoreIds={ids}
-            clearSelectedRows={clearSelectedRows}
-            disabled={
-              isEmptyArray(ids) ||
-              data
-                ?.filter((item) => ids.includes(item.id))
-                .some((item) => !item.deletedAt)
-            }
-            routeTitle={routeTitle}
-          />
-        ),
-      }),
-      (ids, { clearSelectedRows }) => ({
-        override: (
-          <Delete
-            deleteIds={ids}
-            clearSelectedRows={clearSelectedRows}
-            disabled={
-              isEmptyArray(ids) ||
-              data
-                ?.filter((item) => ids.includes(item.id))
-                .some((item) => !!item.deletedAt)
-            }
-            routeTitle={routeTitle}
-          />
-        ),
-      }),
-    ] as Interface__BatchOptionsTableOptionGenerator[],
   };
   const render = {
     loading: <TableSkeleton />,
@@ -363,8 +482,10 @@ const Data = (props: any) => {
               key={resolvedItem.id}
               item={{
                 id: resolvedItem.id,
-                title: resolvedItem.question,
-                description: resolvedItem.topic.title,
+                showImg: true,
+                img: imgUrl(resolvedItem.topic.topicCover?.[0]?.filePath),
+                title: resolvedItem.topic.title,
+                description: resolvedItem.attemptUser.name,
               }}
               dataProps={dataProps}
               row={row}

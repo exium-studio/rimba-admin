@@ -523,17 +523,29 @@ export const rounded = {
   id: "Rounded",
   en: "Rounded",
 };
-export const learn_more = {
-  id: "Pelajari lebih lanjut",
-  en: "Learn more",
-};
 export const published_at = {
   id: "Diterbitkan pada",
   en: "Published at",
 };
+export const learn_more = {
+  id: "Pelajari lebih lanjut",
+  en: "Learn more",
+};
 export const read_more = {
   id: "Baca selengkapnya",
   en: "Read more",
+};
+export const view_more = {
+  id: "Lihat lebih",
+  en: "View more",
+};
+export const show_more = {
+  id: "Tampilkan lebih",
+  en: "Show more",
+};
+export const more_info = {
+  id: "Info lebih",
+  en: "More info",
 };
 export const apply = {
   id: "Terapkan",
@@ -647,6 +659,14 @@ export const correct_answer = {
   id: "Jawaban benar",
   en: "Correct answer",
 };
+export const wrong_answer = {
+  id: "Jawaban salah",
+  en: "Wrong answer",
+};
+export const empty_answer = {
+  id: "Jawaban kosong",
+  en: "Empty answer",
+};
 export const explanation = {
   id: "Penjelasan",
   en: "Explanation",
@@ -658,6 +678,58 @@ export const type = {
 export const material_type = {
   id: "Tipe materi",
   en: "Material type",
+};
+export const start_date = {
+  id: "Tanggal mulai",
+  en: "Start date",
+};
+export const end_date = {
+  id: "Tanggal selesai",
+  en: "End date",
+};
+export const start_date_time = {
+  id: "Waktu mulai",
+  en: "Start time",
+};
+export const end_date_time = {
+  id: "Waktu selesai",
+  en: "End time",
+};
+export const attemp_status = {
+  id: "Status pengerjaan",
+  en: "Attempt status",
+};
+export const not_started = {
+  id: "Belum dimulai",
+  en: "Not started",
+};
+export const on_progress = {
+  id: "Dalam proses",
+  en: "On progress",
+};
+export const finished = {
+  id: "Selesai",
+  en: "Finished",
+};
+export const grade = {
+  id: "Nilai",
+  en: "Grade",
+};
+export const result_detail = {
+  id: "Detail hasil",
+  en: "Result detail",
+};
+export const basic_info = {
+  id: "Informasi umum",
+  en: "Basic info",
+};
+export const quiz_info = {
+  id: "Informasi quiz",
+  en: "Quiz info",
+};
+export const duration = {
+  id: "Durasi",
+  en: "Duration",
 };
 
 // Message

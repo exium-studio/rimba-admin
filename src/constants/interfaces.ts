@@ -24,6 +24,7 @@ export interface Interface__KMISTopic extends Interface__CUD {
   title: string;
   description: string;
   totalQuiz: number;
+  quizDuration: number; // seconds
 }
 export interface Interface__KMISMaterial extends Interface__CUD {
   id: string;
@@ -34,7 +35,7 @@ export interface Interface__KMISMaterial extends Interface__CUD {
   materialCover: Interface__StorageFile[];
   title: string;
   materialType: Type__MaterialType;
-  materialData: any;
+  materialUrl: any;
   description: string;
   isPublic: boolean;
 }
@@ -51,14 +52,31 @@ export interface Interface__KMISQuiz extends Interface__CUD {
 }
 export interface Interface__KMISQuizAssessment extends Interface__CUD {
   id: string;
+  attemptUser: Interface__User;
   topic: Interface__KMISTopic;
-  question: string;
-  answerA: string;
-  answerB: string;
-  answerC: string;
-  answerD: string;
-  correctOption: string;
-  explanation: string;
+  attemptStatus: number;
+  assessmentStatus: boolean;
+  totalMaterial: number;
+  completedMaterial: number;
+  completedQuiz: number;
+  quizStarted: string;
+  quizFinished: string;
+  questionsAnswered: number;
+  correctCount: number;
+  wrongCount: number;
+  emptyCount: number;
+  scoreTotal: number;
+  feedback: string | null;
+  certificate: Interface__StorageFile[];
+}
+export interface Interface__KMISQuizResponse extends Interface__CUD {
+  id: string;
+  learningParticipant: Interface__KMISQuizAssessment;
+  quiz: Interface__KMISQuiz;
+  selectedOption: string;
+  isMarker: boolean | number;
+  isCorrect: boolean | number;
+  answeredAt: string;
 }
 export interface Interface__KMISEducator extends Interface__CUD {
   id: string;
@@ -89,14 +107,14 @@ export interface Interface__User extends Interface__CUD {
   role: Interface__Role;
   accountStatus: string | number;
   // optional
-  gender: boolean | null; // 1 male, 0 female
+  gender: boolean | number | null; // 1 male, 0 female
   phoneNumber: string | null;
   birthDate: string | null;
   address: string | null;
   // audit timestamps
-  registeredAt: string;
+  registerAt: string;
   lastLogin: string | null;
-  lastChangePasswordAt: string | null;
+  lastChangePassword: string | null;
   deactiveAt: string | null;
 }
 export interface Interface__Role {
@@ -144,7 +162,7 @@ export interface Interface__FormattedTableRow<T = any> {
   data: T;
   dim?: boolean;
   columns: {
-    td: any;
+    td: React.ReactNode;
     value: any;
     dataType?: string; // "string" | "number" | "date" | "time" |
     tableCellProps?: TableCellProps;
