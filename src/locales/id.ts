@@ -280,6 +280,7 @@ const translations = {
   "name": "Nama",
   "navigation": "Navigasi",
   "next": "Selanjutnya",
+  "no": "Tidak",
   "not_started": "Belum dimulai",
   "november": "November",
   "october": "Oktober",
@@ -319,10 +320,11 @@ const translations = {
     "monev": {
       "index": "Monev",
       "dashboard": "Dasbor Monev",
-      "activity_calendar": "Kalendar Kegiatan",
-      "data_sharing": "Penyampaian Data",
+      "package_information": "Informasi Paket",
       "monitoring": "Monitoring",
-      "package_information": "Informasi Paket"
+      "activity_calendar": "Kalendar Kegiatan",
+      "data_sharing": "Berbagi Data",
+      "package_validation": "Validasi Paket"
     },
     "settings": "Pengaturan",
     "profile": "Profil"
@@ -472,7 +474,8 @@ const translations = {
   "week": "Minggu",
   "will_be_deleted": "Akan dihapus",
   "wrong_answer": "Jawaban salah",
-  "year": "Tahun"
+  "year": "Tahun",
+  "yes": "Ya"
 };
 
 export default translations;

@@ -73,21 +73,25 @@ export const private_navs = {
       id: "Dasbor Monev",
       en: "Monev Dashboard",
     },
-    activity_calendar: {
-      id: "Kalendar Kegiatan",
-      en: "Activity Calendar",
-    },
-    data_sharing: {
-      id: "Penyampaian Data",
-      en: "Data Sharing",
+    package_information: {
+      id: "Informasi Paket",
+      en: "Package Information",
     },
     monitoring: {
       id: "Monitoring",
       en: "Monitoring",
     },
-    package_information: {
-      id: "Informasi Paket",
-      en: "Package Information",
+    activity_calendar: {
+      id: "Kalendar Kegiatan",
+      en: "Activity Calendar",
+    },
+    data_sharing: {
+      id: "Berbagi Data",
+      en: "Data Sharing",
+    },
+    package_validation: {
+      id: "Validasi Paket",
+      en: "Package Validation",
     },
   },
   settings: {

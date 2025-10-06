@@ -119,6 +119,16 @@ export const PRIVATE_NAVS: Interface__NavItem[] = [
                 allowedRoles: ["1", "3"],
               },
               {
+                labelKey: "private_navs.monev.package_information",
+                path: `/monev/package-information`,
+                allowedRoles: ["1", "3"],
+              },
+              {
+                labelKey: "private_navs.monev.monitoring",
+                path: `/monev/monitoring`,
+                allowedRoles: ["1", "3"],
+              },
+              {
                 labelKey: "private_navs.monev.activity_calendar",
                 path: `/monev/activity-calendar`,
                 allowedRoles: ["1", "3"],
@@ -129,13 +139,8 @@ export const PRIVATE_NAVS: Interface__NavItem[] = [
                 allowedRoles: ["1", "3"],
               },
               {
-                labelKey: "private_navs.monev.monitoring",
-                path: `/monev/monitoring`,
-                allowedRoles: ["1", "3"],
-              },
-              {
-                labelKey: "private_navs.monev.package_information",
-                path: `/monev/package-information`,
+                labelKey: "private_navs.monev.package_validation",
+                path: `/monev/package-validation`,
                 allowedRoles: ["1", "3"],
               },
             ],

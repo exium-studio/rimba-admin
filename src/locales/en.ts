@@ -280,6 +280,7 @@ const translations = {
   "name": "Name",
   "navigation": "Navigation",
   "next": "Next",
+  "no": "No",
   "not_started": "Not started",
   "november": "November",
   "october": "October",
@@ -319,10 +320,11 @@ const translations = {
     "monev": {
       "index": "Monev",
       "dashboard": "Monev Dashboard",
+      "package_information": "Package Information",
+      "monitoring": "Monitoring",
       "activity_calendar": "Activity Calendar",
       "data_sharing": "Data Sharing",
-      "monitoring": "Monitoring",
-      "package_information": "Package Information"
+      "package_validation": "Package Validation"
     },
     "settings": "Settings",
     "profile": "Profile"
@@ -472,7 +474,8 @@ const translations = {
   "week": "Week",
   "will_be_deleted": "Will be deleted",
   "wrong_answer": "Wrong answer",
-  "year": "Year"
+  "year": "Year",
+  "yes": "Yes"
 };
 
 export default translations;
