@@ -1,8 +1,9 @@
 "use client";
 
 import { CContainer } from "@/components/ui/c-container";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useThemeConfig } from "@/context/useThemeConfig";
-import { Skeleton, StackProps } from "@chakra-ui/react";
+import { StackProps } from "@chakra-ui/react";
 
 export const TableSkeleton = (props: StackProps) => {
   // Props

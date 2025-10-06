@@ -731,6 +731,30 @@ export const duration = {
   id: "Durasi",
   en: "Duration",
 };
+export const total_answered = {
+  id: "Total terjawab",
+  en: "Total answered",
+};
+export const total_correct = {
+  id: "Total benar",
+  en: "Total correct",
+};
+export const total_wrong = {
+  id: "Total salah",
+  en: "Total wrong",
+};
+export const total_empty = {
+  id: "Total kosong",
+  en: "Total empty",
+};
+export const certificate = {
+  id: "Sertifikat",
+  en: "Certificate",
+};
+export const list_of_questions = {
+  id: "Daftar soal",
+  en: "List of questions",
+};
 
 // Message
 export const msg_select_material_type_first = {

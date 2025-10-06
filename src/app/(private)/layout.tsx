@@ -259,7 +259,11 @@ const MobileLayout = (props: any) => {
                                       pathname === menu.path;
 
                                     return (
-                                      <NavLink key={menu.path} to={menu.path}>
+                                      <NavLink
+                                        key={menu.path}
+                                        to={menu.path}
+                                        w={"full"}
+                                      >
                                         <MenuItem value={menu.path} h={"44px"}>
                                           <P lineClamp={1}>
                                             {pluckString(l, menu.labelKey)}
@@ -651,6 +655,7 @@ const DesktopLayout = (props: any) => {
                                               <NavLink
                                                 key={menu.path}
                                                 to={menu.path}
+                                                w={"full"}
                                               >
                                                 <Tooltip
                                                   content={pluckString(
@@ -771,7 +776,11 @@ const DesktopLayout = (props: any) => {
                                         pathname === menu.path;
 
                                       return (
-                                        <NavLink key={menu.path} to={menu.path}>
+                                        <NavLink
+                                          key={menu.path}
+                                          to={menu.path}
+                                          w={"full"}
+                                        >
                                           <Tooltip
                                             content={pluckString(
                                               l,
@@ -808,7 +817,7 @@ const DesktopLayout = (props: any) => {
                         )}
 
                         {!hasSubMenus && (
-                          <NavLink key={nav.path} to={nav.path}>
+                          <NavLink key={nav.path} to={nav.path} w={"full"}>
                             <NavTooltip content={pluckString(l, nav.labelKey)}>
                               <Btn
                                 iconButton={navsExpanded ? false : true}
@@ -860,7 +869,7 @@ const DesktopLayout = (props: any) => {
         </CContainer>
 
         <CContainer mt={"auto"} gap={2} p={2}>
-          <NavLink to={`/settings`}>
+          <NavLink to={`/settings`} w={"full"}>
             <NavTooltip content={l.settings}>
               <Btn
                 clicky={false}

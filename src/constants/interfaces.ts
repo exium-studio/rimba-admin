@@ -162,7 +162,7 @@ export interface Interface__FormattedTableRow<T = any> {
   data: T;
   dim?: boolean;
   columns: {
-    td: React.ReactNode;
+    td: any;
     value: any;
     dataType?: string; // "string" | "number" | "date" | "time" |
     tableCellProps?: TableCellProps;

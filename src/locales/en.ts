@@ -43,6 +43,7 @@ const translations = {
   "basic_info": "Basic info",
   "camera": "Camera",
   "cancel": "Cancel",
+  "certificate": "Certificate",
   "clear": "Clear",
   "close": "Close",
   "component": "Component",
@@ -188,6 +189,7 @@ const translations = {
   "june": "June",
   "language": "Language",
   "learn_more": "Learn more",
+  "list_of_questions": "List of questions",
   "loading_default": {
     "title": "Loading",
     "description": "The request is being processed..."
@@ -446,8 +448,12 @@ const translations = {
   "time_format": "Time format",
   "timezone": "Timezone",
   "title": "Title",
+  "total_answered": "Total answered",
+  "total_correct": "Total correct",
+  "total_empty": "Total empty",
   "total_material": "Total Material",
   "total_topic": "Total Topic",
+  "total_wrong": "Total wrong",
   "try_camera": "Try Camera",
   "try_location": "Try Location",
   "try_mic": "Try Mic",

@@ -43,6 +43,7 @@ const translations = {
   "basic_info": "Informasi umum",
   "camera": "Kamera",
   "cancel": "Batal",
+  "certificate": "Sertifikat",
   "clear": "Clear",
   "close": "Tutup",
   "component": "Komponen",
@@ -188,6 +189,7 @@ const translations = {
   "june": "Juni",
   "language": "Bahasa",
   "learn_more": "Pelajari lebih lanjut",
+  "list_of_questions": "Daftar soal",
   "loading_default": {
     "title": "Memuat",
     "description": "Permintaan sedang diproses..."
@@ -446,8 +448,12 @@ const translations = {
   "time_format": "Format waktu",
   "timezone": "Zona waktu",
   "title": "Judul",
+  "total_answered": "Total terjawab",
+  "total_correct": "Total benar",
+  "total_empty": "Total kosong",
   "total_material": "Total Materi",
   "total_topic": "Total Topik",
+  "total_wrong": "Total salah",
   "try_camera": "Coba Kamera",
   "try_location": "Coba Lokasi",
   "try_mic": "Coba Mic",

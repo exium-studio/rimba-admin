@@ -2,7 +2,6 @@
 
 import { Btn } from "@/components/ui/btn";
 import { CContainer } from "@/components/ui/c-container";
-import { CSpinner } from "@/components/ui/c-spinner";
 import {
   DisclosureBody,
   DisclosureContent,
@@ -11,14 +10,17 @@ import {
   DisclosureRoot,
 } from "@/components/ui/disclosure";
 import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-content";
+import { NavLink } from "@/components/ui/nav-link";
 import { P } from "@/components/ui/p";
 import SearchInput from "@/components/ui/search-input";
+import { Skeleton } from "@/components/ui/skeleton";
 import BackButton from "@/components/widget/BackButton";
 import { ClampText } from "@/components/widget/ClampText";
 import { DataDisplayToggle } from "@/components/widget/DataDisplayToggle";
 import { DataGrid } from "@/components/widget/DataGrid";
 import { DataGridItem } from "@/components/widget/DataGridItem";
 import { DataTable } from "@/components/widget/DataTable";
+import { ExamWorkspace } from "@/components/widget/ExamWorkspace";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
 import { ItemContainer } from "@/components/widget/ItemContainer";
@@ -40,18 +42,12 @@ import useBackOnClose from "@/hooks/useBackOnClose";
 import useDataState from "@/hooks/useDataState";
 import { isEmptyArray, last } from "@/utils/array";
 import { disclosureId } from "@/utils/disclosure";
-import { formatDate, formatDuration } from "@/utils/formatter";
+import { formatDate, formatDuration, formatNumber } from "@/utils/formatter";
 import { capitalizeWords, pluckString } from "@/utils/string";
 import { getEpochMilliseconds } from "@/utils/time";
-import { getActiveNavs, imgUrl } from "@/utils/url";
-import {
-  HStack,
-  Icon,
-  SimpleGrid,
-  Stack,
-  useDisclosure,
-} from "@chakra-ui/react";
-import { IconEye } from "@tabler/icons-react";
+import { fileUrl, getActiveNavs, imgUrl } from "@/utils/url";
+import { HStack, Icon, SimpleGrid, useDisclosure } from "@chakra-ui/react";
+import { IconArrowUpRight, IconEye } from "@tabler/icons-react";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
@@ -80,16 +76,201 @@ const AnswerDetail = (props: any) => {
   const { error, initialLoading, data, onRetry } = useDataState<
     Interface__KMISQuizResponse[]
   >({
-    initialData: dummy_quiz_response,
-    // url: `/api/kmis/learning-participant/show/${assessment.id}`,
+    dummyData: dummy_quiz_response,
+    url: `/api/kmis/learning-participant/show/${assessment.id}`,
     dependencies: [],
     dataResource: false,
   });
   const render = {
-    loading: <CSpinner />,
+    loading: <Skeleton w={"full"} h={"500px"} />,
     error: <FeedbackRetry onRetry={onRetry} />,
     empty: <FeedbackNoData />,
-    loaded: <></>,
+    loaded: (
+      <CContainer gap={4}>
+        <SimpleGrid columns={[1, null, 2]} gap={4} px={1}>
+          <ItemContainer
+            rounded={themeConfig.radii.component}
+            border={"1px solid"}
+            borderColor={"border.muted"}
+          >
+            <ItemHeaderContainer borderless>
+              <ItemHeaderTitle>{capitalizeWords(l.basic_info)}</ItemHeaderTitle>
+            </ItemHeaderContainer>
+
+            <CContainer gap={4} p={4} pt={2}>
+              <HStack align={"start"}>
+                <P w={"120px"} color={"fg.muted"} flexShrink={0}>
+                  {l.name}
+                </P>
+                <P>:</P>
+                <P>{resolvedAssessment.attemptUser.name}</P>
+              </HStack>
+
+              <HStack align={"start"}>
+                <P w={"120px"} color={"fg.muted"} flexShrink={0}>
+                  {"Email"}
+                </P>
+                <P>:</P>
+                <P>{resolvedAssessment.attemptUser.email}</P>
+              </HStack>
+
+              <HStack align={"start"}>
+                <P w={"120px"} color={"fg.muted"} flexShrink={0}>
+                  {l.private_navs.kmis.category}
+                </P>
+                <P>:</P>
+                <P>{resolvedAssessment.topic.category.title}</P>
+              </HStack>
+
+              <HStack align={"start"}>
+                <P w={"120px"} color={"fg.muted"} flexShrink={0}>
+                  {l.private_navs.kmis.topic}
+                </P>
+                <P>:</P>
+                <P>{resolvedAssessment.topic.title}</P>
+              </HStack>
+
+              <HStack align={"start"}>
+                <P w={"120px"} color={"fg.muted"} flexShrink={0}>
+                  {l.description}
+                </P>
+                <P>:</P>
+                <P>{resolvedAssessment.topic.description}</P>
+              </HStack>
+
+              <HStack align={"start"}>
+                <P w={"120px"} color={"fg.muted"} flexShrink={0}>
+                  {l.duration}
+                </P>
+                <P>:</P>
+                <P>{formatDuration(resolvedAssessment.topic.quizDuration)}</P>
+              </HStack>
+
+              <HStack align={"start"}>
+                <P w={"120px"} color={"fg.muted"} flexShrink={0}>
+                  {l.start_date_time}
+                </P>
+                <P>:</P>
+                <P>
+                  {formatDate(resolvedAssessment.quizStarted, {
+                    variant: "numeric",
+                    withTime: true,
+                  })}
+                </P>
+              </HStack>
+
+              <HStack align={"start"}>
+                <P w={"120px"} color={"fg.muted"} flexShrink={0}>
+                  {l.end_date_time}
+                </P>
+                <P>:</P>
+                <P>
+                  {formatDate(resolvedAssessment.quizFinished, {
+                    variant: "numeric",
+                    withTime: true,
+                  })}
+                </P>
+              </HStack>
+            </CContainer>
+          </ItemContainer>
+
+          <ItemContainer
+            rounded={themeConfig.radii.component}
+            border={"1px solid"}
+            borderColor={"border.muted"}
+          >
+            <ItemHeaderContainer borderless>
+              <ItemHeaderTitle>{capitalizeWords(l.quiz_info)}</ItemHeaderTitle>
+            </ItemHeaderContainer>
+
+            <CContainer gap={4} p={4} pt={2}>
+              <HStack align={"start"}>
+                <P w={"120px"} color={"fg.muted"} flexShrink={0}>
+                  {l.attemp_status}
+                </P>
+                <P>:</P>
+                <QuizAttempStatus
+                  quizAttempStatus={resolvedAssessment.attemptStatus}
+                />
+              </HStack>
+
+              <HStack align={"start"}>
+                <P w={"120px"} color={"fg.muted"} flexShrink={0}>
+                  {l.grade}
+                </P>
+                <P>:</P>
+                <P>{`${resolvedAssessment.scoreTotal}`}</P>
+              </HStack>
+
+              <HStack align={"start"}>
+                <P w={"120px"} color={"fg.muted"} flexShrink={0}>
+                  {l.total_answered}
+                </P>
+                <P>:</P>
+                <P>{formatNumber(resolvedAssessment.questionsAnswered)}</P>
+              </HStack>
+
+              <HStack align={"start"}>
+                <P w={"120px"} color={"fg.muted"} flexShrink={0}>
+                  {l.total_correct}
+                </P>
+                <P>:</P>
+                <P>{formatNumber(resolvedAssessment.correctCount)}</P>
+              </HStack>
+
+              <HStack align={"start"}>
+                <P w={"120px"} color={"fg.muted"} flexShrink={0}>
+                  {l.total_wrong}
+                </P>
+                <P>:</P>
+                <P>{formatNumber(resolvedAssessment.wrongCount)}</P>
+              </HStack>
+
+              <HStack align={"start"}>
+                <P w={"120px"} color={"fg.muted"} flexShrink={0}>
+                  {l.total_empty}
+                </P>
+                <P>:</P>
+                <P>{formatNumber(resolvedAssessment.emptyCount)}</P>
+              </HStack>
+
+              <HStack align={"start"}>
+                <P w={"120px"} color={"fg.muted"} flexShrink={0}>
+                  Feedback
+                </P>
+                <P>:</P>
+                <P>{resolvedAssessment.feedback || "-"}</P>
+              </HStack>
+
+              <HStack align={"start"}>
+                <P w={"120px"} color={"fg.muted"} flexShrink={0}>
+                  {l.certificate}
+                </P>
+                <P>:</P>
+                <NavLink
+                  to={fileUrl(resolvedAssessment.certificate?.[0]?.filePath)}
+                  external
+                >
+                  <Btn
+                    variant={"plain"}
+                    p={0}
+                    h={"fit"}
+                    color={`${themeConfig.colorPalette}.fg`}
+                  >
+                    {l.view}
+                    <Icon boxSize={5}>
+                      <IconArrowUpRight stroke={1.5} />
+                    </Icon>
+                  </Btn>
+                </NavLink>
+              </HStack>
+            </CContainer>
+          </ItemContainer>
+        </SimpleGrid>
+
+        <ExamWorkspace quizResponses={data} px={1} />
+      </CContainer>
+    ),
   };
 
   return (
@@ -112,153 +293,25 @@ const AnswerDetail = (props: any) => {
       <DisclosureRoot open={open} lazyLoad size={"xl"}>
         <DisclosureContent>
           <DisclosureHeader>
-            <DisclosureHeaderContent title={`${l.result_detail}`} />
+            <DisclosureHeaderContent
+              title={`${capitalizeWords(l.result_detail)}`}
+            />
           </DisclosureHeader>
 
           <DisclosureBody>
-            <SimpleGrid columns={[1, null, 2]} gap={4}>
-              <ItemContainer
-                rounded={themeConfig.radii.component}
-                border={"1px solid"}
-                borderColor={"border.muted"}
-              >
-                <ItemHeaderContainer>
-                  <ItemHeaderTitle>
-                    {capitalizeWords(l.basic_info)}
-                  </ItemHeaderTitle>
-                </ItemHeaderContainer>
+            {initialLoading && render.loading}
 
-                <CContainer gap={4} p={4}>
-                  <HStack align={"start"}>
-                    <P w={"120px"} color={"fg.muted"} flexShrink={0}>
-                      {l.name}
-                    </P>
-                    <P>:</P>
-                    <P>{resolvedAssessment.attemptUser.name}</P>
-                  </HStack>
-
-                  <HStack align={"start"}>
-                    <P w={"120px"} color={"fg.muted"} flexShrink={0}>
-                      {"Email"}
-                    </P>
-                    <P>:</P>
-                    <P>{resolvedAssessment.attemptUser.email}</P>
-                  </HStack>
-
-                  <HStack align={"start"}>
-                    <P w={"120px"} color={"fg.muted"} flexShrink={0}>
-                      {l.private_navs.kmis.category}
-                    </P>
-                    <P>:</P>
-                    <P>{resolvedAssessment.topic.category.title}</P>
-                  </HStack>
-
-                  <HStack align={"start"}>
-                    <P w={"120px"} color={"fg.muted"} flexShrink={0}>
-                      {l.private_navs.kmis.topic}
-                    </P>
-                    <P>:</P>
-                    <P>{resolvedAssessment.topic.title}</P>
-                  </HStack>
-
-                  <HStack align={"start"}>
-                    <P w={"120px"} color={"fg.muted"} flexShrink={0}>
-                      {l.description}
-                    </P>
-                    <P>:</P>
-                    <P>{resolvedAssessment.topic.description}</P>
-                  </HStack>
-
-                  <HStack align={"start"}>
-                    <P w={"120px"} color={"fg.muted"} flexShrink={0}>
-                      {l.duration}
-                    </P>
-                    <P>:</P>
-                    <P>
-                      {formatDuration(resolvedAssessment.topic.quizDuration)}
-                    </P>
-                  </HStack>
-                </CContainer>
-              </ItemContainer>
-
-              <ItemContainer
-                rounded={themeConfig.radii.component}
-                border={"1px solid"}
-                borderColor={"border.muted"}
-              >
-                <ItemHeaderContainer>
-                  <ItemHeaderTitle>
-                    {capitalizeWords(l.quiz_info)}
-                  </ItemHeaderTitle>
-                </ItemHeaderContainer>
-
-                <CContainer gap={4} p={4}>
-                  <HStack align={"start"}>
-                    <P w={"120px"} color={"fg.muted"} flexShrink={0}>
-                      {l.start_date_time}
-                    </P>
-                    <P>:</P>
-                    <P>{resolvedAssessment.attemptUser.name}</P>
-                  </HStack>
-
-                  <HStack align={"start"}>
-                    <P w={"120px"} color={"fg.muted"} flexShrink={0}>
-                      {l.end_date_time}
-                    </P>
-                    <P>:</P>
-                    <P>{resolvedAssessment.attemptUser.name}</P>
-                  </HStack>
-
-                  <HStack align={"start"}>
-                    <P w={"120px"} color={"fg.muted"} flexShrink={0}>
-                      {l.attemp_status}
-                    </P>
-                    <P>:</P>
-                    <QuizAttempStatus
-                      quizAttempStatus={resolvedAssessment.attemptStatus}
-                    />
-                  </HStack>
-
-                  <HStack align={"start"}>
-                    <P w={"120px"} color={"fg.muted"} flexShrink={0}>
-                      {l.grade}
-                    </P>
-                    <P>:</P>
-                    <P>{`${resolvedAssessment.scoreTotal}`}</P>
-                  </HStack>
-
-                  <HStack align={"start"}>
-                    <P w={"120px"} color={"fg.muted"} flexShrink={0}>
-                      {l.correct_answer}
-                    </P>
-                    <P>:</P>
-                    <P>{`${resolvedAssessment.correctCount}`}</P>
-                  </HStack>
-
-                  <HStack align={"start"}>
-                    <P w={"120px"} color={"fg.muted"} flexShrink={0}>
-                      {l.wrong_answer}
-                    </P>
-                    <P>:</P>
-                    <P>{`${resolvedAssessment.wrongCount}`}</P>
-                  </HStack>
-
-                  <HStack align={"start"}>
-                    <P w={"120px"} color={"fg.muted"} flexShrink={0}>
-                      {l.empty_answer}
-                    </P>
-                    <P>:</P>
-                    <P>{`${resolvedAssessment.emptyCount}`}</P>
-                  </HStack>
-                </CContainer>
-              </ItemContainer>
-            </SimpleGrid>
-
-            <Stack flexDir={["column", null, "row"]}>
-              <CContainer></CContainer>
-
-              <CContainer></CContainer>
-            </Stack>
+            {!initialLoading && (
+              <>
+                {error && render.error}
+                {!error && (
+                  <>
+                    {data && render.loaded}
+                    {(!data || isEmptyArray(data)) && render.empty}
+                  </>
+                )}
+              </>
+            )}
           </DisclosureBody>
 
           <DisclosureFooter>
@@ -293,7 +346,6 @@ const Data = (props: any) => {
 
   // Contexts
   const { l } = useLang();
-  const { themeConfig } = useThemeConfig();
   const displayMode = useDataDisplay((s) => s.getDisplay(PREFIX_ID));
   const displayTable = displayMode === "table";
 
@@ -309,8 +361,8 @@ const Data = (props: any) => {
     setPage,
     pagination,
   } = useDataState<Interface__Data[]>({
-    initialData: dummy_quiz_assessment,
-    // url: `${BASE_ENDPOINT}/index`,
+    dummyData: dummy_quiz_assessment,
+    url: `${BASE_ENDPOINT}/index`,
     params: filter,
     dependencies: [filter],
   });
@@ -372,14 +424,10 @@ const Data = (props: any) => {
           value: item.attemptUser.name,
         },
         {
-          td: (
-            <P>
-              {formatDate(item.quizStarted, {
-                variant: "numeric",
-                withTime: true,
-              })}
-            </P>
-          ),
+          td: formatDate(item.quizStarted, {
+            variant: "numeric",
+            withTime: true,
+          }),
           value: item.quizStarted,
         },
         {
@@ -389,7 +437,7 @@ const Data = (props: any) => {
           align: "center",
         },
         {
-          td: <P>{`${item.scoreTotal}`}</P>,
+          td: `${item.scoreTotal}`,
           value: item.scoreTotal,
           dataType: "number",
           align: "center",
@@ -402,41 +450,29 @@ const Data = (props: any) => {
 
         // timestamps
         {
-          td: (
-            <P>
-              {formatDate(item.createdAt, {
-                variant: "numeric",
-                withTime: true,
-              })}
-            </P>
-          ),
+          td: formatDate(item.createdAt, {
+            variant: "numeric",
+            withTime: true,
+          }),
           value: item.createdAt,
           dataType: "date",
           dashEmpty: true,
         },
         {
-          td: (
-            <P>
-              {formatDate(item.updatedAt, {
-                variant: "numeric",
-                withTime: true,
-                dashEmpty: true,
-              })}
-            </P>
-          ),
+          td: formatDate(item.updatedAt, {
+            variant: "numeric",
+            withTime: true,
+            dashEmpty: true,
+          }),
           value: item.updatedAt,
           dataType: "date",
         },
         {
-          td: (
-            <P>
-              {formatDate(item.deletedAt, {
-                variant: "numeric",
-                withTime: true,
-                dashEmpty: true,
-              })}
-            </P>
-          ),
+          td: formatDate(item.deletedAt, {
+            variant: "numeric",
+            withTime: true,
+            dashEmpty: true,
+          }),
           value: item.deletedAt,
           dataType: "date",
         },
