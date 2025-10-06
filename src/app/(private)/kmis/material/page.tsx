@@ -97,12 +97,12 @@ const MaterialFormByType = (props: any) => {
     return <P color={"fg.subtle"}>{l.msg_select_material_type_first}</P>;
   }
 
-  switch (type) {
-    case "Gambar":
+  switch (type?.[0]?.id) {
+    case "gambar":
       return <>Gambar</>;
-    case "Video":
+    case "video":
       return <>Video</>;
-    case "Document":
+    case "document":
       return <>Docs</>;
     default: // Text
       return <>Text</>;
