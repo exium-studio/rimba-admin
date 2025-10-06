@@ -263,7 +263,7 @@ const Material = (props: any) => {
   const { l } = useLang();
 
   return (
-    <NavLink to={`/kmis/material?topicId=${data?.id}`}>
+    <NavLink to={`/kmis/material?topicId=${data?.id}`} w={"full"}>
       <MenuTooltip content={l.private_navs.kmis.material}>
         <MenuItem value="material">
           <P lineClamp={1}>{l.private_navs.kmis.material}</P>
@@ -284,7 +284,7 @@ const Quiz = (props: any) => {
 
   return (
     <>
-      <NavLink to={`/kmis/quiz?topicId=${data?.id}`}>
+      <NavLink to={`/kmis/quiz?topicId=${data?.id}`} w={"full"}>
         <MenuTooltip content={l.private_navs.kmis.quiz}>
           <MenuItem value="quiz">
             <P lineClamp={1}>{l.private_navs.kmis.quiz}</P>
