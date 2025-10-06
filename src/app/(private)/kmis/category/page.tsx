@@ -141,7 +141,7 @@ const Create = (props: any) => {
   });
 
   return (
-    <>s
+    <>
       <Tooltip content={`${l.add} data`}>
         <Btn
           iconButton={iss ? true : false}
@@ -157,7 +157,6 @@ const Create = (props: any) => {
           {!iss && l.add}
         </Btn>
       </Tooltip>
-
       <DisclosureRoot open={open} lazyLoad size={"xs"}>
         <DisclosureContent>
           <DisclosureHeader>
