@@ -3,6 +3,7 @@
 import { MenuItem } from "@/components/ui/menu";
 import { P } from "@/components/ui/p";
 import SearchInput from "@/components/ui/search-input";
+import { Tooltip, TooltipProps } from "@/components/ui/tooltip";
 import { AccountStatus } from "@/components/widget/AccountStatus";
 import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
 import { DataDisplayToggle } from "@/components/widget/DataDisplayToggle";
@@ -224,6 +225,20 @@ type Interface__Data = Interface__KMISStudent;
 //   );
 // };
 
+const MenuTooltip = (props: TooltipProps) => {
+  // Props
+  const { children, content, ...restProps } = props;
+  return (
+    <Tooltip
+      content={content}
+      positioning={{ placement: "right" }}
+      {...restProps}
+    >
+      {children}
+    </Tooltip>
+  );
+};
+
 const Activate = (props: any) => {
   const ID = `${PREFIX_ID}_activate`;
 
@@ -276,12 +291,14 @@ const Activate = (props: any) => {
       loading={loading}
       disabled={disabled}
     >
-      <MenuItem value="restore" disabled={disabled}>
-        {l.activate}
-        <Icon boxSize={"18px"} ml={"auto"}>
-          <IconActivity stroke={1.5} />
-        </Icon>
-      </MenuItem>
+      <MenuTooltip content={l.activate}>
+        <MenuItem value="activate" disabled={disabled}>
+          {l.activate}
+          <Icon boxSize={"18px"} ml={"auto"}>
+            <IconActivity stroke={1.5} />
+          </Icon>
+        </MenuItem>
+      </MenuTooltip>
     </ConfirmationDisclosureTrigger>
   );
 };
@@ -343,12 +360,14 @@ const Deactivate = (props: any) => {
       loading={loading}
       disabled={disabled}
     >
-      <MenuItem value="delete" color={"fg.error"} disabled={disabled}>
-        {l.deactivate}
-        <Icon boxSize={"18px"} ml={"auto"}>
-          <IconX stroke={1.5} />
-        </Icon>
-      </MenuItem>
+      <MenuTooltip content={l.deactivate}>
+        <MenuItem value="deactivate" color={"fg.error"} disabled={disabled}>
+          {l.deactivate}
+          <Icon boxSize={"18px"} ml={"auto"}>
+            <IconX stroke={1.5} />
+          </Icon>
+        </MenuItem>
+      </MenuTooltip>
     </ConfirmationDisclosureTrigger>
   );
 };

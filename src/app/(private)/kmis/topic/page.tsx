@@ -9,13 +9,17 @@ import {
   DisclosureRoot,
 } from "@/components/ui/disclosure";
 import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-content";
+import { Divider } from "@/components/ui/divider";
 import { Field } from "@/components/ui/field";
 import { Img } from "@/components/ui/img";
 import { ImgInput } from "@/components/ui/img-input";
 import { MenuItem } from "@/components/ui/menu";
+import { NavLink } from "@/components/ui/nav-link";
+import { P } from "@/components/ui/p";
 import SearchInput from "@/components/ui/search-input";
 import { StringInput } from "@/components/ui/string-input";
 import { Textarea } from "@/components/ui/textarea";
+import { Tooltip, TooltipProps } from "@/components/ui/tooltip";
 import { ClampText } from "@/components/widget/ClampText";
 import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
 import { DataDisplayToggle } from "@/components/widget/DataDisplayToggle";
@@ -52,6 +56,8 @@ import { getActiveNavs, imgUrl } from "@/utils/url";
 import { fileValidation } from "@/utils/validationSchema";
 import { FieldsetRoot, HStack, Icon, useDisclosure } from "@chakra-ui/react";
 import {
+  IconBook2,
+  IconClipboardList,
   IconPencilMinus,
   IconPlus,
   IconRestore,
@@ -65,6 +71,20 @@ import * as yup from "yup";
 const BASE_ENDPOINT = "/api/kmis/topic";
 const PREFIX_ID = "kmis_topic";
 type Interface__Data = Interface__KMISTopic;
+
+const MenuTooltip = (props: TooltipProps) => {
+  // Props
+  const { children, content, ...restProps } = props;
+  return (
+    <Tooltip
+      content={content}
+      positioning={{ placement: "right" }}
+      {...restProps}
+    >
+      {children}
+    </Tooltip>
+  );
+};
 
 const Create = (props: any) => {
   const ID = `${PREFIX_ID}_create`;
@@ -138,19 +158,21 @@ const Create = (props: any) => {
 
   return (
     <>
-      <Btn
-        iconButton={iss ? true : false}
-        size={"md"}
-        pl={iss ? "" : 3}
-        colorPalette={themeConfig.colorPalette}
-        onClick={onOpen}
-      >
-        <Icon>
-          <IconPlus stroke={1.5} />
-        </Icon>
+      <Tooltip content={`${l.add} data`}>
+        <Btn
+          iconButton={iss ? true : false}
+          size={"md"}
+          pl={iss ? "" : 3}
+          colorPalette={themeConfig.colorPalette}
+          onClick={onOpen}
+        >
+          <Icon>
+            <IconPlus stroke={1.5} />
+          </Icon>
 
-        {!iss && l.add}
-      </Btn>
+          {!iss && l.add}
+        </Btn>
+      </Tooltip>
 
       <DisclosureRoot open={open} lazyLoad size={"xs"}>
         <DisclosureContent>
@@ -230,6 +252,50 @@ const Create = (props: any) => {
           </DisclosureFooter>
         </DisclosureContent>
       </DisclosureRoot>
+    </>
+  );
+};
+const Material = (props: any) => {
+  // Props
+  const { data } = props;
+
+  // Contexts
+  const { l } = useLang();
+
+  return (
+    <NavLink to={`/kmis/material?topicId=${data?.id}`}>
+      <MenuTooltip content={l.private_navs.kmis.material}>
+        <MenuItem value="material">
+          <P lineClamp={1}>{l.private_navs.kmis.material}</P>
+          <Icon boxSize={"18px"} ml={"auto"}>
+            <IconBook2 stroke={1.5} />
+          </Icon>
+        </MenuItem>
+      </MenuTooltip>
+    </NavLink>
+  );
+};
+const Quiz = (props: any) => {
+  // Props
+  const { data } = props;
+
+  // Contexts
+  const { l } = useLang();
+
+  return (
+    <>
+      <NavLink to={`/kmis/quiz?topicId=${data?.id}`}>
+        <MenuTooltip content={l.private_navs.kmis.quiz}>
+          <MenuItem value="quiz">
+            <P lineClamp={1}>{l.private_navs.kmis.quiz}</P>
+            <Icon boxSize={"18px"} ml={"auto"}>
+              <IconClipboardList stroke={1.5} />
+            </Icon>
+          </MenuItem>
+        </MenuTooltip>
+      </NavLink>
+
+      <Divider my={1} />
     </>
   );
 };
@@ -330,12 +396,14 @@ const Update = (props: any) => {
 
   return (
     <>
-      <MenuItem value="edit" onClick={onOpen}>
-        Edit
-        <Icon boxSize={"18px"} ml={"auto"}>
-          <IconPencilMinus stroke={1.5} />
-        </Icon>
-      </MenuItem>
+      <MenuTooltip content={"Edit"}>
+        <MenuItem value="edit" onClick={onOpen}>
+          Edit
+          <Icon boxSize={"18px"} ml={"auto"}>
+            <IconPencilMinus stroke={1.5} />
+          </Icon>
+        </MenuItem>
+      </MenuTooltip>
 
       <DisclosureRoot open={open} lazyLoad size={"xs"}>
         <DisclosureContent>
@@ -447,7 +515,7 @@ const Restore = (props: any) => {
   });
 
   // Utils
-  function onActivate() {
+  function onRestore() {
     back();
     req({
       config: {
@@ -473,16 +541,18 @@ const Restore = (props: any) => {
       title={`${l.restore} ${routeTitle}`}
       description={l.msg_restore}
       confirmLabel={`${l.restore}`}
-      onConfirm={onActivate}
+      onConfirm={onRestore}
       loading={loading}
       disabled={disabled}
     >
-      <MenuItem value="restore" disabled={disabled}>
-        {l.restore}
-        <Icon boxSize={"18px"} ml={"auto"}>
-          <IconRestore stroke={1.5} />
-        </Icon>
-      </MenuItem>
+      <MenuTooltip content={l.restore}>
+        <MenuItem value="restore" disabled={disabled}>
+          {l.restore}
+          <Icon boxSize={"18px"} ml={"auto"}>
+            <IconRestore stroke={1.5} />
+          </Icon>
+        </MenuItem>
+      </MenuTooltip>
     </ConfirmationDisclosureTrigger>
   );
 };
@@ -543,12 +613,14 @@ const Delete = (props: any) => {
       loading={loading}
       disabled={disabled}
     >
-      <MenuItem value="delete" color={"fg.error"} disabled={disabled}>
-        {l.delete_}
-        <Icon boxSize={"18px"} ml={"auto"}>
-          <IconTrash stroke={1.5} />
-        </Icon>
-      </MenuItem>
+      <MenuTooltip content={l.delete_}>
+        <MenuItem value="delete" color={"fg.error"} disabled={disabled}>
+          {l.delete_}
+          <Icon boxSize={"18px"} ml={"auto"}>
+            <IconTrash stroke={1.5} />
+          </Icon>
+        </MenuItem>
+      </MenuTooltip>
     </ConfirmationDisclosureTrigger>
   );
 };
@@ -688,6 +760,12 @@ const Data = (props: any) => {
       ],
     })),
     rowOptions: [
+      (row) => ({
+        override: <Material data={row.data} />,
+      }),
+      (row) => ({
+        override: <Quiz data={row.data} />,
+      }),
       (row) => ({
         override: <Update data={row.data} routeTitle={routeTitle} />,
       }),
