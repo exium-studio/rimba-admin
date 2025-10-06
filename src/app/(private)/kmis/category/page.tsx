@@ -141,7 +141,7 @@ const Create = (props: any) => {
   });
 
   return (
-    <>
+    <>s
       <Tooltip content={`${l.add} data`}>
         <Btn
           iconButton={iss ? true : false}
