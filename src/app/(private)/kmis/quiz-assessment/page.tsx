@@ -44,7 +44,6 @@ import { isEmptyArray, last } from "@/utils/array";
 import { disclosureId } from "@/utils/disclosure";
 import { formatDate, formatDuration, formatNumber } from "@/utils/formatter";
 import { capitalizeWords, pluckString } from "@/utils/string";
-import { getEpochMilliseconds } from "@/utils/time";
 import { fileUrl, getActiveNavs, imgUrl } from "@/utils/url";
 import { HStack, Icon, SimpleGrid, useDisclosure } from "@chakra-ui/react";
 import { IconArrowUpRight, IconEye } from "@tabler/icons-react";
@@ -55,7 +54,7 @@ const BASE_ENDPOINT = "/api/kmis/learning-participant";
 const PREFIX_ID = "kmis_quiz_assessment";
 type Interface__Data = Interface__KMISQuizAssessment;
 
-const AnswerDetail = (props: any) => {
+const ResultDetail = (props: any) => {
   // Props
   const { assessment, ...restProps } = props;
 
@@ -66,7 +65,7 @@ const AnswerDetail = (props: any) => {
   // Hooks
   const { open, onOpen, onClose } = useDisclosure();
   useBackOnClose(
-    disclosureId(`answer-detail-${getEpochMilliseconds()}`),
+    disclosureId(`answer-detail-${assessment.id}`),
     open,
     onOpen,
     onClose
@@ -443,7 +442,7 @@ const Data = (props: any) => {
           align: "center",
         },
         {
-          td: <AnswerDetail assessment={item} />,
+          td: <ResultDetail assessment={item} />,
           value: "",
           align: "center",
         },

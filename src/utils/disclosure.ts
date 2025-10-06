@@ -6,16 +6,16 @@ export function purgeDisclosureSearchParams() {
   if (typeof window === "undefined") return;
 
   const url = new URL(window.location.href);
-  let changed = false;
+  // let changed = false;
 
   url.searchParams.forEach((_, key) => {
     if (key.includes(disclosureIdPrefix)) {
       url.searchParams.delete(key);
-      changed = true;
+      // changed = true;
     }
   });
 
-  if (changed) {
-    window.history.replaceState({}, "", url.toString());
-  }
+  // if (changed) {
+  //   window.history.replaceState({}, "", url.toString());
+  // }
 }
