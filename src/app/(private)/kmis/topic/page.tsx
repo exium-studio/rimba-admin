@@ -707,7 +707,10 @@ const Data = (props: any) => {
       columns: [
         {
           td: (
-            <ImgViewer src={imgUrl(item?.topicCover?.[0]?.filePath)}>
+            <ImgViewer
+              id={`topic-cover-${item.id}`}
+              src={imgUrl(item?.topicCover?.[0]?.filePath)}
+            >
               <Img
                 key={imgUrl(item?.topicCover?.[0]?.filePath)}
                 src={imgUrl(item?.topicCover?.[0]?.filePath)}
