@@ -84,7 +84,11 @@ const MenuTooltip = (props: TooltipProps) => {
     </Tooltip>
   );
 };
-const MaterialFormByType = ({ type, ...restProps }: any) => {
+const MaterialFormByType = (props: any) => {
+  // Props
+  const { type, formik, ...restProps } = props;
+
+  // Contexts
   const { l } = useLang();
 
   if (!type) {
@@ -144,6 +148,7 @@ const Create = (props: any) => {
     }),
     onSubmit: (values, { resetForm }) => {
       const payload = new FormData();
+      payload.append("isPublic", `0`);
       payload.append("topic", `${values.topic?.[0]?.id}`);
       payload.append("title", values.title);
       payload.append("description", values.description);
@@ -228,6 +233,15 @@ const Create = (props: any) => {
                   {/* material form */}
                   <CContainer gap={4}>
                     <Field
+                      label={l.is_public}
+                      invalid={!!formik.errors.topic}
+                      errorText={formik.errors.topic as string}
+                      disabled
+                    >
+                      <StringInput inputValue="Tidak" />
+                    </Field>
+
+                    <Field
                       label={l.type}
                       invalid={!!formik.errors.topic}
                       errorText={formik.errors.topic as string}
@@ -242,7 +256,10 @@ const Create = (props: any) => {
                   </CContainer>
                 </SimpleGrid>
 
-                <MaterialFormByType type={formik.values.materialType} />
+                <MaterialFormByType
+                  type={formik.values.materialType}
+                  formik={formik}
+                />
               </FieldsetRoot>
             </form>
           </DisclosureBody>

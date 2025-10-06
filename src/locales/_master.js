@@ -755,6 +755,18 @@ export const list_of_questions = {
   id: "Daftar soal",
   en: "List of questions",
 };
+export const is_public = {
+  id: "Publik",
+  en: "Public",
+};
+export const yes = {
+  id: "Ya",
+  en: "Yes",
+};
+export const no = {
+  id: "Tidak",
+  en: "No",
+};
 
 // Message
 export const msg_select_material_type_first = {

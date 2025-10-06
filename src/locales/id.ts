@@ -184,6 +184,7 @@ const translations = {
     "title": "Zona waktu diatur secara otomatis",
     "description": "${timezone}"
   },
+  "is_public": "Publik",
   "january": "Januari",
   "july": "Juli",
   "june": "Juni",

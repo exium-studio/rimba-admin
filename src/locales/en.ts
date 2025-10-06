@@ -184,6 +184,7 @@ const translations = {
     "title": "Timezone automatically set",
     "description": "${timezone}"
   },
+  "is_public": "Public",
   "january": "January",
   "july": "July",
   "june": "June",
