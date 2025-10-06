@@ -637,6 +637,7 @@ const Data = (props: any) => {
           td: (
             <ImgViewer src={imgUrl(item?.topicCover?.[0]?.filePath)}>
               <Img
+                key={imgUrl(item?.topicCover?.[0]?.filePath)}
                 src={imgUrl(item?.topicCover?.[0]?.filePath)}
                 h={"24px"}
                 aspectRatio={1.1}
