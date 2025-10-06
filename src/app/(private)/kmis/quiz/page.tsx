@@ -804,8 +804,8 @@ const Data = (props: any) => {
           value: item.answerB,
         },
         {
-          td: <ClampText>{item.answerB}</ClampText>,
-          value: item.answerB,
+          td: <ClampText>{item.answerC}</ClampText>,
+          value: item.answerC,
         },
         {
           td: <ClampText>{item.answerD}</ClampText>,
