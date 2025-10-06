@@ -54,7 +54,13 @@ import { formatDate } from "@/utils/formatter";
 import { capitalize, pluckString } from "@/utils/string";
 import { getActiveNavs, imgUrl } from "@/utils/url";
 import { fileValidation } from "@/utils/validationSchema";
-import { FieldsetRoot, HStack, Icon, useDisclosure } from "@chakra-ui/react";
+import {
+  Badge,
+  FieldsetRoot,
+  HStack,
+  Icon,
+  useDisclosure,
+} from "@chakra-ui/react";
 import {
   IconBook2,
   IconClipboardList,
@@ -684,6 +690,10 @@ const Data = (props: any) => {
         th: l.description,
         sortable: true,
       },
+      {
+        th: l.private_navs.kmis.category,
+        sortable: true,
+      },
 
       // timestamps
       {
@@ -730,6 +740,10 @@ const Data = (props: any) => {
         {
           td: <ClampText>{`${item.description}`}</ClampText>,
           value: item.description,
+        },
+        {
+          td: <ClampText>{`${item.category.title}`}</ClampText>,
+          value: item.category.title,
         },
 
         // timestamps
@@ -865,7 +879,25 @@ const Data = (props: any) => {
                 id: resolvedItem.id,
                 showImg: true,
                 img: imgUrl(resolvedItem.topicCover?.[0]?.filePath),
-                title: resolvedItem.title,
+                title: (
+                  <HStack pos={"relative"}>
+                    <ClampText w={"full"} fontWeight={"semibold"} lineClamp={1}>
+                      {resolvedItem.title}
+                    </ClampText>
+
+                    <Badge
+                      pos={"absolute"}
+                      top={"-40px"}
+                      left={-1}
+                      lineClamp={1}
+                      maxW={"100px"}
+                    >
+                      <ClampText w={"full"} fontSize={"xs"} mt={"1.5px"}>
+                        {resolvedItem.category.title}
+                      </ClampText>
+                    </Badge>
+                  </HStack>
+                ),
                 description: resolvedItem.description,
                 deletedAt: resolvedItem.deletedAt,
               }}
