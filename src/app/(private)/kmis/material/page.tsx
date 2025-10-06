@@ -332,7 +332,7 @@ const Update = (props: any) => {
       payload.append("materialType", values.materialType);
 
       const config = {
-        url: `${BASE_ENDPOINT}/create`,
+        url: `${BASE_ENDPOINT}/update`,
         method: "POST",
         data: payload,
       };

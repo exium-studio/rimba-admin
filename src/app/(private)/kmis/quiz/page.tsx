@@ -370,8 +370,8 @@ const Update = (props: any) => {
       payload.append("explanation", values.explanation);
 
       const config = {
-        url: `${BASE_ENDPOINT}/create`,
-        method: "POST",
+        url: `${BASE_ENDPOINT}/update/${resolvedData.id}`,
+        method: "PATCH",
         data: payload,
       };
 
