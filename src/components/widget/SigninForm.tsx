@@ -545,7 +545,7 @@ const SigninForm = (props: Props) => {
                 })}
               </SimpleGrid>
 
-              <NavLink to={`/?roleId=${selectedRoleId}`}>
+              <NavLink to={`/?roleId=${selectedRoleId}`} w={"full"}>
                 <Btn
                   colorPalette={themeConfig.colorPalette}
                   disabled={!selectedRoleId}
