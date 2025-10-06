@@ -11,12 +11,10 @@ import {
 } from "@/components/ui/disclosure";
 import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-content";
 import { Field } from "@/components/ui/field";
-import { ImgInput } from "@/components/ui/img-input";
 import { MenuItem } from "@/components/ui/menu";
 import { P } from "@/components/ui/p";
 import SearchInput from "@/components/ui/search-input";
 import { StringInput } from "@/components/ui/string-input";
-import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipProps } from "@/components/ui/tooltip";
 import { ClampText } from "@/components/widget/ClampText";
 import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
@@ -86,27 +84,22 @@ const MenuTooltip = (props: TooltipProps) => {
     </Tooltip>
   );
 };
-const MaterialFormByType = (props: any) => {
-  // Props
-  const { type } = props;
-
-  // Contexts
+const MaterialFormByType = ({ type, ...restProps }: any) => {
   const { l } = useLang();
 
   if (!type) {
-    return <P color={"fg.subtle"}>{l.msg_select_material_type_first}</P>;
+    return <P color="fg.subtle">{l.msg_select_material_type_first}</P>;
   }
 
-  switch (type?.[0]?.id) {
-    case "gambar":
-      return <>Gambar</>;
-    case "video":
-      return <>Video</>;
-    case "document":
-      return <>Docs</>;
-    default: // Text
-      return <>Text</>;
-  }
+  const typeMap: Record<string, any> = {
+    gambar: <>Gambar</>,
+    video: <>Video</>,
+    document: <>Docs</>,
+  };
+
+  const forms = typeMap[type?.[0]?.id] ?? <>Text</>;
+
+  return <CContainer {...restProps}>{forms}</CContainer>;
 };
 
 const Create = (props: any) => {
@@ -138,22 +131,19 @@ const Create = (props: any) => {
   const formik = useFormik({
     validateOnChange: false,
     initialValues: {
-      materialCovers: null as any,
       topic: null as unknown as Interface__SelectOption[],
       title: "",
-      description: "",
       materialType: null as unknown as Interface__SelectOption[],
+      description: "",
     },
     validationSchema: yup.object().shape({
-      materialCovers: yup.array().required(l.msg_required_form),
       topic: yup.array().required(l.msg_required_form),
       title: yup.string().required(l.msg_required_form),
-      description: yup.string().required(l.msg_required_form),
       materialType: yup.string().required(l.msg_required_form),
+      description: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values, { resetForm }) => {
       const payload = new FormData();
-      payload.append("materialCovers", `${values.materialCovers?.[0]}`);
       payload.append("topic", `${values.topic?.[0]?.id}`);
       payload.append("title", values.title);
       payload.append("description", values.description);
@@ -209,19 +199,6 @@ const Create = (props: any) => {
                   {/* basic form */}
                   <CContainer gap={4}>
                     <Field
-                      label={"Thumbnail"}
-                      invalid={!!formik.errors.topic}
-                      errorText={formik.errors.topic as string}
-                    >
-                      <ImgInput
-                        inputValue={formik.values.materialCovers}
-                        onChange={(inputValue) =>
-                          formik.setFieldValue("materialCovers", inputValue)
-                        }
-                      />
-                    </Field>
-
-                    <Field
                       label={l.private_navs.kmis.topic}
                       invalid={!!formik.errors.topic}
                       errorText={formik.errors.topic as string}
@@ -246,19 +223,6 @@ const Create = (props: any) => {
                         }
                       />
                     </Field>
-
-                    <Field
-                      label={l.description}
-                      invalid={!!formik.errors.description}
-                      errorText={formik.errors.description as string}
-                    >
-                      <Textarea
-                        inputValue={formik.values.description}
-                        onChange={(inputValue) =>
-                          formik.setFieldValue("description", inputValue)
-                        }
-                      />
-                    </Field>
                   </CContainer>
 
                   {/* material form */}
@@ -275,10 +239,10 @@ const Create = (props: any) => {
                         }
                       />
                     </Field>
-
-                    <MaterialFormByType type={formik.values.materialType} />
                   </CContainer>
                 </SimpleGrid>
+
+                <MaterialFormByType type={formik.values.materialType} />
               </FieldsetRoot>
             </form>
           </DisclosureBody>
