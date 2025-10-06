@@ -167,7 +167,6 @@ const Create = (props: any) => {
                   errorText={formik.errors.files as string}
                 >
                   <ImgInput
-                    maxFiles={10}
                     accept="image/png, image/jpeg, image/webp"
                     acceptPlaceholder=".jpg, .jpeg, .png"
                     inputValue={formik.values.files}
@@ -285,7 +284,13 @@ const Update = (props: any) => {
     }),
     onSubmit: (values) => {
       const payload = new FormData();
-      payload.append("files", values.files?.[0]);
+      if (values.files?.[0]) {
+        payload.append("files", values.files[0]);
+      }
+      payload.append(
+        "deleteDocumentIds",
+        JSON.stringify(values.deleteDocumentIds)
+      );
       payload.append("categoryId", `${values.category?.[0]?.id}`);
       payload.append("title", values.title);
       payload.append("description", values.description);
@@ -347,7 +352,6 @@ const Update = (props: any) => {
                   errorText={formik.errors.files as string}
                 >
                   <ImgInput
-                    maxFiles={10}
                     accept="image/png, image/jpeg, image/webp"
                     acceptPlaceholder=".jpg, .jpeg, .png"
                     inputValue={formik.values.files}

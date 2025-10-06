@@ -156,7 +156,6 @@ const Create = (props: any) => {
                   errorText={formik.errors.files as string}
                 >
                   <ImgInput
-                    maxFiles={10}
                     accept="image/png, image/jpeg, image/webp"
                     acceptPlaceholder=".jpg, .jpeg, .png"
                     inputValue={formik.values.files}
@@ -262,12 +261,12 @@ const Update = (props: any) => {
       if (values.files?.[0]) {
         payload.append("files", values.files[0]);
       }
-      payload.append("title", values.title);
-      payload.append("description", values.description);
       payload.append(
         "deletedDocumentIds",
         JSON.stringify(values.deleteDocumentIds)
       );
+      payload.append("title", values.title);
+      payload.append("description", values.description);
 
       const config = {
         url: `${BASE_ENDPOINT}/update/${resolvedData.id}`,
@@ -320,7 +319,6 @@ const Update = (props: any) => {
                   errorText={formik.errors.files as string}
                 >
                   <ImgInput
-                    maxFiles={10}
                     accept="image/png, image/jpeg, image/webp"
                     acceptPlaceholder=".jpg, .jpeg, .png"
                     inputValue={formik.values.files}
