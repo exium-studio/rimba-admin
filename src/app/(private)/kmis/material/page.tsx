@@ -49,7 +49,6 @@ import useDataState from "@/hooks/useDataState";
 import { useIsSmScreenWidth } from "@/hooks/useIsSmScreenWidth";
 import useRequest from "@/hooks/useRequest";
 import { isEmptyArray, last } from "@/utils/array";
-import { getUserData } from "@/utils/auth";
 import { back } from "@/utils/client";
 import { disclosureId } from "@/utils/disclosure";
 import { formatDate } from "@/utils/formatter";
@@ -239,6 +238,7 @@ const TopicFilter = (props: any) => {
 
   return (
     <SelectKMISTopic
+      id="topic-filter-kmis-material"
       inputValue={filter.topic}
       onConfirm={(inputValue) => {
         setFilter({ ...filter, topic: inputValue });
@@ -258,7 +258,6 @@ const Create = (props: any) => {
   const { l } = useLang();
   const { themeConfig } = useThemeConfig();
   const setRt = useRenderTrigger((s) => s.setRt);
-  const user = getUserData();
 
   // Hooks
   const iss = useIsSmScreenWidth();
@@ -309,9 +308,9 @@ const Create = (props: any) => {
       payload.append("title", values.title);
       payload.append("description", values.description);
       payload.append("isPublic", `0`);
-      if (user?.id) {
-        payload.append("uploadedBy", `${user.id}`);
-      }
+      // if (user?.id) {
+      //   payload.append("uploadedBy", `${user.id}`);
+      // }
       if (values.materialFiles?.[0]) {
         payload.append("files", values.materialFiles[0]);
       }
@@ -375,9 +374,9 @@ const Create = (props: any) => {
                     >
                       <SelectKMISTopic
                         inputValue={formik.values.topic}
-                        onConfirm={(inputValue) =>
-                          formik.setFieldValue("topic", inputValue)
-                        }
+                        onConfirm={(inputValue) => {
+                          formik.setFieldValue("topic", inputValue);
+                        }}
                       />
                     </Field>
 
@@ -399,14 +398,14 @@ const Create = (props: any) => {
                   <CContainer gap={4}>
                     <Field
                       label={l.type}
-                      invalid={!!formik.errors.topic}
-                      errorText={formik.errors.topic as string}
+                      invalid={!!formik.errors.materialType}
+                      errorText={formik.errors.materialType as string}
                     >
                       <SelectKMISMaterialType
                         inputValue={formik.values.materialType}
-                        onConfirm={(inputValue) =>
-                          formik.setFieldValue("materialType", inputValue)
-                        }
+                        onConfirm={(inputValue) => {
+                          formik.setFieldValue("materialType", inputValue);
+                        }}
                       />
                     </Field>
 

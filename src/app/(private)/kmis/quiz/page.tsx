@@ -100,6 +100,7 @@ const TopicFilter = (props: any) => {
 
   return (
     <SelectKMISTopic
+      id="topic-filter-kmis-quiz"
       inputValue={filter.topic}
       onConfirm={(inputValue) => {
         setFilter({ ...filter, topic: inputValue });
