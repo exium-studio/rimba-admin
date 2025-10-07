@@ -538,7 +538,7 @@ const customConfig = defineConfig({
           solid: {
             value: {
               base: "{colors.gray.500} !important",
-              _dark: "{colors.gray.500} !important",
+              _dark: "{colors.gray.400} !important",
             },
           },
           contrast: {

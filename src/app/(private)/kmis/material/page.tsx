@@ -118,6 +118,7 @@ const MaterialFormByType = (props: any) => {
             onChange={(inputValue) => {
               formik.setFieldValue("materialFiles", inputValue);
             }}
+            maxFiles={5}
           />
         </Field>
 
@@ -173,6 +174,7 @@ const MaterialFormByType = (props: any) => {
         >
           <FileInput
             dropzone
+            maxFiles={5}
             inputValue={formik.values.materialFiles}
             onChange={(inputValue) => {
               formik.setFieldValue("materialFiles", inputValue);
