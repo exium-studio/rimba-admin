@@ -500,26 +500,53 @@ const Update = (props: any) => {
     validateOnChange: false,
     initialValues: {
       topic: null as unknown as Interface__SelectOption[],
+      materialType: null as unknown as Interface__SelectOption[],
       title: "",
       description: "",
-      materialType: "",
+      materialFiles: null as any,
+      materialUrl: "",
+      deleteFileIds: [],
     },
     validationSchema: yup.object().shape({
       topic: yup.array().required(l.msg_required_form),
+      materialType: yup.array().required(l.msg_required_form),
       title: yup.string().required(l.msg_required_form),
       description: yup.string().required(l.msg_required_form),
-      materialType: yup.string().required(l.msg_required_form),
+      materialFiles: yup.array().when("materialType", {
+        is: (val: Interface__SelectOption[]) =>
+          val?.[0]?.id === "gambar" || val?.[0]?.id === "dokumen",
+        then: (schema) => schema.required(l.msg_required_form),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      materialUrl: yup.string().when("materialType", {
+        is: (val: Interface__SelectOption[]) => val?.[0]?.id === "video",
+        then: (schema) => schema.required(l.msg_required_form),
+        otherwise: (schema) => schema.notRequired(),
+      }),
     }),
     onSubmit: (values, { resetForm }) => {
       const payload = new FormData();
       payload.append("topic", `${values.topic?.[0]?.id}`);
+      payload.append("materialType", values.materialType?.[0]?.id);
       payload.append("title", values.title);
       payload.append("description", values.description);
-      payload.append("materialType", values.materialType);
+      payload.append("isPublic", `0`);
+      // if (user?.id) {
+      //   payload.append("uploadedBy", `${user.id}`);
+      // }
+      if (values.materialFiles?.[0]) {
+        payload.append("materialFiles", values.materialFiles[0]);
+      }
+      if (!isEmptyArray(values.deleteFileIds)) {
+        payload.append("deleteFileIds", JSON.stringify(values.deleteFileIds));
+      }
+      if (values.materialUrl) {
+        payload.append("materialUrl", values.materialUrl);
+      }
 
       const config = {
         url: `${BASE_ENDPOINT}/update`,
-        method: "POST",
+        method: "PATCH",
         data: payload,
       };
 
@@ -546,7 +573,15 @@ const Update = (props: any) => {
       ],
       title: resolvedData.title,
       description: resolvedData.description,
-      materialType: resolvedData.materialType,
+      materialFiles: [],
+      deleteFileIds: [],
+      materialUrl: resolvedData.materialUrl,
+      materialType: [
+        {
+          id: resolvedData.materialType,
+          label: capitalize(resolvedData.materialType),
+        },
+      ],
     });
   }, [open, resolvedData]);
 

@@ -298,10 +298,12 @@ const Update = (props: any) => {
       if (values.files?.[0]) {
         payload.append("files", values.files[0]);
       }
-      payload.append(
-        "deleteDocumentIds",
-        JSON.stringify(values.deleteDocumentIds)
-      );
+      if (!isEmptyArray(values.deleteDocumentIds)) {
+        payload.append(
+          "deleteDocumentIds",
+          JSON.stringify(values.deleteDocumentIds)
+        );
+      }
       payload.append("title", values.title);
       payload.append("description", values.description);
 
