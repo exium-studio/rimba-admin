@@ -1,6 +1,7 @@
 "use client";
 
 import { Btn } from "@/components/ui/btn";
+import { CContainer } from "@/components/ui/c-container";
 import {
   DisclosureBody,
   DisclosureContent,
@@ -16,6 +17,7 @@ import SearchInput from "@/components/ui/search-input";
 import { StringInput } from "@/components/ui/string-input";
 import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipProps } from "@/components/ui/tooltip";
+import BackButton from "@/components/widget/BackButton";
 import { ClampText } from "@/components/widget/ClampText";
 import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
 import { DataDisplayToggle } from "@/components/widget/DataDisplayToggle";
@@ -24,6 +26,7 @@ import { DataGridItem } from "@/components/widget/DataGridItem";
 import { DataTable } from "@/components/widget/DataTable";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
+import { FileItem } from "@/components/widget/FIleItem";
 import { PageContainer, PageContent } from "@/components/widget/Page";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
 import {
@@ -31,6 +34,7 @@ import {
   Interface__CMSLegalDocs,
   Interface__DataProps,
   Interface__RowOptionsTableOptionGenerator,
+  Interface__StorageFile,
 } from "@/constants/interfaces";
 import { useDataDisplay } from "@/context/useDataDisplay";
 import useLang from "@/context/useLang";
@@ -328,6 +332,57 @@ const DataUtils = (props: any) => {
   );
 };
 
+const FilesList = (props: any) => {
+  // Props
+  const { data, ...restProps } = props;
+
+  // Contexts
+  const { l } = useLang();
+
+  // Hooks
+  const { open, onOpen, onClose } = useDisclosure();
+  useBackOnClose(`legal-docs-list-${data.id}`, open, onOpen, onClose);
+
+  return (
+    <>
+      <Btn
+        size={"xs"}
+        variant={"ghost"}
+        pl={"6px"}
+        onClick={onOpen}
+        {...restProps}
+      >
+        <Icon boxSize={5}>
+          <IconEye stroke={1.5} />
+        </Icon>
+
+        {l.view}
+      </Btn>
+
+      <DisclosureRoot open={open} lazyLoad size={"xs"}>
+        <DisclosureContent>
+          <DisclosureHeader>
+            <DisclosureHeaderContent
+              title={l.private_navs.cms.legal_document}
+            />
+          </DisclosureHeader>
+
+          <DisclosureBody>
+            <CContainer gap={4}>
+              {data?.document?.map((doc: Interface__StorageFile) => {
+                return <FileItem key={doc.id} fileData={doc} />;
+              })}
+            </CContainer>
+          </DisclosureBody>
+
+          <DisclosureFooter>
+            <BackButton />
+          </DisclosureFooter>
+        </DisclosureContent>
+      </DisclosureRoot>
+    </>
+  );
+};
 const Update = (props: any) => {
   const ID = `${PREFIX_ID}_update`;
 
@@ -757,15 +812,7 @@ const Data = (props: any) => {
       dim: !!item.deletedAt,
       columns: [
         {
-          td: (
-            <Btn size={"xs"} variant={"ghost"} pl={"6px"}>
-              <Icon boxSize={5}>
-                <IconEye stroke={1.5} />
-              </Icon>
-
-              {l.view}
-            </Btn>
-          ),
+          td: <FilesList data={item} />,
           value: "",
           align: "center",
         },
