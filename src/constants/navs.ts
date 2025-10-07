@@ -49,6 +49,11 @@ export const PRIVATE_NAVS: Interface__NavItem[] = [
                 path: `/cms/news`,
                 allowedRoles: ["1"],
               },
+              {
+                labelKey: "private_navs.cms.animal_composition",
+                path: `/cms/animal-composition`,
+                allowedRoles: ["1"],
+              },
             ],
           },
         ],
