@@ -1238,6 +1238,13 @@ export const error_422_default = {
     en: "Some data is invalid, please review.",
   },
 };
+export const error_422_duplicate_file_name = {
+  title: { id: "Data duplikat", en: "Duplicate data" },
+  description: {
+    id: "Nama file yang sama sudah ada, periksa kembali.",
+    en: "The file name already exists, please review.",
+  },
+};
 export const error_422_duplicate_kmis_topic_title = {
   title: { id: "Data duplikat", en: "Duplicate data" },
   description: {

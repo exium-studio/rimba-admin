@@ -428,7 +428,7 @@ const Update = (props: any) => {
       files: fileValidation({
         maxSizeMB: 10,
         allowedExtensions: ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx"],
-      }).required(l.msg_required_form),
+      }),
       titleId: yup.string().required(l.msg_required_form),
       titleEn: yup.string().required(l.msg_required_form),
       descriptionId: yup.string().required(l.msg_required_form),
@@ -437,6 +437,10 @@ const Update = (props: any) => {
     onSubmit: (values) => {
       const payload = new FormData();
       payload.append("files", values.files[0]);
+      payload.append(
+        "deletedDocumentIds",
+        JSON.stringify(values.deleteDocumentIds)
+      );
       payload.append(
         "title",
         JSON.stringify({
@@ -453,8 +457,8 @@ const Update = (props: any) => {
       );
 
       const config = {
-        url: `${BASE_ENDPOINT}/create`,
-        method: "POST",
+        url: `${BASE_ENDPOINT}/update/${resolvedData.id}`,
+        method: "PATCH",
         data: payload,
       };
 
@@ -495,7 +499,7 @@ const Update = (props: any) => {
       <DisclosureRoot open={open} lazyLoad size={"xs"}>
         <DisclosureContent>
           <DisclosureHeader>
-            <DisclosureHeaderContent title={`${l.add} ${routeTitle}`} />
+            <DisclosureHeaderContent title={`Edit ${routeTitle}`} />
           </DisclosureHeader>
 
           <DisclosureBody>
@@ -514,6 +518,26 @@ const Update = (props: any) => {
                     inputValue={formik.values.files}
                     onChange={(inputValue) => {
                       formik.setFieldValue("files", inputValue);
+                    }}
+                    existingFiles={resolvedData.document}
+                    onDeleteFile={(fileData) => {
+                      formik.setFieldValue(
+                        "deleteDocumentIds",
+                        Array.from(
+                          new Set([
+                            ...formik.values.deleteDocumentIds,
+                            fileData.id,
+                          ])
+                        )
+                      );
+                    }}
+                    onUndoDeleteFile={(fileData) => {
+                      formik.setFieldValue(
+                        "deleteDocumentIds",
+                        formik.values.deleteDocumentIds.filter(
+                          (id: string) => id !== fileData.id
+                        )
+                      );
                     }}
                   />
                 </Field>
@@ -609,7 +633,7 @@ const Update = (props: any) => {
               colorPalette={themeConfig.colorPalette}
               loading={loading}
             >
-              {l.add}
+              {l.save}
             </Btn>
           </DisclosureFooter>
         </DisclosureContent>

@@ -106,6 +106,10 @@ const translations = {
     "title": "Validation failed",
     "description": "Beberapa data tidak valid, periksa kembali."
   },
+  "error_422_duplicate_file_name": {
+    "title": "Data duplikat",
+    "description": "Nama file yang sama sudah ada, periksa kembali."
+  },
   "error_422_duplicate_kmis_quiz_option": {
     "title": "Data duplikat",
     "description": "Opsi yang sama di topic tersebut sudah ada, periksa kembali."
