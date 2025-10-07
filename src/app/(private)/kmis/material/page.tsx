@@ -70,7 +70,7 @@ import {
   IconX,
 } from "@tabler/icons-react";
 import { useFormik } from "formik";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import * as yup from "yup";
 
@@ -217,6 +217,37 @@ const MaterialFormByType = (props: any) => {
   return <CContainer {...restProps}>{forms}</CContainer>;
 };
 
+const TopicFilter = (props: any) => {
+  // Props
+  const { filter, setFilter, ...restProps } = props;
+
+  // Contexts
+  const { l } = useLang();
+
+  // Hooks
+  const searchParams = useSearchParams();
+  const topicParam = searchParams.get("topic");
+
+  // States
+  const initialTopic = topicParam ? JSON.parse(topicParam) : null;
+
+  useEffect(() => {
+    if (initialTopic) {
+      setFilter({ ...filter, topic: [initialTopic] });
+    }
+  }, []);
+
+  return (
+    <SelectKMISTopic
+      inputValue={filter.topic}
+      onConfirm={(inputValue) => {
+        setFilter({ ...filter, topic: inputValue });
+      }}
+      placeholder={l.private_navs.kmis.topic}
+      {...restProps}
+    />
+  );
+};
 const Create = (props: any) => {
   const ID = `${PREFIX_ID}_create`;
 
@@ -411,6 +442,28 @@ const Create = (props: any) => {
     </>
   );
 };
+const DataUtils = (props: any) => {
+  // Props
+  const { filter, setFilter, routeTitle, ...restProps } = props;
+
+  return (
+    <HStack p={3} {...restProps}>
+      <SearchInput
+        inputValue={filter.search}
+        onChange={(inputValue) => {
+          setFilter({ ...filter, search: inputValue });
+        }}
+      />
+
+      <TopicFilter filter={filter} setFilter={setFilter} w={"150px"} />
+
+      <DataDisplayToggle navKey={PREFIX_ID} />
+
+      <Create routeTitle={routeTitle} />
+    </HStack>
+  );
+};
+
 const Update = (props: any) => {
   const ID = `${PREFIX_ID}_update`;
 
@@ -679,25 +732,6 @@ const Delete = (props: any) => {
   );
 };
 
-const DataUtils = (props: any) => {
-  // Props
-  const { filter, setFilter, routeTitle, ...restProps } = props;
-
-  return (
-    <HStack p={3} {...restProps}>
-      <SearchInput
-        inputValue={filter.search}
-        onChange={(inputValue) => {
-          setFilter({ ...filter, search: inputValue });
-        }}
-      />
-
-      <DataDisplayToggle navKey={PREFIX_ID} />
-
-      <Create routeTitle={routeTitle} />
-    </HStack>
-  );
-};
 const Data = (props: any) => {
   // Props
   const { filter, routeTitle } = props;

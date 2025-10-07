@@ -62,8 +62,6 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import {
-  IconBook2,
-  IconClipboardList,
   IconPencilMinus,
   IconPlus,
   IconRestore,
@@ -268,14 +266,16 @@ const Material = (props: any) => {
   // Contexts
   const { l } = useLang();
 
+  // States
+  const topic = { id: data.id, label: data.title };
+  const topicQuery = `?topic=${encodeURIComponent(JSON.stringify(topic))}`;
+  const materialUrl = `/kmis/material${topicQuery}`;
+
   return (
-    <NavLink to={`/kmis/material?topicId=${data?.id}`} w={"full"}>
+    <NavLink to={materialUrl} w={"full"}>
       <MenuTooltip content={l.private_navs.kmis.material}>
         <MenuItem value="material">
           <P lineClamp={1}>{l.private_navs.kmis.material}</P>
-          <Icon boxSize={"18px"} ml={"auto"}>
-            <IconBook2 stroke={1.5} />
-          </Icon>
         </MenuItem>
       </MenuTooltip>
     </NavLink>
@@ -288,15 +288,17 @@ const Quiz = (props: any) => {
   // Contexts
   const { l } = useLang();
 
+  // States
+  const topic = { id: data.id, label: data.title };
+  const topicQuery = `?topic=${encodeURIComponent(JSON.stringify(topic))}`;
+  const quizUrl = `/kmis/quiz${topicQuery}`;
+
   return (
     <>
-      <NavLink to={`/kmis/quiz?topicId=${data?.id}`} w={"full"}>
+      <NavLink to={quizUrl} w={"full"}>
         <MenuTooltip content={l.private_navs.kmis.quiz}>
           <MenuItem value="quiz">
             <P lineClamp={1}>{l.private_navs.kmis.quiz}</P>
-            <Icon boxSize={"18px"} ml={"auto"}>
-              <IconClipboardList stroke={1.5} />
-            </Icon>
           </MenuItem>
         </MenuTooltip>
       </NavLink>
