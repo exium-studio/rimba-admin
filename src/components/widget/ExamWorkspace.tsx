@@ -63,6 +63,7 @@ export const ExamWorkspace = (props: Props) => {
 
   // States
   const [activeIdx, setActiveIdx] = useState<number>(0);
+  const quizResponse = quizResponses?.[activeIdx];
   const options = [
     {
       optionLetter: "A",
@@ -92,20 +93,28 @@ export const ExamWorkspace = (props: Props) => {
       >
         <P fontWeight={"semibold"}>{`No. ${activeIdx + 1}`}</P>
 
-        <P fontWeight={"medium"}>{quizResponses?.[activeIdx]?.quiz.question}</P>
+        <P fontWeight={"medium"}>{quizResponse?.quiz.question}</P>
 
-        <CContainer gap={2} mt={4}>
+        <CContainer gap={2} mt={2}>
           {options.map(({ optionLetter, optionKey }) => {
             return (
               <AnswerOption
                 key={optionKey}
                 optionLetter={optionLetter}
                 optionKey={optionKey}
-                quizResponse={quizResponses?.[activeIdx]}
+                quizResponse={quizResponse}
               />
             );
           })}
         </CContainer>
+
+        <HStack align={"start"} color={"fg.muted"} mt={4} px={1}>
+          <P>{l.explanation}</P>
+
+          <P>:</P>
+
+          <P>{quizResponse?.quiz?.explanation || "-"}</P>
+        </HStack>
 
         <HStack mt={4} justify={"end"}>
           <Btn
