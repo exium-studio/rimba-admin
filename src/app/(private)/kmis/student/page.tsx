@@ -239,6 +239,24 @@ const MenuTooltip = (props: TooltipProps) => {
   );
 };
 
+const DataUtils = (props: any) => {
+  // Props
+  const { filter, setFilter, ...restProps } = props;
+
+  return (
+    <HStack p={3} {...restProps}>
+      <SearchInput
+        inputValue={filter.search}
+        onChange={(inputValue) => {
+          setFilter({ ...filter, search: inputValue });
+        }}
+      />
+
+      <DataDisplayToggle navKey={PREFIX_ID} />
+    </HStack>
+  );
+};
+
 const Activate = (props: any) => {
   const ID = `${PREFIX_ID}_activate`;
 
@@ -372,23 +390,6 @@ const Deactivate = (props: any) => {
   );
 };
 
-const DataUtils = (props: any) => {
-  // Props
-  const { filter, setFilter, ...restProps } = props;
-
-  return (
-    <HStack p={3} {...restProps}>
-      <SearchInput
-        inputValue={filter.search}
-        onChange={(inputValue) => {
-          setFilter({ ...filter, search: inputValue });
-        }}
-      />
-
-      <DataDisplayToggle navKey={PREFIX_ID} />
-    </HStack>
-  );
-};
 const Data = (props: any) => {
   // Props
   const { filter, routeTitle } = props;

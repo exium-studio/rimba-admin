@@ -226,6 +226,26 @@ const Create = (props: any) => {
     </>
   );
 };
+const DataUtils = (props: any) => {
+  // Props
+  const { filter, setFilter, routeTitle, ...restProps } = props;
+
+  return (
+    <HStack p={3} {...restProps}>
+      <SearchInput
+        inputValue={filter.search}
+        onChange={(inputValue) => {
+          setFilter({ ...filter, search: inputValue });
+        }}
+      />
+
+      <DataDisplayToggle navKey={PREFIX_ID} />
+
+      <Create routeTitle={routeTitle} />
+    </HStack>
+  );
+};
+
 const Update = (props: any) => {
   const ID = `${PREFIX_ID}_update`;
 
@@ -543,25 +563,6 @@ const Delete = (props: any) => {
   );
 };
 
-const DataUtils = (props: any) => {
-  // Props
-  const { filter, setFilter, routeTitle, ...restProps } = props;
-
-  return (
-    <HStack p={3} {...restProps}>
-      <SearchInput
-        inputValue={filter.search}
-        onChange={(inputValue) => {
-          setFilter({ ...filter, search: inputValue });
-        }}
-      />
-
-      <DataDisplayToggle navKey={PREFIX_ID} />
-
-      <Create routeTitle={routeTitle} />
-    </HStack>
-  );
-};
 const Data = (props: any) => {
   // Props
   const { filter, routeTitle } = props;

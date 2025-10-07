@@ -54,6 +54,24 @@ const BASE_ENDPOINT = "/api/kmis/learning-participant";
 const PREFIX_ID = "kmis_quiz_assessment";
 type Interface__Data = Interface__KMISQuizAssessment;
 
+const DataUtils = (props: any) => {
+  // Props
+  const { filter, setFilter, ...restProps } = props;
+
+  return (
+    <HStack p={3} {...restProps}>
+      <SearchInput
+        inputValue={filter.search}
+        onChange={(inputValue) => {
+          setFilter({ ...filter, search: inputValue });
+        }}
+      />
+
+      <DataDisplayToggle navKey={PREFIX_ID} />
+    </HStack>
+  );
+};
+
 const ResultDetail = (props: any) => {
   // Props
   const { assessment, ...restProps } = props;
@@ -326,23 +344,6 @@ const ResultDetail = (props: any) => {
   );
 };
 
-const DataUtils = (props: any) => {
-  // Props
-  const { filter, setFilter, ...restProps } = props;
-
-  return (
-    <HStack p={3} {...restProps}>
-      <SearchInput
-        inputValue={filter.search}
-        onChange={(inputValue) => {
-          setFilter({ ...filter, search: inputValue });
-        }}
-      />
-
-      <DataDisplayToggle navKey={PREFIX_ID} />
-    </HStack>
-  );
-};
 const Data = (props: any) => {
   // Props
   const { filter, routeTitle } = props;
