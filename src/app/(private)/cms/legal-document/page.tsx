@@ -438,7 +438,7 @@ const Update = (props: any) => {
       const payload = new FormData();
       payload.append("files", values.files[0]);
       payload.append(
-        "deletedDocumentIds",
+        "deleteDocumentIds",
         JSON.stringify(values.deleteDocumentIds)
       );
       payload.append(
@@ -803,16 +803,16 @@ const Data = (props: any) => {
   const dataProps: Interface__DataProps = {
     headers: [
       {
-        th: "Files",
-        align: "center",
-      },
-      {
         th: l.title,
         sortable: true,
       },
       {
         th: l.description,
         sortable: true,
+      },
+      {
+        th: "Files",
+        align: "center",
       },
 
       // timestamps
@@ -836,17 +836,17 @@ const Data = (props: any) => {
       dim: !!item.deletedAt,
       columns: [
         {
-          td: <FilesList data={item} />,
-          value: "",
-          align: "center",
-        },
-        {
           td: <ClampText>{`${item.title[lang]}`}</ClampText>,
           value: item.title[lang],
         },
         {
           td: <ClampText>{`${item.description[lang]}`}</ClampText>,
           value: item.description[lang],
+        },
+        {
+          td: <FilesList data={item} />,
+          value: "",
+          align: "center",
         },
 
         // timestamps

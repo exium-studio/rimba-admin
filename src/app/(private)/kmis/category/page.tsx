@@ -299,7 +299,7 @@ const Update = (props: any) => {
         payload.append("files", values.files[0]);
       }
       payload.append(
-        "deletedDocumentIds",
+        "deleteDocumentIds",
         JSON.stringify(values.deleteDocumentIds)
       );
       payload.append("title", values.title);
