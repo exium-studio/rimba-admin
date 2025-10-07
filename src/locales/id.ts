@@ -184,7 +184,6 @@ const translations = {
     "title": "Zona waktu diatur secara otomatis",
     "description": "${timezone}"
   },
-  "is_public": "Publik",
   "january": "Januari",
   "july": "Juli",
   "june": "Juni",
@@ -256,6 +255,7 @@ const translations = {
   "msg_edge_permissions_settings_link": "Pengaturan → Cookie dan izin situs → ",
   "msg_file_input_dropzone": "Drag and drop/klik untuk unggah berkas",
   "msg_firefox_permissions_settings_link": "Preferensi → Privasi & Keamanan → Izin → ",
+  "msg_is_public_kmis_material": "Apakah materi ini dapat diakses oleh publik?",
   "msg_location_test_helper": "Klik dapatkan lokasi untuk mendapatkan data lokasi.",
   "msg_password_confirmation_not_match": "Konfirmasi kata sandi tidak cocok",
   "msg_permissions_denied_helper": "Jika ingin memberi akses kembali, buka",
@@ -265,7 +265,7 @@ const translations = {
   "msg_reset_password_step_2": "Langkah kedua, verifikasi OTP",
   "msg_reset_password_step_3": "Langkah ketiga, masukkan kata sandi baru Anda",
   "msg_restore": "Data akan dikembalikan ke kondisi semula.",
-  "msg_select_material_type_first": "Pilih tipe materi terlebih dahulu.",
+  "msg_select_material_type_first": "Pilih tipe materi terlebih dahulu kemudian input materi.",
   "msg_settings_index_route": "Silahkan pilih menu pengaturan.",
   "msg_settings_saved_locally": "Pengaturan ini disimpan secara lokal di perangkat Anda dan tidak akan disinkronkan dengan akun Anda.",
   "msg_signin": "Sebelum melanjutkan, silahkan pilih jenis role anda",
@@ -330,6 +330,7 @@ const translations = {
     "profile": "Profil"
   },
   "profile": "Profil",
+  "publicity": "Publisitas",
   "published_at": "Diterbitkan pada",
   "purpose": "Tujuan",
   "question": "Pertanyaan",

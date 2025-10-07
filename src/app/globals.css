@@ -19,6 +19,13 @@
 }
 
 /* Custom Start*/
+.tox-tinymce {
+  z-index: 9999 !important;
+}
+.tox-tinymce-aux {
+  z-index: 10000 !important; /* dropdowns, dialogs */
+}
+
 .mapboxgl-ctrl-bottom-right,
 .mapboxgl-ctrl-bottom-left {
   display: none !important;

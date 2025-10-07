@@ -7,7 +7,7 @@ import { capitalizeWords } from "@/utils/string";
 import { useEffect, useState } from "react";
 
 const SUFFIX_ID = "kmis_topic";
-const ENDPOINT = `/api/kmis/topic/index`;
+const ENDPOINT = `/api/kmis/public-request/get-all-topic`;
 
 export const SelectKMISTopic = (props: Omit<Props__SelectInput, "id">) => {
   const ID = `select_${SUFFIX_ID}`;

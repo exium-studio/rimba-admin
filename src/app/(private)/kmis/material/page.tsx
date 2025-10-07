@@ -13,8 +13,10 @@ import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-conte
 import { Field } from "@/components/ui/field";
 import { MenuItem } from "@/components/ui/menu";
 import { P } from "@/components/ui/p";
+import { RichEditor } from "@/components/ui/RichEditor";
 import SearchInput from "@/components/ui/search-input";
 import { StringInput } from "@/components/ui/string-input";
+import { Switch } from "@/components/ui/switch";
 import { Tooltip, TooltipProps } from "@/components/ui/tooltip";
 import { ClampText } from "@/components/widget/ClampText";
 import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
@@ -44,12 +46,14 @@ import useDataState from "@/hooks/useDataState";
 import { useIsSmScreenWidth } from "@/hooks/useIsSmScreenWidth";
 import useRequest from "@/hooks/useRequest";
 import { isEmptyArray, last } from "@/utils/array";
+import { getUserData } from "@/utils/auth";
 import { back } from "@/utils/client";
 import { disclosureId } from "@/utils/disclosure";
 import { formatDate } from "@/utils/formatter";
 import { capitalize, pluckString } from "@/utils/string";
 import { getActiveNavs, imgUrl } from "@/utils/url";
 import {
+  Center,
   FieldsetRoot,
   HStack,
   Icon,
@@ -92,7 +96,11 @@ const MaterialFormByType = (props: any) => {
   const { l } = useLang();
 
   if (!type) {
-    return <P color="fg.subtle">{l.msg_select_material_type_first}</P>;
+    return (
+      <Center minH={"200px"}>
+        <P color="fg.subtle">{l.msg_select_material_type_first}</P>
+      </Center>
+    );
   }
 
   const typeMap: Record<string, any> = {
@@ -101,7 +109,22 @@ const MaterialFormByType = (props: any) => {
     document: <>Docs</>,
   };
 
-  const forms = typeMap[type?.[0]?.id] ?? <>Text</>;
+  const forms = typeMap[type?.[0]?.id] ?? (
+    <>
+      <Field
+        label={l.private_navs.kmis.material}
+        invalid={!!formik.errors.description}
+        errorText={formik.errors.description as string}
+      >
+        <RichEditor
+          inputValue={formik.values.description}
+          onChange={(inputValue) => {
+            formik.setFieldValue("description", inputValue);
+          }}
+        />
+      </Field>
+    </>
+  );
 
   return <CContainer {...restProps}>{forms}</CContainer>;
 };
@@ -116,6 +139,7 @@ const Create = (props: any) => {
   const { l } = useLang();
   const { themeConfig } = useThemeConfig();
   const setRt = useRenderTrigger((s) => s.setRt);
+  const user = getUserData();
 
   // Hooks
   const iss = useIsSmScreenWidth();
@@ -136,23 +160,45 @@ const Create = (props: any) => {
     validateOnChange: false,
     initialValues: {
       topic: null as unknown as Interface__SelectOption[],
-      title: "",
       materialType: null as unknown as Interface__SelectOption[],
+      title: "",
       description: "",
+      materialFiles: null as any,
+      materialUrl: "",
     },
     validationSchema: yup.object().shape({
       topic: yup.array().required(l.msg_required_form),
+      materialType: yup.array().required(l.msg_required_form),
       title: yup.string().required(l.msg_required_form),
-      materialType: yup.string().required(l.msg_required_form),
       description: yup.string().required(l.msg_required_form),
+      materialFiles: yup.array().when("materialType", {
+        is: (val: Interface__SelectOption[]) =>
+          val?.[0]?.id === "gambar" || val?.[0]?.id === "dokumen",
+        then: (schema) => schema.required(l.msg_required_form),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      materialUrl: yup.string().when("materialType", {
+        is: (val: Interface__SelectOption[]) => val?.[0]?.id === "video",
+        then: (schema) => schema.required(l.msg_required_form),
+        otherwise: (schema) => schema.notRequired(),
+      }),
     }),
     onSubmit: (values, { resetForm }) => {
       const payload = new FormData();
-      payload.append("isPublic", `0`);
       payload.append("topic", `${values.topic?.[0]?.id}`);
+      payload.append("materialType", values.materialType?.[0]?.id);
       payload.append("title", values.title);
       payload.append("description", values.description);
-      payload.append("materialType", values.materialType?.[0]?.id);
+      payload.append("isPublic", `0`);
+      if (user?.id) {
+        payload.append("uploadedBy", `${user.id}`);
+      }
+      if (values.materialFiles?.[0]) {
+        payload.append("files", values.materialFiles[0]);
+      }
+      if (values.materialUrl) {
+        payload.append("materialUrl", values.materialUrl);
+      }
 
       const config = {
         url: `${BASE_ENDPOINT}/create`,
@@ -233,15 +279,6 @@ const Create = (props: any) => {
                   {/* material form */}
                   <CContainer gap={4}>
                     <Field
-                      label={l.is_public}
-                      invalid={!!formik.errors.topic}
-                      errorText={formik.errors.topic as string}
-                      disabled
-                    >
-                      <StringInput inputValue="Tidak" />
-                    </Field>
-
-                    <Field
                       label={l.type}
                       invalid={!!formik.errors.topic}
                       errorText={formik.errors.topic as string}
@@ -252,6 +289,13 @@ const Create = (props: any) => {
                           formik.setFieldValue("materialType", inputValue)
                         }
                       />
+                    </Field>
+
+                    <Field label={l.publicity} disabled>
+                      <HStack justify={"space-between"} w={"full"}>
+                        <P opacity={0.4}>{l.msg_is_public_kmis_material}</P>
+                        <Switch disabled />
+                      </HStack>
                     </Field>
                   </CContainer>
                 </SimpleGrid>

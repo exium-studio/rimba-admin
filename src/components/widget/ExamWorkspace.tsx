@@ -7,7 +7,6 @@ import { DotIndicator } from "@/components/widget/Indicator";
 import { ItemContainer } from "@/components/widget/ItemContainer";
 import { Interface__KMISQuizResponse } from "@/constants/interfaces";
 import useLang from "@/context/useLang";
-import { useThemeConfig } from "@/context/useThemeConfig";
 import {
   Box,
   HStack,
@@ -61,7 +60,6 @@ export const ExamWorkspace = (props: Props) => {
 
   // Contexts
   const { l } = useLang();
-  const { themeConfig } = useThemeConfig();
 
   // States
   const [activeIdx, setActiveIdx] = useState<number>(0);
@@ -112,7 +110,6 @@ export const ExamWorkspace = (props: Props) => {
         <HStack mt={4} justify={"end"}>
           <Btn
             variant={"ghost"}
-            colorPalette={themeConfig.colorPalette}
             disabled={activeIdx === 0}
             onClick={() => {
               setActiveIdx((ps) => ps - 1);
@@ -127,7 +124,6 @@ export const ExamWorkspace = (props: Props) => {
 
           <Btn
             variant={"ghost"}
-            colorPalette={themeConfig.colorPalette}
             disabled={quizResponses && activeIdx === quizResponses?.length - 1}
             onClick={() => {
               setActiveIdx((ps) => ps + 1);

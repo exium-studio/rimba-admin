@@ -759,9 +759,9 @@ export const list_of_questions = {
   id: "Daftar soal",
   en: "List of questions",
 };
-export const is_public = {
-  id: "Publik",
-  en: "Public",
+export const publicity = {
+  id: "Publisitas",
+  en: "Publicity",
 };
 export const yes = {
   id: "Ya",
@@ -773,9 +773,13 @@ export const no = {
 };
 
 // Message
+export const msg_is_public_kmis_material = {
+  id: "Apakah materi ini dapat diakses oleh publik?",
+  en: "Is this material accessible to the public?",
+};
 export const msg_select_material_type_first = {
-  id: "Pilih tipe materi terlebih dahulu.",
-  en: "Please select material type first.",
+  id: "Pilih tipe materi terlebih dahulu kemudian input materi.",
+  en: "Please select material type first then input material.",
 };
 export const msg_location_test_helper = {
   id: "Klik dapatkan lokasi untuk mendapatkan data lokasi.",

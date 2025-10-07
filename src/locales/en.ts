@@ -184,7 +184,6 @@ const translations = {
     "title": "Timezone automatically set",
     "description": "${timezone}"
   },
-  "is_public": "Public",
   "january": "January",
   "july": "July",
   "june": "June",
@@ -256,6 +255,7 @@ const translations = {
   "msg_edge_permissions_settings_link": "Settings → Cookies and site permissions → ",
   "msg_file_input_dropzone": "Drag and drop/click to upload files",
   "msg_firefox_permissions_settings_link": "Preferences → Privacy & Security → Permissions → ",
+  "msg_is_public_kmis_material": "Is this material accessible to the public?",
   "msg_location_test_helper": "Click get location to get location data.",
   "msg_password_confirmation_not_match": "Password confirmation does not match",
   "msg_permissions_denied_helper": "If you want to grant access again, go to",
@@ -265,7 +265,7 @@ const translations = {
   "msg_reset_password_step_2": "Second step, verify OTP",
   "msg_reset_password_step_3": "Third step, enter your new password",
   "msg_restore": "The data will be restored to its original state.",
-  "msg_select_material_type_first": "Please select material type first.",
+  "msg_select_material_type_first": "Please select material type first then input material.",
   "msg_settings_index_route": "Please select the settings menu.",
   "msg_settings_saved_locally": "This settings are saved locally on your device and will not be synchronized with your account.",
   "msg_signin": "Before proceeding, please select your role",
@@ -330,6 +330,7 @@ const translations = {
     "profile": "Profile"
   },
   "profile": "Profile",
+  "publicity": "Publicity",
   "published_at": "Published at",
   "purpose": "Purpose",
   "question": "Question",
