@@ -23,8 +23,8 @@ export default function Page() {
           src={iframeUrl}
           style={{
             width: "100%",
-            height: `calc(100vh - 52px - ${p * 2}px - ${
-              iss ? "(29px + 78.8px)" : ""
+            height: `calc(100vh - 52px - ${p * 2}px ${
+              iss ? "- (29px + 78.8px)" : ""
             })`,
           }}
           title="CMS Preview"
