@@ -33,7 +33,7 @@ export default function IndexRoute() {
           aspectRatio={1.2}
           rounded={"40%"}
           bg={`${themeConfig.colorPalette}.600`}
-          animation={"rotate360 5s linear infinite"}
+          animation={"rotate360 8s linear infinite"}
         />
       </CContainer>
 
