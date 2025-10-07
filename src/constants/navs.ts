@@ -30,12 +30,12 @@ export const PRIVATE_NAVS: Interface__NavItem[] = [
           {
             list: [
               {
-                labelKey: "private_navs.cms.static_contents",
+                labelKey: "private_navs.cms.static_content",
                 path: `/cms/static-content`,
                 allowedRoles: ["1"],
               },
               {
-                labelKey: "private_navs.cms.legal_documents",
+                labelKey: "private_navs.cms.legal_document",
                 path: `/cms/legal-document`,
                 allowedRoles: ["1"],
               },

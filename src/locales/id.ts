@@ -300,8 +300,8 @@ const translations = {
   "private_navs": {
     "cms": {
       "index": "CMS",
-      "static_contents": "Konten Statis",
-      "legal_documents": "Dokumen Hukum",
+      "static_content": "Konten Statis",
+      "legal_document": "Dokumen Hukum",
       "activity": "Aktivitas",
       "news": "Berita dan Catatan Lapangan",
       "animal_composition": "Komposisi Hewan"

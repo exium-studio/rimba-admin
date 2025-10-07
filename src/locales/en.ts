@@ -300,8 +300,8 @@ const translations = {
   "private_navs": {
     "cms": {
       "index": "CMS",
-      "static_contents": "Static Contents",
-      "legal_documents": "Legal Documents",
+      "static_content": "Static Content",
+      "legal_document": "Legal Document",
       "activity": "Activity",
       "news": "News and Field Notes",
       "animal_composition": "Animal Composition"

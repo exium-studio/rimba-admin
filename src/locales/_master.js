@@ -5,13 +5,13 @@ export const private_navs = {
       id: "CMS",
       en: "CMS",
     },
-    static_contents: {
+    static_content: {
       id: "Konten Statis",
-      en: "Static Contents",
+      en: "Static Content",
     },
-    legal_documents: {
+    legal_document: {
       id: "Dokumen Hukum",
-      en: "Legal Documents",
+      en: "Legal Document",
     },
     activity: {
       id: "Aktivitas",
