@@ -314,7 +314,7 @@ const Create = (props: any) => {
       //   payload.append("uploadedBy", `${user.id}`);
       // }
       if (values.materialFiles?.[0]) {
-        payload.append("files", values.materialFiles[0]);
+        payload.append("materialFiles", values.materialFiles[0]);
       }
       if (values.materialUrl) {
         payload.append("materialUrl", values.materialUrl);
