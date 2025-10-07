@@ -11,12 +11,15 @@ import {
 } from "@/components/ui/disclosure";
 import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-content";
 import { Field } from "@/components/ui/field";
+import { FileInput } from "@/components/ui/file-input";
+import { ImgInput } from "@/components/ui/img-input";
 import { MenuItem } from "@/components/ui/menu";
 import { P } from "@/components/ui/p";
 import { RichEditor } from "@/components/ui/RichEditor";
 import SearchInput from "@/components/ui/search-input";
 import { StringInput } from "@/components/ui/string-input";
 import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipProps } from "@/components/ui/tooltip";
 import { ClampText } from "@/components/widget/ClampText";
 import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
@@ -104,13 +107,98 @@ const MaterialFormByType = (props: any) => {
   }
 
   const typeMap: Record<string, any> = {
-    gambar: <>Gambar</>,
-    video: <>Video</>,
-    document: <>Docs</>,
+    gambar: (
+      <CContainer gap={4}>
+        <Field
+          label={"File"}
+          invalid={!!formik.errors.materialFiles}
+          errorText={formik.errors.materialFiles as string}
+        >
+          <ImgInput
+            inputValue={formik.values.materialFiles}
+            onChange={(inputValue) => {
+              formik.setFieldValue("materialFiles", inputValue);
+            }}
+          />
+        </Field>
+
+        <Field
+          label={l.description}
+          invalid={!!formik.errors.description}
+          errorText={formik.errors.description as string}
+        >
+          <RichEditor
+            inputValue={formik.values.description}
+            onChange={(inputValue) => {
+              formik.setFieldValue("description", inputValue);
+            }}
+          />
+        </Field>
+      </CContainer>
+    ),
+    video: (
+      <CContainer gap={4}>
+        <Field
+          label={"Video URL"}
+          invalid={!!formik.errors.description}
+          errorText={formik.errors.description as string}
+        >
+          <Textarea
+            inputValue={formik.values.materialUrl}
+            onChange={(inputValue) => {
+              formik.setFieldValue("materialUrl", inputValue);
+            }}
+          />
+        </Field>
+
+        <Field
+          label={l.description}
+          invalid={!!formik.errors.description}
+          errorText={formik.errors.description as string}
+        >
+          <RichEditor
+            inputValue={formik.values.description}
+            onChange={(inputValue) => {
+              formik.setFieldValue("description", inputValue);
+            }}
+          />
+        </Field>
+      </CContainer>
+    ),
+    dokumen: (
+      <CContainer gap={4}>
+        <Field
+          label={"File"}
+          invalid={!!formik.errors.materialFiles}
+          errorText={formik.errors.materialFiles as string}
+        >
+          <FileInput
+            dropzone
+            inputValue={formik.values.materialFiles}
+            onChange={(inputValue) => {
+              formik.setFieldValue("materialFiles", inputValue);
+            }}
+          />
+        </Field>
+
+        <Field
+          label={l.description}
+          invalid={!!formik.errors.description}
+          errorText={formik.errors.description as string}
+        >
+          <RichEditor
+            inputValue={formik.values.description}
+            onChange={(inputValue) => {
+              formik.setFieldValue("description", inputValue);
+            }}
+          />
+        </Field>
+      </CContainer>
+    ),
   };
 
   const forms = typeMap[type?.[0]?.id] ?? (
-    <>
+    <CContainer gap={4}>
       <Field
         label={l.private_navs.kmis.material}
         invalid={!!formik.errors.description}
@@ -123,7 +211,7 @@ const MaterialFormByType = (props: any) => {
           }}
         />
       </Field>
-    </>
+    </CContainer>
   );
 
   return <CContainer {...restProps}>{forms}</CContainer>;
