@@ -17,6 +17,19 @@ import {
   Type__TimeRange,
 } from "./types";
 
+// CMS
+export interface Interface__CMSLegalDocs extends Interface__CUD {
+  id: string;
+  title: Interface__CMSTextContent;
+  description: Interface__CMSTextContent;
+  document: Interface__StorageFile[];
+}
+export interface Interface__CMSTextContent {
+  id: string;
+  en: string;
+}
+
+// KMIS
 export interface Interface__KMISTopic extends Interface__CUD {
   id: string;
   category: Interface__KMISTopicCategory;
