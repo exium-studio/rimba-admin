@@ -278,6 +278,7 @@ const Create = (props: any) => {
   });
 
   // States
+  const [maximize, setMaximize] = useState<boolean>(false);
   const formik = useFormik({
     validateOnChange: false,
     initialValues: {
@@ -359,10 +360,33 @@ const Create = (props: any) => {
         </Btn>
       </Tooltip>
 
-      <DisclosureRoot open={open} lazyLoad size={"xl"}>
-        <DisclosureContent>
+      <DisclosureRoot open={open} lazyLoad size={maximize ? "full" : "xl"}>
+        <DisclosureContent
+          positionerProps={{
+            p: maximize ? 0 : 4,
+          }}
+        >
           <DisclosureHeader>
-            <DisclosureHeaderContent title={`${l.add} ${routeTitle}`} />
+            <DisclosureHeaderContent title={`${l.add} ${routeTitle}`}>
+              {!iss && (
+                <Btn
+                  clicky={false}
+                  iconButton
+                  size={["xs", null, "2xs"]}
+                  rounded={"full"}
+                  variant={"subtle"}
+                  onClick={() => setMaximize((ps) => !ps)}
+                >
+                  <Icon boxSize={4}>
+                    {maximize ? (
+                      <IconMinimize stroke={1.5} />
+                    ) : (
+                      <IconMaximize stroke={1.5} />
+                    )}
+                  </Icon>
+                </Btn>
+              )}
+            </DisclosureHeaderContent>
           </DisclosureHeader>
 
           <DisclosureBody>
