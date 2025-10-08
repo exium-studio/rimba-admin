@@ -29,7 +29,6 @@ import ItemHeaderTitle from "@/components/widget/ItemHeaderTitle";
 import { PageContainer, PageContent } from "@/components/widget/Page";
 import { QuizAttempStatus } from "@/components/widget/QuizAttempStatus";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
-import { dummy_quiz_assessment, dummy_quiz_response } from "@/constants/dummy";
 import {
   Interface__DataProps,
   Interface__KMISQuizAssessment,
@@ -97,7 +96,6 @@ const ResultDetail = (props: any) => {
   const { error, initialLoading, data, onRetry } = useDataState<
     Interface__KMISQuizResponse[]
   >({
-    dummyData: dummy_quiz_response,
     url: `/api/kmis/learning-participant/show/${assessment.id}`,
     dependencies: [],
     dataResource: false,
@@ -365,7 +363,6 @@ const Data = (props: any) => {
     setPage,
     pagination,
   } = useDataState<Interface__Data[]>({
-    dummyData: dummy_quiz_assessment,
     url: `${BASE_ENDPOINT}/index`,
     params: filter,
     dependencies: [filter],
