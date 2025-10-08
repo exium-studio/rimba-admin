@@ -53,7 +53,7 @@ import { back } from "@/utils/client";
 import { disclosureId } from "@/utils/disclosure";
 import { formatDate } from "@/utils/formatter";
 import { capitalize, pluckString } from "@/utils/string";
-import { getActiveNavs, imgUrl } from "@/utils/url";
+import { getActiveNavs } from "@/utils/url";
 import {
   Center,
   FieldsetRoot,
@@ -305,7 +305,7 @@ const Create = (props: any) => {
     }),
     onSubmit: (values, { resetForm }) => {
       const payload = new FormData();
-      payload.append("topic", `${values.topic?.[0]?.id}`);
+      payload.append("topicId", `${values.topic?.[0]?.id}`);
       payload.append("materialType", values.materialType?.[0]?.id);
       payload.append("title", values.title);
       payload.append("description", values.description);
@@ -526,7 +526,7 @@ const Update = (props: any) => {
     }),
     onSubmit: (values, { resetForm }) => {
       const payload = new FormData();
-      payload.append("topic", `${values.topic?.[0]?.id}`);
+      payload.append("topicId", `${values.topic?.[0]?.id}`);
       payload.append("materialType", values.materialType?.[0]?.id);
       payload.append("title", values.title);
       payload.append("description", values.description);
@@ -969,8 +969,6 @@ const Data = (props: any) => {
               key={resolvedItem.id}
               item={{
                 id: resolvedItem.id,
-                showImg: true,
-                img: imgUrl(resolvedItem.topic.topicCover?.[0]?.filePath),
                 title: resolvedItem.title,
                 description: resolvedItem.description,
               }}
