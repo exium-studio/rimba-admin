@@ -64,8 +64,6 @@ import {
 } from "@chakra-ui/react";
 import {
   IconActivity,
-  IconMaximize,
-  IconMinimize,
   IconPencilMinus,
   IconPlus,
   IconX,
@@ -367,26 +365,13 @@ const Create = (props: any) => {
           }}
         >
           <DisclosureHeader>
-            <DisclosureHeaderContent title={`${l.add} ${routeTitle}`}>
-              {!iss && (
-                <Btn
-                  clicky={false}
-                  iconButton
-                  size={["xs", null, "2xs"]}
-                  rounded={"full"}
-                  variant={"subtle"}
-                  onClick={() => setMaximize((ps) => !ps)}
-                >
-                  <Icon boxSize={4}>
-                    {maximize ? (
-                      <IconMinimize stroke={1.5} />
-                    ) : (
-                      <IconMaximize stroke={1.5} />
-                    )}
-                  </Icon>
-                </Btn>
-              )}
-            </DisclosureHeaderContent>
+            <DisclosureHeaderContent
+              title={`${l.add} ${routeTitle}`}
+              withMaximizeButton
+              onMaximizeChange={(maximize) => {
+                setMaximize(maximize);
+              }}
+            />
           </DisclosureHeader>
 
           <DisclosureBody>
@@ -504,7 +489,6 @@ const Update = (props: any) => {
   const setRt = useRenderTrigger((s) => s.setRt);
 
   // Hooks
-  const iss = useIsSmScreenWidth();
   const { open, onOpen, onClose } = useDisclosure();
   useBackOnClose(
     disclosureId(`${ID}-${resolvedData?.id}`),
@@ -628,26 +612,13 @@ const Update = (props: any) => {
           }}
         >
           <DisclosureHeader>
-            <DisclosureHeaderContent title={`Edit ${routeTitle}`}>
-              {!iss && (
-                <Btn
-                  clicky={false}
-                  iconButton
-                  size={["xs", null, "2xs"]}
-                  rounded={"full"}
-                  variant={"subtle"}
-                  onClick={() => setMaximize((ps) => !ps)}
-                >
-                  <Icon boxSize={4}>
-                    {maximize ? (
-                      <IconMinimize stroke={1.5} />
-                    ) : (
-                      <IconMaximize stroke={1.5} />
-                    )}
-                  </Icon>
-                </Btn>
-              )}
-            </DisclosureHeaderContent>
+            <DisclosureHeaderContent
+              title={`Edit ${routeTitle}`}
+              withMaximizeButton
+              onMaximizeChange={(maximize) => {
+                setMaximize(maximize);
+              }}
+            />
           </DisclosureHeader>
 
           <DisclosureBody>
