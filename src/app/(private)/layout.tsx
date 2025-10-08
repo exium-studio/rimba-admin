@@ -643,20 +643,20 @@ const DesktopLayout = (props: any) => {
                                             </P>
                                           )}
 
-                                          {menuItem.list.map((menu) => {
+                                          {menuItem.list.map((subNav) => {
                                             const isSubNavsActive =
-                                              pathname === menu.path;
+                                              pathname === subNav.path;
 
                                             return (
                                               <NavLink
-                                                key={menu.path}
-                                                to={menu.path}
+                                                key={subNav.path}
+                                                to={subNav.path}
                                                 w={"full"}
                                               >
                                                 <Tooltip
                                                   content={pluckString(
                                                     l,
-                                                    menu.labelKey
+                                                    subNav.labelKey
                                                   )}
                                                   positioning={{
                                                     placement: "right",
@@ -706,7 +706,7 @@ const DesktopLayout = (props: any) => {
                                                     >
                                                       {pluckString(
                                                         l,
-                                                        menu.labelKey
+                                                        subNav.labelKey
                                                       )}
                                                     </P>
                                                   </Btn>
@@ -767,20 +767,20 @@ const DesktopLayout = (props: any) => {
                                         : ""
                                     }
                                   >
-                                    {menuItem.list.map((menu) => {
+                                    {menuItem.list.map((subNav) => {
                                       const isSubNavsActive =
-                                        pathname === menu.path;
+                                        pathname === subNav.path;
 
                                       return (
                                         <NavLink
-                                          key={menu.path}
-                                          to={menu.path}
+                                          key={subNav.path}
+                                          to={subNav.path}
                                           w={"full"}
                                         >
                                           <Tooltip
                                             content={pluckString(
                                               l,
-                                              menu.labelKey
+                                              subNav.labelKey
                                             )}
                                             positioning={{
                                               placement: "right",
@@ -789,9 +789,12 @@ const DesktopLayout = (props: any) => {
                                               },
                                             }}
                                           >
-                                            <MenuItem value={menu.path}>
+                                            <MenuItem value={subNav.path}>
                                               <P lineClamp={1}>
-                                                {pluckString(l, menu.labelKey)}
+                                                {pluckString(
+                                                  l,
+                                                  subNav.labelKey
+                                                )}
                                               </P>
 
                                               {isSubNavsActive && (
