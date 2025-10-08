@@ -860,7 +860,6 @@ const Data = (props: any) => {
   const displayTable = displayMode === "table";
 
   // States
-
   const {
     error,
     initialLoading,
@@ -874,7 +873,10 @@ const Data = (props: any) => {
   } = useDataState<Interface__Data[]>({
     initialData: undefined,
     url: `${BASE_ENDPOINT}/index`,
-    params: filter,
+    params: {
+      search: filter.search,
+      topicId: filter.topic?.[0]?.id,
+    },
     dependencies: [filter],
   });
   const dataProps: Interface__DataProps = {
