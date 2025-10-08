@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/disclosure";
 import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-content";
 import { Field } from "@/components/ui/field";
-import { Img } from "@/components/ui/img";
 import { ImgInput } from "@/components/ui/img-input";
 import { MenuItem } from "@/components/ui/menu";
 import SearchInput from "@/components/ui/search-input";
@@ -25,7 +24,6 @@ import { DataGridItem } from "@/components/widget/DataGridItem";
 import { DataTable } from "@/components/widget/DataTable";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
-import { ImgViewer } from "@/components/widget/ImgViewer";
 import { PageContainer, PageContent } from "@/components/widget/Page";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
 import {
@@ -47,7 +45,7 @@ import { back } from "@/utils/client";
 import { disclosureId } from "@/utils/disclosure";
 import { formatDate } from "@/utils/formatter";
 import { capitalize, pluckString } from "@/utils/string";
-import { getActiveNavs, imgUrl } from "@/utils/url";
+import { getActiveNavs } from "@/utils/url";
 import { fileValidation } from "@/utils/validationSchema";
 import { FieldsetRoot, HStack, Icon, useDisclosure } from "@chakra-ui/react";
 import {
@@ -107,18 +105,13 @@ const Create = (props: any) => {
   // States
   const formik = useFormik({
     validateOnChange: false,
-    initialValues: { files: null as any, title: "", description: "" },
+    initialValues: { title: "", description: "" },
     validationSchema: yup.object().shape({
-      files: fileValidation({
-        maxSizeMB: 10,
-        allowedExtensions: ["jpg", "jpeg", "png"],
-      }).required(l.msg_required_form),
       title: yup.string().required(l.msg_required_form),
       description: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values) => {
       const payload = new FormData();
-      payload.append("files", values.files[0]);
       payload.append("title", values.title);
       payload.append("description", values.description);
 
@@ -167,21 +160,6 @@ const Create = (props: any) => {
           <DisclosureBody>
             <form id={ID} onSubmit={formik.handleSubmit}>
               <FieldsetRoot disabled={loading}>
-                <Field
-                  label={"Thumbnail"}
-                  invalid={!!formik.errors.files}
-                  errorText={formik.errors.files as string}
-                >
-                  <ImgInput
-                    accept="image/png, image/jpeg, image/webp"
-                    acceptPlaceholder=".jpg, .jpeg, .png"
-                    inputValue={formik.values.files}
-                    onChange={(inputValue) => {
-                      formik.setFieldValue("files", inputValue);
-                    }}
-                  />
-                </Field>
-
                 <Field
                   label={l.title}
                   invalid={!!formik.errors.title}
@@ -595,10 +573,6 @@ const Data = (props: any) => {
   const dataProps: Interface__DataProps = {
     headers: [
       {
-        th: "Thumbnail",
-        align: "center",
-      },
-      {
         th: l.title,
         sortable: true,
       },
@@ -627,23 +601,6 @@ const Data = (props: any) => {
       data: item,
       dim: !!item.deletedAt,
       columns: [
-        {
-          td: (
-            <ImgViewer
-              id={`category-cover-${item.id}`}
-              src={imgUrl(item?.categoryCover?.[0]?.filePath)}
-            >
-              <Img
-                src={imgUrl(item?.categoryCover?.[0]?.filePath)}
-                h={"24px"}
-                aspectRatio={1.1}
-              />
-            </ImgViewer>
-          ),
-          value: imgUrl(item?.categoryCover?.[0]?.filePath),
-          dataType: "image",
-          align: "center",
-        },
         {
           td: <ClampText>{`${item.title}`}</ClampText>,
           value: item.title,
@@ -778,8 +735,6 @@ const Data = (props: any) => {
               key={resolvedItem.id}
               item={{
                 id: resolvedItem.id,
-                showImg: true,
-                img: imgUrl(resolvedItem.categoryCover?.[0]?.filePath),
                 title: resolvedItem.title,
                 description: resolvedItem.description,
                 deletedAt: resolvedItem.deletedAt,
