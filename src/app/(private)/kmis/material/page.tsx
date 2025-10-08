@@ -64,6 +64,8 @@ import {
 } from "@chakra-ui/react";
 import {
   IconActivity,
+  IconMaximize,
+  IconMinimize,
   IconPencilMinus,
   IconPlus,
   IconX,
@@ -478,6 +480,7 @@ const Update = (props: any) => {
   const setRt = useRenderTrigger((s) => s.setRt);
 
   // Hooks
+  const iss = useIsSmScreenWidth();
   const { open, onOpen, onClose } = useDisclosure();
   useBackOnClose(
     disclosureId(`${ID}-${resolvedData?.id}`),
@@ -496,6 +499,7 @@ const Update = (props: any) => {
   });
 
   // States
+  const [maximize, setMaximize] = useState<boolean>(false);
   const formik = useFormik({
     validateOnChange: false,
     initialValues: {
@@ -504,8 +508,8 @@ const Update = (props: any) => {
       title: "",
       description: "",
       materialFiles: null as any,
-      materialUrl: "",
       deleteFileIds: [],
+      materialUrl: "",
     },
     validationSchema: yup.object().shape({
       topic: yup.array().required(l.msg_required_form),
@@ -537,15 +541,12 @@ const Update = (props: any) => {
       if (values.materialFiles?.[0]) {
         payload.append("materialFiles", values.materialFiles[0]);
       }
-      if (!isEmptyArray(values.deleteFileIds)) {
-        payload.append("deleteFileIds", JSON.stringify(values.deleteFileIds));
-      }
       if (values.materialUrl) {
         payload.append("materialUrl", values.materialUrl);
       }
 
       const config = {
-        url: `${BASE_ENDPOINT}/update`,
+        url: `${BASE_ENDPOINT}/update/${resolvedData.id}`,
         method: "PATCH",
         data: payload,
       };
@@ -596,27 +597,96 @@ const Update = (props: any) => {
         </MenuItem>
       </MenuTooltip>
 
-      <DisclosureRoot open={open} lazyLoad size={"xs"}>
-        <DisclosureContent>
+      <DisclosureRoot open={open} lazyLoad size={maximize ? "full" : "xl"}>
+        <DisclosureContent
+          positionerProps={{
+            p: maximize ? 0 : 4,
+          }}
+        >
           <DisclosureHeader>
-            <DisclosureHeaderContent title={`Edit ${routeTitle}`} />
+            <DisclosureHeaderContent title={`Edit ${routeTitle}`}>
+              {!iss && (
+                <Btn
+                  clicky={false}
+                  iconButton
+                  size={["xs", null, "2xs"]}
+                  rounded={"full"}
+                  variant={"subtle"}
+                  onClick={() => setMaximize((ps) => !ps)}
+                >
+                  <Icon boxSize={4}>
+                    {maximize ? (
+                      <IconMinimize stroke={1.5} />
+                    ) : (
+                      <IconMaximize stroke={1.5} />
+                    )}
+                  </Icon>
+                </Btn>
+              )}
+            </DisclosureHeaderContent>
           </DisclosureHeader>
 
           <DisclosureBody>
             <form id={ID} onSubmit={formik.handleSubmit}>
               <FieldsetRoot disabled={loading}>
-                <Field
-                  label={l.private_navs.kmis.topic}
-                  invalid={!!formik.errors.topic}
-                  errorText={formik.errors.topic as string}
-                >
-                  <SelectKMISTopic
-                    inputValue={formik.values.topic}
-                    onChange={(inputValue) =>
-                      formik.setFieldValue("topic", inputValue)
-                    }
-                  />
-                </Field>
+                <SimpleGrid columns={[1, null, 2]} gap={8}>
+                  {/* basic form */}
+                  <CContainer gap={4}>
+                    <Field
+                      label={l.private_navs.kmis.topic}
+                      invalid={!!formik.errors.topic}
+                      errorText={formik.errors.topic as string}
+                    >
+                      <SelectKMISTopic
+                        inputValue={formik.values.topic}
+                        onConfirm={(inputValue) => {
+                          formik.setFieldValue("topic", inputValue);
+                        }}
+                      />
+                    </Field>
+
+                    <Field
+                      label={l.title}
+                      invalid={!!formik.errors.title}
+                      errorText={formik.errors.title as string}
+                    >
+                      <StringInput
+                        inputValue={formik.values.title}
+                        onChange={(inputValue) =>
+                          formik.setFieldValue("title", inputValue)
+                        }
+                      />
+                    </Field>
+                  </CContainer>
+
+                  {/* material form */}
+                  <CContainer gap={4}>
+                    <Field
+                      label={l.type}
+                      invalid={!!formik.errors.materialType}
+                      errorText={formik.errors.materialType as string}
+                    >
+                      <SelectKMISMaterialType
+                        inputValue={formik.values.materialType}
+                        onConfirm={(inputValue) => {
+                          formik.setFieldValue("materialType", inputValue);
+                        }}
+                      />
+                    </Field>
+
+                    <Field label={l.publicity} disabled>
+                      <HStack justify={"space-between"} w={"full"}>
+                        <P opacity={0.4}>{l.msg_is_public_kmis_material}</P>
+                        <Switch disabled />
+                      </HStack>
+                    </Field>
+                  </CContainer>
+                </SimpleGrid>
+
+                <MaterialFormByType
+                  type={formik.values.materialType}
+                  formik={formik}
+                />
               </FieldsetRoot>
             </form>
           </DisclosureBody>
