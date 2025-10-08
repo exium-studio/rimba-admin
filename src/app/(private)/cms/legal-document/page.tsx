@@ -50,7 +50,7 @@ import { disclosureId } from "@/utils/disclosure";
 import { formatDate } from "@/utils/formatter";
 import { capitalize, pluckString } from "@/utils/string";
 import { getActiveNavs } from "@/utils/url";
-import { fileValidation } from "@/utils/validationSchema";
+import { fileValidation, min1File } from "@/utils/validationSchema";
 import {
   FieldsetRoot,
   HStack,
@@ -426,9 +426,16 @@ const Update = (props: any) => {
     },
     validationSchema: yup.object().shape({
       files: fileValidation({
-        maxSizeMB: 10,
         allowedExtensions: ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx"],
-      }),
+      }).concat(
+        min1File({
+          resolvedData,
+          existingKey: "document",
+          deletedKey: "deleteDocumentIds",
+          newKey: "files",
+          message: l.msg_required_form,
+        })
+      ),
       titleId: yup.string().required(l.msg_required_form),
       titleEn: yup.string().required(l.msg_required_form),
       descriptionId: yup.string().required(l.msg_required_form),

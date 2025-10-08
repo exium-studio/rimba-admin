@@ -15,6 +15,7 @@ import { Img } from "@/components/ui/img";
 import { ImgInput } from "@/components/ui/img-input";
 import { MenuItem } from "@/components/ui/menu";
 import { NavLink } from "@/components/ui/nav-link";
+import { NumInput } from "@/components/ui/number-input";
 import { P } from "@/components/ui/p";
 import SearchInput from "@/components/ui/search-input";
 import { StringInput } from "@/components/ui/string-input";
@@ -53,7 +54,7 @@ import { disclosureId } from "@/utils/disclosure";
 import { formatDate } from "@/utils/formatter";
 import { capitalize, pluckString } from "@/utils/string";
 import { getActiveNavs, imgUrl } from "@/utils/url";
-import { fileValidation } from "@/utils/validationSchema";
+import { fileValidation, min1File } from "@/utils/validationSchema";
 import {
   Badge,
   FieldsetRoot,
@@ -123,6 +124,7 @@ const Create = (props: any) => {
       category: null as unknown as Interface__SelectOption[],
       title: "",
       description: "",
+      quizDuration: null as unknown as number,
     },
     validationSchema: yup.object().shape({
       files: fileValidation({
@@ -132,6 +134,7 @@ const Create = (props: any) => {
       category: yup.array().required(l.msg_required_form),
       title: yup.string().required(l.msg_required_form),
       description: yup.string().required(l.msg_required_form),
+      quizDuration: yup.number().required(l.msg_required_form),
     }),
     onSubmit: (values, { resetForm }) => {
       const payload = new FormData();
@@ -140,6 +143,7 @@ const Create = (props: any) => {
       payload.append("title", values.title);
       payload.append("description", values.description);
       payload.append("totalQuiz", "0");
+      payload.append("quizDuration", `${values.quizDuration * 60}`);
 
       const config = {
         url: `${BASE_ENDPOINT}/create`,
@@ -237,6 +241,19 @@ const Create = (props: any) => {
                     inputValue={formik.values.description}
                     onChange={(inputValue) => {
                       formik.setFieldValue("description", inputValue);
+                    }}
+                  />
+                </Field>
+
+                <Field
+                  label={`${l.quiz_duration} (${l.minute.toLowerCase()})`}
+                  invalid={!!formik.errors.quizDuration}
+                  errorText={formik.errors.quizDuration as string}
+                >
+                  <NumInput
+                    inputValue={formik.values.quizDuration}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("quizDuration", inputValue);
                     }}
                   />
                 </Field>
@@ -365,16 +382,26 @@ const Update = (props: any) => {
       category: null as unknown as Interface__SelectOption[],
       title: "",
       description: "",
+      quizDuration: null as unknown as number,
       deleteDocumentIds: [],
     },
     validationSchema: yup.object().shape({
       files: fileValidation({
         maxSizeMB: 10,
         allowedExtensions: ["jpg", "jpeg", "png"],
-      }),
+      }).concat(
+        min1File({
+          resolvedData,
+          existingKey: "topicCover",
+          deletedKey: "deleteDocumentIds",
+          newKey: "files",
+          message: l.msg_required_form,
+        })
+      ),
       category: yup.array().required(l.msg_required_form),
       title: yup.string().required(l.msg_required_form),
       description: yup.string().required(l.msg_required_form),
+      quizDuration: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values) => {
       const payload = new FormData();
@@ -389,6 +416,7 @@ const Update = (props: any) => {
       payload.append("title", values.title);
       payload.append("description", values.description);
       payload.append("totalQuiz", "0");
+      payload.append("quizDuration", `${values.quizDuration * 60}`);
 
       const config = {
         url: `${BASE_ENDPOINT}/update/${resolvedData.id}`,
@@ -418,6 +446,7 @@ const Update = (props: any) => {
       ],
       title: resolvedData.title,
       description: resolvedData.description,
+      quizDuration: resolvedData.quizDuration / 60,
       deleteDocumentIds: [],
     });
   }, [open, resolvedData]);
@@ -499,6 +528,19 @@ const Update = (props: any) => {
                     inputValue={formik.values.description}
                     onChange={(inputValue) => {
                       formik.setFieldValue("description", inputValue);
+                    }}
+                  />
+                </Field>
+
+                <Field
+                  label={`${l.quiz_duration} (${l.minute.toLowerCase()})`}
+                  invalid={!!formik.errors.quizDuration}
+                  errorText={formik.errors.quizDuration as string}
+                >
+                  <NumInput
+                    inputValue={formik.values.quizDuration}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("quizDuration", inputValue);
                     }}
                   />
                 </Field>

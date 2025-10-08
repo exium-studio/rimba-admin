@@ -771,6 +771,22 @@ export const no = {
   id: "Tidak",
   en: "No",
 };
+export const quiz_duration = {
+  id: "Durasi quiz",
+  en: "Quiz duration",
+};
+export const hour = {
+  id: "Jam",
+  en: "Hour",
+};
+export const minute = {
+  id: "Menit",
+  en: "Minute",
+};
+export const second = {
+  id: "Detik",
+  en: "Second",
+};
 
 // Message
 export const msg_is_public_kmis_material = {
@@ -1236,6 +1252,13 @@ export const error_422_default = {
   description: {
     id: "Beberapa data tidak valid, periksa kembali.",
     en: "Some data is invalid, please review.",
+  },
+};
+export const error_422_file_required = {
+  title: { id: "Validation failed", en: "Validation failed" },
+  description: {
+    id: "File harus diisi, min. 1",
+    en: "File is required, min. 1",
   },
 };
 export const error_422_duplicate_file_name = {

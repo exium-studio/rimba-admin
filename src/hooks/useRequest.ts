@@ -124,6 +124,8 @@ export default function useRequest<T = any>(props: Props) {
 
       case 422:
         switch (errorCase) {
+          case "MINIMUM_FILE_REQUIRED":
+            return l.error_422_file_required;
           case "DUPLICATE_FILENAME":
             return l.error_422_duplicate_file_name;
           case "DUPLICATE_TITLE":

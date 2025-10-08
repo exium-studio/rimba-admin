@@ -54,6 +54,7 @@ import { disclosureId } from "@/utils/disclosure";
 import { formatDate } from "@/utils/formatter";
 import { capitalize, pluckString } from "@/utils/string";
 import { getActiveNavs } from "@/utils/url";
+import { fileValidation, min1File } from "@/utils/validationSchema";
 import {
   Center,
   FieldsetRoot,
@@ -294,7 +295,9 @@ const Create = (props: any) => {
       materialType: yup.array().required(l.msg_required_form),
       title: yup.string().required(l.msg_required_form),
       description: yup.string().required(l.msg_required_form),
-      materialFiles: yup.array().when("materialType", {
+      materialFiles: fileValidation({
+        allowedExtensions: ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx"],
+      }).when("materialType", {
         is: (val: Interface__SelectOption[]) =>
           val?.[0]?.id === "gambar" || val?.[0]?.id === "dokumen",
         then: (schema) => schema.required(l.msg_required_form),
@@ -526,12 +529,24 @@ const Update = (props: any) => {
       materialType: yup.array().required(l.msg_required_form),
       title: yup.string().required(l.msg_required_form),
       description: yup.string().required(l.msg_required_form),
-      materialFiles: yup.array().when("materialType", {
-        is: (val: Interface__SelectOption[]) =>
-          val?.[0]?.id === "gambar" || val?.[0]?.id === "dokumen",
-        then: (schema) => schema.required(l.msg_required_form),
-        otherwise: (schema) => schema.notRequired(),
-      }),
+      materialFiles: fileValidation({
+        allowedExtensions: ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx"],
+      })
+        .when("materialType", {
+          is: (val: Interface__SelectOption[]) =>
+            val?.[0]?.id === "gambar" || val?.[0]?.id === "dokumen",
+          then: (schema) => schema.required(l.msg_required_form),
+          otherwise: (schema) => schema.notRequired(),
+        })
+        .concat(
+          min1File({
+            resolvedData,
+            existingKey: "materialFiles",
+            deletedKey: "deleteFileIds",
+            newKey: "materialFiles",
+            message: l.msg_required_form,
+          })
+        ),
       materialUrl: yup.string().when("materialType", {
         is: (val: Interface__SelectOption[]) => val?.[0]?.id === "video",
         then: (schema) => schema.required(l.msg_required_form),

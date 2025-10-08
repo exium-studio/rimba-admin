@@ -122,6 +122,10 @@ const translations = {
     "title": "Duplicate data",
     "description": "Question already exists in this topic, please review."
   },
+  "error_422_file_required": {
+    "title": "Validation failed",
+    "description": "File is required, min. 1"
+  },
   "error_429_default": {
     "title": "Too many requests",
     "description": "Please try again later."
@@ -183,6 +187,7 @@ const translations = {
   "get": "Get",
   "grade": "Grade",
   "hide": "Hide",
+  "hour": "Hour",
   "inactive": "Inactive",
   "info_timezone_auto": {
     "title": "Timezone automatically set",
@@ -243,6 +248,7 @@ const translations = {
   "may": "May",
   "mic": "Mic",
   "minimize": "Minimize",
+  "minute": "Minute",
   "missing_route": {
     "description": "The page you are looking for is not available. There may be an incorrect URL or the page is no longer available."
   },
@@ -338,6 +344,7 @@ const translations = {
   "published_at": "Published at",
   "purpose": "Purpose",
   "question": "Question",
+  "quiz_duration": "Quiz duration",
   "quiz_info": "Quiz info",
   "read_more": "Read more",
   "recieve": "Recieve",
@@ -350,6 +357,7 @@ const translations = {
   "saturday": "Saturday",
   "save": "Save",
   "search": "Search",
+  "second": "Second",
   "select": "Select",
   "select_all": "Select all",
   "select_date": "Select date",

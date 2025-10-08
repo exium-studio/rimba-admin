@@ -122,6 +122,10 @@ const translations = {
     "title": "Data duplikat",
     "description": "Pertanyaan yang sama di topic tersebut sudah ada, periksa kembali."
   },
+  "error_422_file_required": {
+    "title": "Validation failed",
+    "description": "File harus diisi, min. 1"
+  },
   "error_429_default": {
     "title": "Too many requests",
     "description": "Silakan coba lagi nanti."
@@ -183,6 +187,7 @@ const translations = {
   "get": "Dapatkan",
   "grade": "Nilai",
   "hide": "Sembunyikan",
+  "hour": "Jam",
   "inactive": "Belum aktif",
   "info_timezone_auto": {
     "title": "Zona waktu diatur secara otomatis",
@@ -243,6 +248,7 @@ const translations = {
   "may": "Mei",
   "mic": "Mic",
   "minimize": "Minimalkan",
+  "minute": "Menit",
   "missing_route": {
     "description": "Halaman yang Anda cari tidak tersedia. Kemungkinan ada URL yang keliru atau halaman ini sudah tidak tersedia."
   },
@@ -338,6 +344,7 @@ const translations = {
   "published_at": "Diterbitkan pada",
   "purpose": "Tujuan",
   "question": "Pertanyaan",
+  "quiz_duration": "Durasi quiz",
   "quiz_info": "Informasi quiz",
   "read_more": "Baca selengkapnya",
   "recieve": "Terima",
@@ -350,6 +357,7 @@ const translations = {
   "saturday": "Sabtu",
   "save": "Simpan",
   "search": "Cari",
+  "second": "Detik",
   "select": "Pilih",
   "select_all": "Pilih semua",
   "select_date": "Pilih tanggal",
