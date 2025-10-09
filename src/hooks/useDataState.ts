@@ -58,14 +58,14 @@ const useDataState = <T = any>(props: Props<T>) => {
     showSuccessToast: false,
   });
   const payloadData = {
-    ...payload,
     limit,
     page,
+    ...payload,
   };
   const paramsData = {
-    ...params,
     limit,
     page,
+    ...params,
   };
   const baseConfig = {
     url: url,
