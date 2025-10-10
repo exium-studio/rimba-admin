@@ -273,7 +273,7 @@ const BasicAuthForm = (props: any) => {
                 formik.setFieldValue("identifier", input);
               }}
               inputValue={formik.values.identifier}
-              placeholder="Email"
+              placeholder="example@mail.com"
               pl={"40px !important"}
             />
           </InputGroup>
@@ -297,7 +297,6 @@ const BasicAuthForm = (props: any) => {
                 formik.setFieldValue("password", input);
               }}
               inputValue={formik.values.password}
-              placeholder="Password"
               pl={"40px !important"}
             />
           </InputGroup>
