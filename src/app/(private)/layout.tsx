@@ -544,6 +544,7 @@ const DesktopLayout = (props: any) => {
           {navsExpanded && (
             <CContainer mb={1}>
               <SearchInput
+                queryKey={"navs"}
                 inputRef={searchInputRef}
                 inputProps={{
                   variant: "flushed",
