@@ -363,6 +363,13 @@ const Signedin = (props: any) => {
           removeStorage("__user_data");
           removeAuth();
         },
+        onError: (e) => {
+          if (e.status === 401) {
+            removeStorage("__auth_token");
+            removeStorage("__user_data");
+            removeAuth();
+          }
+        },
       },
     });
   }
@@ -412,7 +419,7 @@ const SigninForm = (props: Props) => {
 
   // Hooks
   const searchParams = useSearchParams();
-  const activeRoleId = user?.role.id || searchParams.get("roleId");
+  const activeRoleId = user?.role?.id || searchParams.get("roleId");
 
   // States
   const ROLES = [

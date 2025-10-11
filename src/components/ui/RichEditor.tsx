@@ -11,7 +11,8 @@ export const RichEditor = (props: Props__RichEditor) => {
     <TinyMCEEditor
       apiKey={TINY_MCE_API_KEY}
       init={{
-        height: 500,
+        height: 720,
+        width: "100%",
         menubar: true,
         plugins: "lists link image table code help wordcount",
         toolbar:
