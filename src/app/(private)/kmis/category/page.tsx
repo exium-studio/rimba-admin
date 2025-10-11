@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/disclosure";
 import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-content";
 import { Field } from "@/components/ui/field";
-import { ImgInput } from "@/components/ui/img-input";
 import { MenuItem } from "@/components/ui/menu";
 import SearchInput from "@/components/ui/search-input";
 import { StringInput } from "@/components/ui/string-input";
@@ -46,7 +45,6 @@ import { disclosureId } from "@/utils/disclosure";
 import { formatDate } from "@/utils/formatter";
 import { capitalize, pluckString } from "@/utils/string";
 import { getActiveNavs } from "@/utils/url";
-import { fileValidation } from "@/utils/validationSchema";
 import { FieldsetRoot, HStack, Icon, useDisclosure } from "@chakra-ui/react";
 import {
   IconPencilMinus,
@@ -258,30 +256,15 @@ const Update = (props: any) => {
   const formik = useFormik({
     validateOnChange: false,
     initialValues: {
-      files: null as any,
       title: "",
       description: "",
-      deleteDocumentIds: [],
     },
     validationSchema: yup.object().shape({
-      files: fileValidation({
-        maxSizeMB: 10,
-        allowedExtensions: ["jpg", "jpeg", "png"],
-      }),
       title: yup.string().required(l.msg_required_form),
       description: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values) => {
       const payload = new FormData();
-      if (values.files?.[0]) {
-        payload.append("files", values.files[0]);
-      }
-      if (!isEmptyArray(values.deleteDocumentIds)) {
-        payload.append(
-          "deleteDocumentIds",
-          JSON.stringify(values.deleteDocumentIds)
-        );
-      }
       payload.append("title", values.title);
       payload.append("description", values.description);
 
@@ -305,10 +288,8 @@ const Update = (props: any) => {
 
   useEffect(() => {
     formik.setValues({
-      files: [],
       title: resolvedData.title,
       description: resolvedData.description,
-      deleteDocumentIds: [],
     });
   }, [open, resolvedData]);
 
@@ -332,41 +313,6 @@ const Update = (props: any) => {
           <DisclosureBody>
             <form id={ID} onSubmit={formik.handleSubmit}>
               <FieldsetRoot disabled={loading}>
-                <Field
-                  label={"Thumbnail"}
-                  invalid={!!formik.errors.files}
-                  errorText={formik.errors.files as string}
-                >
-                  <ImgInput
-                    accept="image/png, image/jpeg, image/webp"
-                    acceptPlaceholder=".jpg, .jpeg, .png"
-                    inputValue={formik.values.files}
-                    onChange={(inputValue) => {
-                      formik.setFieldValue("files", inputValue);
-                    }}
-                    existingFiles={resolvedData.categoryCover}
-                    onDeleteFile={(fileData) => {
-                      formik.setFieldValue(
-                        "deleteDocumentIds",
-                        Array.from(
-                          new Set([
-                            ...formik.values.deleteDocumentIds,
-                            fileData.id,
-                          ])
-                        )
-                      );
-                    }}
-                    onUndoDeleteFile={(fileData) => {
-                      formik.setFieldValue(
-                        "deleteDocumentIds",
-                        formik.values.deleteDocumentIds.filter(
-                          (id: string) => id !== fileData.id
-                        )
-                      );
-                    }}
-                  />
-                </Field>
-
                 <Field
                   label={l.title}
                   invalid={!!formik.errors.title}

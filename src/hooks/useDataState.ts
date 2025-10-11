@@ -186,8 +186,8 @@ const useDataState = <T = any>(props: Props<T>) => {
 
   // trigger loading bar on initialLoading | loading  is true
   useEffect(() => {
-    setLoadingBar(initialLoading || loading);
-  }, [loading, initialLoading]);
+    setLoadingBar(loading);
+  }, [loading]);
 
   return {
     makeRequest,
