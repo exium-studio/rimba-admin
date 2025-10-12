@@ -17,8 +17,8 @@ interface Props {
   successMessage?: { title?: string; description?: string };
   errorMessage?: Record<
     number,
-    Record<string, { type: string; title: string; description: string }> & {
-      default?: { type: "error"; title: string; description: string };
+    Record<string, { type?: string; title: string; description: string }> & {
+      default?: { type?: "error"; title: string; description: string };
     }
   >;
   signinPath?: string;
