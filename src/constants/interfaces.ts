@@ -36,6 +36,7 @@ export interface Interface__KMISTopic extends Interface__CUD {
   topicCover: Interface__StorageFile[];
   title: string;
   description: string;
+  materialOrder?: Interface__KMISMaterial[];
   totalQuiz: number;
   quizDuration: number; // seconds
 }

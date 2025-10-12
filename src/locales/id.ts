@@ -243,6 +243,7 @@ const translations = {
   },
   "map": "Peta",
   "march": "Maret",
+  "material_order": "Urutan materi",
   "material_type": "Tipe materi",
   "maximize": "Maksimalkan",
   "may": "Mei",

@@ -243,6 +243,7 @@ const translations = {
   },
   "map": "Map",
   "march": "March",
+  "material_order": "Material order",
   "material_type": "Material type",
   "maximize": "Maximize",
   "may": "May",

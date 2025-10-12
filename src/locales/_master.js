@@ -787,6 +787,10 @@ export const second = {
   id: "Detik",
   en: "Second",
 };
+export const material_order = {
+  id: "Urutan materi",
+  en: "Material order",
+};
 
 // Message
 export const msg_is_public_kmis_material = {

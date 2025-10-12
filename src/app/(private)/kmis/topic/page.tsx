@@ -37,6 +37,7 @@ import { TableSkeleton } from "@/components/widget/TableSkeleton";
 import {
   Interface__BatchOptionsTableOptionGenerator,
   Interface__DataProps,
+  Interface__KMISMaterial,
   Interface__KMISTopic,
   Interface__RowOptionsTableOptionGenerator,
   Interface__SelectOption,
@@ -398,6 +399,8 @@ const Update = (props: any) => {
       category: null as unknown as Interface__SelectOption[],
       title: "",
       description: "",
+      materialOrder: [] as Interface__KMISMaterial[] | undefined,
+      totalQuiz: null as number | null,
       quizDuration: null as unknown as number,
       deleteDocumentIds: [],
     },
@@ -431,7 +434,11 @@ const Update = (props: any) => {
       payload.append("categoryId", `${values.category?.[0]?.id}`);
       payload.append("title", values.title);
       payload.append("description", values.description);
-      payload.append("totalQuiz", "0");
+      payload.append(
+        "materialOrderIds",
+        JSON.stringify(values.materialOrder?.map((m) => m.id))
+      );
+      payload.append("totalQuiz", `${values.totalQuiz}`);
       payload.append("quizDuration", `${values.quizDuration * 60}`);
 
       const config = {
@@ -451,6 +458,32 @@ const Update = (props: any) => {
       });
     },
   });
+
+  // Utils
+  // function handleMove(index: number, direction: "up" | "down") {
+  //   const items = formik.values.materialOrder
+  //     ? [...formik.values.materialOrder]
+  //     : [];
+
+  //   if (items.length <= 1) return;
+
+  //   const lastIndex = items.length - 1;
+  //   const newIndex =
+  //     direction === "up"
+  //       ? index === 0
+  //         ? lastIndex
+  //         : index - 1
+  //       : index === lastIndex
+  //       ? 0
+  //       : index + 1;
+
+  //   // move element
+  //   const [movedItem] = items.splice(index, 1);
+  //   items.splice(newIndex, 0, movedItem);
+
+  //   formik.setFieldValue("materialOrder", items);
+  // }
+
   useEffect(() => {
     formik.setValues({
       files: [],
@@ -462,6 +495,8 @@ const Update = (props: any) => {
       ],
       title: resolvedData.title,
       description: resolvedData.description,
+      materialOrder: resolvedData.materialOrder,
+      totalQuiz: resolvedData.totalQuiz,
       quizDuration: resolvedData.quizDuration / 60,
       deleteDocumentIds: [],
     });
@@ -575,6 +610,58 @@ const Update = (props: any) => {
                     }}
                   />
                 </Field>
+
+                {/* <Field
+                  label={l.material_order}
+                  invalid={!!formik.errors.materialOrder}
+                  errorText={formik.errors.materialOrder as string}
+                >
+                  {isEmptyArray(formik.values.materialOrder) && <P>-</P>}
+
+                  {formik.values.materialOrder?.map((m, idx) => {
+                    return (
+                      <HStack
+                        key={m.id}
+                        w={"full"}
+                        gap={4}
+                        py={2}
+                        px={4}
+                        pr={2}
+                        border={"1px solid"}
+                        borderColor={"border.muted"}
+                        rounded={themeConfig.radii.component}
+                      >
+                        <P color={"fg.subtle"}>{`${idx + 1}`}</P>
+
+                        <ClampText>{m.title}</ClampText>
+
+                        <HStack ml={"auto"}>
+                          <Btn
+                            iconButton
+                            size={"2xs"}
+                            variant={"ghost"}
+                            onClick={() => handleMove(idx, "down")}
+                          >
+                            <Icon boxSize={5}>
+                              <IconArrowDown stroke={1.5} />
+                            </Icon>
+                          </Btn>
+
+                          <Btn
+                            iconButton
+                            size={"2xs"}
+                            variant={"ghost"}
+                            onClick={() => handleMove(idx, "up")}
+                          >
+                            <Icon boxSize={5}>
+                              <IconArrowUp stroke={1.5} />
+                            </Icon>
+                          </Btn>
+                        </HStack>
+                      </HStack>
+                    );
+                  })}
+                </Field> */}
 
                 <Field
                   label={`${l.quiz_duration} (${l.minute.toLowerCase()})`}
