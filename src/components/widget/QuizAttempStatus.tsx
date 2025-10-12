@@ -19,15 +19,15 @@ export const QuizAttempStatus = (props: Props) => {
   let colorPalette: BadgeProps["colorPalette"] = "gray";
 
   switch (quizAttempStatus) {
-    case 0:
+    case 1:
       label = l.not_started;
       colorPalette = "gray";
       break;
-    case 1:
+    case 2:
       label = l.on_progress;
       colorPalette = "orange";
       break;
-    case 2:
+    case 3:
       label = l.finished;
       colorPalette = "green";
       break;
