@@ -226,7 +226,7 @@ const ResultDetail = (props: any) => {
                   {l.total_answered}
                 </P>
                 <P>:</P>
-                <P>{formatNumber(resolvedAssessment.questionsAnswered)}</P>
+                <P>{formatNumber(resolvedAssessment.questionsAnswered || 0)}</P>
               </HStack>
 
               <HStack align={"start"}>
