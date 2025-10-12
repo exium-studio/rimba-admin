@@ -2,6 +2,7 @@ import { SelectInput } from "@/components/ui/select-input";
 import { Interface__SelectOption } from "@/constants/interfaces";
 import { Props__SelectInput } from "@/constants/props";
 import useLang from "@/context/useLang";
+import useRenderTrigger from "@/context/useRenderTrigger";
 import useRequest from "@/hooks/useRequest";
 import { capitalizeWords } from "@/utils/string";
 import { useEffect, useState } from "react";
@@ -17,6 +18,7 @@ export const SelectKMISCategory = (props: Omit<Props__SelectInput, "id">) => {
 
   // Contexts
   const { l } = useLang();
+  const rt = useRenderTrigger((s) => s.rt);
 
   // Hooks
   const { req, loading } = useRequest({
@@ -60,7 +62,7 @@ export const SelectKMISCategory = (props: Omit<Props__SelectInput, "id">) => {
 
   useEffect(() => {
     fetch();
-  }, []);
+  }, [rt]);
 
   return (
     <SelectInput

@@ -23,6 +23,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipProps } from "@/components/ui/tooltip";
 import { ClampText } from "@/components/widget/ClampText";
 import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
+import { CreateKMISCategoryDisclosureTrigger } from "@/components/widget/CreateKMISCategoryDisclosure";
 import { DataDisplayToggle } from "@/components/widget/DataDisplayToggle";
 import { DataGrid } from "@/components/widget/DataGrid";
 import { DataGridItem } from "@/components/widget/DataGridItem";
@@ -112,7 +113,7 @@ const Create = (props: any) => {
       title: capitalize(`${l.add} ${routeTitle}`),
     },
     successMessage: {
-      title: capitalize(`${routeTitle} ${l.successful}`),
+      title: capitalize(`${l.add} ${routeTitle} ${l.successful}`),
     },
   });
 
@@ -211,12 +212,27 @@ const Create = (props: any) => {
                   invalid={!!formik.errors.category}
                   errorText={formik.errors.category as string}
                 >
-                  <SelectKMISCategory
-                    inputValue={formik.values.category}
-                    onConfirm={(inputValue) => {
-                      formik.setFieldValue("category", inputValue);
-                    }}
-                  />
+                  <HStack w={"full"}>
+                    <SelectKMISCategory
+                      inputValue={formik.values.category}
+                      onConfirm={(inputValue) => {
+                        formik.setFieldValue("category", inputValue);
+                      }}
+                      flex={1}
+                    />
+
+                    <CreateKMISCategoryDisclosureTrigger>
+                      <Btn
+                        iconButton
+                        colorPalette={themeConfig.colorPalette}
+                        variant={"outline"}
+                      >
+                        <Icon>
+                          <IconPlus stroke={1.5} />
+                        </Icon>
+                      </Btn>
+                    </CreateKMISCategoryDisclosureTrigger>
+                  </HStack>
                 </Field>
 
                 <Field
@@ -504,6 +520,34 @@ const Update = (props: any) => {
                       );
                     }}
                   />
+                </Field>
+
+                <Field
+                  label={l.private_navs.kmis.category}
+                  invalid={!!formik.errors.category}
+                  errorText={formik.errors.category as string}
+                >
+                  <HStack w={"full"}>
+                    <SelectKMISCategory
+                      inputValue={formik.values.category}
+                      onConfirm={(inputValue) => {
+                        formik.setFieldValue("category", inputValue);
+                      }}
+                      flex={1}
+                    />
+
+                    <CreateKMISCategoryDisclosureTrigger>
+                      <Btn
+                        iconButton
+                        colorPalette={themeConfig.colorPalette}
+                        variant={"outline"}
+                      >
+                        <Icon>
+                          <IconPlus stroke={1.5} />
+                        </Icon>
+                      </Btn>
+                    </CreateKMISCategoryDisclosureTrigger>
+                  </HStack>
                 </Field>
 
                 <Field
