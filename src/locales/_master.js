@@ -52,8 +52,8 @@ export const private_navs = {
       en: "Quiz",
     },
     quiz_assessment: {
-      id: "Penilaian Quiz",
-      en: "Quiz Assessment",
+      id: "Progress Belajar",
+      en: "Learning Progress",
     },
     educator: {
       id: "Pengajar",
