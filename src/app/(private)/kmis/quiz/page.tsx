@@ -131,7 +131,7 @@ const Create = (props: any) => {
       title: capitalize(`${l.add} ${routeTitle}`),
     },
     successMessage: {
-      title: capitalize(`${routeTitle} ${l.successful}`),
+      title: capitalize(`${l.add} ${routeTitle} ${l.successful}`),
     },
   });
 

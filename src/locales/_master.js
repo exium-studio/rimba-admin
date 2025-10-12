@@ -36,12 +36,12 @@ export const private_navs = {
       en: "KMIS Dashboard",
     },
     category: {
-      id: "Kategori Topik",
-      en: "Topic Category",
+      id: "Kategori Course",
+      en: "Course Category",
     },
     topic: {
-      id: "Topik/Course",
-      en: "Topic/Course",
+      id: "Course",
+      en: "Course",
     },
     material: {
       id: "Materi Pembelajaran",
@@ -608,8 +608,8 @@ export const total_material = {
   en: "Total Material",
 };
 export const total_topic = {
-  id: "Total Topik",
-  en: "Total Topic",
+  id: "Total Course",
+  en: "Total Course",
 };
 export const count = {
   id: "Jumlah",
