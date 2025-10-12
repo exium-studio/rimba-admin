@@ -13,7 +13,7 @@ export const RichEditor = (props: Props__RichEditor) => {
       init={{
         height: 500,
         width: "100%",
-        menubar: true,
+        menubar: false,
         plugins: "lists link image table code help wordcount",
         toolbar:
           "undo redo | formatselect | bold italic backcolor | " +
