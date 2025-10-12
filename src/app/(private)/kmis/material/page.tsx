@@ -257,7 +257,7 @@ const Create = (props: any) => {
   const ID = `${PREFIX_ID}_create`;
 
   // Props
-  const { routeTitle } = props;
+  const { routeTitle, filter } = props;
 
   // Contexts
   const { l } = useLang();
@@ -283,8 +283,8 @@ const Create = (props: any) => {
   const formik = useFormik({
     validateOnChange: false,
     initialValues: {
-      topic: null as unknown as Interface__SelectOption[],
-      materialType: null as unknown as Interface__SelectOption[],
+      topic: null as Interface__SelectOption[] | null,
+      materialType: null as Interface__SelectOption[] | null,
       title: "",
       description: "",
       materialFiles: null as any,
@@ -344,6 +344,10 @@ const Create = (props: any) => {
       });
     },
   });
+
+  useEffect(() => {
+    formik.setFieldValue("topic", filter.topic);
+  }, [filter.topic]);
 
   return (
     <>
@@ -476,7 +480,7 @@ const DataUtils = (props: any) => {
 
       <DataDisplayToggle navKey={PREFIX_ID} />
 
-      <Create routeTitle={routeTitle} />
+      <Create routeTitle={routeTitle} filter={filter} />
     </HStack>
   );
 };

@@ -114,7 +114,7 @@ const Create = (props: any) => {
   const ID = `${PREFIX_ID}_create`;
 
   // Props
-  const { routeTitle } = props;
+  const { routeTitle, filter } = props;
 
   // Contexts
   const { l } = useLang();
@@ -139,13 +139,13 @@ const Create = (props: any) => {
   const formik = useFormik({
     validateOnChange: false,
     initialValues: {
-      topic: null as unknown as Interface__SelectOption[],
+      topic: null as Interface__SelectOption[] | null,
       question: "",
       answerA: "",
       answerB: "",
       answerC: "",
       answerD: "",
-      correctOption: null as unknown as Interface__SelectOption[],
+      correctOption: null as Interface__SelectOption[] | null,
       explanation: "",
     },
     validationSchema: yup.object().shape({
@@ -187,6 +187,10 @@ const Create = (props: any) => {
       });
     },
   });
+
+  useEffect(() => {
+    formik.setFieldValue("topic", filter.topic);
+  }, [filter.topic]);
 
   return (
     <>
@@ -354,7 +358,7 @@ const DataUtils = (props: any) => {
 
       <DataDisplayToggle navKey={PREFIX_ID} />
 
-      <Create routeTitle={routeTitle} />
+      <Create routeTitle={routeTitle} filter={filter} />
     </HStack>
   );
 };
