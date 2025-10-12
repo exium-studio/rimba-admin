@@ -20,7 +20,7 @@ import { DataDisplayToggle } from "@/components/widget/DataDisplayToggle";
 import { DataGrid } from "@/components/widget/DataGrid";
 import { DataGridItem } from "@/components/widget/DataGridItem";
 import { DataTable } from "@/components/widget/DataTable";
-import { ExamWorkspace } from "@/components/widget/ExamWorkspace";
+import { QuizWorkspace } from "@/components/widget/QuizWorkspace";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
 import { ItemContainer } from "@/components/widget/ItemContainer";
@@ -287,7 +287,7 @@ const ResultDetail = (props: any) => {
           </ItemContainer>
         </SimpleGrid>
 
-        <ExamWorkspace quizResponses={data} px={1} />
+        <QuizWorkspace quizResponses={data} px={1} />
       </CContainer>
     ),
   };
