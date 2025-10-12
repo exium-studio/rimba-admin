@@ -181,8 +181,6 @@ const Import = (props: any) => {
       const payload = new FormData();
       if (values.files) payload.append("files", values.files[0]);
 
-      console.debug(payload);
-
       const config = {
         url: `/api/kmis/quiz/import`,
         method: "POST",
@@ -571,6 +569,8 @@ const Update = (props: any) => {
       payload.append("answerD", values.answerD);
       payload.append("correctOption", values.correctOption?.[0]?.id);
       payload.append("explanation", values.explanation);
+
+      console.debug(values.explanation);
 
       const config = {
         url: `${BASE_ENDPOINT}/update/${resolvedData.id}`,
