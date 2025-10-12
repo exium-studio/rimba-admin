@@ -1,6 +1,6 @@
 "use client";
 
-import { Btn } from "@/components/ui/btn";
+import { Btn, BtnProps } from "@/components/ui/btn";
 import {
   DisclosureBody,
   DisclosureContent,
@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/disclosure";
 import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-content";
 import { Field } from "@/components/ui/field";
+import { FileInput } from "@/components/ui/file-input";
 import { MenuItem } from "@/components/ui/menu";
 import SearchInput from "@/components/ui/search-input";
 import { StringInput } from "@/components/ui/string-input";
@@ -45,11 +46,21 @@ import useRequest from "@/hooks/useRequest";
 import { isEmptyArray, last } from "@/utils/array";
 import { back } from "@/utils/client";
 import { disclosureId } from "@/utils/disclosure";
+import { download } from "@/utils/file";
 import { formatDate } from "@/utils/formatter";
 import { capitalize, pluckString } from "@/utils/string";
 import { getActiveNavs } from "@/utils/url";
-import { FieldsetRoot, HStack, Icon, useDisclosure } from "@chakra-ui/react";
+import { fileValidation } from "@/utils/validationSchema";
 import {
+  FieldRoot,
+  FieldsetRoot,
+  HStack,
+  Icon,
+  useDisclosure,
+} from "@chakra-ui/react";
+import {
+  IconDownload,
+  IconFileImport,
   IconPencilMinus,
   IconPlus,
   IconRestore,
@@ -108,6 +119,138 @@ const TopicFilter = (props: any) => {
       placeholder={l.private_navs.kmis.topic}
       {...restProps}
     />
+  );
+};
+const DownloadImportTemplateButton = (props: BtnProps) => {
+  const { req, loading } = useRequest({
+    id: `${PREFIX_ID}_download_import_template`,
+  });
+
+  async function onDownload() {
+    const config = {
+      url: `/api/kmis/quiz/download-template`,
+      method: "GET",
+      responseType: "blob" as const,
+    };
+
+    try {
+      const res = await req({ config });
+      if (res) download(res.data, "quiz-import-template", "xls");
+    } catch (err) {
+      console.error("Download failed:", err);
+    }
+  }
+
+  return (
+    <Btn variant={"outline"} onClick={onDownload} loading={loading} {...props}>
+      <Icon>
+        <IconDownload stroke={1.5} />
+      </Icon>
+      Download Template
+    </Btn>
+  );
+};
+const Import = (props: any) => {
+  const ID = `${PREFIX_ID}_import`;
+
+  // Props
+  const { ...restProps } = props;
+
+  // Contexts
+  const { l } = useLang();
+  const { themeConfig } = useThemeConfig();
+  const setRt = useRenderTrigger((s) => s.setRt);
+
+  // Hooks
+  const { open, onOpen, onClose } = useDisclosure();
+  useBackOnClose(ID, open, onOpen, onClose);
+  const { req, loading } = useRequest({
+    id: ID,
+  });
+
+  // States
+  const formik = useFormik({
+    validateOnChange: false,
+    initialValues: { files: null as any },
+    validationSchema: yup.object().shape({
+      files: fileValidation({
+        allowedExtensions: ["csv", "xlsx", "xls"],
+      }).required(l.msg_required_form),
+    }),
+    onSubmit: (values) => {
+      const payload = new FormData();
+      if (values.files) payload.append("files", values.files[0]);
+
+      console.debug(payload);
+
+      const config = {
+        url: `/api/kmis/quiz/import`,
+        method: "POST",
+        data: payload,
+      };
+
+      req({
+        config,
+        onResolve: {
+          onSuccess: () => {
+            setRt((ps) => !ps);
+            back();
+          },
+        },
+      });
+    },
+  });
+
+  return (
+    <>
+      <Btn variant={"outline"} onClick={onOpen} {...restProps}>
+        <Icon>
+          <IconFileImport stroke={1.5} />
+        </Icon>
+        Import
+      </Btn>
+
+      <DisclosureRoot open={open} lazyLoad size={"xs"}>
+        <DisclosureContent>
+          <DisclosureHeader>
+            <DisclosureHeaderContent title={`Import`} />
+          </DisclosureHeader>
+
+          <DisclosureBody>
+            <DownloadImportTemplateButton w={"full"} mb={4} />
+
+            <form id={ID} onSubmit={formik.handleSubmit}>
+              <FieldRoot>
+                <Field
+                  label={"File"}
+                  invalid={!!formik.errors.files}
+                  errorText={formik.errors.files as string}
+                >
+                  <FileInput
+                    dropzone
+                    inputValue={formik.values.files}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("files", inputValue);
+                    }}
+                  />
+                </Field>
+              </FieldRoot>
+            </form>
+          </DisclosureBody>
+
+          <DisclosureFooter>
+            <Btn
+              type="submit"
+              form={ID}
+              colorPalette={themeConfig.colorPalette}
+              loading={loading}
+            >
+              Import
+            </Btn>
+          </DisclosureFooter>
+        </DisclosureContent>
+      </DisclosureRoot>
+    </>
   );
 };
 const Create = (props: any) => {
@@ -357,6 +500,8 @@ const DataUtils = (props: any) => {
       <TopicFilter filter={filter} setFilter={setFilter} w={"150px"} />
 
       <DataDisplayToggle navKey={PREFIX_ID} />
+
+      <Import routeTitle={routeTitle} />
 
       <Create routeTitle={routeTitle} filter={filter} />
     </HStack>
