@@ -295,13 +295,28 @@ const Create = (props: any) => {
       materialType: yup.array().required(l.msg_required_form),
       title: yup.string().required(l.msg_required_form),
       description: yup.string().required(l.msg_required_form),
-      materialFiles: fileValidation({
-        allowedExtensions: ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx"],
-      }).when("materialType", {
-        is: (val: Interface__SelectOption[]) =>
-          val?.[0]?.id === "gambar" || val?.[0]?.id === "dokumen",
-        then: (schema) => schema.required(l.msg_required_form),
-        otherwise: (schema) => schema.notRequired(),
+      materialFiles: fileValidation().when("materialType", {
+        is: (val: Interface__SelectOption[]) => val?.[0]?.id === "gambar",
+        then: () =>
+          fileValidation({
+            allowedExtensions: ["png", "jpg", "jpeg"],
+          }).required(l.msg_required_form),
+        otherwise: () =>
+          fileValidation({
+            allowedExtensions: [
+              "pdf",
+              "doc",
+              "docx",
+              "xls",
+              "xlsx",
+              "ppt",
+              "pptx",
+            ],
+          }).when("materialType", {
+            is: (val: Interface__SelectOption[]) => val?.[0]?.id === "dokumen",
+            then: (s) => s.required(l.msg_required_form),
+            otherwise: (s) => s.notRequired(),
+          }),
       }),
       materialUrl: yup.string().when("materialType", {
         is: (val: Interface__SelectOption[]) => val?.[0]?.id === "video",
