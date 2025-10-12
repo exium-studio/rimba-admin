@@ -31,7 +31,7 @@ import { QuizAttempStatus } from "@/components/widget/QuizAttempStatus";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
 import {
   Interface__DataProps,
-  Interface__KMISQuizAssessment,
+  Interface__KMISLearningAttemp,
   Interface__KMISQuizResponse,
 } from "@/constants/interfaces";
 import { useDataDisplay } from "@/context/useDataDisplay";
@@ -51,7 +51,7 @@ import { useState } from "react";
 
 const BASE_ENDPOINT = "/api/kmis/learning-participant";
 const PREFIX_ID = "kmis_quiz_assessment";
-type Interface__Data = Interface__KMISQuizAssessment;
+type Interface__Data = Interface__KMISLearningAttemp;
 
 const DataUtils = (props: any) => {
   // Props
