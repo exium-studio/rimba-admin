@@ -380,10 +380,10 @@ const Signedin = (props: any) => {
 
       <VStack gap={1}>
         <P fontSize={"lg"} fontWeight={"semibold"} textAlign={"center"}>
-          Admin
+          {user?.name}
         </P>
         <P color={"fg.muted"} textAlign={"center"}>
-          admin@gmail.com
+          {user?.email || "-"}
         </P>
       </VStack>
 
