@@ -93,7 +93,8 @@ const MenuTooltip = (props: TooltipProps) => {
 };
 const MaterialFormByType = (props: any) => {
   // Props
-  const { type, formik, ...restProps } = props;
+  const { type, formik, data, ...restProps } = props;
+  const resolvedData = data as Interface__Data;
 
   // Contexts
   const { l } = useLang();
@@ -106,7 +107,7 @@ const MaterialFormByType = (props: any) => {
     );
   }
 
-  const typeMap: Record<string, any> = {
+  const FORM_REGISTRY: Record<string, any> = {
     gambar: (
       <CContainer gap={4}>
         <Field
@@ -118,6 +119,23 @@ const MaterialFormByType = (props: any) => {
             inputValue={formik.values.materialFiles}
             onChange={(inputValue) => {
               formik.setFieldValue("materialFiles", inputValue);
+            }}
+            existingFiles={resolvedData?.materialFile}
+            onDeleteFile={(fileData) => {
+              formik.setFieldValue(
+                "deleteFileIds",
+                Array.from(
+                  new Set([...formik.values.deleteFileIds, fileData.id])
+                )
+              );
+            }}
+            onUndoDeleteFile={(fileData) => {
+              formik.setFieldValue(
+                "deleteFileIds",
+                formik.values.deleteFileIds.filter(
+                  (id: string) => id !== fileData.id
+                )
+              );
             }}
             maxFiles={5}
           />
@@ -182,6 +200,23 @@ const MaterialFormByType = (props: any) => {
             onChange={(inputValue) => {
               formik.setFieldValue("materialFiles", inputValue);
             }}
+            existingFiles={resolvedData?.materialFile}
+            onDeleteFile={(fileData) => {
+              formik.setFieldValue(
+                "deleteFileIds",
+                Array.from(
+                  new Set([...formik.values.deleteFileIds, fileData.id])
+                )
+              );
+            }}
+            onUndoDeleteFile={(fileData) => {
+              formik.setFieldValue(
+                "deleteFileIds",
+                formik.values.deleteFileIds.filter(
+                  (id: string) => id !== fileData.id
+                )
+              );
+            }}
           />
         </Field>
 
@@ -201,7 +236,7 @@ const MaterialFormByType = (props: any) => {
     ),
   };
 
-  const forms = typeMap[type?.[0]?.id] ?? (
+  const forms = FORM_REGISTRY[type?.[0]?.id] ?? (
     <CContainer gap={4}>
       <Field
         label={l.private_navs.kmis.material}
@@ -583,8 +618,13 @@ const Update = (props: any) => {
       // if (user?.id) {
       //   payload.append("uploadedBy", `${user.id}`);
       // }
-      if (values.materialFiles?.[0]) {
-        payload.append("materialFiles", values.materialFiles[0]);
+      if (!isEmptyArray(values.materialFiles)) {
+        values.materialFiles.forEach((file: any) => {
+          payload.append("materialFiles", file);
+        });
+      }
+      if (!isEmptyArray(values.deleteFileIds)) {
+        payload.append("deleteFileIds", JSON.stringify(values.deleteFileIds));
       }
       if (values.materialUrl) {
         payload.append("materialUrl", values.materialUrl);
@@ -718,6 +758,7 @@ const Update = (props: any) => {
                 <MaterialFormByType
                   type={formik.values.materialType}
                   formik={formik}
+                  data={resolvedData}
                 />
               </FieldsetRoot>
             </form>
