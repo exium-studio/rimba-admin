@@ -97,13 +97,14 @@ const ResultDetail = (props: any) => {
     Interface__KMISQuizResponse[]
   >({
     url: `/api/kmis/learning-participant/show/${assessment.id}`,
-    dependencies: [],
+    dependencies: [open],
+    conditions: open,
     dataResource: false,
   });
   const render = {
-    loading: <Skeleton w={"full"} h={"500px"} />,
-    error: <FeedbackRetry onRetry={onRetry} />,
-    empty: <FeedbackNoData />,
+    loading: <Skeleton w={"full"} h={"400px"} />,
+    error: <FeedbackRetry onRetry={onRetry} h={"400px"} />,
+    empty: <FeedbackNoData h={"400px"} />,
     loaded: (
       <CContainer gap={4}>
         <SimpleGrid columns={[1, null, 2]} gap={4} px={1}>

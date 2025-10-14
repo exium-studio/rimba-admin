@@ -17,7 +17,17 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
+        hostname: "images.unsplash.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
         hostname: "doc.rimbaexium.org",
+        pathname: "/storage/documents/**",
+      },
+      {
+        protocol: "https",
+        hostname: "doc-rimba.exium.my.id",
         pathname: "/storage/documents/**",
       },
     ],
