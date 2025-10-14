@@ -36,7 +36,6 @@ const translations = {
   "all": "All",
   "apply": "Apply",
   "april": "April",
-  "attemp_status": "Attempt status",
   "august": "August",
   "avg_kmis_score": "Average score",
   "back": "Back",
@@ -341,6 +340,7 @@ const translations = {
     "profile": "Profile"
   },
   "profile": "Profile",
+  "progress_status": "Progress status",
   "publicity": "Publicity",
   "published_at": "Published at",
   "purpose": "Purpose",

@@ -205,7 +205,7 @@ const ResultDetail = (props: any) => {
             <CContainer gap={4} p={4} pt={2}>
               <HStack align={"start"}>
                 <P w={"120px"} color={"fg.muted"} flexShrink={0}>
-                  {l.attemp_status}
+                  {l.progress_status}
                 </P>
                 <P>:</P>
                 <QuizAttempStatus
@@ -382,7 +382,7 @@ const Data = (props: any) => {
         sortable: true,
       },
       {
-        th: l.attemp_status,
+        th: l.progress_status,
         sortable: true,
         align: "center",
       },

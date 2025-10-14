@@ -36,7 +36,6 @@ const translations = {
   "all": "Semua",
   "apply": "Terapkan",
   "april": "April",
-  "attemp_status": "Status pengerjaan",
   "august": "Agustus",
   "avg_kmis_score": "Nilai rata-rata",
   "back": "Kembali",
@@ -341,6 +340,7 @@ const translations = {
     "profile": "Profil"
   },
   "profile": "Profil",
+  "progress_status": "Status progress",
   "publicity": "Publisitas",
   "published_at": "Diterbitkan pada",
   "purpose": "Tujuan",
