@@ -352,6 +352,7 @@ const Create = (props: any) => {
         onResolve: {
           onSuccess: () => {
             resetForm();
+            formik.setFieldValue("topic", filter.topic);
             back();
             setRt((ps) => !ps);
           },
