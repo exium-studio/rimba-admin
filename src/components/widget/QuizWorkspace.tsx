@@ -5,7 +5,10 @@ import { CContainer } from "@/components/ui/c-container";
 import { P } from "@/components/ui/p";
 import { DotIndicator } from "@/components/widget/Indicator";
 import { ItemContainer } from "@/components/widget/ItemContainer";
-import { Interface__KMISQuizResponse } from "@/constants/interfaces";
+import {
+  Interface__KMISLearningAttempt,
+  Interface__KMISQuizResponse,
+} from "@/constants/interfaces";
 import useLang from "@/context/useLang";
 import {
   Box,
@@ -19,7 +22,10 @@ import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import { useState } from "react";
 
 interface Props extends StackProps {
-  quizResponses?: Interface__KMISQuizResponse[];
+  quizResponses?: {
+    learningParticipant: Interface__KMISLearningAttempt;
+    exam: Interface__KMISQuizResponse[];
+  };
 }
 const AnswerOption = (props: any) => {
   // Props
@@ -27,9 +33,9 @@ const AnswerOption = (props: any) => {
 
   // States
   const resolvedRes: Interface__KMISQuizResponse = quizResponse;
-  const isOptionCorrect = optionLetter === resolvedRes?.quiz?.correctOption;
+  const isOptionCorrect = optionLetter === resolvedRes?.correctOption;
   const isOptionWrong =
-    optionLetter !== resolvedRes?.quiz?.correctOption &&
+    optionLetter !== resolvedRes?.correctOption &&
     optionLetter === resolvedRes?.selectedOption;
   const isAnswer = resolvedRes?.selectedOption === optionLetter;
 
@@ -48,7 +54,7 @@ const AnswerOption = (props: any) => {
       {...restProps}
     >
       <P>{optionLetter}</P>
-      <P>{(resolvedRes?.quiz as Record<string, any>)?.[optionKey]}</P>
+      <P>{(resolvedRes as Record<string, any>)?.[optionKey]}</P>
 
       {isAnswer && <DotIndicator ml={"auto"} />}
     </Btn>
@@ -63,7 +69,7 @@ export const QuizWorkspace = (props: Props) => {
 
   // States
   const [activeIdx, setActiveIdx] = useState<number>(0);
-  const quizResponse = quizResponses?.[activeIdx];
+  const quizResponse = quizResponses?.exam?.[activeIdx];
   const options = [
     {
       optionLetter: "A",
@@ -93,7 +99,7 @@ export const QuizWorkspace = (props: Props) => {
       >
         <P fontWeight={"semibold"}>{`No. ${activeIdx + 1}`}</P>
 
-        <P fontWeight={"medium"}>{quizResponse?.quiz.question}</P>
+        <P fontWeight={"medium"}>{quizResponse?.question}</P>
 
         <CContainer gap={2} mt={2}>
           {options.map(({ optionLetter, optionKey }) => {
@@ -113,7 +119,7 @@ export const QuizWorkspace = (props: Props) => {
 
           <P>:</P>
 
-          <P>{quizResponse?.quiz?.explanation || "-"}</P>
+          <P>{quizResponse?.explanation || "-"}</P>
         </HStack>
 
         <HStack mt={4} justify={"end"}>
@@ -133,7 +139,9 @@ export const QuizWorkspace = (props: Props) => {
 
           <Btn
             variant={"ghost"}
-            disabled={quizResponses && activeIdx === quizResponses?.length - 1}
+            disabled={
+              quizResponses && activeIdx === quizResponses?.exam?.length - 1
+            }
             onClick={() => {
               setActiveIdx((ps) => ps + 1);
             }}
@@ -158,7 +166,7 @@ export const QuizWorkspace = (props: Props) => {
         <P fontWeight={"semibold"}>{l.list_of_questions}</P>
 
         <SimpleGrid columns={5} gap={2} w={"max"}>
-          {quizResponses?.map((res, idx) => {
+          {quizResponses?.exam?.map((res, idx) => {
             const isActive = activeIdx === idx;
             const isCorrect = res.isCorrect;
             const isAnswered = !!res.selectedOption;
@@ -171,7 +179,9 @@ export const QuizWorkspace = (props: Props) => {
                 variant={isAnswered ? "subtle" : "outline"}
                 colorPalette={isAnswered ? (isCorrect ? "green" : "red") : ""}
                 border={isActive ? "1px solid" : "none"}
-                borderColor={isAnswered ? (isCorrect ? "green" : "red") : ""}
+                borderColor={
+                  isAnswered ? (isCorrect ? "green" : "red") : "border.muted"
+                }
                 onClick={() => setActiveIdx(idx)}
               >
                 {idx + 1}

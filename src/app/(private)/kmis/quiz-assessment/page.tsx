@@ -20,7 +20,6 @@ import { DataDisplayToggle } from "@/components/widget/DataDisplayToggle";
 import { DataGrid } from "@/components/widget/DataGrid";
 import { DataGridItem } from "@/components/widget/DataGridItem";
 import { DataTable } from "@/components/widget/DataTable";
-import { QuizWorkspace } from "@/components/widget/QuizWorkspace";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
 import { ItemContainer } from "@/components/widget/ItemContainer";
@@ -28,10 +27,12 @@ import { ItemHeaderContainer } from "@/components/widget/ItemHeaderContainer";
 import ItemHeaderTitle from "@/components/widget/ItemHeaderTitle";
 import { PageContainer, PageContent } from "@/components/widget/Page";
 import { QuizAttempStatus } from "@/components/widget/QuizAttempStatus";
+import { QuizWorkspace } from "@/components/widget/QuizWorkspace";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
 import {
   Interface__DataProps,
   Interface__KMISLearningAttemp,
+  Interface__KMISLearningAttempt,
   Interface__KMISQuizResponse,
 } from "@/constants/interfaces";
 import { useDataDisplay } from "@/context/useDataDisplay";
@@ -93,9 +94,10 @@ const ResultDetail = (props: any) => {
 
   // States
   const resolvedAssessment: Interface__Data = assessment;
-  const { error, initialLoading, data, onRetry } = useDataState<
-    Interface__KMISQuizResponse[]
-  >({
+  const { error, initialLoading, data, onRetry } = useDataState<{
+    learningParticipant: Interface__KMISLearningAttempt;
+    exam: Interface__KMISQuizResponse[];
+  }>({
     url: `/api/kmis/learning-participant/show/${assessment.id}`,
     dependencies: [open],
     conditions: open,
@@ -123,7 +125,7 @@ const ResultDetail = (props: any) => {
                   {l.name}
                 </P>
                 <P>:</P>
-                <P>{resolvedAssessment.attemptUser.name}</P>
+                <ClampText>{resolvedAssessment.attemptUser.name}</ClampText>
               </HStack>
 
               <HStack align={"start"}>
@@ -131,7 +133,7 @@ const ResultDetail = (props: any) => {
                   {"Email"}
                 </P>
                 <P>:</P>
-                <P>{resolvedAssessment.attemptUser.email}</P>
+                <ClampText>{resolvedAssessment.attemptUser.email}</ClampText>
               </HStack>
 
               <HStack align={"start"}>
@@ -139,7 +141,7 @@ const ResultDetail = (props: any) => {
                   {l.private_navs.kmis.category}
                 </P>
                 <P>:</P>
-                <P>{resolvedAssessment.topic.category.title}</P>
+                <ClampText>{resolvedAssessment.topic.category.title}</ClampText>
               </HStack>
 
               <HStack align={"start"}>
@@ -147,7 +149,7 @@ const ResultDetail = (props: any) => {
                   {l.private_navs.kmis.topic}
                 </P>
                 <P>:</P>
-                <P>{resolvedAssessment.topic.title}</P>
+                <ClampText>{resolvedAssessment.topic.title}</ClampText>
               </HStack>
 
               <HStack align={"start"}>
@@ -155,7 +157,7 @@ const ResultDetail = (props: any) => {
                   {l.description}
                 </P>
                 <P>:</P>
-                <P>{resolvedAssessment.topic.description}</P>
+                <ClampText>{resolvedAssessment.topic.description}</ClampText>
               </HStack>
 
               <HStack align={"start"}>
@@ -327,7 +329,7 @@ const ResultDetail = (props: any) => {
                 {!error && (
                   <>
                     {data && render.loaded}
-                    {(!data || isEmptyArray(data)) && render.empty}
+                    {!data && render.empty}
                   </>
                 )}
               </>

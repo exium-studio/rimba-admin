@@ -30,6 +30,25 @@ export interface Interface__CMSTextContent {
 }
 
 // KMIS
+export interface Interface__KMISLearningAttempt extends Interface__CUD {
+  id: string;
+  attemptUser: Interface__User;
+  topic: Interface__KMISTopic;
+  attemptStatus: number;
+  assessmentStatus: boolean;
+  totalMaterial: number;
+  completedMaterial: number;
+  completedQuiz: number;
+  quizStarted: string;
+  quizFinished: string;
+  questionsAnswered: number;
+  correctCount: number;
+  wrongCount: number;
+  emptyCount: number;
+  scoreTotal: number;
+  feedback: string | null;
+  certificate: Interface__StorageFile[];
+}
 export interface Interface__KMISTopic extends Interface__CUD {
   id: string;
   category: Interface__KMISTopicCategory;
@@ -83,14 +102,10 @@ export interface Interface__KMISLearningAttemp extends Interface__CUD {
   feedback: string | null;
   certificate: Interface__StorageFile[];
 }
-export interface Interface__KMISQuizResponse extends Interface__CUD {
-  id: string;
-  learningParticipant: Interface__KMISLearningAttemp;
-  quiz: Interface__KMISQuiz;
+export interface Interface__KMISQuizResponse extends Interface__KMISQuiz {
   selectedOption: string;
   isMarker: boolean | number;
   isCorrect: boolean | number;
-  answeredAt: string;
 }
 export interface Interface__KMISEducator extends Interface__CUD {
   id: string;
