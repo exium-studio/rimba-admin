@@ -27,7 +27,7 @@ import { ItemHeaderContainer } from "@/components/widget/ItemHeaderContainer";
 import ItemHeaderTitle from "@/components/widget/ItemHeaderTitle";
 import { PageContainer, PageContent } from "@/components/widget/Page";
 import { QuizAttempStatus } from "@/components/widget/QuizAttempStatus";
-import { QuizWorkspace } from "@/components/widget/QuizWorkspace";
+import { ReviewQuizWorkspace } from "@/components/widget/ReviewQuizWorkspace";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
 import {
   Interface__DataProps,
@@ -74,7 +74,7 @@ const DataUtils = (props: any) => {
 
 const ResultDetail = (props: any) => {
   // Props
-  const { assessment, ...restProps } = props;
+  const { attempt, ...restProps } = props;
 
   // Contexts
   const { l } = useLang();
@@ -83,22 +83,20 @@ const ResultDetail = (props: any) => {
   // Hooks
   const { open, onOpen, onClose } = useDisclosure();
   useBackOnClose(
-    disclosureId(`answer-detail-${assessment.id}`),
+    disclosureId(`answer-detail-${attempt.id}`),
     open,
     onOpen,
     onClose
   );
-  const dataDisplay = useDataDisplay((s) =>
-    s.getDisplay("kmis_quiz_assessment")
-  );
+  const dataDisplay = useDataDisplay((s) => s.getDisplay("kmis_quiz_attempt"));
 
   // States
-  const resolvedAssessment: Interface__Data = assessment;
+  const resolvedAttempt: Interface__Data = attempt;
   const { error, initialLoading, data, onRetry } = useDataState<{
     learningParticipant: Interface__KMISLearningAttempt;
     exam: Interface__KMISQuizResponse[];
   }>({
-    url: `/api/kmis/learning-participant/show/${assessment.id}`,
+    url: `/api/kmis/learning-participant/show/${attempt.id}`,
     dependencies: [open],
     conditions: open,
     dataResource: false,
@@ -125,7 +123,7 @@ const ResultDetail = (props: any) => {
                   {l.name}
                 </P>
                 <P>:</P>
-                <ClampText>{resolvedAssessment.attemptUser.name}</ClampText>
+                <ClampText>{resolvedAttempt.attemptUser.name}</ClampText>
               </HStack>
 
               <HStack align={"start"}>
@@ -133,7 +131,7 @@ const ResultDetail = (props: any) => {
                   {"Email"}
                 </P>
                 <P>:</P>
-                <ClampText>{resolvedAssessment.attemptUser.email}</ClampText>
+                <ClampText>{resolvedAttempt.attemptUser.email}</ClampText>
               </HStack>
 
               <HStack align={"start"}>
@@ -141,7 +139,7 @@ const ResultDetail = (props: any) => {
                   {l.private_navs.kmis.category}
                 </P>
                 <P>:</P>
-                <ClampText>{resolvedAssessment.topic.category.title}</ClampText>
+                <ClampText>{resolvedAttempt.topic.category.title}</ClampText>
               </HStack>
 
               <HStack align={"start"}>
@@ -149,7 +147,7 @@ const ResultDetail = (props: any) => {
                   {l.private_navs.kmis.topic}
                 </P>
                 <P>:</P>
-                <ClampText>{resolvedAssessment.topic.title}</ClampText>
+                <ClampText>{resolvedAttempt.topic.title}</ClampText>
               </HStack>
 
               <HStack align={"start"}>
@@ -157,7 +155,7 @@ const ResultDetail = (props: any) => {
                   {l.description}
                 </P>
                 <P>:</P>
-                <ClampText>{resolvedAssessment.topic.description}</ClampText>
+                <ClampText>{resolvedAttempt.topic.description}</ClampText>
               </HStack>
 
               <HStack align={"start"}>
@@ -165,7 +163,7 @@ const ResultDetail = (props: any) => {
                   {l.duration}
                 </P>
                 <P>:</P>
-                <P>{formatDuration(resolvedAssessment.topic.quizDuration)}</P>
+                <P>{formatDuration(resolvedAttempt.topic.quizDuration)}</P>
               </HStack>
 
               <HStack align={"start"}>
@@ -174,7 +172,7 @@ const ResultDetail = (props: any) => {
                 </P>
                 <P>:</P>
                 <P>
-                  {formatDate(resolvedAssessment.quizStarted, {
+                  {formatDate(resolvedAttempt.quizStarted, {
                     variant: "numeric",
                     withTime: true,
                   })}
@@ -187,7 +185,7 @@ const ResultDetail = (props: any) => {
                 </P>
                 <P>:</P>
                 <P>
-                  {formatDate(resolvedAssessment.quizFinished, {
+                  {formatDate(resolvedAttempt.quizFinished, {
                     variant: "numeric",
                     withTime: true,
                   })}
@@ -212,7 +210,7 @@ const ResultDetail = (props: any) => {
                 </P>
                 <P>:</P>
                 <QuizAttempStatus
-                  quizAttempStatus={resolvedAssessment.attemptStatus}
+                  quizAttempStatus={resolvedAttempt.attemptStatus}
                 />
               </HStack>
 
@@ -221,7 +219,7 @@ const ResultDetail = (props: any) => {
                   {l.grade}
                 </P>
                 <P>:</P>
-                <P>{`${resolvedAssessment.scoreTotal}`}</P>
+                <P>{`${resolvedAttempt.scoreTotal}`}</P>
               </HStack>
 
               <HStack align={"start"}>
@@ -229,7 +227,7 @@ const ResultDetail = (props: any) => {
                   {l.total_answered}
                 </P>
                 <P>:</P>
-                <P>{formatNumber(resolvedAssessment.questionsAnswered || 0)}</P>
+                <P>{formatNumber(resolvedAttempt.questionsAnswered || 0)}</P>
               </HStack>
 
               <HStack align={"start"}>
@@ -237,7 +235,7 @@ const ResultDetail = (props: any) => {
                   {l.total_correct}
                 </P>
                 <P>:</P>
-                <P>{formatNumber(resolvedAssessment.correctCount)}</P>
+                <P>{formatNumber(resolvedAttempt.correctCount)}</P>
               </HStack>
 
               <HStack align={"start"}>
@@ -245,7 +243,7 @@ const ResultDetail = (props: any) => {
                   {l.total_wrong}
                 </P>
                 <P>:</P>
-                <P>{formatNumber(resolvedAssessment.wrongCount)}</P>
+                <P>{formatNumber(resolvedAttempt.wrongCount)}</P>
               </HStack>
 
               <HStack align={"start"}>
@@ -253,7 +251,7 @@ const ResultDetail = (props: any) => {
                   {l.total_empty}
                 </P>
                 <P>:</P>
-                <P>{formatNumber(resolvedAssessment.emptyCount)}</P>
+                <P>{formatNumber(resolvedAttempt.emptyCount)}</P>
               </HStack>
 
               <HStack align={"start"}>
@@ -261,7 +259,7 @@ const ResultDetail = (props: any) => {
                   Feedback
                 </P>
                 <P>:</P>
-                <P>{resolvedAssessment.feedback || "-"}</P>
+                <P>{resolvedAttempt.feedback || "-"}</P>
               </HStack>
 
               <HStack align={"start"}>
@@ -270,7 +268,7 @@ const ResultDetail = (props: any) => {
                 </P>
                 <P>:</P>
                 <NavLink
-                  to={fileUrl(resolvedAssessment.certificate?.[0]?.filePath)}
+                  to={fileUrl(resolvedAttempt.certificate?.[0]?.filePath)}
                   external
                 >
                   <Btn
@@ -290,7 +288,7 @@ const ResultDetail = (props: any) => {
           </ItemContainer>
         </SimpleGrid>
 
-        <QuizWorkspace quizResponses={data} px={1} />
+        <ReviewQuizWorkspace quizResponses={data} px={1} />
       </CContainer>
     ),
   };
@@ -447,7 +445,7 @@ const Data = (props: any) => {
           align: "center",
         },
         {
-          td: <ResultDetail assessment={item} />,
+          td: <ResultDetail attempt={item} />,
           value: "",
           align: "center",
         },

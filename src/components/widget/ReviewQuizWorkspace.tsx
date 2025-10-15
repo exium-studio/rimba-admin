@@ -60,7 +60,7 @@ const AnswerOption = (props: any) => {
     </Btn>
   );
 };
-export const QuizWorkspace = (props: Props) => {
+export const ReviewQuizWorkspace = (props: Props) => {
   // Props
   const { quizResponses, ...restProps } = props;
 
