@@ -88,7 +88,7 @@ export const PRIVATE_NAVS: Interface__NavItem[] = [
               },
               {
                 labelKey: "private_navs.kmis.quiz_assessment",
-                path: `/kmis/quiz-assessment`,
+                path: `/kmis/learning-progress`,
                 allowedRoles: ["1", "2"],
               },
               {
