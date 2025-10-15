@@ -31,7 +31,6 @@ import { ReviewQuizWorkspace } from "@/components/widget/ReviewQuizWorkspace";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
 import {
   Interface__DataProps,
-  Interface__KMISLearningAttemp,
   Interface__KMISLearningAttempt,
   Interface__KMISQuizResponse,
 } from "@/constants/interfaces";
@@ -52,7 +51,7 @@ import { useState } from "react";
 
 const BASE_ENDPOINT = "/api/kmis/learning-participant";
 const PREFIX_ID = "kmis_quiz_assessment";
-type Interface__Data = Interface__KMISLearningAttemp;
+type Interface__Data = Interface__KMISLearningAttempt;
 
 const DataUtils = (props: any) => {
   // Props

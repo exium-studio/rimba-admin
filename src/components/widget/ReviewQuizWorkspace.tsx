@@ -33,9 +33,9 @@ const AnswerOption = (props: any) => {
 
   // States
   const resolvedRes: Interface__KMISQuizResponse = quizResponse;
-  const isOptionCorrect = optionLetter === resolvedRes?.correctOption;
+  const isOptionCorrect = optionLetter === resolvedRes?.quiz?.correctOption;
   const isOptionWrong =
-    optionLetter !== resolvedRes?.correctOption &&
+    optionLetter !== resolvedRes?.quiz?.correctOption &&
     optionLetter === resolvedRes?.selectedOption;
   const isAnswer = resolvedRes?.selectedOption === optionLetter;
 
@@ -89,6 +89,8 @@ export const ReviewQuizWorkspace = (props: Props) => {
     },
   ];
 
+  console.debug(quizResponse);
+
   return (
     <Stack flexDir={["column", null, "row"]} gap={4} {...restProps}>
       <ItemContainer
@@ -99,7 +101,7 @@ export const ReviewQuizWorkspace = (props: Props) => {
       >
         <P fontWeight={"semibold"}>{`No. ${activeIdx + 1}`}</P>
 
-        <P fontWeight={"medium"}>{quizResponse?.question}</P>
+        <P fontWeight={"medium"}>{quizResponse?.quiz?.question}</P>
 
         <CContainer gap={2} mt={2}>
           {options.map(({ optionLetter, optionKey }) => {
@@ -119,7 +121,7 @@ export const ReviewQuizWorkspace = (props: Props) => {
 
           <P>:</P>
 
-          <P>{quizResponse?.explanation || "-"}</P>
+          <P>{quizResponse?.quiz?.explanation || "-"}</P>
         </HStack>
 
         <HStack mt={4} justify={"end"}>

@@ -83,29 +83,11 @@ export interface Interface__KMISQuiz extends Interface__CUD {
   correctOption: string;
   explanation: string;
 }
-export interface Interface__KMISLearningAttemp extends Interface__CUD {
-  id: string;
-  attemptUser: Interface__User;
-  topic: Interface__KMISTopic;
-  attemptStatus: number;
-  assessmentStatus: boolean;
-  totalMaterial: number;
-  completedMaterial: number;
-  completedQuiz: number;
-  quizStarted: string;
-  quizFinished: string;
-  questionsAnswered: number;
-  correctCount: number;
-  wrongCount: number;
-  emptyCount: number;
-  scoreTotal: number;
-  feedback: string | null;
-  certificate: Interface__StorageFile[];
-}
-export interface Interface__KMISQuizResponse extends Interface__KMISQuiz {
+export interface Interface__KMISQuizResponse {
   selectedOption: string;
   isMarker: boolean | number;
   isCorrect: boolean | number;
+  quiz: Interface__KMISQuiz;
 }
 export interface Interface__KMISEducator extends Interface__CUD {
   id: string;
