@@ -699,10 +699,6 @@ export const end_date_time = {
   id: "Waktu selesai",
   en: "End time",
 };
-export const progress_status = {
-  id: "Status progress",
-  en: "Progress status",
-};
 export const not_started = {
   id: "Belum dimulai",
   en: "Not started",

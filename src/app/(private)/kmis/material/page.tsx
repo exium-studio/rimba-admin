@@ -120,6 +120,8 @@ const MaterialFormByType = (props: any) => {
             onChange={(inputValue) => {
               formik.setFieldValue("materialFiles", inputValue);
             }}
+            accept="image/png, image/jpeg, image/jpeg"
+            acceptPlaceholder=".png, .jpg, .jpeg"
             existingFiles={resolvedData?.materialFile}
             onDeleteFile={(fileData) => {
               formik.setFieldValue(
@@ -386,10 +388,10 @@ const Create = (props: any) => {
         config,
         onResolve: {
           onSuccess: () => {
-            resetForm();
             formik.setFieldValue("topic", filter.topic);
             back();
             setRt((ps) => !ps);
+            resetForm();
           },
         },
       });
@@ -584,31 +586,63 @@ const Update = (props: any) => {
       materialType: yup.array().required(l.msg_required_form),
       title: yup.string().required(l.msg_required_form),
       description: yup.string().required(l.msg_required_form),
-      materialFiles: fileValidation({
-        allowedExtensions: ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx"],
-      })
-        .when("materialType", {
-          is: (val: Interface__SelectOption[]) =>
-            val?.[0]?.id === "gambar" || val?.[0]?.id === "dokumen",
-          then: (schema) => schema.required(l.msg_required_form),
-          otherwise: (schema) => schema.notRequired(),
-        })
-        .concat(
-          min1File({
-            resolvedData,
-            existingKey: "materialFiles",
-            deletedKey: "deleteFileIds",
-            newKey: "materialFiles",
-            message: l.msg_required_form,
-          })
-        ),
+      materialFiles: fileValidation().when(
+        "materialType",
+        (val: Interface__SelectOption[] | undefined, schema: any) => {
+          // If materialType is "gambar" -> allow only images and require file + min1File check
+          if (val?.[0]?.id === "gambar") {
+            return fileValidation({
+              allowedExtensions: ["png", "jpg", "jpeg"],
+            })
+              .required(l.msg_required_form)
+              .concat(
+                // min1File returns a Yup schema that enforces at least 1 file considering existing/deleted files
+                min1File({
+                  resolvedData,
+                  existingKey: "materialFiles",
+                  deletedKey: "deleteFileIds",
+                  newKey: "materialFiles",
+                  message: l.msg_required_form,
+                })
+              );
+          }
+
+          // If materialType is "dokumen" -> allow only document extensions and require file + min1File check
+          if (val?.[0]?.id === "dokumen") {
+            return fileValidation({
+              allowedExtensions: [
+                "pdf",
+                "doc",
+                "docx",
+                "xls",
+                "xlsx",
+                "ppt",
+                "pptx",
+              ],
+            })
+              .required(l.msg_required_form)
+              .concat(
+                min1File({
+                  resolvedData,
+                  existingKey: "materialFiles",
+                  deletedKey: "deleteFileIds",
+                  newKey: "materialFiles",
+                  message: l.msg_required_form,
+                })
+              );
+          }
+
+          // For any other materialType -> do not validate materialFile at all
+          return schema.notRequired();
+        }
+      ),
       materialUrl: yup.string().when("materialType", {
         is: (val: Interface__SelectOption[]) => val?.[0]?.id === "video",
         then: (schema) => schema.required(l.msg_required_form),
         otherwise: (schema) => schema.notRequired(),
       }),
     }),
-    onSubmit: (values, { resetForm }) => {
+    onSubmit: (values) => {
       const payload = new FormData();
       payload.append("topicId", `${values.topic?.[0]?.id}`);
       payload.append("materialType", values.materialType?.[0]?.id);
@@ -640,7 +674,6 @@ const Update = (props: any) => {
         config,
         onResolve: {
           onSuccess: () => {
-            resetForm();
             back();
             setRt((ps) => !ps);
           },
