@@ -89,8 +89,6 @@ export const ReviewQuizWorkspace = (props: Props) => {
     },
   ];
 
-  console.debug(quizResponse);
-
   return (
     <Stack flexDir={["column", null, "row"]} gap={4} {...restProps}>
       <ItemContainer
