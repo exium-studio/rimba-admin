@@ -64,7 +64,7 @@ export interface Interface__KMISMaterial extends Interface__CUD {
   createdUser: Interface__User;
   uploadedUser: Interface__User;
   topic: Interface__KMISTopic;
-  materialFile: Interface__StorageFile[];
+  materialFiles: Interface__StorageFile[];
   materialCover: Interface__StorageFile[];
   title: string;
   materialType: Type__MaterialType;

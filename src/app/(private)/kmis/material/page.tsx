@@ -122,7 +122,7 @@ const MaterialFormByType = (props: any) => {
             }}
             accept="image/png, image/jpeg, image/jpeg"
             acceptPlaceholder=".png, .jpg, .jpeg"
-            existingFiles={resolvedData?.materialFile}
+            existingFiles={resolvedData?.materialFiles}
             onDeleteFile={(fileData) => {
               formik.setFieldValue(
                 "deleteFileIds",
@@ -202,7 +202,7 @@ const MaterialFormByType = (props: any) => {
             onChange={(inputValue) => {
               formik.setFieldValue("materialFiles", inputValue);
             }}
-            existingFiles={resolvedData?.materialFile}
+            existingFiles={resolvedData?.materialFiles}
             onDeleteFile={(fileData) => {
               formik.setFieldValue(
                 "deleteFileIds",
@@ -632,7 +632,7 @@ const Update = (props: any) => {
               );
           }
 
-          // For any other materialType -> do not validate materialFile at all
+          // For any other materialType -> do not validate materialFiles at all
           return schema.notRequired();
         }
       ),
