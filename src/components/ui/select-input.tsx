@@ -117,6 +117,10 @@ const SelectOptions = (props: Props__SelectOptions) => {
                   variant={"ghost"}
                   justifyContent={"start"}
                   size={"md"}
+                  minH={"40px"}
+                  // borderColor={isActive ? themeConfig.primaryColor : ""}
+                  h={"fit"}
+                  py={2}
                   onClick={() => {
                     if (!multiple) {
                       setSelected([o]);
@@ -134,8 +138,10 @@ const SelectOptions = (props: Props__SelectOptions) => {
                     }
                   }}
                 >
-                  <HStack w={"full"} justify={"space-between"}>
-                    <P textAlign={"left"}>{o.label}</P>
+                  <HStack w={"full"} justify={"space-between"} h={"fit"}>
+                    <P textAlign={"left"} textWrap={"wrap"}>
+                      {o.label}
+                    </P>
 
                     {isActive && <DotIndicator />}
 
