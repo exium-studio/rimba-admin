@@ -66,7 +66,7 @@ export const SelectCMSActivityCategory = (
   return (
     <SelectInput
       id={ID}
-      title={capitalizeWords(l.private_navs.kmis.category)}
+      title={capitalizeWords(l.category)}
       loading={loading}
       selectOptions={selectOptions}
       fetch={fetch}

@@ -135,7 +135,7 @@ const ResultDetail = (props: any) => {
 
               <HStack align={"start"}>
                 <P w={"120px"} color={"fg.muted"} flexShrink={0}>
-                  {l.private_navs.kmis.category}
+                  {l.category}
                 </P>
                 <P>:</P>
                 <ClampText>{resolvedAttempt.topic.category.title}</ClampText>

@@ -209,7 +209,7 @@ const Create = (props: any) => {
                 </Field>
 
                 <Field
-                  label={l.private_navs.kmis.category}
+                  label={l.category}
                   invalid={!!formik.errors.category}
                   errorText={formik.errors.category as string}
                 >
@@ -558,7 +558,7 @@ const Update = (props: any) => {
                 </Field>
 
                 <Field
-                  label={l.private_navs.kmis.category}
+                  label={l.category}
                   invalid={!!formik.errors.category}
                   errorText={formik.errors.category as string}
                 >
@@ -867,7 +867,7 @@ const Data = (props: any) => {
         sortable: true,
       },
       {
-        th: l.private_navs.kmis.category,
+        th: l.category,
         sortable: true,
       },
 

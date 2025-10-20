@@ -64,7 +64,7 @@ export const SelectKMISTopic = (props: Omit<Props__SelectInput, "id">) => {
   return (
     <SelectInput
       id={ID}
-      title={capitalizeWords(l.private_navs.kmis.category)}
+      title={capitalizeWords(l.category)}
       loading={loading}
       selectOptions={selectOptions}
       fetch={fetch}
