@@ -320,7 +320,6 @@ const translations = {
     "kmis": {
       "index": "KMIS",
       "dashboard": "Dasbor KMIS",
-      "category": "Kategori Course",
       "topic": "Course",
       "material": "Materi Pembelajaran",
       "quiz": "Quiz",
@@ -394,6 +393,10 @@ const translations = {
       "display": "Tampilan",
       "regional": "Regional",
       "permissions": "Izin aplikasi"
+    },
+    "master_data": {
+      "index": "Master Data",
+      "course_category": "Kategori Course"
     },
     "others": {
       "index": "Lainnya",

@@ -320,7 +320,6 @@ const translations = {
     "kmis": {
       "index": "KMIS",
       "dashboard": "KMIS Dashboard",
-      "category": "Course Category",
       "topic": "Course",
       "material": "Learning Material",
       "quiz": "Quiz",
@@ -394,6 +393,10 @@ const translations = {
       "display": "Display",
       "regional": "Regional",
       "permissions": "App permissions"
+    },
+    "master_data": {
+      "index": "Master Data",
+      "course_category": "Course Category"
     },
     "others": {
       "index": "Others",

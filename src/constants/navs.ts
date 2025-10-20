@@ -101,11 +101,6 @@ export const PRIVATE_NAVS: Interface__NavItem[] = [
                 path: `/kmis/student`,
                 allowedRoles: ["1"],
               },
-              {
-                labelKey: "private_navs.kmis.category",
-                path: `/kmis/category`,
-                allowedRoles: ["1"],
-              },
             ],
           },
         ],
@@ -194,12 +189,18 @@ export const OTHER_NAVS: Interface__NavItem[] = [
               },
             ],
           },
+          {
+            groupLabelKey: "settings_navs.master_data.index",
+            list: [
+              {
+                icon: IconUser,
+                labelKey: "settings_navs.master_data.course_category",
+                path: `/settings/course-category`,
+                backPath: `/settings`,
+              },
+            ],
+          },
         ],
-      },
-      {
-        icon: IconUser,
-        labelKey: "private_navs.profile",
-        path: `/profile`,
       },
     ],
   },

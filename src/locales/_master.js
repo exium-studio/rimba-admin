@@ -35,10 +35,6 @@ export const private_navs = {
       id: "Dasbor KMIS",
       en: "KMIS Dashboard",
     },
-    category: {
-      id: "Kategori Course",
-      en: "Course Category",
-    },
     topic: {
       id: "Course",
       en: "Course",
@@ -120,6 +116,16 @@ export const settings_navs = {
     permissions: {
       id: "Izin aplikasi",
       en: "App permissions",
+    },
+  },
+  master_data: {
+    index: {
+      id: "Master Data",
+      en: "Master Data",
+    },
+    course_category: {
+      id: "Kategori Course",
+      en: "Course Category",
     },
   },
   others: {
