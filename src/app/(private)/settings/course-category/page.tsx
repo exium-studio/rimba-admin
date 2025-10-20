@@ -18,7 +18,6 @@ import { Tooltip, TooltipProps } from "@/components/ui/tooltip";
 import { ClampText } from "@/components/widget/ClampText";
 import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
 import { CreateKMISCategoryDisclosureTrigger } from "@/components/widget/CreateKMISCategoryDisclosure";
-import { DataDisplayToggle } from "@/components/widget/DataDisplayToggle";
 import { DataGrid } from "@/components/widget/DataGrid";
 import { DataGridItem } from "@/components/widget/DataGridItem";
 import { DataTable } from "@/components/widget/DataTable";
@@ -115,8 +114,6 @@ const DataUtils = (props: any) => {
           setFilter({ ...filter, search: inputValue });
         }}
       />
-
-      <DataDisplayToggle navKey={PREFIX_ID} />
 
       <Create />
     </HStack>
