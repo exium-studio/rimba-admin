@@ -787,6 +787,10 @@ export const material_order = {
   id: "Urutan materi",
   en: "Material order",
 };
+export const category = {
+  id: "Kategori",
+  en: "Category",
+};
 
 // Message
 export const msg_is_public_kmis_material = {

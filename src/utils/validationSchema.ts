@@ -107,7 +107,7 @@ type min1FileParams = {
   newKey: string;
   message?: string;
 };
-export function min1File({
+export function min1FileExist({
   resolvedData,
   existingKey,
   deletedKey,

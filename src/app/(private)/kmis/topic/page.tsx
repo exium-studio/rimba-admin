@@ -56,7 +56,7 @@ import { disclosureId } from "@/utils/disclosure";
 import { formatDate } from "@/utils/formatter";
 import { capitalize, pluckString } from "@/utils/string";
 import { getActiveNavs, imgUrl } from "@/utils/url";
-import { fileValidation, min1File } from "@/utils/validationSchema";
+import { fileValidation, min1FileExist } from "@/utils/validationSchema";
 import {
   Badge,
   FieldsetRoot,
@@ -409,7 +409,7 @@ const Update = (props: any) => {
         maxSizeMB: 10,
         allowedExtensions: ["jpg", "jpeg", "png"],
       }).concat(
-        min1File({
+        min1FileExist({
           resolvedData,
           existingKey: "topicCover",
           deletedKey: "deleteDocumentIds",

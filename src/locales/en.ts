@@ -42,6 +42,7 @@ const translations = {
   "basic_info": "Basic info",
   "camera": "Camera",
   "cancel": "Cancel",
+  "category": "Category",
   "certificate": "Certificate",
   "clear": "Clear",
   "close": "Close",
@@ -340,7 +341,6 @@ const translations = {
     "profile": "Profile"
   },
   "profile": "Profile",
-  "progress_status": "Progress status",
   "publicity": "Publicity",
   "published_at": "Published at",
   "purpose": "Purpose",

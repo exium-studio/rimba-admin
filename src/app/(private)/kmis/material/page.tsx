@@ -54,7 +54,7 @@ import { disclosureId } from "@/utils/disclosure";
 import { formatDate } from "@/utils/formatter";
 import { capitalize, pluckString } from "@/utils/string";
 import { getActiveNavs } from "@/utils/url";
-import { fileValidation, min1File } from "@/utils/validationSchema";
+import { fileValidation, min1FileExist } from "@/utils/validationSchema";
 import {
   Center,
   FieldsetRoot,
@@ -589,15 +589,15 @@ const Update = (props: any) => {
       materialFiles: fileValidation().when(
         "materialType",
         (val: Interface__SelectOption[] | undefined, schema: any) => {
-          // If materialType is "gambar" -> allow only images and require file + min1File check
+          // If materialType is "gambar" -> allow only images and require file + min1FileExist check
           if (val?.[0]?.id === "gambar") {
             return fileValidation({
               allowedExtensions: ["png", "jpg", "jpeg"],
             })
               .required(l.msg_required_form)
               .concat(
-                // min1File returns a Yup schema that enforces at least 1 file considering existing/deleted files
-                min1File({
+                // min1FileExist returns a Yup schema that enforces at least 1 file considering existing/deleted files
+                min1FileExist({
                   resolvedData,
                   existingKey: "materialFiles",
                   deletedKey: "deleteFileIds",
@@ -607,7 +607,7 @@ const Update = (props: any) => {
               );
           }
 
-          // If materialType is "dokumen" -> allow only document extensions and require file + min1File check
+          // If materialType is "dokumen" -> allow only document extensions and require file + min1FileExist check
           if (val?.[0]?.id === "dokumen") {
             return fileValidation({
               allowedExtensions: [
@@ -622,7 +622,7 @@ const Update = (props: any) => {
             })
               .required(l.msg_required_form)
               .concat(
-                min1File({
+                min1FileExist({
                   resolvedData,
                   existingKey: "materialFiles",
                   deletedKey: "deleteFileIds",

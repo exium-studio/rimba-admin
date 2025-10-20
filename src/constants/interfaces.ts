@@ -18,6 +18,19 @@ import {
 } from "./types";
 
 // CMS
+export interface Interface__CMSActivityCategory extends Interface__CUD {
+  id: string;
+  title: Interface__CMSTextContent;
+  description: Interface__CMSTextContent;
+}
+export interface Interface__CMSActivity extends Interface__CUD {
+  id: string;
+  eventCategory: Interface__CMSActivityCategory;
+  thumbnail: Interface__StorageFile[];
+  title: Interface__CMSTextContent;
+  description: Interface__CMSTextContent;
+  eventContent: Interface__CMSTextContent;
+}
 export interface Interface__CMSLegalDocs extends Interface__CUD {
   id: string;
   title: Interface__CMSTextContent;

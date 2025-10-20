@@ -50,7 +50,7 @@ import { disclosureId } from "@/utils/disclosure";
 import { formatDate } from "@/utils/formatter";
 import { capitalize, pluckString } from "@/utils/string";
 import { getActiveNavs } from "@/utils/url";
-import { fileValidation, min1File } from "@/utils/validationSchema";
+import { fileValidation, min1FileExist } from "@/utils/validationSchema";
 import {
   FieldsetRoot,
   HStack,
@@ -428,7 +428,7 @@ const Update = (props: any) => {
       files: fileValidation({
         allowedExtensions: ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx"],
       }).concat(
-        min1File({
+        min1FileExist({
           resolvedData,
           existingKey: "document",
           deletedKey: "deleteDocumentIds",

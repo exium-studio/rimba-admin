@@ -42,6 +42,7 @@ const translations = {
   "basic_info": "Informasi umum",
   "camera": "Kamera",
   "cancel": "Batal",
+  "category": "Kategori",
   "certificate": "Sertifikat",
   "clear": "Clear",
   "close": "Tutup",
@@ -340,7 +341,6 @@ const translations = {
     "profile": "Profil"
   },
   "profile": "Profil",
-  "progress_status": "Status progress",
   "publicity": "Publisitas",
   "published_at": "Diterbitkan pada",
   "purpose": "Tujuan",
