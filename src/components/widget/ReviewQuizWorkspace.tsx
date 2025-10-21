@@ -10,6 +10,7 @@ import {
   Interface__KMISQuizResponse,
 } from "@/constants/interfaces";
 import useLang from "@/context/useLang";
+import { useThemeConfig } from "@/context/useThemeConfig";
 import {
   Box,
   HStack,
@@ -31,6 +32,9 @@ const AnswerOption = (props: any) => {
   // Props
   const { optionLetter, optionKey, quizResponse, ...restProps } = props;
 
+  // Contexts
+  const { themeConfig } = useThemeConfig();
+
   // States
   const resolvedRes: Interface__KMISQuizResponse = quizResponse;
   const isOptionCorrect = optionLetter === resolvedRes?.quiz?.correctOption;
@@ -40,10 +44,11 @@ const AnswerOption = (props: any) => {
   const isAnswer = resolvedRes?.selectedOption === optionLetter;
 
   return (
-    <Btn
-      clicky={false}
-      justifyContent={"start"}
-      variant={"outline"}
+    <HStack
+      align={"start"}
+      py={2}
+      px={4}
+      border={"1px solid"}
       borderColor={
         isOptionCorrect
           ? "border.success"
@@ -51,13 +56,14 @@ const AnswerOption = (props: any) => {
           ? "border.error"
           : "border.muted"
       }
+      rounded={themeConfig.radii.component}
       {...restProps}
     >
       <P>{optionLetter}</P>
       <P>{(resolvedRes as Record<string, any>)?.[optionKey]}</P>
 
       {isAnswer && <DotIndicator ml={"auto"} />}
-    </Btn>
+    </HStack>
   );
 };
 export const ReviewQuizWorkspace = (props: Props) => {
@@ -115,7 +121,7 @@ export const ReviewQuizWorkspace = (props: Props) => {
         </CContainer>
 
         <HStack align={"start"} color={"fg.muted"} mt={4} px={1}>
-          <P>{l.explanation}</P>
+          <P flexShrink={0}>{l.explanation}</P>
 
           <P>:</P>
 
