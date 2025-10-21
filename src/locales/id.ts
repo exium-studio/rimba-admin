@@ -340,6 +340,7 @@ const translations = {
     "profile": "Profil"
   },
   "profile": "Profil",
+  "progress_status": "Status progres",
   "publicity": "Publisitas",
   "published_at": "Diterbitkan pada",
   "purpose": "Tujuan",

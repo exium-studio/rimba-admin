@@ -797,6 +797,10 @@ export const category = {
   id: "Kategori",
   en: "Category",
 };
+export const progress_status = {
+  id: "Status progres",
+  en: "Progress status",
+};
 
 // Message
 export const msg_is_public_kmis_material = {

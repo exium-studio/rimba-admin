@@ -340,6 +340,7 @@ const translations = {
     "profile": "Profile"
   },
   "profile": "Profile",
+  "progress_status": "Progress status",
   "publicity": "Publicity",
   "published_at": "Published at",
   "purpose": "Purpose",
