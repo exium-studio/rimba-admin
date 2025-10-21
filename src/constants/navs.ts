@@ -1,5 +1,6 @@
 import { Interface__NavItem } from "@/constants/interfaces";
 import {
+  IconDatabase,
   IconDeviceDesktop,
   IconDeviceDesktopAnalytics,
   IconLanguage,
@@ -193,7 +194,7 @@ export const OTHER_NAVS: Interface__NavItem[] = [
             groupLabelKey: "settings_navs.master_data.index",
             list: [
               {
-                icon: IconUser,
+                icon: IconDatabase,
                 labelKey: "settings_navs.master_data.course_category",
                 path: `/settings/course-category`,
                 backPath: `/settings`,
