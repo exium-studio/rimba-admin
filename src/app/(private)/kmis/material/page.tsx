@@ -876,7 +876,7 @@ const Restore = (props: any) => {
   );
 };
 const Delete = (props: any) => {
-  const ID = `${PREFIX_ID}_deactivate`;
+  const ID = `${PREFIX_ID}_delete`;
 
   // Props
   const { deleteIds, clearSelectedRows, disabled, routeTitle } = props;
@@ -901,7 +901,7 @@ const Delete = (props: any) => {
     back();
     req({
       config: {
-        url: `${BASE_ENDPOINT}/deactivate`,
+        url: `${BASE_ENDPOINT}/delete`,
         method: "PATCH",
         data: {
           deleteIds: deleteIds,
@@ -921,7 +921,7 @@ const Delete = (props: any) => {
       w={"full"}
       id={`${ID}-${deleteIds}`}
       title={`${l.delete_} ${routeTitle}`}
-      description={l.msg_deactivate}
+      description={l.msg_soft_delete}
       confirmLabel={`${l.delete_}`}
       onConfirm={onDeactivate}
       confirmButtonProps={{
