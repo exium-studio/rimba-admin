@@ -23,7 +23,7 @@ import { DataGridItem } from "@/components/widget/DataGridItem";
 import { DataTable } from "@/components/widget/DataTable";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
-import { PageContainer, PageContent } from "@/components/widget/Page";
+import { PageContent } from "@/components/widget/Page";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
 import {
   Interface__BatchOptionsTableOptionGenerator,
@@ -629,15 +629,13 @@ export default function Page() {
   const [filter, setFilter] = useState(DEFAULT_FILTER);
 
   return (
-    <PageContainer>
-      <PageContent>
-        <DataUtils
-          filter={filter}
-          setFilter={setFilter}
-          routeTitle={routeTitle}
-        />
-        <Data filter={filter} routeTitle={routeTitle} />
-      </PageContent>
-    </PageContainer>
+    <PageContent>
+      <DataUtils
+        filter={filter}
+        setFilter={setFilter}
+        routeTitle={routeTitle}
+      />
+      <Data filter={filter} routeTitle={routeTitle} />
+    </PageContent>
   );
 }
