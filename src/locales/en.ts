@@ -310,7 +310,7 @@ const translations = {
   "previous": "Previous",
   "private_navs": {
     "cms": {
-      "index": "CMS",
+      "index": "Landing Page",
       "static_content": "Static Content",
       "legal_document": "Legal Document",
       "activity": "Activity",

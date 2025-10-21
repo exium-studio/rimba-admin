@@ -2,8 +2,8 @@
 export const private_navs = {
   cms: {
     index: {
-      id: "CMS",
-      en: "CMS",
+      id: "Landing Page",
+      en: "Landing Page",
     },
     static_content: {
       id: "Konten Statis",

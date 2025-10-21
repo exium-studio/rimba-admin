@@ -310,7 +310,7 @@ const translations = {
   "previous": "Sebelumnya",
   "private_navs": {
     "cms": {
-      "index": "CMS",
+      "index": "Landing Page",
       "static_content": "Konten Statis",
       "legal_document": "Dokumen Hukum",
       "activity": "Aktivitas",
