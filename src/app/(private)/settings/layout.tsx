@@ -41,7 +41,7 @@ const SettingsNavsList = (props: any) => {
   const resolvedList = SETTINGS_NAVS.reduce<typeof SETTINGS_NAVS>(
     (acc, nav) => {
       const filteredItems = nav.list.filter((item) =>
-        pluckString(l, item.labelKey).toLowerCase().includes(searchTerm)
+        pluckString(l, item.labelKey)?.toLowerCase()?.includes(searchTerm)
       );
 
       if (filteredItems.length > 0) {
