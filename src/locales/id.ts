@@ -34,6 +34,7 @@ const translations = {
     "description": "Anda sedang masuk sebagai Super Admin."
   },
   "all": "Semua",
+  "answer": "Jawaban",
   "apply": "Terapkan",
   "april": "April",
   "august": "Agustus",

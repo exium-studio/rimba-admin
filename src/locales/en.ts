@@ -34,6 +34,7 @@ const translations = {
     "description": "You are currently signed in as Super Admin."
   },
   "all": "All",
+  "answer": "Answer",
   "apply": "Apply",
   "april": "April",
   "august": "August",

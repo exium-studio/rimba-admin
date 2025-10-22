@@ -665,6 +665,10 @@ export const question = {
   id: "Pertanyaan",
   en: "Question",
 };
+export const answer = {
+  id: "Jawaban",
+  en: "Answer",
+};
 export const option = {
   id: "Opsi",
   en: "Option",

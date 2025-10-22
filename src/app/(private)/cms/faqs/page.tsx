@@ -1,7 +1,6 @@
 "use client";
 
 import { Btn } from "@/components/ui/btn";
-import { CContainer } from "@/components/ui/c-container";
 import {
   DisclosureBody,
   DisclosureContent,
@@ -11,13 +10,11 @@ import {
 } from "@/components/ui/disclosure";
 import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-content";
 import { Field } from "@/components/ui/field";
-import { FileInput } from "@/components/ui/file-input";
 import { MenuItem } from "@/components/ui/menu";
 import SearchInput from "@/components/ui/search-input";
 import { StringInput } from "@/components/ui/string-input";
 import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipProps } from "@/components/ui/tooltip";
-import BackButton from "@/components/widget/BackButton";
 import { ClampText } from "@/components/widget/ClampText";
 import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
 import { DataDisplayToggle } from "@/components/widget/DataDisplayToggle";
@@ -26,15 +23,13 @@ import { DataGridItem } from "@/components/widget/DataGridItem";
 import { DataTable } from "@/components/widget/DataTable";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
-import { FileItem } from "@/components/widget/FIleItem";
 import { PageContainer, PageContent } from "@/components/widget/Page";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
 import {
   Interface__BatchOptionsTableOptionGenerator,
-  Interface__CMSLegalDocs,
+  Interface__CMSFAQs,
   Interface__DataProps,
   Interface__RowOptionsTableOptionGenerator,
-  Interface__StorageFile,
 } from "@/constants/interfaces";
 import { useDataDisplay } from "@/context/useDataDisplay";
 import useLang from "@/context/useLang";
@@ -50,7 +45,6 @@ import { disclosureId } from "@/utils/disclosure";
 import { formatDate } from "@/utils/formatter";
 import { capitalize, pluckString } from "@/utils/string";
 import { getActiveNavs } from "@/utils/url";
-import { fileValidation, min1FileExist } from "@/utils/validationSchema";
 import {
   FieldsetRoot,
   HStack,
@@ -59,7 +53,6 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import {
-  IconEye,
   IconPencilMinus,
   IconPlus,
   IconRestore,
@@ -70,9 +63,9 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import * as yup from "yup";
 
-const BASE_ENDPOINT = "/api/cms/legal-document";
-const PREFIX_ID = "cms_legal_document";
-type Interface__Data = Interface__CMSLegalDocs;
+const BASE_ENDPOINT = "/api/cms/faqs";
+const PREFIX_ID = "cms_faqs";
+type Interface__Data = Interface__CMSFAQs;
 
 const MenuTooltip = (props: TooltipProps) => {
   // Props
@@ -117,37 +110,31 @@ const Create = (props: any) => {
   const formik = useFormik({
     validateOnChange: false,
     initialValues: {
-      files: null as any,
-      titleId: "",
-      titleEn: "",
-      descriptionId: "",
-      descriptionEn: "",
+      questionId: "",
+      questionEn: "",
+      anwerId: "",
+      anwerEn: "",
     },
     validationSchema: yup.object().shape({
-      files: fileValidation({
-        maxSizeMB: 10,
-        allowedExtensions: ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx"],
-      }).required(l.msg_required_form),
-      titleId: yup.string().required(l.msg_required_form),
-      titleEn: yup.string().required(l.msg_required_form),
-      descriptionId: yup.string().required(l.msg_required_form),
-      descriptionEn: yup.string().required(l.msg_required_form),
+      questionId: yup.string().required(l.msg_required_form),
+      questionEn: yup.string().required(l.msg_required_form),
+      anwerId: yup.string().required(l.msg_required_form),
+      anwerEn: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values) => {
       const payload = new FormData();
-      payload.append("files", values.files[0]);
       payload.append(
         "title",
         JSON.stringify({
-          id: values.titleId,
-          en: values.titleEn,
+          id: values.questionId,
+          en: values.questionEn,
         })
       );
       payload.append(
         "description",
         JSON.stringify({
-          id: values.descriptionId,
-          en: values.descriptionEn,
+          id: values.anwerId,
+          en: values.anwerEn,
         })
       );
 
@@ -197,37 +184,23 @@ const Create = (props: any) => {
             <form id={ID} onSubmit={formik.handleSubmit}>
               <FieldsetRoot disabled={loading}>
                 <Field
-                  label={"Files"}
-                  invalid={!!formik.errors.files}
-                  errorText={formik.errors.files as string}
-                >
-                  <FileInput
-                    dropzone
-                    maxFiles={5}
-                    accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation"
-                    acceptPlaceholder=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx"
-                    inputValue={formik.values.files}
-                    onChange={(inputValue) => {
-                      formik.setFieldValue("files", inputValue);
-                    }}
-                  />
-                </Field>
-
-                <Field
-                  label={l.title}
-                  invalid={!!(formik.errors.titleId || formik.errors.titleEn)}
+                  label={l.question}
+                  invalid={
+                    !!(formik.errors.questionId || formik.errors.questionEn)
+                  }
                   errorText={
-                    (formik.errors.titleId || formik.errors.titleEn) as string
+                    (formik.errors.questionId ||
+                      formik.errors.questionEn) as string
                   }
                 >
                   <InputGroup
                     startElement="id"
                     startElementProps={{ fontSize: "md", fontWeight: "medium" }}
                   >
-                    <StringInput
-                      inputValue={formik.values.titleId}
+                    <Textarea
+                      inputValue={formik.values.questionId}
                       onChange={(inputValue) => {
-                        formik.setFieldValue("titleId", inputValue);
+                        formik.setFieldValue("questionId", inputValue);
                       }}
                     />
                   </InputGroup>
@@ -235,25 +208,20 @@ const Create = (props: any) => {
                     startElement="en"
                     startElementProps={{ fontSize: "md", fontWeight: "medium" }}
                   >
-                    <StringInput
-                      inputValue={formik.values.titleEn}
+                    <Textarea
+                      inputValue={formik.values.questionEn}
                       onChange={(inputValue) => {
-                        formik.setFieldValue("titleEn", inputValue);
+                        formik.setFieldValue("questionEn", inputValue);
                       }}
                     />
                   </InputGroup>
                 </Field>
 
                 <Field
-                  label={l.description}
-                  invalid={
-                    !!(
-                      formik.errors.descriptionId || formik.errors.descriptionEn
-                    )
-                  }
+                  label={l.answer}
+                  invalid={!!(formik.errors.anwerId || formik.errors.anwerEn)}
                   errorText={
-                    (formik.errors.descriptionId ||
-                      formik.errors.descriptionEn) as string
+                    (formik.errors.anwerId || formik.errors.anwerEn) as string
                   }
                 >
                   <InputGroup
@@ -267,9 +235,9 @@ const Create = (props: any) => {
                     }}
                   >
                     <Textarea
-                      inputValue={formik.values.descriptionId}
+                      inputValue={formik.values.anwerId}
                       onChange={(inputValue) => {
-                        formik.setFieldValue("descriptionId", inputValue);
+                        formik.setFieldValue("anwerId", inputValue);
                       }}
                       pl={"40px !important"}
                     />
@@ -285,9 +253,9 @@ const Create = (props: any) => {
                     }}
                   >
                     <Textarea
-                      inputValue={formik.values.descriptionEn}
+                      inputValue={formik.values.anwerEn}
                       onChange={(inputValue) => {
-                        formik.setFieldValue("descriptionEn", inputValue);
+                        formik.setFieldValue("anwerEn", inputValue);
                       }}
                       pl={"40px !important"}
                     />
@@ -332,57 +300,6 @@ const DataUtils = (props: any) => {
   );
 };
 
-const FilesList = (props: any) => {
-  // Props
-  const { data, ...restProps } = props;
-
-  // Contexts
-  const { l } = useLang();
-
-  // Hooks
-  const { open, onOpen, onClose } = useDisclosure();
-  useBackOnClose(`legal-docs-list-${data.id}`, open, onOpen, onClose);
-
-  return (
-    <>
-      <Btn
-        size={"xs"}
-        variant={"ghost"}
-        pl={"6px"}
-        onClick={onOpen}
-        {...restProps}
-      >
-        <Icon boxSize={5}>
-          <IconEye stroke={1.5} />
-        </Icon>
-
-        {l.view}
-      </Btn>
-
-      <DisclosureRoot open={open} lazyLoad size={"xs"}>
-        <DisclosureContent>
-          <DisclosureHeader>
-            <DisclosureHeaderContent
-              title={l.private_navs.cms.legal_document}
-            />
-          </DisclosureHeader>
-
-          <DisclosureBody>
-            <CContainer gap={4}>
-              {data?.document?.map((doc: Interface__StorageFile) => {
-                return <FileItem key={doc.id} fileData={doc} />;
-              })}
-            </CContainer>
-          </DisclosureBody>
-
-          <DisclosureFooter>
-            <BackButton />
-          </DisclosureFooter>
-        </DisclosureContent>
-      </DisclosureRoot>
-    </>
-  );
-};
 const Update = (props: any) => {
   const ID = `${PREFIX_ID}_update`;
 
@@ -417,49 +334,31 @@ const Update = (props: any) => {
   const formik = useFormik({
     validateOnChange: false,
     initialValues: {
-      files: null as any,
-      titleId: "",
-      titleEn: "",
-      descriptionId: "",
-      descriptionEn: "",
-      deleteDocumentIds: [],
+      questionId: "",
+      questionEn: "",
+      anwerId: "",
+      anwerEn: "",
     },
     validationSchema: yup.object().shape({
-      files: fileValidation({
-        allowedExtensions: ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx"],
-      }).concat(
-        min1FileExist({
-          resolvedData,
-          existingKey: "document",
-          deletedKey: "deleteDocumentIds",
-          newKey: "files",
-          message: l.msg_required_form,
-        })
-      ),
-      titleId: yup.string().required(l.msg_required_form),
-      titleEn: yup.string().required(l.msg_required_form),
-      descriptionId: yup.string().required(l.msg_required_form),
-      descriptionEn: yup.string().required(l.msg_required_form),
+      questionId: yup.string().required(l.msg_required_form),
+      questionEn: yup.string().required(l.msg_required_form),
+      anwerId: yup.string().required(l.msg_required_form),
+      anwerEn: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values) => {
       const payload = new FormData();
-      payload.append("files", values.files[0]);
-      payload.append(
-        "deleteDocumentIds",
-        JSON.stringify(values.deleteDocumentIds)
-      );
       payload.append(
         "title",
         JSON.stringify({
-          id: values.titleId,
-          en: values.titleEn,
+          id: values.questionId,
+          en: values.questionEn,
         })
       );
       payload.append(
         "description",
         JSON.stringify({
-          id: values.descriptionId,
-          en: values.descriptionEn,
+          id: values.anwerId,
+          en: values.anwerEn,
         })
       );
 
@@ -483,12 +382,10 @@ const Update = (props: any) => {
 
   useEffect(() => {
     formik.setValues({
-      files: [],
-      titleId: resolvedData.title.id,
-      titleEn: resolvedData.title.en,
-      descriptionId: resolvedData.description.id,
-      descriptionEn: resolvedData.description.en,
-      deleteDocumentIds: [],
+      questionId: resolvedData.question.id,
+      questionEn: resolvedData.question.en,
+      anwerId: resolvedData.answer.id,
+      anwerEn: resolvedData.answer.en,
     });
   }, [open, resolvedData]);
 
@@ -513,47 +410,13 @@ const Update = (props: any) => {
             <form id={ID} onSubmit={formik.handleSubmit}>
               <FieldsetRoot disabled={loading}>
                 <Field
-                  label={"Files"}
-                  invalid={!!formik.errors.files}
-                  errorText={formik.errors.files as string}
-                >
-                  <FileInput
-                    dropzone
-                    maxFiles={5}
-                    accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation"
-                    acceptPlaceholder=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx"
-                    inputValue={formik.values.files}
-                    onChange={(inputValue) => {
-                      formik.setFieldValue("files", inputValue);
-                    }}
-                    existingFiles={resolvedData.document}
-                    onDeleteFile={(fileData) => {
-                      formik.setFieldValue(
-                        "deleteDocumentIds",
-                        Array.from(
-                          new Set([
-                            ...formik.values.deleteDocumentIds,
-                            fileData.id,
-                          ])
-                        )
-                      );
-                    }}
-                    onUndoDeleteFile={(fileData) => {
-                      formik.setFieldValue(
-                        "deleteDocumentIds",
-                        formik.values.deleteDocumentIds.filter(
-                          (id: string) => id !== fileData.id
-                        )
-                      );
-                    }}
-                  />
-                </Field>
-
-                <Field
-                  label={l.title}
-                  invalid={!!(formik.errors.titleId || formik.errors.titleEn)}
+                  label={l.question}
+                  invalid={
+                    !!(formik.errors.questionId || formik.errors.questionEn)
+                  }
                   errorText={
-                    (formik.errors.titleId || formik.errors.titleEn) as string
+                    (formik.errors.questionId ||
+                      formik.errors.questionEn) as string
                   }
                 >
                   <InputGroup
@@ -561,9 +424,9 @@ const Update = (props: any) => {
                     startElementProps={{ fontSize: "md", fontWeight: "medium" }}
                   >
                     <StringInput
-                      inputValue={formik.values.titleId}
+                      inputValue={formik.values.questionId}
                       onChange={(inputValue) => {
-                        formik.setFieldValue("titleId", inputValue);
+                        formik.setFieldValue("questionId", inputValue);
                       }}
                     />
                   </InputGroup>
@@ -572,24 +435,19 @@ const Update = (props: any) => {
                     startElementProps={{ fontSize: "md", fontWeight: "medium" }}
                   >
                     <StringInput
-                      inputValue={formik.values.titleEn}
+                      inputValue={formik.values.questionEn}
                       onChange={(inputValue) => {
-                        formik.setFieldValue("titleEn", inputValue);
+                        formik.setFieldValue("questionEn", inputValue);
                       }}
                     />
                   </InputGroup>
                 </Field>
 
                 <Field
-                  label={l.description}
-                  invalid={
-                    !!(
-                      formik.errors.descriptionId || formik.errors.descriptionEn
-                    )
-                  }
+                  label={l.answer}
+                  invalid={!!(formik.errors.anwerId || formik.errors.anwerEn)}
                   errorText={
-                    (formik.errors.descriptionId ||
-                      formik.errors.descriptionEn) as string
+                    (formik.errors.anwerId || formik.errors.anwerEn) as string
                   }
                 >
                   <InputGroup
@@ -603,9 +461,9 @@ const Update = (props: any) => {
                     }}
                   >
                     <Textarea
-                      inputValue={formik.values.descriptionId}
+                      inputValue={formik.values.anwerId}
                       onChange={(inputValue) => {
-                        formik.setFieldValue("descriptionId", inputValue);
+                        formik.setFieldValue("anwerId", inputValue);
                       }}
                       pl={"40px !important"}
                     />
@@ -621,9 +479,9 @@ const Update = (props: any) => {
                     }}
                   >
                     <Textarea
-                      inputValue={formik.values.descriptionEn}
+                      inputValue={formik.values.anwerEn}
                       onChange={(inputValue) => {
-                        formik.setFieldValue("descriptionEn", inputValue);
+                        formik.setFieldValue("anwerEn", inputValue);
                       }}
                       pl={"40px !important"}
                     />
@@ -810,16 +668,12 @@ const Data = (props: any) => {
   const dataProps: Interface__DataProps = {
     headers: [
       {
-        th: l.title,
+        th: l.question,
         sortable: true,
       },
       {
-        th: l.description,
+        th: l.answer,
         sortable: true,
-      },
-      {
-        th: "Files",
-        align: "center",
       },
 
       // timestamps
@@ -843,17 +697,12 @@ const Data = (props: any) => {
       dim: !!item.deletedAt,
       columns: [
         {
-          td: <ClampText>{`${item.title[lang]}`}</ClampText>,
-          value: item.title[lang],
+          td: <ClampText>{`${item.question[lang]}`}</ClampText>,
+          value: item.question[lang],
         },
         {
-          td: <ClampText>{`${item.description[lang]}`}</ClampText>,
-          value: item.description[lang],
-        },
-        {
-          td: <FilesList data={item} />,
-          value: "",
-          align: "center",
+          td: <ClampText>{`${item.answer[lang]}`}</ClampText>,
+          value: item.answer[lang],
         },
 
         // timestamps
@@ -981,8 +830,8 @@ const Data = (props: any) => {
               key={resolvedItem.id}
               item={{
                 id: resolvedItem.id,
-                title: resolvedItem.title[lang],
-                description: resolvedItem.description[lang],
+                title: resolvedItem.question[lang],
+                description: resolvedItem.answer[lang],
                 deletedAt: resolvedItem.deletedAt,
               }}
               dataProps={dataProps}
