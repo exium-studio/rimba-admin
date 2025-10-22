@@ -401,7 +401,7 @@ const translations = {
     },
     "master_data": {
       "index": "Master Data",
-      "course_category": "Kategori Topic"
+      "topic_category": "Kategori Topic"
     },
     "others": {
       "index": "Lainnya",

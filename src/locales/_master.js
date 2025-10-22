@@ -127,7 +127,7 @@ export const settings_navs = {
       id: "Master Data",
       en: "Master Data",
     },
-    course_category: {
+    topic_category: {
       id: "Kategori Topic",
       en: "Topic Category",
     },
