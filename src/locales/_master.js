@@ -25,6 +25,10 @@ export const private_navs = {
       id: "Komposisi Hewan",
       en: "Animal Composition",
     },
+    faqs: {
+      id: "FAQs",
+      en: "FAQs",
+    },
   },
   kmis: {
     index: {

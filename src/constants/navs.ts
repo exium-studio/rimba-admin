@@ -11,12 +11,10 @@ import {
   IconWorld,
 } from "@tabler/icons-react";
 
-// Roles
+// Role Ids
 // 1 Super Admin
 // 2 Educator
 // 3 Monev
-
-export const PRIVATE_ROUTE_INDEX = "/pvt";
 
 export const PRIVATE_NAVS: Interface__NavItem[] = [
   {
@@ -53,6 +51,11 @@ export const PRIVATE_NAVS: Interface__NavItem[] = [
               {
                 labelKey: "private_navs.cms.animal_composition",
                 path: `/cms/animal-composition`,
+                allowedRoles: ["1"],
+              },
+              {
+                labelKey: "private_navs.cms.faqs",
+                path: `/cms/faqs`,
                 allowedRoles: ["1"],
               },
             ],

@@ -315,7 +315,8 @@ const translations = {
       "legal_document": "Dokumen Hukum",
       "activity": "Aktivitas",
       "news": "Berita dan Catatan Lapangan",
-      "animal_composition": "Komposisi Hewan"
+      "animal_composition": "Komposisi Hewan",
+      "faqs": "FAQs"
     },
     "kmis": {
       "index": "KMIS",
