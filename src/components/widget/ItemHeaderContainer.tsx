@@ -13,7 +13,7 @@ export const ItemHeaderContainer = ({
   return (
     <HStack
       borderBottom={"1px solid"}
-      borderColor={borderless ? "transparent" : "border.muted"}
+      borderColor={borderless ? "transparent" : "border.subtle"}
       justify={"space-between"}
       wrap={"wrap"}
       px={4}

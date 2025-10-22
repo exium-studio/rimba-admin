@@ -829,9 +829,9 @@ export const total_learning_attemp = {
   id: "Total percobaan belajar",
   en: "Total learning attempt",
 };
-export const total_finished_topic = {
-  id: "Total topik selesai",
-  en: "Total finished topic",
+export const total_completed_topic_by_user = {
+  id: "Total topik selesai (semua pengguna)",
+  en: "Total completed topics (all users)",
 };
 export const total_user_learning_attempt = {
   id: "Total percobaan belajar",

@@ -5,12 +5,17 @@ import { P } from "@/components/ui/p";
 import { Skeleton } from "@/components/ui/skeleton";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
+import { ItemContainer } from "@/components/widget/ItemContainer";
+import { ItemHeaderContainer } from "@/components/widget/ItemHeaderContainer";
+import ItemHeaderTitle from "@/components/widget/ItemHeaderTitle";
 import { PageContainer } from "@/components/widget/Page";
+import { MONTHS } from "@/constants/months";
 import useLang from "@/context/useLang";
 import { useThemeConfig } from "@/context/useThemeConfig";
 import useDataState from "@/hooks/useDataState";
 import { hexWithOpacity } from "@/utils/color";
 import { formatNumber } from "@/utils/formatter";
+import { Chart, useChart } from "@chakra-ui/charts";
 import { Circle, HStack, Icon, SimpleGrid, StackProps } from "@chakra-ui/react";
 import {
   IconBook2,
@@ -21,6 +26,14 @@ import {
   IconStar,
   IconUsers,
 } from "@tabler/icons-react";
+import {
+  CartesianGrid,
+  LabelList,
+  Line,
+  LineChart,
+  Tooltip,
+  XAxis,
+} from "recharts";
 
 interface Props__StatItem extends StackProps {
   icon: any;
@@ -62,6 +75,70 @@ const StatItem = (props: Props__StatItem) => {
         </P>
       </CContainer>
     </HStack>
+  );
+};
+interface Props__UserFinishedAttempt extends StackProps {
+  data: any;
+}
+const UserFinishedAttempt = (props: Props__UserFinishedAttempt) => {
+  // Props
+  const { data, ...restProps } = props;
+
+  // Contexts
+  const { l, lang } = useLang();
+  const { themeConfig } = useThemeConfig();
+
+  // States
+  const chart = useChart({
+    data: data?.userStatsAttemptFinished?.map((item: any, i: number) => ({
+      month: MONTHS[lang][i],
+      value: item.value,
+    })),
+  });
+
+  return (
+    <ItemContainer {...restProps}>
+      <ItemHeaderContainer borderless>
+        <ItemHeaderTitle>{l.total_completed_topic_by_user}</ItemHeaderTitle>
+      </ItemHeaderContainer>
+
+      <Chart.Root maxH="md" chart={chart} pb={4} pr={4}>
+        <LineChart data={chart.data} margin={{ left: 40, right: 40, top: 40 }}>
+          <CartesianGrid
+            stroke={chart.color("border")}
+            strokeDasharray="3 3"
+            horizontal={false}
+          />
+          <XAxis
+            dataKey={chart.key("month")}
+            tickFormatter={(value) => value.slice(0, 3)}
+            stroke={chart.color("border")}
+          />
+          <Tooltip
+            animationDuration={100}
+            cursor={{ stroke: chart.color("border") }}
+            content={<Chart.Tooltip hideLabel />}
+          />
+          <Line
+            isAnimationActive={false}
+            dataKey={chart.key("value")}
+            fill={chart.color(themeConfig.primaryColorHex)}
+            stroke={chart.color(themeConfig.primaryColorHex)}
+            strokeWidth={2}
+          >
+            <LabelList
+              dataKey={chart.key("value")}
+              position="right"
+              offset={10}
+              style={{
+                fontWeight: "600",
+                fill: chart.color("fg"),
+              }}
+            />
+          </Line>
+        </LineChart>
+      </Chart.Root>
+    </ItemContainer>
   );
 };
 
@@ -111,7 +188,7 @@ export default function KMISDashboardPage() {
     error: <FeedbackRetry onRetry={onRetry} />,
     empty: <FeedbackNoData />,
     loaded: (
-      <CContainer>
+      <CContainer gap={4}>
         <SimpleGrid columns={[2, null, 3]} gap={4}>
           <StatItem
             icon={STATS_REGISTRY.totalEducator.icon}
@@ -157,6 +234,8 @@ export default function KMISDashboardPage() {
             }
           />
         </SimpleGrid>
+
+        <UserFinishedAttempt data={data} />
       </CContainer>
     ),
   };
