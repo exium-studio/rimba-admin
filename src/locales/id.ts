@@ -38,6 +38,8 @@ const translations = {
   "apply": "Terapkan",
   "april": "April",
   "august": "Agustus",
+  "average_quiz_score": "Rata-rata skor total quiz",
+  "average_rating": "Rata-rata rating",
   "avg_kmis_score": "Nilai rata-rata",
   "back": "Kembali",
   "basic_info": "Informasi umum",
@@ -399,7 +401,7 @@ const translations = {
     },
     "master_data": {
       "index": "Master Data",
-      "course_category": "Kategori Course"
+      "course_category": "Kategori Topic"
     },
     "others": {
       "index": "Lainnya",
@@ -473,8 +475,12 @@ const translations = {
   "title": "Judul",
   "total_answered": "Total terjawab",
   "total_correct": "Total benar",
+  "total_educator": "Total pengajar",
   "total_empty": "Total kosong",
+  "total_finished_topic": "Total topik selesai",
+  "total_learning_attemp": "Total percobaan belajar",
   "total_material": "Total Materi",
+  "total_student": "Total pelajar",
   "total_topic": "Total Course",
   "total_wrong": "Total salah",
   "try_camera": "Coba Kamera",

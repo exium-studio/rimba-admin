@@ -27,7 +27,7 @@ const SelectWorkspaceCategory = (props: Props__SelectInput) => {
       method: "GET",
       params: {
         with_trashed: 0,
-        limit: Infinity,
+        limit: "all",
       },
     };
 

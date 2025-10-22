@@ -38,7 +38,7 @@ export const SelectKMISCategory = (props: Omit<Props__SelectInput, "id">) => {
       method: "GET",
       params: {
         with_trashed: 0,
-        limit: Infinity,
+        limit: "all",
       },
     };
 

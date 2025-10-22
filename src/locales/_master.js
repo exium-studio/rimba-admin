@@ -809,6 +809,30 @@ export const progress_status = {
   id: "Status progres",
   en: "Progress status",
 };
+export const average_rating = {
+  id: "Rata-rata rating",
+  en: "Average rating",
+};
+export const average_quiz_score = {
+  id: "Rata-rata skor total quiz",
+  en: "Average total quiz score",
+};
+export const total_educator = {
+  id: "Total pengajar",
+  en: "Total educator",
+};
+export const total_student = {
+  id: "Total pelajar",
+  en: "Total student",
+};
+export const total_learning_attemp = {
+  id: "Total percobaan belajar",
+  en: "Total learning attempt",
+};
+export const total_finished_topic = {
+  id: "Total topik selesai",
+  en: "Total finished topic",
+};
 
 // Message
 export const msg_is_public_kmis_material = {

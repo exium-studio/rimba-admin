@@ -37,7 +37,7 @@ export const SelectCMSActivityCategory = (
       url: ENDPOINT,
       method: "GET",
       params: {
-        limit: 99999999999,
+        limit: "all",
       },
     };
 

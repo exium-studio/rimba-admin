@@ -38,6 +38,8 @@ const translations = {
   "apply": "Apply",
   "april": "April",
   "august": "August",
+  "average_quiz_score": "Average total quiz score",
+  "average_rating": "Average rating",
   "avg_kmis_score": "Average score",
   "back": "Back",
   "basic_info": "Basic info",
@@ -399,7 +401,7 @@ const translations = {
     },
     "master_data": {
       "index": "Master Data",
-      "course_category": "Course Category"
+      "course_category": "Topic Category"
     },
     "others": {
       "index": "Others",
@@ -473,8 +475,12 @@ const translations = {
   "title": "Title",
   "total_answered": "Total answered",
   "total_correct": "Total correct",
+  "total_educator": "Total educator",
   "total_empty": "Total empty",
+  "total_finished_topic": "Total finished topic",
+  "total_learning_attemp": "Total learning attempt",
   "total_material": "Total Material",
+  "total_student": "Total student",
   "total_topic": "Total Course",
   "total_wrong": "Total wrong",
   "try_camera": "Try Camera",
