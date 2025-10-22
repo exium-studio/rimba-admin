@@ -124,14 +124,14 @@ const Create = (props: any) => {
     onSubmit: (values) => {
       const payload = new FormData();
       payload.append(
-        "title",
+        "question",
         JSON.stringify({
           id: values.questionId,
           en: values.questionEn,
         })
       );
       payload.append(
-        "description",
+        "answer",
         JSON.stringify({
           id: values.anwerId,
           en: values.anwerEn,
@@ -348,14 +348,14 @@ const Update = (props: any) => {
     onSubmit: (values) => {
       const payload = new FormData();
       payload.append(
-        "title",
+        "question",
         JSON.stringify({
           id: values.questionId,
           en: values.questionEn,
         })
       );
       payload.append(
-        "description",
+        "answer",
         JSON.stringify({
           id: values.anwerId,
           en: values.anwerEn,
