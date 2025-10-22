@@ -1,10 +1,10 @@
 import { Provider } from "@/components/ui/provider";
 import { Toaster } from "@/components/ui/toaster";
+import "./globals.css";
 import ClientSideOnly from "@/components/widget/ClientSideOnly";
-import { APP } from "@/constants/_meta";
 import { Metadata, Viewport } from "next";
 import { Figtree } from "next/font/google";
-import "./globals.css";
+import { APP } from "@/constants/_meta";
 
 interface Props {
   children: React.ReactNode;
