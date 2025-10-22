@@ -833,6 +833,10 @@ export const total_finished_topic = {
   id: "Total topik selesai",
   en: "Total finished topic",
 };
+export const total_user_learning_attempt = {
+  id: "Total percobaan belajar",
+  en: "Total learning attempt",
+};
 
 // Message
 export const msg_is_public_kmis_material = {

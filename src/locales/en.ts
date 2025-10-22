@@ -482,6 +482,7 @@ const translations = {
   "total_material": "Total Material",
   "total_student": "Total student",
   "total_topic": "Total Course",
+  "total_user_learning_attempt": "Total learning attempt",
   "total_wrong": "Total wrong",
   "try_camera": "Try Camera",
   "try_location": "Try Location",
