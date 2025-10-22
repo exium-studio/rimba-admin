@@ -198,8 +198,8 @@ export const OTHER_NAVS: Interface__NavItem[] = [
             list: [
               {
                 icon: IconCategory,
-                labelKey: "settings_navs.master_data.course_category",
-                path: `/settings/course-category`,
+                labelKey: "settings_navs.master_data.topic_category",
+                path: `/settings/topic-category`,
                 backPath: `/settings`,
               },
             ],

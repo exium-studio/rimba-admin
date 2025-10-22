@@ -40,8 +40,8 @@ export const private_navs = {
       en: "KMIS Dashboard",
     },
     topic: {
-      id: "Course",
-      en: "Course",
+      id: "Topik",
+      en: "Topic",
     },
     material: {
       id: "Materi Pembelajaran",
@@ -128,8 +128,8 @@ export const settings_navs = {
       en: "Master Data",
     },
     course_category: {
-      id: "Kategori Course",
-      en: "Course Category",
+      id: "Kategori Topic",
+      en: "Topic Category",
     },
   },
   others: {

@@ -322,7 +322,7 @@ const translations = {
     "kmis": {
       "index": "KMIS",
       "dashboard": "KMIS Dashboard",
-      "topic": "Course",
+      "topic": "Topic",
       "material": "Learning Material",
       "quiz": "Quiz",
       "quiz_assessment": "Learning Progress",
