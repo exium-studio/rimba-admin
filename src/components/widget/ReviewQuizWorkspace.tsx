@@ -39,8 +39,6 @@ const AnswerOption = (props: any) => {
     optionLetter === resolvedRes?.selectedOption;
   const isAnswer = resolvedRes?.selectedOption === optionLetter;
 
-  console.debug(resolvedRes);
-
   return (
     <Btn
       clicky={false}
@@ -117,7 +115,7 @@ export const ReviewQuizWorkspace = (props: Props) => {
         </CContainer>
 
         <HStack align={"start"} color={"fg.muted"} mt={4} px={1}>
-          <P>{l.explanation}</P>
+          <P flexShrink={0}>{l.explanation}</P>
 
           <P>:</P>
 
