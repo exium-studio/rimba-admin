@@ -361,7 +361,7 @@ const Create = (props: any) => {
         otherwise: (schema) => schema.notRequired(),
       }),
     }),
-    onSubmit: (values, { resetForm }) => {
+    onSubmit: (values) => {
       const payload = new FormData();
       payload.append("topicId", `${values.topic?.[0]?.id}`);
       payload.append("materialType", values.materialType?.[0]?.id);
@@ -391,7 +391,6 @@ const Create = (props: any) => {
             formik.setFieldValue("topic", filter.topic);
             back();
             setRt((ps) => !ps);
-            resetForm();
           },
         },
       });

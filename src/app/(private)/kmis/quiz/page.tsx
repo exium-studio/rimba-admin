@@ -299,7 +299,7 @@ const Create = (props: any) => {
       correctOption: yup.array().required(l.msg_required_form),
       explanation: yup.string().required(l.msg_required_form),
     }),
-    onSubmit: (values, { resetForm }) => {
+    onSubmit: (values) => {
       const payload = new FormData();
       payload.append("topicId", `${values.topic?.[0]?.id}`);
       payload.append("question", values.question);
@@ -320,7 +320,6 @@ const Create = (props: any) => {
         config,
         onResolve: {
           onSuccess: () => {
-            resetForm();
             back();
             setRt((ps) => !ps);
           },

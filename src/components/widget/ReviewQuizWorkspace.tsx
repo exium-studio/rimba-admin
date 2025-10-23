@@ -183,10 +183,10 @@ export const ReviewQuizWorkspace = (props: Props) => {
                 iconButton
                 size={"xs"}
                 variant={isAnswered ? "subtle" : "outline"}
-                colorPalette={isAnswered ? (isCorrect ? "green" : "red") : ""}
+                colorPalette={isAnswered ? (isCorrect ? "p.400" : "red") : ""}
                 border={isActive ? "1px solid" : "none"}
                 borderColor={
-                  isAnswered ? (isCorrect ? "green" : "red") : "border.muted"
+                  isAnswered ? (isCorrect ? "p.400" : "red") : "border.muted"
                 }
                 onClick={() => setActiveIdx(idx)}
               >
