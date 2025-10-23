@@ -295,6 +295,7 @@ const translations = {
   "navigation": "Navigation",
   "next": "Next",
   "no": "No",
+  "not_answered": "Not answered",
   "not_started": "Not started",
   "november": "November",
   "october": "October",

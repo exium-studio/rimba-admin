@@ -837,6 +837,10 @@ export const total_user_learning_attempt = {
   id: "Total percobaan belajar",
   en: "Total learning attempt",
 };
+export const not_answered = {
+  id: "Belum terjawab",
+  en: "Not answered",
+};
 
 // Message
 export const msg_is_public_kmis_material = {

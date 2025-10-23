@@ -295,6 +295,7 @@ const translations = {
   "navigation": "Navigasi",
   "next": "Selanjutnya",
   "no": "Tidak",
+  "not_answered": "Belum terjawab",
   "not_started": "Belum dimulai",
   "november": "November",
   "october": "Oktober",

@@ -192,13 +192,39 @@ export const ReviewQuizWorkspace = (props: Props) => {
 
         <CContainer gap={2} px={"2px"}>
           <HStack>
-            <Box w={"12px"} aspectRatio={1} bg={"fg.success"} rounded={"xs"} />
+            <Box
+              w={"12px"}
+              aspectRatio={1}
+              bg={"bg.success"}
+              border={"1px solid"}
+              borderColor={"fg.success"}
+              rounded={"xs"}
+            />
             <P>{l.correct_answer}</P>
           </HStack>
 
           <HStack>
-            <Box w={"12px"} aspectRatio={1} bg={"fg.error"} rounded={"xs"} />
+            <Box
+              w={"12px"}
+              aspectRatio={1}
+              bg={"bg.error"}
+              border={"1px solid"}
+              borderColor={"fg.error"}
+              rounded={"xs"}
+            />
             <P>{l.wrong_answer}</P>
+          </HStack>
+
+          <HStack>
+            <Box
+              w={"12px"}
+              aspectRatio={1}
+              bg={"bg.subtle"}
+              border={"1px solid"}
+              borderColor={"fg.subtle"}
+              rounded={"xs"}
+            />
+            <P>{l.not_answered}</P>
           </HStack>
         </CContainer>
       </ItemContainer>
