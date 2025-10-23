@@ -4,7 +4,7 @@ import useLang from "@/context/useLang";
 import { Badge, BadgeProps } from "@chakra-ui/react";
 
 interface Props extends BadgeProps {
-  quizAttempStatus: number;
+  quizAttempStatus?: number;
 }
 
 export const QuizAttempStatus = (props: Props) => {
@@ -20,14 +20,10 @@ export const QuizAttempStatus = (props: Props) => {
 
   switch (quizAttempStatus) {
     case 1:
-      label = l.not_started;
-      colorPalette = "gray";
-      break;
-    case 2:
       label = l.on_progress;
       colorPalette = "orange";
       break;
-    case 3:
+    case 2:
       label = l.finished;
       colorPalette = "green";
       break;
