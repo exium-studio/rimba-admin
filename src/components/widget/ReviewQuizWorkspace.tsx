@@ -10,7 +10,6 @@ import {
   Interface__KMISQuizResponse,
 } from "@/constants/interfaces";
 import useLang from "@/context/useLang";
-import { useThemeConfig } from "@/context/useThemeConfig";
 import {
   Box,
   HStack,
@@ -32,9 +31,6 @@ const AnswerOption = (props: any) => {
   // Props
   const { optionLetter, optionKey, quizResponse, ...restProps } = props;
 
-  // Contexts
-  const { themeConfig } = useThemeConfig();
-
   // States
   const resolvedRes: Interface__KMISQuizResponse = quizResponse;
   const isOptionCorrect = optionLetter === resolvedRes?.quiz?.correctOption;
@@ -43,12 +39,13 @@ const AnswerOption = (props: any) => {
     optionLetter === resolvedRes?.selectedOption;
   const isAnswer = resolvedRes?.selectedOption === optionLetter;
 
+  console.debug(resolvedRes);
+
   return (
-    <HStack
-      align={"start"}
-      py={2}
-      px={4}
-      border={"1px solid"}
+    <Btn
+      clicky={false}
+      justifyContent={"start"}
+      variant={"outline"}
       borderColor={
         isOptionCorrect
           ? "border.success"
@@ -56,14 +53,13 @@ const AnswerOption = (props: any) => {
           ? "border.error"
           : "border.muted"
       }
-      rounded={themeConfig.radii.component}
       {...restProps}
     >
       <P>{optionLetter}</P>
-      <P>{(resolvedRes as Record<string, any>)?.[optionKey]}</P>
+      <P>{(resolvedRes as Record<string, any>)?.quiz?.[optionKey]}</P>
 
       {isAnswer && <DotIndicator ml={"auto"} />}
-    </HStack>
+    </Btn>
   );
 };
 export const ReviewQuizWorkspace = (props: Props) => {
@@ -121,7 +117,7 @@ export const ReviewQuizWorkspace = (props: Props) => {
         </CContainer>
 
         <HStack align={"start"} color={"fg.muted"} mt={4} px={1}>
-          <P flexShrink={0}>{l.explanation}</P>
+          <P>{l.explanation}</P>
 
           <P>:</P>
 
@@ -183,10 +179,10 @@ export const ReviewQuizWorkspace = (props: Props) => {
                 iconButton
                 size={"xs"}
                 variant={isAnswered ? "subtle" : "outline"}
-                colorPalette={isAnswered ? (isCorrect ? "p.400" : "red") : ""}
+                colorPalette={isAnswered ? (isCorrect ? "green" : "red") : ""}
                 border={isActive ? "1px solid" : "none"}
                 borderColor={
-                  isAnswered ? (isCorrect ? "p.400" : "red") : "border.muted"
+                  isAnswered ? (isCorrect ? "green" : "red") : "border.muted"
                 }
                 onClick={() => setActiveIdx(idx)}
               >
