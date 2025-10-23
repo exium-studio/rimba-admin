@@ -323,10 +323,10 @@ const Material = (props: any) => {
   // States
   const topic = { id: data.id, label: data.title };
   const topicQuery = `?topic=${encodeURIComponent(JSON.stringify(topic))}`;
-  const materialUrl = `/kmis/material${topicQuery}`;
+  const toUrl = `/kmis/material${topicQuery}`;
 
   return (
-    <NavLink to={materialUrl} w={"full"}>
+    <NavLink to={toUrl} w={"full"}>
       <MenuTooltip content={l.private_navs.kmis.material}>
         <MenuItem value="material">
           <P lineClamp={1}>{l.private_navs.kmis.material}</P>
@@ -345,11 +345,11 @@ const Quiz = (props: any) => {
   // States
   const topic = { id: data.id, label: data.title };
   const topicQuery = `?topic=${encodeURIComponent(JSON.stringify(topic))}`;
-  const quizUrl = `/kmis/quiz${topicQuery}`;
+  const toUrl = `/kmis/quiz${topicQuery}`;
 
   return (
     <>
-      <NavLink to={quizUrl} w={"full"}>
+      <NavLink to={toUrl} w={"full"}>
         <MenuTooltip content={l.private_navs.kmis.quiz}>
           <MenuItem value="quiz">
             <P lineClamp={1}>{l.private_navs.kmis.quiz}</P>
