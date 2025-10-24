@@ -195,24 +195,38 @@ const Create = (props: any) => {
                 >
                   <InputGroup
                     startElement="id"
-                    startElementProps={{ fontSize: "md", fontWeight: "medium" }}
+                    display={"flex"}
+                    startElementProps={{
+                      fontSize: "md",
+                      fontWeight: "medium",
+                      alignItems: "start !important",
+                      mt: "18px",
+                    }}
                   >
                     <Textarea
                       inputValue={formik.values.questionId}
                       onChange={(inputValue) => {
                         formik.setFieldValue("questionId", inputValue);
                       }}
+                      pl={"40px !important"}
                     />
                   </InputGroup>
                   <InputGroup
                     startElement="en"
-                    startElementProps={{ fontSize: "md", fontWeight: "medium" }}
+                    display={"flex"}
+                    startElementProps={{
+                      fontSize: "md",
+                      fontWeight: "medium",
+                      alignItems: "start !important",
+                      mt: "18px",
+                    }}
                   >
                     <Textarea
                       inputValue={formik.values.questionEn}
                       onChange={(inputValue) => {
                         formik.setFieldValue("questionEn", inputValue);
                       }}
+                      pl={"40px !important"}
                     />
                   </InputGroup>
                 </Field>
