@@ -27,8 +27,8 @@ import { PageContent } from "@/components/widget/Page";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
 import {
   Interface__BatchOptionsTableOptionGenerator,
+  Interface__CMSActivityCategory,
   Interface__DataProps,
-  Interface__KMISTopicCategory,
   Interface__RowOptionsTableOptionGenerator,
 } from "@/constants/interfaces";
 import { useDataDisplay } from "@/context/useDataDisplay";
@@ -45,7 +45,13 @@ import { disclosureId } from "@/utils/disclosure";
 import { formatDate } from "@/utils/formatter";
 import { capitalize, pluckString } from "@/utils/string";
 import { getActiveNavs } from "@/utils/url";
-import { FieldsetRoot, HStack, Icon, useDisclosure } from "@chakra-ui/react";
+import {
+  FieldsetRoot,
+  HStack,
+  Icon,
+  InputGroup,
+  useDisclosure,
+} from "@chakra-ui/react";
 import {
   IconPencilMinus,
   IconPlus,
@@ -59,7 +65,7 @@ import * as yup from "yup";
 
 const BASE_ENDPOINT = "/api/master-data/event-category";
 const PREFIX_ID = "cms_activity_category";
-type Interface__Data = Interface__KMISTopicCategory;
+type Interface__Data = Interface__CMSActivityCategory;
 
 const MenuTooltip = (props: TooltipProps) => {
   // Props
@@ -154,17 +160,33 @@ const Update = (props: any) => {
   const formik = useFormik({
     validateOnChange: false,
     initialValues: {
-      title: "",
-      description: "",
+      nameId: "",
+      nameEn: "",
+      descriptionId: "",
+      descriptionEn: "",
     },
     validationSchema: yup.object().shape({
-      title: yup.string().required(l.msg_required_form),
-      description: yup.string().required(l.msg_required_form),
+      nameId: yup.string().required(l.msg_required_form),
+      nameEn: yup.string().required(l.msg_required_form),
+      descriptionId: yup.string().required(l.msg_required_form),
+      descriptionEn: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values) => {
       const payload = new FormData();
-      payload.append("title", values.title);
-      payload.append("description", values.description);
+      payload.append(
+        "name",
+        JSON.stringify({
+          id: values.nameId,
+          en: values.nameEn,
+        })
+      );
+      payload.append(
+        "description",
+        JSON.stringify({
+          id: values.descriptionId,
+          en: values.descriptionEn,
+        })
+      );
 
       const config = {
         url: `${BASE_ENDPOINT}/update/${resolvedData.id}`,
@@ -186,8 +208,10 @@ const Update = (props: any) => {
 
   useEffect(() => {
     formik.setValues({
-      title: resolvedData.title,
-      description: resolvedData.description,
+      nameId: resolvedData.name.id,
+      nameEn: resolvedData.name.en,
+      descriptionId: resolvedData.description.id,
+      descriptionEn: resolvedData.description.en,
     });
   }, [open, resolvedData]);
 
@@ -212,29 +236,84 @@ const Update = (props: any) => {
             <form id={ID} onSubmit={formik.handleSubmit}>
               <FieldsetRoot disabled={loading}>
                 <Field
-                  label={l.title}
-                  invalid={!!formik.errors.title}
-                  errorText={formik.errors.title as string}
+                  label={l.name}
+                  invalid={!!(formik.errors.nameId || formik.errors.nameEn)}
+                  errorText={
+                    (formik.errors.nameId || formik.errors.nameEn) as string
+                  }
                 >
-                  <StringInput
-                    inputValue={formik.values.title}
-                    onChange={(inputValue) => {
-                      formik.setFieldValue("title", inputValue);
-                    }}
-                  />
+                  <InputGroup
+                    startElement="id"
+                    startElementProps={{ fontSize: "md", fontWeight: "medium" }}
+                  >
+                    <StringInput
+                      inputValue={formik.values.nameId}
+                      onChange={(inputValue) => {
+                        formik.setFieldValue("nameId", inputValue);
+                      }}
+                    />
+                  </InputGroup>
+                  <InputGroup
+                    startElement="en"
+                    startElementProps={{ fontSize: "md", fontWeight: "medium" }}
+                  >
+                    <StringInput
+                      inputValue={formik.values.nameEn}
+                      onChange={(inputValue) => {
+                        formik.setFieldValue("nameEn", inputValue);
+                      }}
+                    />
+                  </InputGroup>
                 </Field>
 
                 <Field
                   label={l.description}
-                  invalid={!!formik.errors.description}
-                  errorText={formik.errors.description as string}
+                  invalid={
+                    !!(
+                      formik.errors.descriptionId || formik.errors.descriptionEn
+                    )
+                  }
+                  errorText={
+                    (formik.errors.descriptionId ||
+                      formik.errors.descriptionEn) as string
+                  }
                 >
-                  <Textarea
-                    inputValue={formik.values.description}
-                    onChange={(inputValue) => {
-                      formik.setFieldValue("description", inputValue);
+                  <InputGroup
+                    startElement="id"
+                    display={"flex"}
+                    startElementProps={{
+                      fontSize: "md",
+                      fontWeight: "medium",
+                      alignItems: "start !important",
+                      mt: "18px",
                     }}
-                  />
+                  >
+                    <Textarea
+                      inputValue={formik.values.descriptionId}
+                      onChange={(inputValue) => {
+                        formik.setFieldValue("descriptionId", inputValue);
+                      }}
+                      pl={"40px !important"}
+                    />
+                  </InputGroup>
+                  <InputGroup
+                    startElement="en"
+                    display={"flex"}
+                    startElementProps={{
+                      fontSize: "md",
+                      fontWeight: "medium",
+                      alignItems: "start !important",
+                      mt: "18px",
+                    }}
+                  >
+                    <Textarea
+                      inputValue={formik.values.descriptionEn}
+                      onChange={(inputValue) => {
+                        formik.setFieldValue("descriptionEn", inputValue);
+                      }}
+                      pl={"40px !important"}
+                    />
+                  </InputGroup>
                 </Field>
               </FieldsetRoot>
             </form>
@@ -392,7 +471,7 @@ const Data = (props: any) => {
   const { filter, routeTitle } = props;
 
   // Contexts
-  const { l } = useLang();
+  const { l, lang } = useLang();
   const displayMode = useDataDisplay((s) => s.getDisplay(PREFIX_ID));
   const displayTable = displayMode === "table";
 
@@ -417,7 +496,7 @@ const Data = (props: any) => {
   const dataProps: Interface__DataProps = {
     headers: [
       {
-        th: l.title,
+        th: l.name,
         sortable: true,
       },
       {
@@ -446,12 +525,12 @@ const Data = (props: any) => {
       dim: !!item.deletedAt,
       columns: [
         {
-          td: <ClampText>{`${item.title}`}</ClampText>,
-          value: item.title,
+          td: <ClampText>{`${item.name[lang]}`}</ClampText>,
+          value: item.name[lang],
         },
         {
-          td: <ClampText>{`${item.description}`}</ClampText>,
-          value: item.description,
+          td: <ClampText>{`${item.description[lang]}`}</ClampText>,
+          value: item.description[lang],
         },
 
         // timestamps
@@ -579,8 +658,8 @@ const Data = (props: any) => {
               key={resolvedItem.id}
               item={{
                 id: resolvedItem.id,
-                title: resolvedItem.title,
-                description: resolvedItem.description,
+                title: resolvedItem.name[lang],
+                description: resolvedItem.description[lang],
                 deletedAt: resolvedItem.deletedAt,
               }}
               dataProps={dataProps}

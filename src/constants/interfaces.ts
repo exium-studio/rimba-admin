@@ -23,9 +23,14 @@ export interface Interface__CMSFAQs extends Interface__CUD {
   question: Interface__CMSTextContent;
   answer: Interface__CMSTextContent;
 }
+export interface Interface__CMSNewsCategory extends Interface__CUD {
+  id: string;
+  name: Interface__CMSTextContent;
+  description: Interface__CMSTextContent;
+}
 export interface Interface__CMSActivityCategory extends Interface__CUD {
   id: string;
-  title: Interface__CMSTextContent;
+  name: Interface__CMSTextContent;
   description: Interface__CMSTextContent;
 }
 export interface Interface__CMSActivity extends Interface__CUD {
