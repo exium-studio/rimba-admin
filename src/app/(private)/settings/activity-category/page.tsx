@@ -57,8 +57,8 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import * as yup from "yup";
 
-const BASE_ENDPOINT = "/api/cms/category";
-const PREFIX_ID = "kmis_category";
+const BASE_ENDPOINT = "/api/master-data/event-category";
+const PREFIX_ID = "cms_activity_category";
 type Interface__Data = Interface__KMISTopicCategory;
 
 const MenuTooltip = (props: TooltipProps) => {

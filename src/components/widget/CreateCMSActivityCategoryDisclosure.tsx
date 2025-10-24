@@ -20,11 +20,11 @@ import useBackOnClose from "@/hooks/useBackOnClose";
 import useRequest from "@/hooks/useRequest";
 import { back } from "@/utils/client";
 import { capitalize } from "@/utils/string";
-import { FieldsetRoot, useDisclosure } from "@chakra-ui/react";
+import { FieldsetRoot, InputGroup, useDisclosure } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-const BASE_ENDPOINT = "/api/kmis/category";
+const BASE_ENDPOINT = "/api/master-data/event-category";
 const PREFIX_ID = "kmis_category";
 
 export const CreateCMSActivityCategoryDisclosure = (props: any) => {
@@ -37,7 +37,7 @@ export const CreateCMSActivityCategoryDisclosure = (props: any) => {
   const { l } = useLang();
   const { themeConfig } = useThemeConfig();
   const setRt = useRenderTrigger((s) => s.setRt);
-  const routeTitle = l.category;
+  const routeTitle = l.settings_navs.master_data.activity_category;
 
   // Hooks
   const { req, loading } = useRequest({
@@ -53,15 +53,34 @@ export const CreateCMSActivityCategoryDisclosure = (props: any) => {
   // States
   const formik = useFormik({
     validateOnChange: false,
-    initialValues: { title: "", description: "" },
+    initialValues: {
+      nameId: "",
+      nameEn: "",
+      descriptionId: "",
+      descriptionEn: "",
+    },
     validationSchema: yup.object().shape({
-      title: yup.string().required(l.msg_required_form),
-      description: yup.string().required(l.msg_required_form),
+      nameId: yup.string().required(l.msg_required_form),
+      nameEn: yup.string().required(l.msg_required_form),
+      descriptionId: yup.string().required(l.msg_required_form),
+      descriptionEn: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values, { resetForm }) => {
       const payload = new FormData();
-      payload.append("title", values.title);
-      payload.append("description", values.description);
+      payload.append(
+        "name",
+        JSON.stringify({
+          id: values.nameId,
+          en: values.nameEn,
+        })
+      );
+      payload.append(
+        "description",
+        JSON.stringify({
+          id: values.descriptionId,
+          en: values.descriptionEn,
+        })
+      );
 
       const config = {
         url: `${BASE_ENDPOINT}/create`,
@@ -93,29 +112,82 @@ export const CreateCMSActivityCategoryDisclosure = (props: any) => {
           <form id={ID} onSubmit={formik.handleSubmit}>
             <FieldsetRoot disabled={loading}>
               <Field
-                label={l.title}
-                invalid={!!formik.errors.title}
-                errorText={formik.errors.title as string}
+                label={l.name}
+                invalid={!!(formik.errors.nameId || formik.errors.nameEn)}
+                errorText={
+                  (formik.errors.nameId || formik.errors.nameEn) as string
+                }
               >
-                <StringInput
-                  inputValue={formik.values.title}
-                  onChange={(inputValue) => {
-                    formik.setFieldValue("title", inputValue);
-                  }}
-                />
+                <InputGroup
+                  startElement="id"
+                  startElementProps={{ fontSize: "md", fontWeight: "medium" }}
+                >
+                  <StringInput
+                    inputValue={formik.values.nameId}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("nameId", inputValue);
+                    }}
+                  />
+                </InputGroup>
+                <InputGroup
+                  startElement="en"
+                  startElementProps={{ fontSize: "md", fontWeight: "medium" }}
+                >
+                  <StringInput
+                    inputValue={formik.values.nameEn}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("nameEn", inputValue);
+                    }}
+                  />
+                </InputGroup>
               </Field>
 
               <Field
                 label={l.description}
-                invalid={!!formik.errors.description}
-                errorText={formik.errors.description as string}
+                invalid={
+                  !!(formik.errors.descriptionId || formik.errors.descriptionEn)
+                }
+                errorText={
+                  (formik.errors.descriptionId ||
+                    formik.errors.descriptionEn) as string
+                }
               >
-                <Textarea
-                  inputValue={formik.values.description}
-                  onChange={(inputValue) => {
-                    formik.setFieldValue("description", inputValue);
+                <InputGroup
+                  startElement="id"
+                  display={"flex"}
+                  startElementProps={{
+                    fontSize: "md",
+                    fontWeight: "medium",
+                    alignItems: "start !important",
+                    mt: "18px",
                   }}
-                />
+                >
+                  <Textarea
+                    inputValue={formik.values.descriptionId}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("descriptionId", inputValue);
+                    }}
+                    pl={"40px !important"}
+                  />
+                </InputGroup>
+                <InputGroup
+                  startElement="en"
+                  display={"flex"}
+                  startElementProps={{
+                    fontSize: "md",
+                    fontWeight: "medium",
+                    alignItems: "start !important",
+                    mt: "18px",
+                  }}
+                >
+                  <Textarea
+                    inputValue={formik.values.descriptionEn}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("descriptionEn", inputValue);
+                    }}
+                    pl={"40px !important"}
+                  />
+                </InputGroup>
               </Field>
             </FieldsetRoot>
           </form>
