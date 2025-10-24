@@ -194,21 +194,6 @@ const Create = (props: any) => {
             <form id={ID} onSubmit={formik.handleSubmit}>
               <FieldsetRoot disabled={loading}>
                 <Field
-                  label={"Thumbnail"}
-                  invalid={!!formik.errors.files}
-                  errorText={formik.errors.files as string}
-                >
-                  <ImgInput
-                    accept="image/png, image/jpeg, image/webp"
-                    acceptPlaceholder=".jpg, .jpeg, .png"
-                    inputValue={formik.values.files}
-                    onChange={(inputValue) => {
-                      formik.setFieldValue("files", inputValue);
-                    }}
-                  />
-                </Field>
-
-                <Field
                   label={l.category}
                   invalid={!!formik.errors.category}
                   errorText={formik.errors.category as string}
@@ -223,17 +208,26 @@ const Create = (props: any) => {
                     />
 
                     <CreateKMISCategoryDisclosureTrigger>
-                      <Btn
-                        iconButton
-                        colorPalette={themeConfig.colorPalette}
-                        variant={"outline"}
-                      >
+                      <Btn iconButton variant={"outline"}>
                         <Icon>
                           <IconPlus stroke={1.5} />
                         </Icon>
                       </Btn>
                     </CreateKMISCategoryDisclosureTrigger>
                   </HStack>
+                </Field>
+
+                <Field
+                  label={"Thumbnail"}
+                  invalid={!!formik.errors.files}
+                  errorText={formik.errors.files as string}
+                >
+                  <ImgInput
+                    inputValue={formik.values.files}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("files", inputValue);
+                    }}
+                  />
                 </Field>
 
                 <Field
@@ -523,13 +517,35 @@ const Update = (props: any) => {
             <form id={ID} onSubmit={formik.handleSubmit}>
               <FieldsetRoot disabled={loading}>
                 <Field
+                  label={l.category}
+                  invalid={!!formik.errors.category}
+                  errorText={formik.errors.category as string}
+                >
+                  <HStack w={"full"}>
+                    <SelectKMISCategory
+                      inputValue={formik.values.category}
+                      onConfirm={(inputValue) => {
+                        formik.setFieldValue("category", inputValue);
+                      }}
+                      flex={1}
+                    />
+
+                    <CreateKMISCategoryDisclosureTrigger>
+                      <Btn iconButton variant={"outline"}>
+                        <Icon>
+                          <IconPlus stroke={1.5} />
+                        </Icon>
+                      </Btn>
+                    </CreateKMISCategoryDisclosureTrigger>
+                  </HStack>
+                </Field>
+
+                <Field
                   label={"Thumbnail"}
                   invalid={!!formik.errors.files}
                   errorText={formik.errors.files as string}
                 >
                   <ImgInput
-                    accept="image/png, image/jpeg, image/webp"
-                    acceptPlaceholder=".jpg, .jpeg, .png"
                     inputValue={formik.values.files}
                     onChange={(inputValue) => {
                       formik.setFieldValue("files", inputValue);
@@ -555,34 +571,6 @@ const Update = (props: any) => {
                       );
                     }}
                   />
-                </Field>
-
-                <Field
-                  label={l.category}
-                  invalid={!!formik.errors.category}
-                  errorText={formik.errors.category as string}
-                >
-                  <HStack w={"full"}>
-                    <SelectKMISCategory
-                      inputValue={formik.values.category}
-                      onConfirm={(inputValue) => {
-                        formik.setFieldValue("category", inputValue);
-                      }}
-                      flex={1}
-                    />
-
-                    <CreateKMISCategoryDisclosureTrigger>
-                      <Btn
-                        iconButton
-                        colorPalette={themeConfig.colorPalette}
-                        variant={"outline"}
-                      >
-                        <Icon>
-                          <IconPlus stroke={1.5} />
-                        </Icon>
-                      </Btn>
-                    </CreateKMISCategoryDisclosureTrigger>
-                  </HStack>
                 </Field>
 
                 <Field

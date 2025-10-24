@@ -120,8 +120,6 @@ const MaterialFormByType = (props: any) => {
             onChange={(inputValue) => {
               formik.setFieldValue("materialFiles", inputValue);
             }}
-            accept="image/png, image/jpeg, image/jpeg"
-            acceptPlaceholder=".png, .jpg, .jpeg"
             existingFiles={resolvedData?.materialFiles}
             onDeleteFile={(fileData) => {
               formik.setFieldValue(

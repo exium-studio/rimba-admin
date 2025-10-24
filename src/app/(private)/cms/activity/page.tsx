@@ -1,6 +1,7 @@
 "use client";
 
 import { Btn } from "@/components/ui/btn";
+import { CContainer } from "@/components/ui/c-container";
 import {
   DisclosureBody,
   DisclosureContent,
@@ -12,19 +13,23 @@ import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-conte
 import { Field } from "@/components/ui/field";
 import { FileInput } from "@/components/ui/file-input";
 import { Img } from "@/components/ui/img";
+import { ImgInput } from "@/components/ui/img-input";
 import { MenuItem } from "@/components/ui/menu";
+import { RichEditor } from "@/components/ui/RichEditor";
 import SearchInput from "@/components/ui/search-input";
 import { StringInput } from "@/components/ui/string-input";
 import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipProps } from "@/components/ui/tooltip";
 import { ClampText } from "@/components/widget/ClampText";
 import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
+import { CreateCMSActivityCategoryDisclosureTrigger } from "@/components/widget/CreateCMSActivityCategoryDisclosure";
 import { DataDisplayToggle } from "@/components/widget/DataDisplayToggle";
 import { DataGrid } from "@/components/widget/DataGrid";
 import { DataGridItem } from "@/components/widget/DataGridItem";
 import { DataTable } from "@/components/widget/DataTable";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
+import { ImgViewer } from "@/components/widget/ImgViewer";
 import { PageContainer, PageContent } from "@/components/widget/Page";
 import { SelectCMSActivityCategory } from "@/components/widget/SelectCMSActivityCategory";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
@@ -55,6 +60,7 @@ import {
   HStack,
   Icon,
   InputGroup,
+  SimpleGrid,
   useDisclosure,
 } from "@chakra-ui/react";
 import {
@@ -112,6 +118,7 @@ const Create = (props: any) => {
   });
 
   // States
+  const [maximize, setMaximize] = useState<boolean>(false);
   const formik = useFormik({
     validateOnChange: false,
     initialValues: {
@@ -121,20 +128,25 @@ const Create = (props: any) => {
       titleEn: "",
       descriptionId: "",
       descriptionEn: "",
+      eventContentId: "",
+      eventContentEn: "",
     },
     validationSchema: yup.object().shape({
       category: yup.array().required(l.msg_required_form),
       files: fileValidation({
         maxSizeMB: 10,
-        allowedExtensions: ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx"],
+        allowedExtensions: ["jpg", "jpeg", "png"],
       }).required(l.msg_required_form),
       titleId: yup.string().required(l.msg_required_form),
       titleEn: yup.string().required(l.msg_required_form),
       descriptionId: yup.string().required(l.msg_required_form),
       descriptionEn: yup.string().required(l.msg_required_form),
+      eventContentId: yup.string().required(l.msg_required_form),
+      eventContentEn: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values) => {
       const payload = new FormData();
+      payload.append("categoryId", `${values.category?.[0]?.id}`);
       payload.append("files", values.files[0]);
       payload.append(
         "title",
@@ -150,7 +162,13 @@ const Create = (props: any) => {
           en: values.descriptionEn,
         })
       );
-
+      payload.append(
+        "eventContent",
+        JSON.stringify({
+          id: values.eventContentId,
+          en: values.eventContentEn,
+        })
+      );
       const config = {
         url: `${BASE_ENDPOINT}/create`,
         method: "POST",
@@ -187,124 +205,185 @@ const Create = (props: any) => {
         </Btn>
       </Tooltip>
 
-      <DisclosureRoot open={open} lazyLoad size={"xs"}>
-        <DisclosureContent>
+      <DisclosureRoot open={open} lazyLoad size={maximize ? "full" : "xl"}>
+        <DisclosureContent
+          positionerProps={{
+            p: maximize ? 0 : 4,
+          }}
+        >
           <DisclosureHeader>
-            <DisclosureHeaderContent title={`${l.add} ${routeTitle}`} />
+            <DisclosureHeaderContent
+              title={`${l.add} ${routeTitle}`}
+              withMaximizeButton
+              onMaximizeChange={(maximize) => {
+                setMaximize(maximize);
+              }}
+            />
           </DisclosureHeader>
 
           <DisclosureBody>
             <form id={ID} onSubmit={formik.handleSubmit}>
               <FieldsetRoot disabled={loading}>
+                <SimpleGrid columns={[1, null, 2]} gap={4}>
+                  <CContainer gap={4}>
+                    <Field
+                      label={l.category}
+                      invalid={!!formik.errors.category}
+                      errorText={formik.errors.category as string}
+                    >
+                      <HStack w={"full"}>
+                        <SelectCMSActivityCategory
+                          inputValue={formik.values.category}
+                          onConfirm={(inputValue) => {
+                            formik.setFieldValue("category", inputValue);
+                          }}
+                          flex={1}
+                        />
+
+                        <CreateCMSActivityCategoryDisclosureTrigger>
+                          <Btn iconButton variant={"outline"}>
+                            <Icon>
+                              <IconPlus stroke={1.5} />
+                            </Icon>
+                          </Btn>
+                        </CreateCMSActivityCategoryDisclosureTrigger>
+                      </HStack>
+                    </Field>
+
+                    <Field
+                      label={"Thumbnail"}
+                      invalid={!!formik.errors.files}
+                      errorText={formik.errors.files as string}
+                    >
+                      <ImgInput
+                        inputValue={formik.values.files}
+                        onChange={(inputValue) => {
+                          formik.setFieldValue("files", inputValue);
+                        }}
+                      />
+                    </Field>
+                  </CContainer>
+
+                  <CContainer gap={4}>
+                    <Field
+                      label={l.title}
+                      invalid={
+                        !!(formik.errors.titleId || formik.errors.titleEn)
+                      }
+                      errorText={
+                        (formik.errors.titleId ||
+                          formik.errors.titleEn) as string
+                      }
+                    >
+                      <InputGroup
+                        startElement="id"
+                        startElementProps={{
+                          fontSize: "md",
+                          fontWeight: "medium",
+                        }}
+                      >
+                        <StringInput
+                          inputValue={formik.values.titleId}
+                          onChange={(inputValue) => {
+                            formik.setFieldValue("titleId", inputValue);
+                          }}
+                        />
+                      </InputGroup>
+                      <InputGroup
+                        startElement="en"
+                        startElementProps={{
+                          fontSize: "md",
+                          fontWeight: "medium",
+                        }}
+                      >
+                        <StringInput
+                          inputValue={formik.values.titleEn}
+                          onChange={(inputValue) => {
+                            formik.setFieldValue("titleEn", inputValue);
+                          }}
+                        />
+                      </InputGroup>
+                    </Field>
+
+                    <Field
+                      label={l.description}
+                      invalid={
+                        !!(
+                          formik.errors.descriptionId ||
+                          formik.errors.descriptionEn
+                        )
+                      }
+                      errorText={
+                        (formik.errors.descriptionId ||
+                          formik.errors.descriptionEn) as string
+                      }
+                    >
+                      <InputGroup
+                        startElement="id"
+                        display={"flex"}
+                        startElementProps={{
+                          fontSize: "md",
+                          fontWeight: "medium",
+                          alignItems: "start !important",
+                          mt: "18px",
+                        }}
+                      >
+                        <Textarea
+                          inputValue={formik.values.descriptionId}
+                          onChange={(inputValue) => {
+                            formik.setFieldValue("descriptionId", inputValue);
+                          }}
+                          pl={"40px !important"}
+                          minH={"100px"}
+                        />
+                      </InputGroup>
+                      <InputGroup
+                        startElement="en"
+                        display={"flex"}
+                        startElementProps={{
+                          fontSize: "md",
+                          fontWeight: "medium",
+                          alignItems: "start !important",
+                          mt: "18px",
+                        }}
+                      >
+                        <Textarea
+                          inputValue={formik.values.descriptionEn}
+                          onChange={(inputValue) => {
+                            formik.setFieldValue("descriptionEn", inputValue);
+                          }}
+                          pl={"40px !important"}
+                          minH={"100px"}
+                        />
+                      </InputGroup>
+                    </Field>
+                  </CContainer>
+                </SimpleGrid>
+
                 <Field
-                  label={l.category}
-                  invalid={!!formik.errors.category}
-                  errorText={formik.errors.category as string}
+                  label={`${l.content} (id)`}
+                  invalid={!!formik.errors.eventContentId}
+                  errorText={formik.errors.eventContentId as string}
                 >
-                  <SelectCMSActivityCategory
-                    inputValue={formik.values.category}
+                  <RichEditor
+                    inputValue={formik.values.eventContentId}
                     onChange={(inputValue) => {
-                      formik.setFieldValue("category", inputValue);
+                      formik.setFieldValue("eventContentId", inputValue);
                     }}
                   />
                 </Field>
 
                 <Field
-                  label={"Thumbnail"}
-                  invalid={!!formik.errors.files}
-                  errorText={formik.errors.files as string}
+                  label={`${l.content} (en)`}
+                  invalid={!!formik.errors.eventContentEn}
+                  errorText={formik.errors.eventContentEn as string}
                 >
-                  <FileInput
-                    dropzone
-                    maxFiles={5}
-                    accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation"
-                    acceptPlaceholder=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx"
-                    inputValue={formik.values.files}
+                  <RichEditor
+                    inputValue={formik.values.eventContentEn}
                     onChange={(inputValue) => {
-                      formik.setFieldValue("files", inputValue);
+                      formik.setFieldValue("eventContentEn", inputValue);
                     }}
                   />
-                </Field>
-
-                <Field
-                  label={l.title}
-                  invalid={!!(formik.errors.titleId || formik.errors.titleEn)}
-                  errorText={
-                    (formik.errors.titleId || formik.errors.titleEn) as string
-                  }
-                >
-                  <InputGroup
-                    startElement="id"
-                    startElementProps={{ fontSize: "md", fontWeight: "medium" }}
-                  >
-                    <StringInput
-                      inputValue={formik.values.titleId}
-                      onChange={(inputValue) => {
-                        formik.setFieldValue("titleId", inputValue);
-                      }}
-                    />
-                  </InputGroup>
-                  <InputGroup
-                    startElement="en"
-                    startElementProps={{ fontSize: "md", fontWeight: "medium" }}
-                  >
-                    <StringInput
-                      inputValue={formik.values.titleEn}
-                      onChange={(inputValue) => {
-                        formik.setFieldValue("titleEn", inputValue);
-                      }}
-                    />
-                  </InputGroup>
-                </Field>
-
-                <Field
-                  label={l.description}
-                  invalid={
-                    !!(
-                      formik.errors.descriptionId || formik.errors.descriptionEn
-                    )
-                  }
-                  errorText={
-                    (formik.errors.descriptionId ||
-                      formik.errors.descriptionEn) as string
-                  }
-                >
-                  <InputGroup
-                    startElement="id"
-                    display={"flex"}
-                    startElementProps={{
-                      fontSize: "md",
-                      fontWeight: "medium",
-                      alignItems: "start !important",
-                      mt: "18px",
-                    }}
-                  >
-                    <Textarea
-                      inputValue={formik.values.descriptionId}
-                      onChange={(inputValue) => {
-                        formik.setFieldValue("descriptionId", inputValue);
-                      }}
-                      pl={"40px !important"}
-                    />
-                  </InputGroup>
-                  <InputGroup
-                    startElement="en"
-                    display={"flex"}
-                    startElementProps={{
-                      fontSize: "md",
-                      fontWeight: "medium",
-                      alignItems: "start !important",
-                      mt: "18px",
-                    }}
-                  >
-                    <Textarea
-                      inputValue={formik.values.descriptionEn}
-                      onChange={(inputValue) => {
-                        formik.setFieldValue("descriptionEn", inputValue);
-                      }}
-                      pl={"40px !important"}
-                    />
-                  </InputGroup>
                 </Field>
               </FieldsetRoot>
             </form>
@@ -793,16 +872,16 @@ const Data = (props: any) => {
   const dataProps: Interface__DataProps = {
     headers: [
       {
+        th: "Thumbnail",
+        align: "center",
+      },
+      {
         th: l.title,
         sortable: true,
       },
       {
         th: l.description,
         sortable: true,
-      },
-      {
-        th: "Files",
-        align: "center",
       },
 
       // timestamps
@@ -826,8 +905,21 @@ const Data = (props: any) => {
       dim: !!item.deletedAt,
       columns: [
         {
-          td: <Img src={imgUrl(item?.thumbnail?.[0]?.filePath)} />,
-          value: "",
+          td: (
+            <ImgViewer
+              id={`topic-cover-${item.id}`}
+              src={imgUrl(item?.thumbnail?.[0]?.filePath)}
+            >
+              <Img
+                key={imgUrl(item?.thumbnail?.[0]?.filePath)}
+                src={imgUrl(item?.thumbnail?.[0]?.filePath)}
+                h={"24px"}
+                aspectRatio={1.1}
+              />
+            </ImgViewer>
+          ),
+          value: imgUrl(item?.thumbnail?.[0]?.filePath),
+          dataType: "image",
           align: "center",
         },
         {
@@ -964,6 +1056,8 @@ const Data = (props: any) => {
               key={resolvedItem.id}
               item={{
                 id: resolvedItem.id,
+                showImg: true,
+                img: imgUrl(resolvedItem?.thumbnail?.[0]?.filePath),
                 title: resolvedItem.title[lang],
                 description: resolvedItem.description[lang],
                 deletedAt: resolvedItem.deletedAt,

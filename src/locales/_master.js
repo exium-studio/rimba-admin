@@ -849,6 +849,10 @@ export const not_answered = {
   id: "Belum terjawab",
   en: "Not answered",
 };
+export const content = {
+  id: "Konten",
+  en: "Content",
+};
 
 // Message
 export const msg_is_public_kmis_material = {

@@ -51,6 +51,7 @@ const translations = {
   "close": "Close",
   "component": "Component",
   "confirm": "Confirm",
+  "content": "Content",
   "correct_answer": "Correct answer",
   "count": "Count",
   "created": "Created",

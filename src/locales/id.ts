@@ -51,6 +51,7 @@ const translations = {
   "close": "Tutup",
   "component": "Komponen",
   "confirm": "Konfirmasi",
+  "content": "Konten",
   "correct_answer": "Jawaban benar",
   "count": "Jumlah",
   "created": "Dibuat",
