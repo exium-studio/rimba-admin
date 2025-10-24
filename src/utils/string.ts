@@ -68,3 +68,56 @@ export const maskEmail = (email?: string) => {
 export const getL = () => {
   return useLang.getState().l;
 };
+
+export type SlugifyOptions = {
+  separator?: string;
+  lowercase?: boolean;
+  removeAccents?: boolean;
+  strict?: boolean;
+  maxLength?: number;
+};
+
+export function slugify(input: string, opts: SlugifyOptions = {}): string {
+  const {
+    separator = "-",
+    lowercase = true,
+    removeAccents = true,
+    strict = true,
+    maxLength,
+  } = opts;
+
+  if (!input) return "";
+
+  let s = input.trim();
+
+  if (removeAccents) {
+    s = s.normalize("NFKD").replace(/[\u0300-\u036f]/g, "");
+  }
+
+  if (lowercase) s = s.toLowerCase();
+
+  // replace any sequence of non-alphanumeric characters with separator
+  s = s.replace(/[^a-z0-9]+/g, separator);
+
+  if (strict) {
+    const esc = escapeRegExp(separator);
+    s = s.replace(new RegExp(`${esc}{2,}`, "g"), separator);
+    s = s.replace(new RegExp(`^${esc}|${esc}$`, "g"), "");
+  } else {
+    // trim separator at ends even when not strict
+    const esc = escapeRegExp(separator);
+    s = s.replace(new RegExp(`^${esc}|${esc}$`, "g"), "");
+  }
+
+  if (maxLength && s.length > maxLength) {
+    s = s
+      .slice(0, maxLength)
+      .replace(new RegExp(`${escapeRegExp(separator)}$`), "");
+  }
+
+  return s;
+}
+
+function escapeRegExp(str: string): string {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}

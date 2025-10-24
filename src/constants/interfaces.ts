@@ -28,6 +28,15 @@ export interface Interface__CMSNewsCategory extends Interface__CUD {
   name: Interface__CMSTextContent;
   description: Interface__CMSTextContent;
 }
+export interface Interface__CMSNews extends Interface__CUD {
+  id: string;
+  newsCategory: Interface__CMSActivityCategory;
+  thumbnail: Interface__StorageFile[];
+  title: Interface__CMSTextContent;
+  slug: Interface__CMSTextContent;
+  description: Interface__CMSTextContent;
+  newsContent: Interface__CMSTextContent;
+}
 export interface Interface__CMSActivityCategory extends Interface__CUD {
   id: string;
   name: Interface__CMSTextContent;
