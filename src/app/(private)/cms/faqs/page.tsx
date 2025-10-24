@@ -63,7 +63,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import * as yup from "yup";
 
-const BASE_ENDPOINT = "/api/cms/faqs";
+const BASE_ENDPOINT = "/api/cms/faq";
 const PREFIX_ID = "cms_faqs";
 type Interface__Data = Interface__CMSFAQs;
 
