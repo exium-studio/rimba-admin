@@ -128,7 +128,6 @@ const ADMSetting = () => {
     </SettingsItemContainer>
   );
 };
-
 const DarkMode = () => {
   // Contexts
   const { l } = useLang();
@@ -219,8 +218,8 @@ const Theme = () => {
 
     // Cyans & Blues
     { palette: "kemenkes", primaryHex: "#16B3AC" },
-    { palette: "cyan", primaryHex: "#00BCD4" },
     { palette: "powderBlue", primaryHex: "#769cc2" },
+    { palette: "cyan", primaryHex: "#00BCD4" },
     { palette: "sky", primaryHex: "#0EA5E9" },
     { palette: "blue", primaryHex: "#3a72ed" },
     { palette: "sapphire", primaryHex: "#1939B7" },

@@ -402,7 +402,9 @@ const translations = {
     },
     "master_data": {
       "index": "Master Data",
-      "topic_category": "Topic Category"
+      "topic_category": "Topic Category",
+      "activity_category": "Activity Category",
+      "news_category": "News Category"
     },
     "others": {
       "index": "Others",

@@ -402,7 +402,9 @@ const translations = {
     },
     "master_data": {
       "index": "Master Data",
-      "topic_category": "Kategori Topic"
+      "topic_category": "Kategori Topic",
+      "activity_category": "Kategori Aktivitas",
+      "news_category": "Kategori Berita"
     },
     "others": {
       "index": "Lainnya",

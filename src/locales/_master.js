@@ -131,6 +131,14 @@ export const settings_navs = {
       id: "Kategori Topic",
       en: "Topic Category",
     },
+    activity_category: {
+      id: "Kategori Aktivitas",
+      en: "Activity Category",
+    },
+    news_category: {
+      id: "Kategori Berita",
+      en: "News Category",
+    },
   },
   others: {
     index: {

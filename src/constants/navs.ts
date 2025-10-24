@@ -202,6 +202,18 @@ export const OTHER_NAVS: Interface__NavItem[] = [
                 path: `/settings/topic-category`,
                 backPath: `/settings`,
               },
+              {
+                icon: IconCategory,
+                labelKey: "settings_navs.master_data.activity_category",
+                path: `/settings/activity-category`,
+                backPath: `/settings`,
+              },
+              {
+                icon: IconCategory,
+                labelKey: "settings_navs.master_data.news_category",
+                path: `/settings/news-category`,
+                backPath: `/settings`,
+              },
             ],
           },
         ],
