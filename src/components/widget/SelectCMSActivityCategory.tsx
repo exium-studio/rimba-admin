@@ -18,7 +18,7 @@ export const SelectCMSActivityCategory = (
   const { ...restProps } = props;
 
   // Contexts
-  const { l } = useLang();
+  const { l, lang } = useLang();
 
   // Hooks
   const { req, loading } = useRequest({
@@ -48,7 +48,7 @@ export const SelectCMSActivityCategory = (
           const newOptions = r?.data?.data?.data
             ?.map((item: any) => ({
               id: item?.id,
-              label: item?.title,
+              label: item?.name[lang],
             }))
             .sort((a: Interface__SelectOption, b: Interface__SelectOption) =>
               a?.label?.localeCompare(b?.label)

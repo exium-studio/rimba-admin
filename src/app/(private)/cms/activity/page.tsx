@@ -353,7 +353,7 @@ const Update = (props: any) => {
   const resolvedData = data as Interface__Data;
 
   // Contexts
-  const { l } = useLang();
+  const { l, lang } = useLang();
   const { themeConfig } = useThemeConfig();
   const setRt = useRenderTrigger((s) => s.setRt);
 
@@ -450,7 +450,7 @@ const Update = (props: any) => {
       category: [
         {
           id: resolvedData.eventCategory.id,
-          label: resolvedData.eventCategory.title,
+          label: resolvedData.eventCategory.name[lang],
         },
       ],
       files: [],
