@@ -24,10 +24,10 @@ import { FieldsetRoot, InputGroup, useDisclosure } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-const BASE_ENDPOINT = "/api/master-data/event-category";
-const PREFIX_ID = "cms_activity_category";
+const BASE_ENDPOINT = "/api/master-data/news-category";
+const PREFIX_ID = "cms_news_category";
 
-export const CreateCMSActivityCategoryDisclosure = (props: any) => {
+export const CreateCMSNewsCategoryDisclosure = (props: any) => {
   const ID = `${PREFIX_ID}_create`;
 
   // Props
@@ -208,7 +208,7 @@ export const CreateCMSActivityCategoryDisclosure = (props: any) => {
   );
 };
 
-export const CreateCMSActivityCategoryDisclosureTrigger = (props: any) => {
+export const CreateCMSNewsCategoryDisclosureTrigger = (props: any) => {
   // Props
   const { children, id, ...restProps } = props;
 
@@ -221,7 +221,7 @@ export const CreateCMSActivityCategoryDisclosureTrigger = (props: any) => {
         {children}
       </CContainer>
 
-      <CreateCMSActivityCategoryDisclosure open={open} />
+      <CreateCMSNewsCategoryDisclosure open={open} />
     </>
   );
 };
