@@ -139,6 +139,10 @@ export const settings_navs = {
       id: "Kategori Berita",
       en: "News Category",
     },
+    animal_category: {
+      id: "Kategori Satwa",
+      en: "Animal Category",
+    },
   },
   others: {
     index: {

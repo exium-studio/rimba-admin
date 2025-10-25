@@ -407,7 +407,8 @@ const translations = {
       "index": "Master Data",
       "topic_category": "Topic Category",
       "activity_category": "Activity Category",
-      "news_category": "News Category"
+      "news_category": "News Category",
+      "animal_category": "Animal Category"
     },
     "others": {
       "index": "Others",

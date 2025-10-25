@@ -215,6 +215,12 @@ export const OTHER_NAVS: Interface__NavItem[] = [
                 path: `/settings/news-category`,
                 backPath: `/settings`,
               },
+              {
+                icon: IconCategory,
+                labelKey: "settings_navs.master_data.animal_category",
+                path: `/settings/animal-category`,
+                backPath: `/settings`,
+              },
             ],
           },
         ],
