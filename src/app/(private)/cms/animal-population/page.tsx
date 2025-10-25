@@ -137,7 +137,7 @@ const Create = (props: any) => {
     onSubmit: (values) => {
       const payload = new FormData();
       if (!isEmptyArray(values.files)) payload.append("files", values.files[0]);
-      payload.append("categoryId", "1");
+      payload.append("categoryId", `${formik.values.category?.[0]?.id}`);
       payload.append(
         "name",
         JSON.stringify({
@@ -152,6 +152,7 @@ const Create = (props: any) => {
           en: values.descriptionEn,
         })
       );
+      payload.append("total", `${values.total}`);
 
       const config = {
         url: `${BASE_ENDPOINT}/create`,
@@ -215,10 +216,8 @@ const Create = (props: any) => {
 
                 <Field
                   label={l.image}
-                  invalid={!!(formik.errors.nameId || formik.errors.nameEn)}
-                  errorText={
-                    (formik.errors.nameId || formik.errors.nameEn) as string
-                  }
+                  invalid={!!formik.errors.files}
+                  errorText={formik.errors.files as string}
                 >
                   <ImgInput
                     inputValue={formik.values.files}
