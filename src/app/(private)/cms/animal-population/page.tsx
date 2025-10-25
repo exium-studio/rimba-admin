@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/disclosure";
 import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-content";
 import { Field } from "@/components/ui/field";
+import { Img } from "@/components/ui/img";
 import { ImgInput } from "@/components/ui/img-input";
 import { MenuItem } from "@/components/ui/menu";
 import { NumInput } from "@/components/ui/number-input";
@@ -25,6 +26,7 @@ import { DataGridItem } from "@/components/widget/DataGridItem";
 import { DataTable } from "@/components/widget/DataTable";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
+import { ImgViewer } from "@/components/widget/ImgViewer";
 import { PageContainer, PageContent } from "@/components/widget/Page";
 import { SelectCMSAnimalCategory } from "@/components/widget/SelectCMSAnimalCategory";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
@@ -880,11 +882,19 @@ const Data = (props: any) => {
   const dataProps: Interface__DataProps = {
     headers: [
       {
-        th: l.question,
+        th: l.image,
+        align: "center",
+      },
+      {
+        th: l.animal_cateogry,
         sortable: true,
       },
       {
-        th: l.answer,
+        th: l.name,
+        sortable: true,
+      },
+      {
+        th: l.description,
         sortable: true,
       },
 
@@ -908,6 +918,27 @@ const Data = (props: any) => {
       data: item,
       dim: !!item.deletedAt,
       columns: [
+        {
+          td: (
+            <ImgViewer
+              id={`image-viewer-${PREFIX_ID}-${item.id}`}
+              src={imgUrl(item.speciesImage?.[0].filePath)}
+            >
+              <Img
+                key={imgUrl(item.speciesImage?.[0].filePath)}
+                src={imgUrl(item.speciesImage?.[0].filePath)}
+                h={"24px"}
+                aspectRatio={1.1}
+              />
+            </ImgViewer>
+          ),
+          value: imgUrl(item.speciesImage?.[0].filePath),
+          align: "center",
+        },
+        {
+          td: <ClampText>{`${item.animalCategory.name[lang]}`}</ClampText>,
+          value: item.animalCategory.name[lang],
+        },
         {
           td: <ClampText>{`${item.name[lang]}`}</ClampText>,
           value: item.name[lang],
