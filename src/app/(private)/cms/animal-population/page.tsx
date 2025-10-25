@@ -1045,7 +1045,7 @@ const Data = (props: any) => {
                 showImg: true,
                 img: imgUrl(resolvedItem.speciesImage?.[0]?.filePath),
                 title: resolvedItem.name[lang],
-                description: resolvedItem.animalCategory.name[lang],
+                description: resolvedItem.total,
                 deletedAt: resolvedItem.deletedAt,
               }}
               dataProps={dataProps}
