@@ -320,7 +320,7 @@ const translations = {
       "legal_document": "Legal Document",
       "activity": "Activity",
       "news": "News and Field Notes",
-      "animal_composition": "Animal Composition",
+      "animal_composition": "Animal Population",
       "faqs": "FAQs"
     },
     "kmis": {

@@ -320,7 +320,7 @@ const translations = {
       "legal_document": "Dokumen Hukum",
       "activity": "Aktivitas",
       "news": "Berita dan Catatan Lapangan",
-      "animal_composition": "Komposisi Hewan",
+      "animal_composition": "Populasi Satwa",
       "faqs": "FAQs"
     },
     "kmis": {

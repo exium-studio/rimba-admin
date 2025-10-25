@@ -22,8 +22,8 @@ export const private_navs = {
       en: "News and Field Notes",
     },
     animal_composition: {
-      id: "Komposisi Hewan",
-      en: "Animal Composition",
+      id: "Populasi Satwa",
+      en: "Animal Population",
     },
     faqs: {
       id: "FAQs",
