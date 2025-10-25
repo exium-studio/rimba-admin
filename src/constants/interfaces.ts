@@ -34,6 +34,7 @@ export interface Interface__CMSAnimalPopulation extends Interface__CUD {
   speciesImage: Interface__StorageFile[];
   name: Interface__CMSTextContent;
   description: Interface__CMSTextContent;
+  total: number;
 }
 export interface Interface__CMSNewsCategory extends Interface__CUD {
   id: string;

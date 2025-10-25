@@ -14,11 +14,11 @@ import { ImgInput } from "@/components/ui/img-input";
 import { MenuItem } from "@/components/ui/menu";
 import { NumInput } from "@/components/ui/number-input";
 import SearchInput from "@/components/ui/search-input";
-import { StringInput } from "@/components/ui/string-input";
 import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipProps } from "@/components/ui/tooltip";
 import { ClampText } from "@/components/widget/ClampText";
 import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
+import { CreateCMSAnimalCategoryDisclosureTrigger } from "@/components/widget/CreateCMSAnimalCategoryDisclosure";
 import { DataDisplayToggle } from "@/components/widget/DataDisplayToggle";
 import { DataGrid } from "@/components/widget/DataGrid";
 import { DataGridItem } from "@/components/widget/DataGridItem";
@@ -49,7 +49,7 @@ import { disclosureId } from "@/utils/disclosure";
 import { formatDate } from "@/utils/formatter";
 import { capitalize, pluckString } from "@/utils/string";
 import { getActiveNavs } from "@/utils/url";
-import { fileValidation } from "@/utils/validationSchema";
+import { fileValidation, min1FileExist } from "@/utils/validationSchema";
 import {
   FieldsetRoot,
   HStack,
@@ -206,12 +206,23 @@ const Create = (props: any) => {
                     (formik.errors.nameId || formik.errors.nameEn) as string
                   }
                 >
-                  <SelectCMSAnimalCategory
-                    inputValue={formik.values.category}
-                    onConfirm={(inputValue) => {
-                      formik.setFieldValue("category", inputValue);
-                    }}
-                  />
+                  <HStack w={"full"}>
+                    <SelectCMSAnimalCategory
+                      inputValue={formik.values.category}
+                      onConfirm={(inputValue) => {
+                        formik.setFieldValue("category", inputValue);
+                      }}
+                      flex={1}
+                    />
+
+                    <CreateCMSAnimalCategoryDisclosureTrigger>
+                      <Btn iconButton variant={"outline"}>
+                        <Icon>
+                          <IconPlus stroke={1.5} />
+                        </Icon>
+                      </Btn>
+                    </CreateCMSAnimalCategoryDisclosureTrigger>
+                  </HStack>
                 </Field>
 
                 <Field
@@ -388,7 +399,7 @@ const Update = (props: any) => {
   const resolvedData = data as Interface__Data;
 
   // Contexts
-  const { l } = useLang();
+  const { l, lang } = useLang();
   const { themeConfig } = useThemeConfig();
   const setRt = useRenderTrigger((s) => s.setRt);
 
@@ -414,36 +425,56 @@ const Update = (props: any) => {
   const formik = useFormik({
     validateOnChange: false,
     initialValues: {
+      files: null as any,
+      deleteDocumentIds: [],
+      category: null as Interface__SelectOption[] | null,
       nameId: "",
       nameEn: "",
       descriptionId: "",
       descriptionEn: "",
+      total: null as number | null,
     },
     validationSchema: yup.object().shape({
+      files: fileValidation({
+        maxSizeMB: 10,
+        allowedExtensions: ["jpg", "jpeg", "png"],
+      }).concat(
+        min1FileExist({
+          resolvedData,
+          existingKey: "speciesImage",
+          deletedKey: "deleteDocumentIds",
+          newKey: "files",
+          message: l.msg_required_form,
+        })
+      ),
       nameId: yup.string().required(l.msg_required_form),
       nameEn: yup.string().required(l.msg_required_form),
       descriptionId: yup.string().required(l.msg_required_form),
       descriptionEn: yup.string().required(l.msg_required_form),
+      total: yup.number().required(l.msg_required_form),
     }),
     onSubmit: (values) => {
       const payload = new FormData();
+      if (!isEmptyArray(values.files)) payload.append("files", values.files[0]);
+      payload.append("categoryId", `${formik.values.category?.[0]?.id}`);
       payload.append(
-        "question",
+        "name",
         JSON.stringify({
           id: values.nameId,
           en: values.nameEn,
         })
       );
       payload.append(
-        "answer",
+        "description",
         JSON.stringify({
           id: values.descriptionId,
           en: values.descriptionEn,
         })
       );
+      payload.append("total", `${values.total}`);
 
       const config = {
-        url: `${BASE_ENDPOINT}/update/${resolvedData.id}`,
+        url: `${BASE_ENDPOINT}/update/${`${resolvedData?.id}`}`,
         method: "PATCH",
         data: payload,
       };
@@ -462,10 +493,19 @@ const Update = (props: any) => {
 
   useEffect(() => {
     formik.setValues({
+      files: [],
+      deleteDocumentIds: [],
+      category: [
+        {
+          id: resolvedData.animalCategory.id,
+          label: resolvedData.animalCategory.name[lang],
+        },
+      ],
       nameId: resolvedData.name.id,
       nameEn: resolvedData.name.en,
       descriptionId: resolvedData.description.id,
       descriptionEn: resolvedData.description.en,
+      total: resolvedData.total,
     });
   }, [open, resolvedData]);
 
@@ -490,7 +530,63 @@ const Update = (props: any) => {
             <form id={ID} onSubmit={formik.handleSubmit}>
               <FieldsetRoot disabled={loading}>
                 <Field
-                  label={l.question}
+                  label={l.animal_cateogry}
+                  invalid={!!(formik.errors.nameId || formik.errors.nameEn)}
+                  errorText={
+                    (formik.errors.nameId || formik.errors.nameEn) as string
+                  }
+                >
+                  <HStack w={"full"}>
+                    <SelectCMSAnimalCategory
+                      inputValue={formik.values.category}
+                      onConfirm={(inputValue) => {
+                        formik.setFieldValue("category", inputValue);
+                      }}
+                      flex={1}
+                    />
+
+                    <CreateCMSAnimalCategoryDisclosureTrigger>
+                      <Btn iconButton variant={"outline"}>
+                        <Icon>
+                          <IconPlus stroke={1.5} />
+                        </Icon>
+                      </Btn>
+                    </CreateCMSAnimalCategoryDisclosureTrigger>
+                  </HStack>
+                </Field>
+
+                <Field
+                  label={l.image}
+                  invalid={!!formik.errors.files}
+                  errorText={formik.errors.files as string}
+                >
+                  <ImgInput
+                    inputValue={formik.values.files}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("files", inputValue);
+                    }}
+                    existingFiles={resolvedData.speciesImage}
+                    onDeleteFile={(fileData) => {
+                      formik.setFieldValue(
+                        "files",
+                        Array.from(
+                          new Set([...formik.values.files, fileData.id])
+                        )
+                      );
+                    }}
+                    onUndoDeleteFile={(fileData) => {
+                      formik.setFieldValue(
+                        "files",
+                        formik.values.files.filter(
+                          (id: string) => id !== fileData.id
+                        )
+                      );
+                    }}
+                  />
+                </Field>
+
+                <Field
+                  label={l.name}
                   invalid={!!(formik.errors.nameId || formik.errors.nameEn)}
                   errorText={
                     (formik.errors.nameId || formik.errors.nameEn) as string
@@ -498,30 +594,44 @@ const Update = (props: any) => {
                 >
                   <InputGroup
                     startElement="id"
-                    startElementProps={{ fontSize: "md", fontWeight: "medium" }}
+                    display={"flex"}
+                    startElementProps={{
+                      fontSize: "md",
+                      fontWeight: "medium",
+                      alignItems: "start !important",
+                      mt: "18px",
+                    }}
                   >
-                    <StringInput
+                    <Textarea
                       inputValue={formik.values.nameId}
                       onChange={(inputValue) => {
                         formik.setFieldValue("nameId", inputValue);
                       }}
+                      pl={"40px !important"}
                     />
                   </InputGroup>
                   <InputGroup
                     startElement="en"
-                    startElementProps={{ fontSize: "md", fontWeight: "medium" }}
+                    display={"flex"}
+                    startElementProps={{
+                      fontSize: "md",
+                      fontWeight: "medium",
+                      alignItems: "start !important",
+                      mt: "18px",
+                    }}
                   >
-                    <StringInput
+                    <Textarea
                       inputValue={formik.values.nameEn}
                       onChange={(inputValue) => {
                         formik.setFieldValue("nameEn", inputValue);
                       }}
+                      pl={"40px !important"}
                     />
                   </InputGroup>
                 </Field>
 
                 <Field
-                  label={l.answer}
+                  label={l.description}
                   invalid={
                     !!(
                       formik.errors.descriptionId || formik.errors.descriptionEn
@@ -568,6 +678,26 @@ const Update = (props: any) => {
                       pl={"40px !important"}
                     />
                   </InputGroup>
+                </Field>
+
+                <Field
+                  label={"Total"}
+                  invalid={
+                    !!(
+                      formik.errors.descriptionId || formik.errors.descriptionEn
+                    )
+                  }
+                  errorText={
+                    (formik.errors.descriptionId ||
+                      formik.errors.descriptionEn) as string
+                  }
+                >
+                  <NumInput
+                    inputValue={formik.values.total}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("total", inputValue);
+                    }}
+                  />
                 </Field>
               </FieldsetRoot>
             </form>
