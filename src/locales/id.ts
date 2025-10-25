@@ -34,6 +34,7 @@ const translations = {
     "description": "Anda sedang masuk sebagai Super Admin."
   },
   "all": "Semua",
+  "animal_cateogry": "Kategori Satwa",
   "answer": "Jawaban",
   "apply": "Terapkan",
   "april": "April",
@@ -192,6 +193,7 @@ const translations = {
   "grade": "Nilai",
   "hide": "Sembunyikan",
   "hour": "Jam",
+  "image": "Gambar",
   "inactive": "Belum aktif",
   "info_timezone_auto": {
     "title": "Zona waktu diatur secara otomatis",

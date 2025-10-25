@@ -34,6 +34,7 @@ const translations = {
     "description": "You are currently signed in as Super Admin."
   },
   "all": "All",
+  "animal_cateogry": "Animal Category",
   "answer": "Answer",
   "apply": "Apply",
   "april": "April",
@@ -192,6 +193,7 @@ const translations = {
   "grade": "Grade",
   "hide": "Hide",
   "hour": "Hour",
+  "image": "Image",
   "inactive": "Inactive",
   "info_timezone_auto": {
     "title": "Timezone automatically set",

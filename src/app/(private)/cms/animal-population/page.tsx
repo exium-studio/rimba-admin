@@ -10,7 +10,9 @@ import {
 } from "@/components/ui/disclosure";
 import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-content";
 import { Field } from "@/components/ui/field";
+import { ImgInput } from "@/components/ui/img-input";
 import { MenuItem } from "@/components/ui/menu";
+import { NumInput } from "@/components/ui/number-input";
 import SearchInput from "@/components/ui/search-input";
 import { StringInput } from "@/components/ui/string-input";
 import { Textarea } from "@/components/ui/textarea";
@@ -24,12 +26,14 @@ import { DataTable } from "@/components/widget/DataTable";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
 import { PageContainer, PageContent } from "@/components/widget/Page";
+import { SelectCMSAnimalCategory } from "@/components/widget/SelectCMSAnimalCategory";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
 import {
   Interface__BatchOptionsTableOptionGenerator,
   Interface__CMSAnimalPopulation,
   Interface__DataProps,
   Interface__RowOptionsTableOptionGenerator,
+  Interface__SelectOption,
 } from "@/constants/interfaces";
 import { useDataDisplay } from "@/context/useDataDisplay";
 import useLang from "@/context/useLang";
@@ -112,10 +116,12 @@ const Create = (props: any) => {
     validateOnChange: false,
     initialValues: {
       files: null as any,
+      category: null as Interface__SelectOption[] | null,
       nameId: "",
       nameEn: "",
       descriptionId: "",
       descriptionEn: "",
+      total: null as number | null,
     },
     validationSchema: yup.object().shape({
       files: fileValidation({
@@ -126,6 +132,7 @@ const Create = (props: any) => {
       nameEn: yup.string().required(l.msg_required_form),
       descriptionId: yup.string().required(l.msg_required_form),
       descriptionEn: yup.string().required(l.msg_required_form),
+      total: yup.number().required(l.msg_required_form),
     }),
     onSubmit: (values) => {
       const payload = new FormData();
@@ -192,7 +199,37 @@ const Create = (props: any) => {
             <form id={ID} onSubmit={formik.handleSubmit}>
               <FieldsetRoot disabled={loading}>
                 <Field
-                  label={l.question}
+                  label={l.animal_cateogry}
+                  invalid={!!(formik.errors.nameId || formik.errors.nameEn)}
+                  errorText={
+                    (formik.errors.nameId || formik.errors.nameEn) as string
+                  }
+                >
+                  <SelectCMSAnimalCategory
+                    inputValue={formik.values.category}
+                    onConfirm={(inputValue) => {
+                      formik.setFieldValue("category", inputValue);
+                    }}
+                  />
+                </Field>
+
+                <Field
+                  label={l.image}
+                  invalid={!!(formik.errors.nameId || formik.errors.nameEn)}
+                  errorText={
+                    (formik.errors.nameId || formik.errors.nameEn) as string
+                  }
+                >
+                  <ImgInput
+                    inputValue={formik.values.files}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("files", inputValue);
+                    }}
+                  />
+                </Field>
+
+                <Field
+                  label={l.name}
                   invalid={!!(formik.errors.nameId || formik.errors.nameEn)}
                   errorText={
                     (formik.errors.nameId || formik.errors.nameEn) as string
@@ -237,7 +274,7 @@ const Create = (props: any) => {
                 </Field>
 
                 <Field
-                  label={l.answer}
+                  label={l.description}
                   invalid={
                     !!(
                       formik.errors.descriptionId || formik.errors.descriptionEn
@@ -284,6 +321,26 @@ const Create = (props: any) => {
                       pl={"40px !important"}
                     />
                   </InputGroup>
+                </Field>
+
+                <Field
+                  label={"Total"}
+                  invalid={
+                    !!(
+                      formik.errors.descriptionId || formik.errors.descriptionEn
+                    )
+                  }
+                  errorText={
+                    (formik.errors.descriptionId ||
+                      formik.errors.descriptionEn) as string
+                  }
+                >
+                  <NumInput
+                    inputValue={formik.values.total}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("total", inputValue);
+                    }}
+                  />
                 </Field>
               </FieldsetRoot>
             </form>

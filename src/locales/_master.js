@@ -161,6 +161,14 @@ export const settings_navs = {
 };
 
 // Semantic UI
+export const animal_cateogry = {
+  id: "Kategori Satwa",
+  en: "Animal Category",
+};
+export const image = {
+  id: "Gambar",
+  en: "Image",
+};
 export const example_UI = {
   id: "Contoh UI",
   en: "Example UI",
