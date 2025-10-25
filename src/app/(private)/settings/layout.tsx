@@ -18,6 +18,7 @@ import useLang from "@/context/useLang";
 import { useSettingsRouteContainer } from "@/context/useSettingsRouteContainer";
 import { useContainerDimension } from "@/hooks/useContainerDimension";
 import { isEmptyArray } from "@/utils/array";
+import { getUserData } from "@/utils/auth";
 import { formatAbsDate } from "@/utils/formatter";
 import { pluckString } from "@/utils/string";
 import { HStack, Icon } from "@chakra-ui/react";
@@ -32,6 +33,7 @@ const SettingsNavsList = (props: any) => {
 
   // Contexts
   const { l } = useLang();
+  const user = getUserData();
 
   // Hooks
   const pathname = usePathname();
@@ -62,7 +64,11 @@ const SettingsNavsList = (props: any) => {
 
       {!isEmptyArray(resolvedList) &&
         resolvedList.map((navItem, navItemIdx) => {
-          return (
+          const isAllowed =
+            !navItem.allowedRoles ||
+            navItem.allowedRoles?.includes(user?.role.id);
+
+          return isAllowed ? (
             <CContainer key={navItemIdx} gap={1}>
               {navItem.groupLabelKey && (
                 <P
@@ -100,6 +106,8 @@ const SettingsNavsList = (props: any) => {
                 );
               })}
             </CContainer>
+          ) : (
+            <></>
           );
         })}
     </CContainer>

@@ -23,6 +23,18 @@ export interface Interface__CMSFAQs extends Interface__CUD {
   question: Interface__CMSTextContent;
   answer: Interface__CMSTextContent;
 }
+export interface Interface__CMSAnimalCategory extends Interface__CUD {
+  id: string;
+  name: Interface__CMSTextContent;
+  description: Interface__CMSTextContent;
+}
+export interface Interface__CMSAnimalPopulation extends Interface__CUD {
+  id: string;
+  animalCategory: Interface__CMSAnimalCategory;
+  speciesImage: Interface__StorageFile[];
+  name: Interface__CMSTextContent;
+  description: Interface__CMSTextContent;
+}
 export interface Interface__CMSNewsCategory extends Interface__CUD {
   id: string;
   name: Interface__CMSTextContent;
@@ -183,6 +195,7 @@ export interface Interface__NavListItem {
 export interface Interface__NavItem {
   groupLabelKey?: string;
   list: Interface__NavListItem[];
+  allowedRoles?: string[];
 }
 
 // Data Table

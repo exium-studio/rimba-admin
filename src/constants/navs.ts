@@ -50,7 +50,7 @@ export const PRIVATE_NAVS: Interface__NavItem[] = [
               },
               {
                 labelKey: "private_navs.cms.animal_composition",
-                path: `/cms/animal-composition`,
+                path: `/cms/animal-population`,
                 allowedRoles: ["1"],
               },
               {
@@ -195,6 +195,7 @@ export const OTHER_NAVS: Interface__NavItem[] = [
           },
           {
             groupLabelKey: "settings_navs.master_data.index",
+            allowedRoles: ["1"],
             list: [
               {
                 icon: IconCategory,
