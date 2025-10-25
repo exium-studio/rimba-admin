@@ -48,7 +48,7 @@ import { back } from "@/utils/client";
 import { disclosureId } from "@/utils/disclosure";
 import { formatDate } from "@/utils/formatter";
 import { capitalize, pluckString } from "@/utils/string";
-import { getActiveNavs } from "@/utils/url";
+import { getActiveNavs, imgUrl } from "@/utils/url";
 import { fileValidation, min1FileExist } from "@/utils/validationSchema";
 import {
   FieldsetRoot,
@@ -1042,8 +1042,10 @@ const Data = (props: any) => {
               key={resolvedItem.id}
               item={{
                 id: resolvedItem.id,
+                showImg: true,
+                img: imgUrl(resolvedItem.speciesImage?.[0]?.filePath),
                 title: resolvedItem.name[lang],
-                description: resolvedItem.description[lang],
+                description: resolvedItem.animalCategory.name[lang],
                 deletedAt: resolvedItem.deletedAt,
               }}
               dataProps={dataProps}
