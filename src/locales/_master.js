@@ -165,6 +165,130 @@ export const settings_navs = {
 };
 
 // Semantic UI
+export const lp_home_section = {
+  index: {
+    id: "Beranda",
+    en: "Home",
+  },
+  hero: {
+    id: "Hero",
+    en: "Hero",
+  },
+  brief: {
+    id: "Ringkasan",
+    en: "Brief",
+  },
+  gallery: {
+    id: "Galeri",
+    en: "Gallery",
+  },
+  strategy_value: {
+    id: "Nilai Strategi",
+    en: "Strategy Value",
+  },
+  location: {
+    id: "Lokasi",
+    en: "Location",
+  },
+  activity: {
+    id: "Aktivitas",
+    en: "Activity",
+  },
+  impact: {
+    id: "Dampak",
+    en: "Impact",
+  },
+  legal_docs: {
+    id: "Dokumen Hukum",
+    en: "Legal Document",
+  },
+  news: {
+    id: "Berita",
+    en: "News",
+  },
+  partner: {
+    id: "Mitra",
+    en: "Partner",
+  },
+  FAQs: {
+    id: "FAQs",
+    en: "FAQs",
+  },
+};
+export const lp_legal_docs_section = {
+  index: {
+    id: "Dokumen Hukum",
+    en: "Legal Document",
+  },
+  header: {
+    id: "Header",
+    en: "Header",
+  },
+};
+export const lp_about_section = {
+  index: {
+    id: "Tentang Program Koridor Ekosistem RIMBA",
+    en: "About Program Koridor Ekosistem RIMBA",
+  },
+  header: {
+    id: "Header",
+    en: "Header",
+  },
+  purpose: {
+    id: "Tujuan",
+    en: "Purpose",
+  },
+  strategy: {
+    id: "Strategi",
+    en: "Strategy",
+  },
+  progress: {
+    id: "Progress",
+    en: "Progress",
+  },
+  achievement_indicator: {
+    id: "Indikator pencapaian",
+    en: "Achievement Indicator",
+  },
+  organizational_structure: {
+    id: "Struktur Organisasi",
+    en: "Organizational Structure",
+  },
+};
+export const lp_activity_section = {
+  index: {
+    id: "Kegiatan",
+    en: "Activity",
+  },
+  header: {
+    id: "Header",
+    en: "Header",
+  },
+};
+export const lp_news_section = {
+  index: {
+    id: "Berita dan Catatan Lapangan",
+    en: "News and Field Notes",
+  },
+  header: {
+    id: "Header",
+    en: "Header",
+  },
+};
+export const lp_partner_section = {
+  index: {
+    id: "Mitra",
+    en: "Partner",
+  },
+  header: {
+    id: "Header",
+    en: "Header",
+  },
+};
+export const footer = {
+  id: "Footer",
+  en: "Footer",
+};
 export const animal_cateogry = {
   id: "Kategori Satwa",
   en: "Animal Category",

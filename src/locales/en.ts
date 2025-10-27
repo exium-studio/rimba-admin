@@ -188,6 +188,7 @@ const translations = {
   "february": "February",
   "finished": "Finished",
   "finished_topic": "Finished topic",
+  "footer": "Footer",
   "friday": "Friday",
   "get": "Get",
   "grade": "Grade",
@@ -242,6 +243,45 @@ const translations = {
     "description": "Uploading file..."
   },
   "location": "Location",
+  "lp_about_section": {
+    "index": "About Program Koridor Ekosistem RIMBA",
+    "header": "Header",
+    "purpose": "Purpose",
+    "strategy": "Strategy",
+    "progress": "Progress",
+    "achievement_indicator": "Achievement Indicator",
+    "organizational_structure": "Organizational Structure"
+  },
+  "lp_activity_section": {
+    "index": "Activity",
+    "header": "Header"
+  },
+  "lp_home_section": {
+    "index": "Home",
+    "hero": "Hero",
+    "brief": "Brief",
+    "gallery": "Gallery",
+    "strategy_value": "Strategy Value",
+    "location": "Location",
+    "activity": "Activity",
+    "impact": "Impact",
+    "legal_docs": "Legal Document",
+    "news": "News",
+    "partner": "Partner",
+    "FAQs": "FAQs"
+  },
+  "lp_legal_docs_section": {
+    "index": "Legal Document",
+    "header": "Header"
+  },
+  "lp_news_section": {
+    "index": "News and Field Notes",
+    "header": "Header"
+  },
+  "lp_partner_section": {
+    "index": "Partner",
+    "header": "Header"
+  },
   "main": "Main",
   "main_page": "Main page",
   "maintenance_route": {

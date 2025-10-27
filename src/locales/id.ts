@@ -188,6 +188,7 @@ const translations = {
   "february": "Februari",
   "finished": "Selesai",
   "finished_topic": "Topik selesai",
+  "footer": "Footer",
   "friday": "Jumat",
   "get": "Dapatkan",
   "grade": "Nilai",
@@ -242,6 +243,45 @@ const translations = {
     "description": "Sedang mengunggah file..."
   },
   "location": "Lokasi",
+  "lp_about_section": {
+    "index": "Tentang Program Koridor Ekosistem RIMBA",
+    "header": "Header",
+    "purpose": "Tujuan",
+    "strategy": "Strategi",
+    "progress": "Progress",
+    "achievement_indicator": "Indikator pencapaian",
+    "organizational_structure": "Struktur Organisasi"
+  },
+  "lp_activity_section": {
+    "index": "Kegiatan",
+    "header": "Header"
+  },
+  "lp_home_section": {
+    "index": "Beranda",
+    "hero": "Hero",
+    "brief": "Ringkasan",
+    "gallery": "Galeri",
+    "strategy_value": "Nilai Strategi",
+    "location": "Lokasi",
+    "activity": "Aktivitas",
+    "impact": "Dampak",
+    "legal_docs": "Dokumen Hukum",
+    "news": "Berita",
+    "partner": "Mitra",
+    "FAQs": "FAQs"
+  },
+  "lp_legal_docs_section": {
+    "index": "Dokumen Hukum",
+    "header": "Header"
+  },
+  "lp_news_section": {
+    "index": "Berita dan Catatan Lapangan",
+    "header": "Header"
+  },
+  "lp_partner_section": {
+    "index": "Mitra",
+    "header": "Header"
+  },
   "main": "Utama",
   "main_page": "Halaman utama",
   "maintenance_route": {
