@@ -14,10 +14,36 @@ import {
   Type__DateRangePresets,
   Type__DisclosureSizes,
   Type__MaterialType,
+  Type__MonevContractType,
   Type__TimeRange,
 } from "./types";
 
 // Monev
+export interface Interface__MonevPackageInformation extends Interface__CUD {
+  id: string;
+  createdUser: Interface__User;
+  validatedUser: Interface__User;
+  editedUser: Interface__User;
+  picDivision: Interface__MonevPICDivision;
+  contractType: Type__MonevContractType;
+  mak: string;
+  name: string;
+  description: string;
+  startedMonth: string;
+  finishedMonth: string;
+  unitOutput: string;
+  codeOutput: string;
+  volume: string;
+  pagu: number;
+  partner: string;
+  validationStatus: number; // 1: pending, 2: approved, 3: rejected
+  rejectionReason: string;
+}
+export interface Interface__MonevPICDivision extends Interface__CUD {
+  id: string;
+  title: Interface__CMSTextContent;
+  description: Interface__CMSTextContent;
+}
 export interface Interface__MonevAgendaCategory extends Interface__CUD {
   id: string;
   title: Interface__CMSTextContent;

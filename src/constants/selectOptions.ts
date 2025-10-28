@@ -43,3 +43,22 @@ export const KMIS_CORRECT_ANSWER = [
     label: "D",
   },
 ];
+
+export const MONEV_PACKAGE_ONTRACT_TYPE = [
+  {
+    id: "Swakelola 1",
+    label: "Swakelola 1",
+  },
+  {
+    id: "Swakelola 2",
+    label: "Swakelola 2",
+  },
+  {
+    id: "Swakelola 3",
+    label: "Swakelola 3",
+  },
+  {
+    id: "Kontraktual",
+    label: "Kontraktual",
+  },
+];

@@ -50,9 +50,11 @@ const translations = {
   "certificate": "Sertifikat",
   "clear": "Clear",
   "close": "Tutup",
+  "code_output": "Kode Output",
   "component": "Komponen",
   "confirm": "Konfirmasi",
   "content": "Konten",
+  "contract_type": "Jenis kontrak",
   "correct_answer": "Jawaban benar",
   "count": "Jumlah",
   "created": "Dibuat",
@@ -71,6 +73,7 @@ const translations = {
   "empty_answer": "Jawaban kosong",
   "end_date": "Tanggal selesai",
   "end_date_time": "Waktu selesai",
+  "end_month": "Bulan selesai",
   "error_400_default": {
     "title": "Bad request",
     "description": "Periksa kembali data atau langkah yang dilakukan."
@@ -287,6 +290,7 @@ const translations = {
   "maintenance_route": {
     "description": "Kami sedang melakukan pemeliharaan untuk memberikan layanan yang lebih baik. Mohon maaf atas ketidaknyamanannya."
   },
+  "mak": "Mata Anggaran Kegiatan (MAK)",
   "map": "Peta",
   "march": "Maret",
   "material_order": "Urutan materi",
@@ -353,6 +357,8 @@ const translations = {
   "others": "Lainnya",
   "otp_sent": "OTP telah dikirim",
   "otp_sent_to": "OTP telah dikirim ke",
+  "pagu": "Pagu/Anggaran",
+  "partner": "Partner",
   "password_confirmation": "Konfirmasi Password",
   "previous": "Sebelumnya",
   "private_navs": {
@@ -464,6 +470,7 @@ const translations = {
   "showing": "Menampilkan",
   "start_date": "Tanggal mulai",
   "start_date_time": "Waktu mulai",
+  "start_month": "Bulan mulai",
   "student": "Pelajar",
   "submit": "Submit",
   "success_200_default": {
@@ -538,6 +545,7 @@ const translations = {
   "try_mic": "Coba Mic",
   "tuesday": "Selasa",
   "type": "Tipe",
+  "unit_output": "Satuan output",
   "unselect_all": "Batalkan pilihan semua",
   "update": "Ubah",
   "updated": "Diubah",

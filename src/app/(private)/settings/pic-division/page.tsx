@@ -28,7 +28,7 @@ import { TableSkeleton } from "@/components/widget/TableSkeleton";
 import {
   Interface__BatchOptionsTableOptionGenerator,
   Interface__DataProps,
-  Interface__MonevAgendaCategory,
+  Interface__MonevPICDivision,
   Interface__RowOptionsTableOptionGenerator,
 } from "@/constants/interfaces";
 import { useDataDisplay } from "@/context/useDataDisplay";
@@ -65,7 +65,7 @@ import * as yup from "yup";
 
 const BASE_ENDPOINT = "/api/master-data/activity-category";
 const PREFIX_ID = "monev_agenda_category";
-type Interface__Data = Interface__MonevAgendaCategory;
+type Interface__Data = Interface__MonevPICDivision;
 
 const MenuTooltip = (props: TooltipProps) => {
   // Props

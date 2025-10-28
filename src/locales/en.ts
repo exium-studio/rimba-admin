@@ -50,9 +50,11 @@ const translations = {
   "certificate": "Certificate",
   "clear": "Clear",
   "close": "Close",
+  "code_output": "Input code",
   "component": "Component",
   "confirm": "Confirm",
   "content": "Content",
+  "contract_type": "Contract type",
   "correct_answer": "Correct answer",
   "count": "Count",
   "created": "Created",
@@ -71,6 +73,7 @@ const translations = {
   "empty_answer": "Empty answer",
   "end_date": "End date",
   "end_date_time": "End time",
+  "end_month": "End month",
   "error_400_default": {
     "title": "Bad request",
     "description": "Please review your data or actions."
@@ -287,6 +290,7 @@ const translations = {
   "maintenance_route": {
     "description": "We are currently performing maintenance to provide better service. Sorry for the inconvenience."
   },
+  "mak": "Mata Anggaran Kegiatan (MAK)",
   "map": "Map",
   "march": "March",
   "material_order": "Material order",
@@ -353,6 +357,8 @@ const translations = {
   "others": "Others",
   "otp_sent": "OTP has been sent",
   "otp_sent_to": "OTP has been sent to",
+  "pagu": "Pagu/Budget",
+  "partner": "Partner",
   "password_confirmation": "Password Confirmation",
   "previous": "Previous",
   "private_navs": {
@@ -464,6 +470,7 @@ const translations = {
   "showing": "Showing",
   "start_date": "Start date",
   "start_date_time": "Start time",
+  "start_month": "Start month",
   "student": "Student",
   "submit": "Submit",
   "success_200_default": {
@@ -538,6 +545,7 @@ const translations = {
   "try_mic": "Try Mic",
   "tuesday": "Tuesday",
   "type": "Type",
+  "unit_output": "Unit output",
   "unselect_all": "Unselect all",
   "update": "Update",
   "updated": "Updated",

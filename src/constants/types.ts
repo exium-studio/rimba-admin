@@ -1,5 +1,10 @@
 import { ButtonProps, MenuItemProps } from "@chakra-ui/react";
 
+export type Type__MonevContractType =
+  | "Swakelola 1"
+  | "Swakelola 2"
+  | "Swakelola 3"
+  | "Kontraktual";
 export type Type__MaterialType = "Text" | "Gambar" | "Video" | "Dokumen";
 
 export type Type__ExtendedPermissionState =

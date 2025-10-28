@@ -173,6 +173,38 @@ export const settings_navs = {
 };
 
 // Semantic UI
+export const start_month = {
+  id: "Bulan mulai",
+  en: "Start month",
+};
+export const end_month = {
+  id: "Bulan selesai",
+  en: "End month",
+};
+export const unit_output = {
+  id: "Satuan output",
+  en: "Unit output",
+};
+export const contract_type = {
+  id: "Jenis kontrak",
+  en: "Contract type",
+};
+export const code_output = {
+  id: "Kode Output",
+  en: "Input code",
+};
+export const pagu = {
+  id: "Pagu/Anggaran",
+  en: "Pagu/Budget",
+};
+export const partner = {
+  id: "Partner",
+  en: "Partner",
+};
+export const mak = {
+  id: "Mata Anggaran Kegiatan (MAK)",
+  en: "Mata Anggaran Kegiatan (MAK)",
+};
 export const content = {
   id: "Konten",
   en: "Content",
