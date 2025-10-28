@@ -24,10 +24,10 @@ import { FieldsetRoot, InputGroup, useDisclosure } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-const BASE_ENDPOINT = "/api/master-data/activity-category";
-const PREFIX_ID = "cms_activity_category";
+const BASE_ENDPOINT = "/api/master-data/pic-division";
+const PREFIX_ID = "cms_pic_division";
 
-export const CreateMonevAgendaCategoryDisclosure = (props: any) => {
+export const CreateMonevPICDivisionDisclosure = (props: any) => {
   const ID = `${PREFIX_ID}_create`;
 
   // Props
@@ -37,7 +37,7 @@ export const CreateMonevAgendaCategoryDisclosure = (props: any) => {
   const { l } = useLang();
   const { themeConfig } = useThemeConfig();
   const setRt = useRenderTrigger((s) => s.setRt);
-  const routeTitle = l.settings_navs.master_data.agenda_category;
+  const routeTitle = l.settings_navs.master_data.pic_division;
 
   // Hooks
   const { req, loading } = useRequest({
@@ -208,20 +208,20 @@ export const CreateMonevAgendaCategoryDisclosure = (props: any) => {
   );
 };
 
-export const CreateMonevAgendaCategoryDisclosureTrigger = (props: any) => {
+export const CreateMonevPICDivisionDisclosureTrigger = (props: any) => {
   // Props
   const { children, id, ...restProps } = props;
 
   // Hooks
   const { open, onOpen, onClose } = useDisclosure();
-  useBackOnClose(id || `create-monev-agenda-category`, open, onOpen, onClose);
+  useBackOnClose(id || `create-monev-pic-division`, open, onOpen, onClose);
   return (
     <>
       <CContainer w={"fit"} onClick={onOpen} {...restProps}>
         {children}
       </CContainer>
 
-      <CreateMonevAgendaCategoryDisclosure open={open} />
+      <CreateMonevPICDivisionDisclosure open={open} />
     </>
   );
 };
