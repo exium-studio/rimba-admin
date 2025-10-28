@@ -456,7 +456,8 @@ const translations = {
       "news_category": "Kategori Berita",
       "animal_category": "Kategori Satwa",
       "agenda_category": "Kategori Agenda",
-      "pic_division": "Divisi PIC"
+      "pic_division": "Divisi PIC",
+      "pic_assignment": "Penugasan PIC"
     },
     "others": {
       "index": "Lainnya",
@@ -468,6 +469,7 @@ const translations = {
   "show": "Tampilkan",
   "show_more": "Tampilkan lebih",
   "showing": "Menampilkan",
+  "sso_user": "User SSO",
   "start_date": "Tanggal mulai",
   "start_date_time": "Waktu mulai",
   "start_month": "Bulan mulai",

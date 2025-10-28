@@ -1,6 +1,7 @@
 import { Interface__NavItem } from "@/constants/interfaces";
 import {
   IconCategory,
+  IconChecklist,
   IconDeviceDesktop,
   IconDeviceDesktopAnalytics,
   IconLanguage,
@@ -233,6 +234,12 @@ export const OTHER_NAVS: Interface__NavItem[] = [
                 icon: IconUsers,
                 labelKey: "settings_navs.master_data.pic_division",
                 path: `/settings/pic-division`,
+                backPath: `/settings`,
+              },
+              {
+                icon: IconChecklist,
+                labelKey: "settings_navs.master_data.pic_assignment",
+                path: `/settings/pic-assignment`,
                 backPath: `/settings`,
               },
             ],

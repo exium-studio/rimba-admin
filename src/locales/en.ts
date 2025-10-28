@@ -456,7 +456,8 @@ const translations = {
       "news_category": "News Category",
       "animal_category": "Animal Category",
       "agenda_category": "Agenda Category",
-      "pic_division": "PIC Division"
+      "pic_division": "PIC Division",
+      "pic_assignment": "PIC Assignment"
     },
     "others": {
       "index": "Others",
@@ -468,6 +469,7 @@ const translations = {
   "show": "Show",
   "show_more": "Show more",
   "showing": "Showing",
+  "sso_user": "SSO User",
   "start_date": "Start date",
   "start_date_time": "Start time",
   "start_month": "Start month",

@@ -151,6 +151,10 @@ export const settings_navs = {
       id: "Divisi PIC",
       en: "PIC Division",
     },
+    pic_assignment: {
+      id: "Penugasan PIC",
+      en: "PIC Assignment",
+    },
   },
   others: {
     index: {
@@ -173,6 +177,10 @@ export const settings_navs = {
 };
 
 // Semantic UI
+export const sso_user = {
+  id: "User SSO",
+  en: "SSO User",
+};
 export const start_month = {
   id: "Bulan mulai",
   en: "Start month",

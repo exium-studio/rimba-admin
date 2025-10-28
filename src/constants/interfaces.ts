@@ -43,6 +43,7 @@ export interface Interface__MonevPICDivision extends Interface__CUD {
   id: string;
   title: Interface__CMSTextContent;
   description: Interface__CMSTextContent;
+  picUser?: Interface__User[];
 }
 export interface Interface__MonevAgendaCategory extends Interface__CUD {
   id: string;

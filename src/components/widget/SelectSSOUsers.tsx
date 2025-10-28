@@ -8,11 +8,9 @@ import { capitalizeWords } from "@/utils/string";
 import { useEffect, useState } from "react";
 
 const SUFFIX_ID = "monev_pic_division";
-const ENDPOINT = `/api/master-data/sso-users`;
+const ENDPOINT = `/api/master-data/pic-division/index`;
 
-export const SelectMonevPICDivision = (
-  props: Omit<Props__SelectInput, "id">
-) => {
+export const SelectSSOUsers = (props: Omit<Props__SelectInput, "id">) => {
   const ID = `select_${SUFFIX_ID}`;
 
   // Props
@@ -69,7 +67,7 @@ export const SelectMonevPICDivision = (
   return (
     <SelectInput
       id={ID}
-      title={capitalizeWords(l.sso_user)}
+      title={capitalizeWords(l.settings_navs.master_data.pic_division)}
       loading={loading}
       selectOptions={selectOptions}
       fetch={fetch}
