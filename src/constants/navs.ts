@@ -16,6 +16,7 @@ import {
 // 1 Super Admin
 // 2 Educator
 // 3 Monev
+// 4 Public
 
 export const PRIVATE_NAVS: Interface__NavItem[] = [
   {
@@ -128,11 +129,11 @@ export const PRIVATE_NAVS: Interface__NavItem[] = [
                 path: `/monev/package-information`,
                 allowedRoles: ["1", "3"],
               },
-              {
-                labelKey: "private_navs.monev.monitoring",
-                path: `/monev/monitoring`,
-                allowedRoles: ["1", "3"],
-              },
+              // {
+              //   labelKey: "private_navs.monev.monitoring",
+              //   path: `/monev/monitoring`,
+              //   allowedRoles: ["1", "3"],
+              // },
               {
                 labelKey: "private_navs.monev.activity_calendar",
                 path: `/monev/activity-calendar`,
