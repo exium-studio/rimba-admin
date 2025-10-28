@@ -12,6 +12,7 @@ import {
 import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-content";
 import { Field } from "@/components/ui/field";
 import { Img } from "@/components/ui/img";
+import { ImgInput } from "@/components/ui/img-input";
 import { NavLink } from "@/components/ui/nav-link";
 import { P } from "@/components/ui/p";
 import SearchInput from "@/components/ui/search-input";
@@ -29,8 +30,10 @@ import useBackOnClose from "@/hooks/useBackOnClose";
 import useDataState from "@/hooks/useDataState";
 import { useIsSmScreenWidth } from "@/hooks/useIsSmScreenWidth";
 import useRequest from "@/hooks/useRequest";
+import { isEmptyArray } from "@/utils/array";
 import { back } from "@/utils/client";
 import { pluckString } from "@/utils/string";
+import { fileValidation, min1FileExist } from "@/utils/validationSchema";
 import {
   HStack,
   Icon,
@@ -462,6 +465,261 @@ const TextArrayForm = (props: any) => {
     </form>
   );
 };
+const LinkForm = (props: any) => {
+  // Props
+  const { content } = props;
+
+  // Contexts
+  const { l } = useLang();
+  const setRt = useRenderTrigger((s) => s.setRt);
+
+  // Hooks
+  const { req } = useRequest({
+    id: "cms-edit",
+  });
+
+  // States
+  const formik = useFormik({
+    validateOnChange: false,
+    initialValues: { link: "" },
+    validationSchema: yup.object().shape({
+      link: yup.string().required(l.msg_required_form),
+    }),
+    onSubmit: (values) => {
+      back();
+
+      const payload = {
+        type: content.type,
+        content: values.link,
+      };
+
+      const config = {
+        url: `/api/cms/content/update/${content.id}`,
+        method: "PATCH",
+        data: payload,
+      };
+
+      req({
+        config,
+        onResolve: {
+          onSuccess: () => {
+            setRt((ps) => !ps);
+          },
+        },
+      });
+    },
+  });
+
+  useEffect(() => {
+    formik.setValues({
+      link: content.content,
+    });
+  }, [content]);
+
+  return (
+    <form id="cms-edit" onSubmit={formik.handleSubmit}>
+      <Field
+        label={l.content}
+        invalid={!!formik.errors.link}
+        errorText={formik.errors.link as string}
+      >
+        <Textarea
+          inputValue={formik.values.link}
+          onChange={(inputValue) => {
+            formik.setFieldValue("link", inputValue);
+          }}
+        />
+      </Field>
+    </form>
+  );
+};
+const ImageForm = (props: any) => {
+  // Props
+  const { content } = props;
+
+  // Contexts
+  const { l } = useLang();
+  const setRt = useRenderTrigger((s) => s.setRt);
+
+  // Hooks
+  const { req } = useRequest({
+    id: "cms-edit",
+  });
+
+  // States
+  const formik = useFormik({
+    validateOnChange: false,
+    initialValues: { files: [] as any[], deleteDocumentIds: [] },
+    validationSchema: yup.object().shape({
+      files: fileValidation({
+        allowedExtensions: ["jpg", "jpeg", "png"],
+      }).concat(
+        min1FileExist({
+          resolvedData: content,
+          existingKey: "image",
+          deletedKey: "deleteDocumentIds",
+          newKey: "files",
+          message: l.msg_required_form,
+        })
+      ),
+    }),
+    onSubmit: (values) => {
+      back();
+
+      const payload = new FormData();
+      payload.append("type", content.type);
+      if (!isEmptyArray(values.files)) {
+        payload.append("files", values.files[0]);
+      }
+
+      const config = {
+        url: `/api/cms/content/update/${content.id}`,
+        method: "PATCH",
+        data: payload,
+      };
+
+      req({
+        config,
+        onResolve: {
+          onSuccess: () => {
+            setRt((ps) => !ps);
+          },
+        },
+      });
+    },
+  });
+
+  useEffect(() => {
+    formik.setValues({
+      files: [],
+      deleteDocumentIds: [],
+    });
+  }, [content]);
+
+  return (
+    <form id="cms-edit" onSubmit={formik.handleSubmit}>
+      <Field
+        label={l.content}
+        invalid={!!formik.errors.files}
+        errorText={formik.errors.files as string}
+      >
+        <ImgInput
+          inputValue={formik.values.files}
+          onChange={(inputValue) => {
+            formik.setFieldValue("files", inputValue);
+          }}
+          existingFiles={content.image}
+          onDeleteFile={(fileData) => {
+            formik.setFieldValue(
+              "",
+              Array.from(new Set([...formik.values.files, fileData.id]))
+            );
+          }}
+          onUndoDeleteFile={(fileData) => {
+            formik.setFieldValue(
+              "",
+              formik.values.files.filter((id: string) => id !== fileData.id)
+            );
+          }}
+        />
+      </Field>
+    </form>
+  );
+};
+const ImageArrayForm = (props: any) => {
+  // Props
+  const { content, maxFiles = 1 } = props;
+
+  // Contexts
+  const { l } = useLang();
+  const setRt = useRenderTrigger((s) => s.setRt);
+
+  // Hooks
+  const { req } = useRequest({
+    id: "cms-edit",
+  });
+
+  // States
+  const formik = useFormik({
+    validateOnChange: false,
+    initialValues: { files: [] as any[], deleteDocumentIds: [] },
+    validationSchema: yup.object().shape({
+      files: fileValidation({
+        allowedExtensions: ["jpg", "jpeg", "png"],
+      }).concat(
+        min1FileExist({
+          resolvedData: content,
+          existingKey: "image",
+          deletedKey: "deleteDocumentIds",
+          newKey: "files",
+          message: l.msg_required_form,
+        })
+      ),
+    }),
+    onSubmit: (values) => {
+      back();
+
+      const payload = new FormData();
+      payload.append("type", content.type);
+      if (!isEmptyArray(values.files)) {
+        payload.append("files", values.files[0]);
+      }
+
+      const config = {
+        url: `/api/cms/content/update/${content.id}`,
+        method: "PATCH",
+        data: payload,
+      };
+
+      req({
+        config,
+        onResolve: {
+          onSuccess: () => {
+            setRt((ps) => !ps);
+          },
+        },
+      });
+    },
+  });
+
+  useEffect(() => {
+    formik.setValues({
+      files: [],
+      deleteDocumentIds: [],
+    });
+  }, [content]);
+
+  return (
+    <form id="cms-edit" onSubmit={formik.handleSubmit}>
+      <Field
+        label={l.content}
+        invalid={!!formik.errors.files}
+        errorText={formik.errors.files as string}
+      >
+        <ImgInput
+          maxFiles={maxFiles}
+          inputValue={formik.values.files}
+          onChange={(inputValue) => {
+            formik.setFieldValue("files", inputValue);
+          }}
+          existingFiles={content.image}
+          onDeleteFile={(fileData) => {
+            formik.setFieldValue(
+              "",
+              Array.from(new Set([...formik.values.files, fileData.id]))
+            );
+          }}
+          onUndoDeleteFile={(fileData) => {
+            formik.setFieldValue(
+              "",
+              formik.values.files.filter((id: string) => id !== fileData.id)
+            );
+          }}
+        />
+      </Field>
+    </form>
+  );
+};
 const EditContent = (props: any) => {
   // Props
   const { content, ...restProps } = props;
@@ -478,9 +736,9 @@ const EditContent = (props: any) => {
   const FORM_REGISTRY = {
     Text: <TextForm content={content} />,
     TextArray: <TextArrayForm content={content} />,
-    Link: <></>,
-    Image: <></>,
-    ImageArray: <></>,
+    Link: <LinkForm content={content} />,
+    Image: <ImageForm content={content} />,
+    ImageArray: <ImageArrayForm content={content} maxFiles={20} />,
   };
 
   return (
@@ -521,6 +779,7 @@ const EditContent = (props: any) => {
     </>
   );
 };
+
 const RenderContent = (props: any) => {
   // Props
   const { type, content } = props;
@@ -606,7 +865,7 @@ export default function Page() {
       })).filter((page) => page.contents.length > 0);
   const { error, initialLoading, data, onRetry } = useDataState<any>({
     initialData: undefined,
-    url: `/api/cms/public-request/get-all-content`,
+    url: `/api/cms/public-request/get-all-content?cms=1`,
     dataResource: false,
     dependencies: [],
   });
