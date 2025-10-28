@@ -165,6 +165,10 @@ export const settings_navs = {
 };
 
 // Semantic UI
+export const content = {
+  id: "Konten",
+  en: "Content",
+};
 export const lp_home_section = {
   index: {
     id: "Beranda",
@@ -984,10 +988,6 @@ export const total_user_learning_attempt = {
 export const not_answered = {
   id: "Belum terjawab",
   en: "Not answered",
-};
-export const content = {
-  id: "Konten",
-  en: "Content",
 };
 
 // Message

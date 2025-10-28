@@ -40,10 +40,13 @@ const AnswerOption = (props: any) => {
   const isAnswer = resolvedRes?.selectedOption === optionLetter;
 
   return (
-    <Btn
-      clicky={false}
+    <HStack
+      align={"start"}
       justifyContent={"start"}
+      py={2}
+      px={4}
       variant={"outline"}
+      border={"1px solid"}
       borderColor={
         isOptionCorrect
           ? "border.success"
@@ -51,13 +54,14 @@ const AnswerOption = (props: any) => {
           ? "border.error"
           : "border.muted"
       }
+      rounded={"lg"}
       {...restProps}
     >
       <P>{optionLetter}</P>
       <P>{(resolvedRes as Record<string, any>)?.quiz?.[optionKey]}</P>
 
-      {isAnswer && <DotIndicator ml={"auto"} />}
-    </Btn>
+      {isAnswer && <DotIndicator ml={"auto"} mt={"6px"} />}
+    </HStack>
   );
 };
 export const ReviewQuizWorkspace = (props: Props) => {
