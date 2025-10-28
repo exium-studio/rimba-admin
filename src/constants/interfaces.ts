@@ -17,6 +17,13 @@ import {
   Type__TimeRange,
 } from "./types";
 
+// Monev
+export interface Interface__MonevAgendaCategory extends Interface__CUD {
+  id: string;
+  title: Interface__CMSTextContent;
+  description: Interface__CMSTextContent;
+}
+
 // CMS
 export interface Interface__CMSFAQs extends Interface__CUD {
   id: string;
