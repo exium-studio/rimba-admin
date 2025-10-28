@@ -1,8 +1,11 @@
 "use client";
 
+import { Btn } from "@/components/ui/btn";
 import { CContainer } from "@/components/ui/c-container";
 import { Img } from "@/components/ui/img";
+import { NavLink } from "@/components/ui/nav-link";
 import { P } from "@/components/ui/p";
+import SearchInput from "@/components/ui/search-input";
 import { Skeleton } from "@/components/ui/skeleton";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
@@ -14,7 +17,8 @@ import useDataState from "@/hooks/useDataState";
 import { useIsSmScreenWidth } from "@/hooks/useIsSmScreenWidth";
 import { pluckString } from "@/utils/string";
 import { HStack, Icon, SimpleGrid } from "@chakra-ui/react";
-import { IconSection, IconWorld } from "@tabler/icons-react";
+import { IconBulb, IconSection, IconWorld } from "@tabler/icons-react";
+import { useState } from "react";
 
 const STATIC_CONTENT_REGISTRY = [
   {
@@ -175,9 +179,19 @@ const RenderContent = (props: any) => {
       return (
         <CContainer gap={2}>
           {content?.map((content: Interface__CMSTextContent, idx: number) => {
-            return <P key={idx}>{content?.[lang]}</P>;
+            return (
+              <P key={idx} color={"fg.muted"}>
+                {content?.[lang]}
+              </P>
+            );
           })}
         </CContainer>
+      );
+    case "link":
+      return (
+        <NavLink to={content} external>
+          <P color={"p.500"}>{content}</P>
+        </NavLink>
       );
     default:
       return <P color={"fg.muted"}>{content?.[lang]}</P>;
@@ -193,6 +207,20 @@ export default function Page() {
   const iss = useIsSmScreenWidth();
 
   // States
+  const [search, setSearch] = useState<string>("");
+  const resolvedRegistry = !search.trim()
+    ? STATIC_CONTENT_REGISTRY
+    : STATIC_CONTENT_REGISTRY.map((page) => ({
+        ...page,
+        contents: page.contents
+          .map((content) => ({
+            ...content,
+            listIds: content.listIds.filter((id) =>
+              search.includes(id.toString())
+            ),
+          }))
+          .filter((content) => content.listIds.length > 0),
+      })).filter((page) => page.contents.length > 0);
   const { error, initialLoading, data, onRetry } = useDataState<any>({
     initialData: undefined,
     url: `/api/cms/public-request/get-all-content`,
@@ -203,6 +231,7 @@ export default function Page() {
   const baseUrl = process.env.NEXT_PUBLIC_WEBSITE_URL || "";
   const iframeUrl = `${baseUrl}?cms-token=random`;
   const p = 16;
+
   const render = {
     loading: <Skeleton flex={1} />,
     error: <FeedbackRetry onRetry={onRetry} />,
@@ -232,127 +261,112 @@ export default function Page() {
           {!baseUrl && <P m={"auto"}>Website URL not found</P>}
         </CContainer>
 
-        <CContainer
-          className="scrollY"
-          flex={"1 0 0"}
-          p={4}
-          pr={"calc(16px - 8px)"}
-          gap={4}
-        >
-          <>
-            {
-              staticContents &&
-                STATIC_CONTENT_REGISTRY.map((reg) => {
-                  return (
-                    <CContainer key={reg.pageLabelKey} gap={2}>
-                      <HStack color={"fg.subtle"}>
-                        <Icon boxSize={5}>
-                          <IconWorld stroke={1.5} />
-                        </Icon>
+        <CContainer flex={"1 0 0"} overflowY={"auto"}>
+          <HStack px={4} pt={4}>
+            <SearchInput
+              queryKey="cms-content"
+              inputValue={search}
+              onChange={(inputValue) => {
+                setSearch(inputValue);
+              }}
+              placeholder={`${l.search} ID`}
+            />
 
-                        <P>{pluckString(l, reg.pageLabelKey)}</P>
-                      </HStack>
+            <Btn iconButton variant={"outline"}>
+              <Icon>
+                <IconBulb stroke={1.5} />
+              </Icon>
+            </Btn>
+          </HStack>
 
-                      {reg.contents.map((section) => {
-                        return (
-                          <CContainer
-                            key={section.sectionLabelKey}
-                            bg={"d0"}
-                            gap={1}
-                            rounded={themeConfig.radii.component}
-                          >
-                            <HStack color={"fg.subtle"} px={2} py={1}>
-                              <Icon boxSize={5}>
-                                <IconSection stroke={1.5} />
-                              </Icon>
+          <CContainer
+            className="scrollY"
+            p={`${p}px`}
+            pr={`calc(${p}px - 8px)`}
+            gap={4}
+          >
+            {staticContents &&
+              resolvedRegistry.map((reg) => {
+                return (
+                  <CContainer key={reg.pageLabelKey} gap={2}>
+                    <HStack color={"fg.subtle"}>
+                      <Icon boxSize={5}>
+                        <IconWorld stroke={1.5} />
+                      </Icon>
 
-                              <P color={"fg.muted"}>
-                                {pluckString(l, section.sectionLabelKey)}
-                              </P>
-                            </HStack>
+                      <P fontWeight={"medium"}>
+                        {pluckString(l, reg.pageLabelKey)}
+                      </P>
+                    </HStack>
 
-                            <CContainer p={1} pt={0} gap={2}>
-                              {section.listIds.map((id, idx) => {
-                                const content = staticContents[id];
+                    {reg.contents.map((section) => {
+                      return (
+                        <CContainer
+                          key={section.sectionLabelKey}
+                          gap={1}
+                          rounded={themeConfig.radii.component}
+                          border={"1px solid"}
+                          borderColor={"d1"}
+                        >
+                          <HStack color={"fg.subtle"} px={2} py={1}>
+                            <Icon boxSize={5}>
+                              <IconSection stroke={1.5} />
+                            </Icon>
 
-                                return (
-                                  <CContainer
-                                    key={idx}
-                                    align={"start"}
-                                    gap={1}
-                                    bg={"d0"}
-                                    rounded={themeConfig.radii.component}
-                                    border={"1px solid"}
-                                    borderColor={"d1"}
+                            <P fontWeight={"medium"}>
+                              {pluckString(l, section.sectionLabelKey)}
+                            </P>
+                          </HStack>
+
+                          <CContainer p={1} pt={0} gap={2}>
+                            {section.listIds.map((id, idx) => {
+                              const content = staticContents[id];
+
+                              return (
+                                <CContainer
+                                  key={idx}
+                                  align={"start"}
+                                  gap={1}
+                                  rounded={`calc(${themeConfig.radii.component} - 2px)`}
+                                  border={"1px solid"}
+                                  borderColor={"d1"}
+                                >
+                                  <HStack
+                                    justify={"space-between"}
+                                    w={"full"}
+                                    mb={1}
+                                    px={3}
+                                    py={2}
                                   >
-                                    <HStack
-                                      justify={"space-between"}
-                                      w={"full"}
-                                      mb={1}
-                                      px={2}
-                                      py={1}
-                                    >
-                                      <HStack gap={4}>
-                                        <P
-                                          fontWeight={"medium"}
-                                        >{`ID: ${content.id}`}</P>
-                                        <P
-                                          color={"fg.subtle"}
-                                        >{`${content.type}`}</P>
-                                      </HStack>
-
-                                      {/* <P>{`No. ${idx + 1}`}</P> */}
+                                    <HStack gap={4}>
+                                      <P
+                                        fontWeight={"medium"}
+                                      >{`ID: ${content.id}`}</P>
+                                      <P
+                                        color={"fg.subtle"}
+                                      >{`${content.type}`}</P>
                                     </HStack>
 
-                                    <CContainer p={2} pt={0}>
-                                      <RenderContent
-                                        type={content.type}
-                                        content={content.content}
-                                      />
-                                    </CContainer>
+                                    {/* <P>{`No. ${idx + 1}`}</P> */}
+                                  </HStack>
+
+                                  <CContainer p={3} pt={0}>
+                                    <RenderContent
+                                      type={content.type}
+                                      content={content.content}
+                                    />
                                   </CContainer>
-                                );
-                              })}
-                            </CContainer>
+                                </CContainer>
+                              );
+                            })}
                           </CContainer>
-                        );
-                      })}
-                    </CContainer>
-                  );
-                })
-              // Object.keys(staticContents)?.map((key: string) => {
-              //   const item = staticContents[key];
-              //   const renderKey = item.id;
-              //   return (
-              //     <CContainer
-              //       key={renderKey}
-              //       align={"start"}
-              //       rounded={themeConfig.radii.component}
-              //       bg={"d0"}
-              //     >
-              //       <HStack
-              //         justify={"space-between"}
-              //         w={"full"}
-              //         px={4}
-              //         py={2}
-              //         mb={1}
-              //       >
-              //         <HStack gap={4}>
-              //           <P fontWeight={"medium"}>{`ID: ${item.id}`}</P>
-              //           <P color={"fg.subtle"}>{`${item.type}`}</P>
-              //         </HStack>
-
-              //         {/* <P>{`No. ${idx + 1}`}</P> */}
-              //       </HStack>
-
-              //       <CContainer p={4} pt={0}>
-              //         <RenderContent type={item.type} content={item.content} />
-              //       </CContainer>
-              //     </CContainer>
-              //   );
-              // })
-            }
-          </>
+                        </CContainer>
+                      );
+                    })}
+                  </CContainer>
+                );
+              })}
+          </CContainer>
         </CContainer>
       </HStack>
     ),
