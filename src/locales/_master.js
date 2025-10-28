@@ -143,6 +143,14 @@ export const settings_navs = {
       id: "Kategori Satwa",
       en: "Animal Category",
     },
+    agenda_category: {
+      id: "Kategori Agenda",
+      en: "Agenda Category",
+    },
+    pic_division: {
+      id: "Divisi PIC",
+      en: "PIC Division",
+    },
   },
   others: {
     index: {

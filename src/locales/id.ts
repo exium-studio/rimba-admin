@@ -448,7 +448,9 @@ const translations = {
       "topic_category": "Kategori Topic",
       "activity_category": "Kategori Aktivitas",
       "news_category": "Kategori Berita",
-      "animal_category": "Kategori Satwa"
+      "animal_category": "Kategori Satwa",
+      "agenda_category": "Kategori Agenda",
+      "pic_division": "Divisi PIC"
     },
     "others": {
       "index": "Lainnya",

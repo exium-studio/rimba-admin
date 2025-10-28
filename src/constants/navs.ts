@@ -8,6 +8,7 @@ import {
   IconSettings,
   IconShieldHalf,
   IconUser,
+  IconUsers,
   IconWorld,
 } from "@tabler/icons-react";
 
@@ -219,6 +220,18 @@ export const OTHER_NAVS: Interface__NavItem[] = [
                 icon: IconCategory,
                 labelKey: "settings_navs.master_data.animal_category",
                 path: `/settings/animal-category`,
+                backPath: `/settings`,
+              },
+              {
+                icon: IconCategory,
+                labelKey: "settings_navs.master_data.agenda_category",
+                path: `/settings/agenda-category`,
+                backPath: `/settings`,
+              },
+              {
+                icon: IconUsers,
+                labelKey: "settings_navs.master_data.pic_division",
+                path: `/settings/pic-division`,
                 backPath: `/settings`,
               },
             ],
