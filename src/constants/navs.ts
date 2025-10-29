@@ -137,7 +137,7 @@ export const PRIVATE_NAVS: Interface__NavItem[] = [
               // },
               {
                 labelKey: "private_navs.monev.activity_calendar",
-                path: `/monev/activity-calendar`,
+                path: `/monev/agenda-calendar`,
                 allowedRoles: ["1", "3"],
               },
               {

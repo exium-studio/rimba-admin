@@ -8,7 +8,7 @@ import { capitalizeWords } from "@/utils/string";
 import { useEffect, useState } from "react";
 
 const SUFFIX_ID = "monev_pic_division";
-const ENDPOINT = `/api/master-data/sso-users`;
+const ENDPOINT = `/api/master-data/pic-division/index`;
 
 export const SelectMonevPICDivision = (
   props: Omit<Props__SelectInput, "id">
