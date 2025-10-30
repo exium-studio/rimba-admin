@@ -45,13 +45,7 @@ import { disclosureId } from "@/utils/disclosure";
 import { formatDate } from "@/utils/formatter";
 import { capitalize, pluckString } from "@/utils/string";
 import { getActiveNavs } from "@/utils/url";
-import {
-  FieldsetRoot,
-  HStack,
-  Icon,
-  InputGroup,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { FieldsetRoot, HStack, Icon, useDisclosure } from "@chakra-ui/react";
 import {
   IconPencilMinus,
   IconPlus,
@@ -160,38 +154,18 @@ const Update = (props: any) => {
   const formik = useFormik({
     validateOnChange: false,
     initialValues: {
-      titleId: "",
-      titleEn: "",
-      descriptionId: "",
-      descriptionEn: "",
+      title: "",
+      description: "",
     },
     validationSchema: yup.object().shape({
-      titleId: yup.string().required(l.msg_required_form),
-      titleEn: yup.string().required(l.msg_required_form),
-      descriptionId: yup.string().required(l.msg_required_form),
-      descriptionEn: yup.string().required(l.msg_required_form),
+      title: yup.string().required(l.msg_required_form),
+      description: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values) => {
-      const payload = new FormData();
-      payload.append(
-        "title",
-        JSON.stringify({
-          id: values.titleId,
-          en: values.titleEn,
-        })
-      );
-      payload.append(
-        "description",
-        JSON.stringify({
-          id: values.descriptionId,
-          en: values.descriptionEn,
-        })
-      );
-
       const config = {
         url: `${BASE_ENDPOINT}/update/${resolvedData.id}`,
         method: "PATCH",
-        data: payload,
+        data: values,
       };
 
       req({
@@ -208,10 +182,8 @@ const Update = (props: any) => {
 
   useEffect(() => {
     formik.setValues({
-      titleId: resolvedData.title.id,
-      titleEn: resolvedData.title.en,
-      descriptionId: resolvedData.description.id,
-      descriptionEn: resolvedData.description.en,
+      title: resolvedData.title,
+      description: resolvedData.description,
     });
   }, [open, resolvedData]);
 
@@ -237,83 +209,28 @@ const Update = (props: any) => {
               <FieldsetRoot disabled={loading}>
                 <Field
                   label={l.title}
-                  invalid={!!(formik.errors.titleId || formik.errors.titleEn)}
-                  errorText={
-                    (formik.errors.titleId || formik.errors.titleEn) as string
-                  }
+                  invalid={!!formik.errors.title}
+                  errorText={formik.errors.title as string}
                 >
-                  <InputGroup
-                    startElement="id"
-                    startElementProps={{ fontSize: "md", fontWeight: "medium" }}
-                  >
-                    <StringInput
-                      inputValue={formik.values.titleId}
-                      onChange={(inputValue) => {
-                        formik.setFieldValue("titleId", inputValue);
-                      }}
-                    />
-                  </InputGroup>
-                  <InputGroup
-                    startElement="en"
-                    startElementProps={{ fontSize: "md", fontWeight: "medium" }}
-                  >
-                    <StringInput
-                      inputValue={formik.values.titleEn}
-                      onChange={(inputValue) => {
-                        formik.setFieldValue("titleEn", inputValue);
-                      }}
-                    />
-                  </InputGroup>
+                  <StringInput
+                    inputValue={formik.values.title}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("title", inputValue);
+                    }}
+                  />
                 </Field>
 
                 <Field
                   label={l.description}
-                  invalid={
-                    !!(
-                      formik.errors.descriptionId || formik.errors.descriptionEn
-                    )
-                  }
-                  errorText={
-                    (formik.errors.descriptionId ||
-                      formik.errors.descriptionEn) as string
-                  }
+                  invalid={!!formik.errors.description}
+                  errorText={formik.errors.description as string}
                 >
-                  <InputGroup
-                    startElement="id"
-                    display={"flex"}
-                    startElementProps={{
-                      fontSize: "md",
-                      fontWeight: "medium",
-                      alignItems: "start !important",
-                      mt: "18px",
+                  <Textarea
+                    inputValue={formik.values.description}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("description", inputValue);
                     }}
-                  >
-                    <Textarea
-                      inputValue={formik.values.descriptionId}
-                      onChange={(inputValue) => {
-                        formik.setFieldValue("descriptionId", inputValue);
-                      }}
-                      pl={"40px !important"}
-                    />
-                  </InputGroup>
-                  <InputGroup
-                    startElement="en"
-                    display={"flex"}
-                    startElementProps={{
-                      fontSize: "md",
-                      fontWeight: "medium",
-                      alignItems: "start !important",
-                      mt: "18px",
-                    }}
-                  >
-                    <Textarea
-                      inputValue={formik.values.descriptionEn}
-                      onChange={(inputValue) => {
-                        formik.setFieldValue("descriptionEn", inputValue);
-                      }}
-                      pl={"40px !important"}
-                    />
-                  </InputGroup>
+                  />
                 </Field>
               </FieldsetRoot>
             </form>
@@ -471,7 +388,7 @@ const Data = (props: any) => {
   const { filter, routeTitle } = props;
 
   // Contexts
-  const { l, lang } = useLang();
+  const { l } = useLang();
   const displayMode = useDataDisplay((s) => s.getDisplay(PREFIX_ID));
   const displayTable = displayMode === "table";
 
@@ -492,7 +409,6 @@ const Data = (props: any) => {
     params: filter,
     dependencies: [filter],
   });
-  console.debug(data);
   const dataProps: Interface__DataProps = {
     headers: [
       {
@@ -525,12 +441,12 @@ const Data = (props: any) => {
       dim: !!item.deletedAt,
       columns: [
         {
-          td: <ClampText>{`${item.title[lang]}`}</ClampText>,
-          value: item.title[lang],
+          td: <ClampText>{`${item.title}`}</ClampText>,
+          value: item.title,
         },
         {
-          td: <ClampText>{`${item.description[lang]}`}</ClampText>,
-          value: item.description[lang],
+          td: <ClampText>{`${item.description}`}</ClampText>,
+          value: item.description,
         },
 
         // timestamps
@@ -658,8 +574,8 @@ const Data = (props: any) => {
               key={resolvedItem.id}
               item={{
                 id: resolvedItem.id,
-                title: resolvedItem.title[lang],
-                description: resolvedItem.description[lang],
+                title: resolvedItem.title,
+                description: resolvedItem.description,
                 deletedAt: resolvedItem.deletedAt,
               }}
               dataProps={dataProps}

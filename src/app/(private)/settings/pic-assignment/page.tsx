@@ -255,7 +255,7 @@ const Data = (props: any) => {
   const { filter, routeTitle } = props;
 
   // Contexts
-  const { l, lang } = useLang();
+  const { l } = useLang();
   const displayMode = useDataDisplay((s) => s.getDisplay(PREFIX_ID));
   const displayTable = displayMode === "table";
 
@@ -308,8 +308,8 @@ const Data = (props: any) => {
       dim: !!item.deletedAt,
       columns: [
         {
-          td: <ClampText>{item?.title?.[lang]}</ClampText>,
-          value: item?.title?.[lang],
+          td: <ClampText>{item?.title}</ClampText>,
+          value: item?.title,
         },
         {
           td: <DivisionPICs picDivision={item} />,
@@ -392,8 +392,8 @@ const Data = (props: any) => {
               key={resolvedItem.id}
               item={{
                 id: resolvedItem.id,
-                title: resolvedItem.title[lang],
-                description: resolvedItem.description[lang],
+                title: resolvedItem.title,
+                description: resolvedItem.description,
                 deletedAt: resolvedItem.deletedAt,
               }}
               dataProps={dataProps}

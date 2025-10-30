@@ -41,14 +41,14 @@ export interface Interface__MonevPackageInformation extends Interface__CUD {
 }
 export interface Interface__MonevPICDivision extends Interface__CUD {
   id: string;
-  title: Interface__CMSTextContent;
-  description: Interface__CMSTextContent;
+  title: string;
+  description: string;
   picUser?: Interface__User[];
 }
 export interface Interface__MonevAgendaCategory extends Interface__CUD {
   id: string;
-  title: Interface__CMSTextContent;
-  description: Interface__CMSTextContent;
+  title: string;
+  description: string;
 }
 
 // CMS

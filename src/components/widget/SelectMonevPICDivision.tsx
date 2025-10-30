@@ -48,10 +48,11 @@ export const SelectMonevPICDivision = (
       config,
       onResolve: {
         onSuccess: (r) => {
+          console.debug(r.data.data.data);
           const newOptions = r?.data?.data?.data
             ?.map((item: any) => ({
               id: item?.id,
-              label: item?.name[lang],
+              label: item?.title?.[lang],
             }))
             .sort((a: Interface__SelectOption, b: Interface__SelectOption) =>
               a?.label?.localeCompare(b?.label)
