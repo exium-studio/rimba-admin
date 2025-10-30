@@ -29,8 +29,10 @@ export interface Interface__MonevPackageInformation extends Interface__CUD {
   mak: string;
   name: string;
   description: string;
-  startedMonth: string;
-  finishedMonth: string;
+  startedMonth: number;
+  finishedMonth: number;
+  startedYear: number;
+  finishedYear: number;
   unitOutput: string;
   codeOutput: string;
   volume: string;

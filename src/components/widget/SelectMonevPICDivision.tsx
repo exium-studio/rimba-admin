@@ -19,7 +19,7 @@ export const SelectMonevPICDivision = (
   const { ...restProps } = props;
 
   // Contexts
-  const { l, lang } = useLang();
+  const { l } = useLang();
 
   // Hooks
   const rt = useRenderTrigger((s) => s.rt);
@@ -48,11 +48,10 @@ export const SelectMonevPICDivision = (
       config,
       onResolve: {
         onSuccess: (r) => {
-          console.debug(r.data.data.data);
           const newOptions = r?.data?.data?.data
             ?.map((item: any) => ({
               id: item?.id,
-              label: item?.title?.[lang],
+              label: item?.title,
             }))
             .sort((a: Interface__SelectOption, b: Interface__SelectOption) =>
               a?.label?.localeCompare(b?.label)

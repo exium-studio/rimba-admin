@@ -177,6 +177,14 @@ export const settings_navs = {
 };
 
 // Semantic UI
+export const start_period = {
+  id: "Periode mulai",
+  en: "Start period",
+};
+export const end_period = {
+  id: "Periode selesai",
+  en: "End period",
+};
 export const sso_user = {
   id: "User SSO",
   en: "SSO User",

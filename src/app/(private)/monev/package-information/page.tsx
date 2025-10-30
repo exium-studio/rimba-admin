@@ -114,8 +114,8 @@ const Create = (props: any) => {
       mak: "",
       name: "",
       description: "",
-      startedMonth: null as any,
-      finishedMonth: null as any,
+      startPeriod: null as any,
+      endPeriod: null as any,
       unitOutput: "",
       codeOutput: "",
       volume: "",
@@ -128,8 +128,8 @@ const Create = (props: any) => {
       mak: yup.string().required(l.msg_required_form),
       name: yup.string().required(l.msg_required_form),
       description: yup.string().required(l.msg_required_form),
-      startedMonth: yup.object().required(l.msg_required_form),
-      finishedMonth: yup.object().required(l.msg_required_form),
+      startPeriod: yup.object().required(l.msg_required_form),
+      endPeriod: yup.object().required(l.msg_required_form),
       unitOutput: yup.string().required(l.msg_required_form),
       codeOutput: yup.string().required(l.msg_required_form),
       volume: yup.string().required(l.msg_required_form),
@@ -145,8 +145,8 @@ const Create = (props: any) => {
         mak: values.mak,
         name: values.name,
         description: values.description,
-        startedMonth: values.startedMonth,
-        finishedMonth: values.finishedMonth,
+        startPeriod: values.startPeriod,
+        endPeriod: values.endPeriod,
         unitOutput: values.unitOutput,
         codeOutput: values.codeOutput,
         volume: values.volume,
@@ -193,7 +193,7 @@ const Create = (props: any) => {
       <DisclosureRoot sclosureRoot open={open} lazyLoad size={"xs"}>
         <DisclosureContent>
           <DisclosureHeader>
-            <DisclosureHeaderContent title={`Edit ${routeTitle}`} />
+            <DisclosureHeaderContent title={`${l.add} ${routeTitle}`} />
           </DisclosureHeader>
 
           <DisclosureBody>
@@ -265,27 +265,27 @@ const Create = (props: any) => {
                 </Field>
 
                 <Field
-                  label={l.start_month}
-                  invalid={!!formik.errors.startedMonth}
-                  errorText={formik.errors.startedMonth as string}
+                  label={l.start_period}
+                  invalid={!!formik.errors.startPeriod}
+                  errorText={formik.errors.startPeriod as string}
                 >
                   <PeriodPickerInput
-                    inputValue={formik.values.startedMonth}
+                    inputValue={formik.values.startPeriod}
                     onConfirm={(inputValue) => {
-                      formik.setFieldValue("startedMonth", inputValue);
+                      formik.setFieldValue("startPeriod", inputValue);
                     }}
                   />
                 </Field>
 
                 <Field
-                  label={l.end_month}
-                  invalid={!!formik.errors.finishedMonth}
-                  errorText={formik.errors.finishedMonth as string}
+                  label={l.end_period}
+                  invalid={!!formik.errors.endPeriod}
+                  errorText={formik.errors.endPeriod as string}
                 >
                   <PeriodPickerInput
-                    inputValue={formik.values.finishedMonth}
+                    inputValue={formik.values.endPeriod}
                     onConfirm={(inputValue) => {
-                      formik.setFieldValue("finishedMonth", inputValue);
+                      formik.setFieldValue("endPeriod", inputValue);
                     }}
                   />
                 </Field>
@@ -432,8 +432,8 @@ const Update = (props: any) => {
       mak: "",
       name: "",
       description: "",
-      startedMonth: null as any,
-      finishedMonth: null as any,
+      startPeriod: null as any,
+      endPeriod: null as any,
       unitOutput: "",
       codeOutput: "",
       volume: "",
@@ -446,8 +446,8 @@ const Update = (props: any) => {
       mak: yup.string().required(l.msg_required_form),
       name: yup.string().required(l.msg_required_form),
       description: yup.string().required(l.msg_required_form),
-      startedMonth: yup.object().required(l.msg_required_form),
-      finishedMonth: yup.object().required(l.msg_required_form),
+      startPeriod: yup.object().required(l.msg_required_form),
+      endPeriod: yup.object().required(l.msg_required_form),
       unitOutput: yup.string().required(l.msg_required_form),
       codeOutput: yup.string().required(l.msg_required_form),
       volume: yup.string().required(l.msg_required_form),
@@ -463,8 +463,8 @@ const Update = (props: any) => {
         mak: values.mak,
         name: values.name,
         description: values.description,
-        startedMonth: values.startedMonth,
-        finishedMonth: values.finishedMonth,
+        startPeriod: values.startPeriod,
+        endPeriod: values.endPeriod,
         unitOutput: values.unitOutput,
         codeOutput: values.codeOutput,
         volume: values.volume,
@@ -507,8 +507,14 @@ const Update = (props: any) => {
       mak: resolvedData.mak,
       name: resolvedData.name,
       description: resolvedData.description,
-      startedMonth: resolvedData.startedMonth,
-      finishedMonth: resolvedData.finishedMonth,
+      startPeriod: {
+        month: resolvedData.startedMonth,
+        year: resolvedData.startedYear,
+      },
+      endPeriod: {
+        month: resolvedData.finishedMonth,
+        year: resolvedData.finishedYear,
+      },
       unitOutput: resolvedData.unitOutput,
       codeOutput: resolvedData.codeOutput,
       volume: resolvedData.volume,
@@ -604,13 +610,13 @@ const Update = (props: any) => {
 
                 <Field
                   label={l.start_month}
-                  invalid={!!formik.errors.startedMonth}
-                  errorText={formik.errors.startedMonth as string}
+                  invalid={!!formik.errors.startPeriod}
+                  errorText={formik.errors.startPeriod as string}
                 >
                   <PeriodPickerInput
-                    inputValue={formik.values.startedMonth}
+                    inputValue={formik.values.startPeriod}
                     onConfirm={(inputValue) => {
-                      formik.setFieldValue("startedMonth", inputValue);
+                      formik.setFieldValue("startPeriod", inputValue);
                     }}
                     disabled
                   />
@@ -618,13 +624,13 @@ const Update = (props: any) => {
 
                 <Field
                   label={l.end_month}
-                  invalid={!!formik.errors.finishedMonth}
-                  errorText={formik.errors.finishedMonth as string}
+                  invalid={!!formik.errors.endPeriod}
+                  errorText={formik.errors.endPeriod as string}
                 >
                   <PeriodPickerInput
-                    inputValue={formik.values.finishedMonth}
+                    inputValue={formik.values.endPeriod}
                     onConfirm={(inputValue) => {
-                      formik.setFieldValue("finishedMonth", inputValue);
+                      formik.setFieldValue("endPeriod", inputValue);
                     }}
                     disabled
                   />
