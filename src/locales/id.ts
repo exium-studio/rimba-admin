@@ -361,6 +361,7 @@ const translations = {
   "pagu": "Pagu/Anggaran",
   "partner": "Partner",
   "password_confirmation": "Konfirmasi Password",
+  "perma_delete": "Hapus permanen",
   "previous": "Sebelumnya",
   "private_navs": {
     "cms": {

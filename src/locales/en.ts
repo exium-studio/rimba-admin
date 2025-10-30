@@ -361,6 +361,7 @@ const translations = {
   "pagu": "Pagu/Budget",
   "partner": "Partner",
   "password_confirmation": "Password Confirmation",
+  "perma_delete": "Permanent delete",
   "previous": "Previous",
   "private_navs": {
     "cms": {

@@ -177,6 +177,10 @@ export const settings_navs = {
 };
 
 // Semantic UI
+export const perma_delete = {
+  id: "Hapus permanen",
+  en: "Permanent delete",
+};
 export const start_period = {
   id: "Periode mulai",
   en: "Start period",

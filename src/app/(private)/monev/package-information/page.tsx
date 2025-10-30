@@ -19,6 +19,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipProps } from "@/components/ui/tooltip";
 import { ClampText } from "@/components/widget/ClampText";
 import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
+import { CreateMonevPICDivisionDisclosureTrigger } from "@/components/widget/CreateMonevPICDivisionDisclosure";
 import { DataDisplayToggle } from "@/components/widget/DataDisplayToggle";
 import { DataGrid } from "@/components/widget/DataGrid";
 import { DataGridItem } from "@/components/widget/DataGridItem";
@@ -48,13 +49,13 @@ import { isEmptyArray, last } from "@/utils/array";
 import { back } from "@/utils/client";
 import { disclosureId } from "@/utils/disclosure";
 import { formatDate } from "@/utils/formatter";
-import { capitalize, pluckString } from "@/utils/string";
+import { capitalize, capitalizeWords, pluckString } from "@/utils/string";
 import { getActiveNavs } from "@/utils/url";
 import { FieldsetRoot, HStack, Icon, useDisclosure } from "@chakra-ui/react";
 import {
+  IconExclamationCircle,
   IconPencilMinus,
   IconPlus,
-  IconRestore,
   IconTrash,
 } from "@tabler/icons-react";
 import { useFormik } from "formik";
@@ -147,8 +148,8 @@ const Create = (props: any) => {
         description: values.description,
         startedMonth: values.startPeriod.month,
         startedYear: values.startPeriod.year,
-        endMonth: values.endPeriod.month,
-        endYear: values.endPeriod.year,
+        finishedMonth: values.endPeriod.month,
+        finishedYear: values.endPeriod.year,
         unitOutput: values.unitOutput,
         codeOutput: values.codeOutput,
         volume: values.volume,
@@ -206,12 +207,23 @@ const Create = (props: any) => {
                   invalid={!!formik.errors.picDivision}
                   errorText={formik.errors.picDivision as string}
                 >
-                  <SelectMonevPICDivision
-                    inputValue={formik.values.picDivision}
-                    onConfirm={(inputValue) => {
-                      formik.setFieldValue("picDivision", inputValue);
-                    }}
-                  />
+                  <HStack w={"full"}>
+                    <SelectMonevPICDivision
+                      inputValue={formik.values.picDivision}
+                      onConfirm={(inputValue) => {
+                        formik.setFieldValue("picDivision", inputValue);
+                      }}
+                      flex={1}
+                    />
+
+                    <CreateMonevPICDivisionDisclosureTrigger>
+                      <Btn iconButton variant={"outline"}>
+                        <Icon>
+                          <IconPlus stroke={1.5} />
+                        </Icon>
+                      </Btn>
+                    </CreateMonevPICDivisionDisclosureTrigger>
+                  </HStack>
                 </Field>
 
                 <Field
@@ -272,6 +284,7 @@ const Create = (props: any) => {
                   errorText={formik.errors.startPeriod as string}
                 >
                   <PeriodPickerInput
+                    id="start-period"
                     inputValue={formik.values.startPeriod}
                     onConfirm={(inputValue) => {
                       formik.setFieldValue("startPeriod", inputValue);
@@ -285,6 +298,7 @@ const Create = (props: any) => {
                   errorText={formik.errors.endPeriod as string}
                 >
                   <PeriodPickerInput
+                    id="end-period"
                     inputValue={formik.values.endPeriod}
                     onConfirm={(inputValue) => {
                       formik.setFieldValue("endPeriod", inputValue);
@@ -723,69 +737,6 @@ const Update = (props: any) => {
     </>
   );
 };
-const Restore = (props: any) => {
-  const ID = `${PREFIX_ID}_restore`;
-
-  // Props
-  const { restoreIds, clearSelectedRows, disabled, routeTitle } = props;
-
-  // Contexts
-  const { l } = useLang();
-  const setRt = useRenderTrigger((s) => s.setRt);
-
-  // Hooks
-  const { req, loading } = useRequest({
-    id: ID,
-    loadingMessage: {
-      title: capitalize(`${l.restore} ${routeTitle}`),
-    },
-    successMessage: {
-      title: capitalize(`${l.restore} ${routeTitle} ${l.successful}`),
-    },
-  });
-
-  // Utils
-  function onActivate() {
-    back();
-    req({
-      config: {
-        url: `${BASE_ENDPOINT}/restore`,
-        method: "PATCH",
-        data: {
-          restoreIds: restoreIds,
-        },
-      },
-      onResolve: {
-        onSuccess: () => {
-          setRt((ps) => !ps);
-          clearSelectedRows?.();
-        },
-      },
-    });
-  }
-
-  return (
-    <ConfirmationDisclosureTrigger
-      w={"full"}
-      id={`${ID}-${restoreIds}`}
-      title={`${l.restore} ${routeTitle}`}
-      description={l.msg_restore}
-      confirmLabel={`${l.restore}`}
-      onConfirm={onActivate}
-      loading={loading}
-      disabled={disabled}
-    >
-      <MenuTooltip content={l.restore}>
-        <MenuItem value="restore" disabled={disabled}>
-          {l.restore}
-          <Icon boxSize={"18px"} ml={"auto"}>
-            <IconRestore stroke={1.5} />
-          </Icon>
-        </MenuItem>
-      </MenuTooltip>
-    </ConfirmationDisclosureTrigger>
-  );
-};
 const Delete = (props: any) => {
   const ID = `${PREFIX_ID}_delete`;
 
@@ -831,9 +782,16 @@ const Delete = (props: any) => {
     <ConfirmationDisclosureTrigger
       w={"full"}
       id={`${ID}-${deleteIds}`}
-      title={`${l.delete_} ${routeTitle}`}
-      description={l.msg_soft_delete}
-      confirmLabel={`${l.delete_}`}
+      title={`${capitalizeWords(l.perma_delete)} ${routeTitle}`}
+      description={l.msg_cannot_be_undone}
+      confirmLabel={
+        <>
+          <Icon>
+            <IconExclamationCircle stroke={1.5} />
+          </Icon>
+          {`${l.perma_delete}`}
+        </>
+      }
       onConfirm={onDelete}
       confirmButtonProps={{
         color: "fg.error",
@@ -958,15 +916,6 @@ const Data = (props: any) => {
       }),
       (row) => ({
         override: (
-          <Restore
-            restoreIds={[row.data.id]}
-            disabled={!row.data.deletedAt}
-            routeTitle={routeTitle}
-          />
-        ),
-      }),
-      (row) => ({
-        override: (
           <Delete
             deleteIds={[row.data.id]}
             disabled={!!row.data.deletedAt}
@@ -976,21 +925,6 @@ const Data = (props: any) => {
       }),
     ] as Interface__RowOptionsTableOptionGenerator<Interface__Data>[],
     batchOptions: [
-      (ids, { clearSelectedRows }) => ({
-        override: (
-          <Restore
-            restoreIds={ids}
-            clearSelectedRows={clearSelectedRows}
-            disabled={
-              isEmptyArray(ids) ||
-              data
-                ?.filter((item) => ids.includes(item.id))
-                .some((item) => !item.deletedAt)
-            }
-            routeTitle={routeTitle}
-          />
-        ),
-      }),
       (ids, { clearSelectedRows }) => ({
         override: (
           <Delete
