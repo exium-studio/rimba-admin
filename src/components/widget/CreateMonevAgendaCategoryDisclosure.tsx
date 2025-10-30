@@ -20,7 +20,7 @@ import useBackOnClose from "@/hooks/useBackOnClose";
 import useRequest from "@/hooks/useRequest";
 import { back } from "@/utils/client";
 import { capitalize } from "@/utils/string";
-import { FieldsetRoot, InputGroup, useDisclosure } from "@chakra-ui/react";
+import { FieldsetRoot, useDisclosure } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
@@ -54,38 +54,18 @@ export const CreateMonevAgendaCategoryDisclosure = (props: any) => {
   const formik = useFormik({
     validateOnChange: false,
     initialValues: {
-      titleId: "",
-      titleEn: "",
-      descriptionId: "",
-      descriptionEn: "",
+      title: "",
+      description: "",
     },
     validationSchema: yup.object().shape({
-      titleId: yup.string().required(l.msg_required_form),
-      titleEn: yup.string().required(l.msg_required_form),
-      descriptionId: yup.string().required(l.msg_required_form),
-      descriptionEn: yup.string().required(l.msg_required_form),
+      title: yup.string().required(l.msg_required_form),
+      description: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values, { resetForm }) => {
-      const payload = new FormData();
-      payload.append(
-        "title",
-        JSON.stringify({
-          id: values.titleId,
-          en: values.titleEn,
-        })
-      );
-      payload.append(
-        "description",
-        JSON.stringify({
-          id: values.descriptionId,
-          en: values.descriptionEn,
-        })
-      );
-
       const config = {
         url: `${BASE_ENDPOINT}/create`,
         method: "POST",
-        data: payload,
+        data: values,
       };
 
       req({
@@ -113,81 +93,28 @@ export const CreateMonevAgendaCategoryDisclosure = (props: any) => {
             <FieldsetRoot disabled={loading}>
               <Field
                 label={l.title}
-                invalid={!!(formik.errors.titleId || formik.errors.titleEn)}
-                errorText={
-                  (formik.errors.titleId || formik.errors.titleEn) as string
-                }
+                invalid={!!formik.errors.title}
+                errorText={formik.errors.title as string}
               >
-                <InputGroup
-                  startElement="id"
-                  startElementProps={{ fontSize: "md", fontWeight: "medium" }}
-                >
-                  <StringInput
-                    inputValue={formik.values.titleId}
-                    onChange={(inputValue) => {
-                      formik.setFieldValue("titleId", inputValue);
-                    }}
-                  />
-                </InputGroup>
-                <InputGroup
-                  startElement="en"
-                  startElementProps={{ fontSize: "md", fontWeight: "medium" }}
-                >
-                  <StringInput
-                    inputValue={formik.values.titleEn}
-                    onChange={(inputValue) => {
-                      formik.setFieldValue("titleEn", inputValue);
-                    }}
-                  />
-                </InputGroup>
+                <StringInput
+                  inputValue={formik.values.title}
+                  onChange={(inputValue) => {
+                    formik.setFieldValue("title", inputValue);
+                  }}
+                />
               </Field>
 
               <Field
                 label={l.description}
-                invalid={
-                  !!(formik.errors.descriptionId || formik.errors.descriptionEn)
-                }
-                errorText={
-                  (formik.errors.descriptionId ||
-                    formik.errors.descriptionEn) as string
-                }
+                invalid={!!formik.errors.description}
+                errorText={formik.errors.description as string}
               >
-                <InputGroup
-                  startElement="id"
-                  display={"flex"}
-                  startElementProps={{
-                    fontSize: "md",
-                    fontWeight: "medium",
-                    alignItems: "start !important",
-                    mt: "18px",
+                <Textarea
+                  inputValue={formik.values.description}
+                  onChange={(inputValue) => {
+                    formik.setFieldValue("description", inputValue);
                   }}
-                >
-                  <Textarea
-                    inputValue={formik.values.descriptionId}
-                    onChange={(inputValue) => {
-                      formik.setFieldValue("descriptionId", inputValue);
-                    }}
-                    pl={"40px !important"}
-                  />
-                </InputGroup>
-                <InputGroup
-                  startElement="en"
-                  display={"flex"}
-                  startElementProps={{
-                    fontSize: "md",
-                    fontWeight: "medium",
-                    alignItems: "start !important",
-                    mt: "18px",
-                  }}
-                >
-                  <Textarea
-                    inputValue={formik.values.descriptionEn}
-                    onChange={(inputValue) => {
-                      formik.setFieldValue("descriptionEn", inputValue);
-                    }}
-                    pl={"40px !important"}
-                  />
-                </InputGroup>
+                />
               </Field>
             </FieldsetRoot>
           </form>
