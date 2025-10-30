@@ -497,8 +497,8 @@ const Update = (props: any) => {
         description: values.description,
         startedMonth: values.startPeriod.month,
         startedYear: values.startPeriod.year,
-        endMonth: values.endPeriod.month,
-        endYear: values.endPeriod.year,
+        finishedMonth: values.endPeriod.month,
+        finishedYear: values.endPeriod.year,
         unitOutput: values.unitOutput,
         codeOutput: values.codeOutput,
         volume: values.volume,
@@ -613,6 +613,7 @@ const Update = (props: any) => {
                     onChange={(inputValue) => {
                       formik.setFieldValue("mak", inputValue);
                     }}
+                    maxChar={50}
                   />
                 </Field>
 
@@ -626,6 +627,7 @@ const Update = (props: any) => {
                     onChange={(inputValue) => {
                       formik.setFieldValue("name", inputValue);
                     }}
+                    maxChar={180}
                   />
                 </Field>
 
@@ -996,7 +998,11 @@ const Data = (props: any) => {
               key={resolvedItem.id}
               item={{
                 id: resolvedItem.id,
-                title: resolvedItem.name,
+                title: (
+                  <ClampText fontWeight={"semibold"} lineClamp={3}>
+                    {resolvedItem.name}
+                  </ClampText>
+                ),
                 description: resolvedItem.description,
                 deletedAt: resolvedItem.deletedAt,
               }}

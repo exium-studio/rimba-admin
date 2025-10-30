@@ -204,6 +204,10 @@ const translations = {
   "hour": "Hour",
   "image": "Image",
   "inactive": "Inactive",
+  "info_max_char_reached": {
+    "title": "Character Limit Reached",
+    "description": "Only a maximum of ${maxChar} characters will be used/kept."
+  },
   "info_timezone_auto": {
     "title": "Timezone automatically set",
     "description": "${timezone}"

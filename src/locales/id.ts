@@ -204,6 +204,10 @@ const translations = {
   "hour": "Jam",
   "image": "Gambar",
   "inactive": "Belum aktif",
+  "info_max_char_reached": {
+    "title": "Batas Karakter Tercapai",
+    "description": "Hanya maksimal ${maxChar} karakter yang akan diambil."
+  },
   "info_timezone_auto": {
     "title": "Zona waktu diatur secara otomatis",
     "description": "${timezone}"
