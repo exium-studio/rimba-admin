@@ -624,11 +624,13 @@ const Target = (props: any) => {
     error: <FeedbackRetry onRetry={onRetry} />,
     empty: <FeedbackNoData />,
     loaded: (
-      <SimpleGrid columns={[1, null, 2]} gap={4}>
-        {targetData?.monevTargetOriginal.map((target) => {
-          return <TargetInputItem key={target.id} target={target} />;
-        })}
-      </SimpleGrid>
+      <CContainer gap={4}>
+        <SimpleGrid columns={[1, null, 2]} gap={4}>
+          {targetData?.monevTargetOriginal.map((target) => {
+            return <TargetInputItem key={target.id} target={target} />;
+          })}
+        </SimpleGrid>
+      </CContainer>
     ),
   };
 
