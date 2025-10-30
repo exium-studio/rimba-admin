@@ -32,6 +32,7 @@ import { useIsSmScreenWidth } from "@/hooks/useIsSmScreenWidth";
 import useRequest from "@/hooks/useRequest";
 import { isEmptyArray } from "@/utils/array";
 import { back } from "@/utils/client";
+import { disclosureId } from "@/utils/disclosure";
 import { pluckString } from "@/utils/string";
 import { fileValidation, min1FileExist } from "@/utils/validationSchema";
 import {
@@ -730,7 +731,12 @@ const EditContent = (props: any) => {
 
   // Hooks
   const { open, onOpen, onClose } = useDisclosure();
-  useBackOnClose(`edit-cms-${content?.id}`, open, onOpen, onClose);
+  useBackOnClose(
+    disclosureId(`edit-cms-${content?.id}`),
+    open,
+    onOpen,
+    onClose
+  );
 
   // States
   const FORM_REGISTRY = {

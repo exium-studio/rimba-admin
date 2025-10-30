@@ -591,21 +591,9 @@ const TargetInputItem = (props: any) => {
     </CContainer>
   );
 };
-const Target = (props: any) => {
-  const ID = `${PREFIX_ID}_target`;
-
+const TargetDisclosure = (props: any) => {
   // Props
-  const { data } = props;
-  const resolvedData = data as Interface__Data;
-
-  // Hooks
-  const { open, onOpen, onClose } = useDisclosure();
-  useBackOnClose(
-    disclosureId(`${ID}-${resolvedData?.id}`),
-    open,
-    onOpen,
-    onClose
-  );
+  const { open, data } = props;
 
   // States
   const {
@@ -636,7 +624,75 @@ const Target = (props: any) => {
   };
 
   return (
+    <DisclosureRoot open={open} lazyLoad size={"lg"}>
+      <DisclosureContent>
+        <DisclosureHeader>
+          <DisclosureHeaderContent title={`Edit Target`} />
+        </DisclosureHeader>
+
+        <DisclosureBody>
+          {initialLoading && render.loading}
+          {!initialLoading && (
+            <>
+              {error && render.error}
+              {!error && (
+                <>
+                  {targetData && render.loaded}
+                  {(!targetData ||
+                    isEmptyArray(targetData?.monevTargetOriginal)) &&
+                    render.empty}
+                </>
+              )}
+            </>
+          )}
+        </DisclosureBody>
+
+        <DisclosureFooter>
+          <BackButton />
+        </DisclosureFooter>
+      </DisclosureContent>
+    </DisclosureRoot>
+  );
+};
+const TargetDisclosureTrigger = (props: any) => {
+  // Props
+  const { data, ...restProps } = props;
+
+  // Hooks
+  const { open, onOpen, onClose } = useDisclosure();
+  useBackOnClose(
+    disclosureId(`${PREFIX_ID}-${data?.id}`),
+    open,
+    onOpen,
+    onClose
+  );
+
+  return (
     <>
+      <CContainer onClick={onOpen} {...restProps}></CContainer>
+
+      <TargetDisclosure open={open} data={data} />
+    </>
+  );
+};
+const Target = (props: any) => {
+  const ID = `${PREFIX_ID}_target`;
+
+  // Props
+  const { data } = props;
+  const resolvedData = data as Interface__Data;
+
+  // Hooks
+  const { open, onOpen, onClose } = useDisclosure();
+  useBackOnClose(
+    disclosureId(`${ID}-${resolvedData?.id}`),
+    open,
+    onOpen,
+    onClose
+  );
+
+  return (
+    <TargetDisclosureTrigger data={resolvedData}>
       <MenuTooltip content={"Edit Target"}>
         <MenuItem value="edit target" onClick={onOpen}>
           Target
@@ -645,36 +701,7 @@ const Target = (props: any) => {
           </Icon>
         </MenuItem>
       </MenuTooltip>
-
-      <DisclosureRoot open={open} lazyLoad size={"lg"}>
-        <DisclosureContent>
-          <DisclosureHeader>
-            <DisclosureHeaderContent title={`Edit Target`} />
-          </DisclosureHeader>
-
-          <DisclosureBody>
-            {initialLoading && render.loading}
-            {!initialLoading && (
-              <>
-                {error && render.error}
-                {!error && (
-                  <>
-                    {targetData && render.loaded}
-                    {(!targetData ||
-                      isEmptyArray(targetData?.monevTargetOriginal)) &&
-                      render.empty}
-                  </>
-                )}
-              </>
-            )}
-          </DisclosureBody>
-
-          <DisclosureFooter>
-            <BackButton />
-          </DisclosureFooter>
-        </DisclosureContent>
-      </DisclosureRoot>
-    </>
+    </TargetDisclosureTrigger>
   );
 };
 const Realization = (props: any) => {
@@ -1221,10 +1248,6 @@ const Data = (props: any) => {
         th: l.updated,
         sortable: true,
       },
-      {
-        th: l.deleted,
-        sortable: true,
-      },
     ],
     rows: data?.map((item, idx) => ({
       id: item.id,
@@ -1258,15 +1281,6 @@ const Data = (props: any) => {
             dashEmpty: true,
           }),
           value: item.updatedAt,
-          dataType: "date",
-        },
-        {
-          td: formatDate(item.deletedAt, {
-            variant: "numeric",
-            withTime: true,
-            dashEmpty: true,
-          }),
-          value: item.deletedAt,
           dataType: "date",
         },
       ],

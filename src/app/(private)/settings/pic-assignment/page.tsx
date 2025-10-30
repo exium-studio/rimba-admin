@@ -64,7 +64,7 @@ const DivisionPICs = (props: any) => {
 
   // Hooks
   const { open, onOpen, onClose } = useDisclosure();
-  useBackOnClose(`PIC-${picDivision?.id}`, open, onOpen, onClose);
+  useBackOnClose(disclosureId(`PIC-${picDivision?.id}`), open, onOpen, onClose);
 
   return (
     <>

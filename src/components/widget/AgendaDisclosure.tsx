@@ -13,6 +13,7 @@ import { P } from "@/components/ui/p";
 import BackButton from "@/components/widget/BackButton";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import useBackOnClose from "@/hooks/useBackOnClose";
+import { disclosureId } from "@/utils/disclosure";
 import { formatDate } from "@/utils/formatter";
 import { getLocalTimezone } from "@/utils/time";
 import { StackProps, useDisclosure } from "@chakra-ui/react";
@@ -62,7 +63,7 @@ export const AgendaDisclosureTrigger = (
 
   // Hooks
   const { open, onOpen, onClose } = useDisclosure();
-  useBackOnClose(`agenda-${id}`, open, onOpen, onClose);
+  useBackOnClose(disclosureId(`agenda-${id}`), open, onOpen, onClose);
 
   return (
     <>

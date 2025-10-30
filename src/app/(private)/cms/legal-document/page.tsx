@@ -341,7 +341,12 @@ const FilesList = (props: any) => {
 
   // Hooks
   const { open, onOpen, onClose } = useDisclosure();
-  useBackOnClose(`legal-docs-list-${data.id}`, open, onOpen, onClose);
+  useBackOnClose(
+    disclosureId(`legal-docs-list-${data.id}`),
+    open,
+    onOpen,
+    onClose
+  );
 
   return (
     <>
