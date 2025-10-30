@@ -9,6 +9,10 @@ const translations = {
   "added": "Ditambahkan",
   "address": "Alamat",
   "address_not_found": "Alamat tidak ditemukan",
+  "alert_create_package_period_cannot_be_updated_later": {
+    "title": "Periode paket tidak dapat diubah setelah dibuat",
+    "description": "Setelah data paket dibuat, periode tidak dapat diubah. Harap pastikan sudah benar sebelum menyimpan."
+  },
   "alert_forbidden": {
     "title": "Akses ditolak",
     "description": "Anda tidak memiliki izin untuk melihat konten ini."

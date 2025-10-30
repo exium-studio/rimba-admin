@@ -1173,6 +1173,16 @@ export const msg_file_input_dropzone = {
 };
 
 // Alert
+export const alert_create_package_period_cannot_be_updated_later = {
+  title: {
+    id: "Periode paket tidak dapat diubah setelah dibuat",
+    en: "Package period cannot be changed after creation",
+  },
+  description: {
+    id: "Setelah data paket dibuat, periode tidak dapat diubah. Harap pastikan sudah benar sebelum menyimpan.",
+    en: "Once the package is created, the period cannot be changed. Please make sure it is correct before saving.",
+  },
+};
 export const alert_signin_super_admin = {
   title: {
     id: "Super Admin",

@@ -51,7 +51,13 @@ import { disclosureId } from "@/utils/disclosure";
 import { formatDate } from "@/utils/formatter";
 import { capitalize, capitalizeWords, pluckString } from "@/utils/string";
 import { getActiveNavs } from "@/utils/url";
-import { FieldsetRoot, HStack, Icon, useDisclosure } from "@chakra-ui/react";
+import {
+  Alert,
+  FieldsetRoot,
+  HStack,
+  Icon,
+  useDisclosure,
+} from "@chakra-ui/react";
 import {
   IconExclamationCircle,
   IconPencilMinus,
@@ -200,6 +206,16 @@ const Create = (props: any) => {
           </DisclosureHeader>
 
           <DisclosureBody>
+            <Alert.Root status="warning" mb={4}>
+              <Alert.Indicator />
+              <Alert.Title>
+                {
+                  l.alert_create_package_period_cannot_be_updated_later
+                    .description
+                }
+              </Alert.Title>
+            </Alert.Root>
+
             <form id={ID} onSubmit={formik.handleSubmit}>
               <FieldsetRoot disabled={loading}>
                 <Field
@@ -381,7 +397,7 @@ const Create = (props: any) => {
               colorPalette={themeConfig.colorPalette}
               loading={loading}
             >
-              {l.save}
+              {l.add}
             </Btn>
           </DisclosureFooter>
         </DisclosureContent>
@@ -823,7 +839,6 @@ const Data = (props: any) => {
   const displayTable = displayMode === "table";
 
   // States
-
   const {
     error,
     initialLoading,

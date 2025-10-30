@@ -9,6 +9,10 @@ const translations = {
   "added": "Added",
   "address": "Address",
   "address_not_found": "Address not found",
+  "alert_create_package_period_cannot_be_updated_later": {
+    "title": "Package period cannot be changed after creation",
+    "description": "Once the package is created, the period cannot be changed. Please make sure it is correct before saving."
+  },
   "alert_forbidden": {
     "title": "Access denied",
     "description": "You do not have permission to view this content."
