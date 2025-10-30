@@ -71,9 +71,10 @@ import {
 } from "@chakra-ui/react";
 import {
   IconExclamationCircle,
-  IconFocus,
   IconPencilMinus,
   IconPlus,
+  IconTargetArrow,
+  IconTimeline,
   IconTrash,
 } from "@tabler/icons-react";
 import { useFormik } from "formik";
@@ -640,7 +641,96 @@ const Target = (props: any) => {
         <MenuItem value="edit target" onClick={onOpen}>
           Target
           <Icon boxSize={"18px"} ml={"auto"}>
-            <IconFocus stroke={1.5} />
+            <IconTargetArrow stroke={1.5} />
+          </Icon>
+        </MenuItem>
+      </MenuTooltip>
+
+      <DisclosureRoot open={open} lazyLoad size={"lg"}>
+        <DisclosureContent>
+          <DisclosureHeader>
+            <DisclosureHeaderContent title={`Edit Target`} />
+          </DisclosureHeader>
+
+          <DisclosureBody>
+            {initialLoading && render.loading}
+            {!initialLoading && (
+              <>
+                {error && render.error}
+                {!error && (
+                  <>
+                    {targetData && render.loaded}
+                    {(!targetData ||
+                      isEmptyArray(targetData?.monevTargetOriginal)) &&
+                      render.empty}
+                  </>
+                )}
+              </>
+            )}
+          </DisclosureBody>
+
+          <DisclosureFooter>
+            <BackButton />
+          </DisclosureFooter>
+        </DisclosureContent>
+      </DisclosureRoot>
+    </>
+  );
+};
+const Realization = (props: any) => {
+  const ID = `${PREFIX_ID}_target`;
+
+  // Props
+  const { data } = props;
+  const resolvedData = data as Interface__Data;
+
+  // Contexts
+  const { l } = useLang();
+
+  // Hooks
+  const { open, onOpen, onClose } = useDisclosure();
+  useBackOnClose(
+    disclosureId(`${ID}-${resolvedData?.id}`),
+    open,
+    onOpen,
+    onClose
+  );
+
+  // States
+  const {
+    error,
+    initialLoading,
+    data: targetData,
+    onRetry,
+  } = useDataState<Interface__MonevTargets>({
+    initialData: undefined,
+    url: `/api/monev/target/${data.id}`,
+    conditions: open,
+    dependencies: [open],
+    dataResource: false,
+  });
+  const render = {
+    loading: <Skeleton flex={1} minH={MIN_H_FEEDBACK_CONTAINER} />,
+    error: <FeedbackRetry onRetry={onRetry} />,
+    empty: <FeedbackNoData />,
+    loaded: (
+      <CContainer gap={4}>
+        <SimpleGrid columns={[1, null, 2]} gap={4}>
+          {targetData?.monevTargetOriginal.map((target) => {
+            return <TargetInputItem key={target.id} target={target} />;
+          })}
+        </SimpleGrid>
+      </CContainer>
+    ),
+  };
+
+  return (
+    <>
+      <MenuTooltip content={`${l.realization}`}>
+        <MenuItem value="realization" onClick={onOpen}>
+          {l.realization}
+          <Icon boxSize={"18px"} ml={"auto"}>
+            <IconTimeline stroke={1.5} />
           </Icon>
         </MenuItem>
       </MenuTooltip>
@@ -1060,6 +1150,7 @@ const Delete = (props: any) => {
           <Icon>
             <IconExclamationCircle stroke={1.5} />
           </Icon>
+
           {`${l.perma_delete}`}
         </>
       }
@@ -1183,6 +1274,9 @@ const Data = (props: any) => {
     rowOptions: [
       (row) => ({
         override: <Target data={row.data} routeTitle={routeTitle} />,
+      }),
+      (row) => ({
+        override: <Realization data={row.data} routeTitle={routeTitle} />,
       }),
       (row) => ({
         override: <Update data={row.data} routeTitle={routeTitle} />,
