@@ -14,6 +14,7 @@ import { MenuItem } from "@/components/ui/menu";
 import SearchInput from "@/components/ui/search-input";
 import { Tooltip, TooltipProps } from "@/components/ui/tooltip";
 import BackButton from "@/components/widget/BackButton";
+import { ClampText } from "@/components/widget/ClampText";
 import { DataGrid } from "@/components/widget/DataGrid";
 import { DataGridItem } from "@/components/widget/DataGridItem";
 import { DataTable } from "@/components/widget/DataTable";
@@ -67,17 +68,19 @@ const DivisionPICs = (props: any) => {
 
   return (
     <>
-      <Btn onClick={onOpen} {...restProps}>
+      <Btn onClick={onOpen} size={"sm"} variant={"subtle"} {...restProps}>
         {l.view}
       </Btn>
 
-      <DisclosureRoot open={open} lazyLoad>
+      <DisclosureRoot open={open} lazyLoad size={"xs"}>
         <DisclosureContent>
           <DisclosureHeader>
             <DisclosureHeaderContent title={`PIC`} />
           </DisclosureHeader>
 
           <DisclosureBody>
+            {isEmptyArray(picDivision.picUser) && <FeedbackNoData />}
+
             {picDivision.picUser?.map((user: Interface__User) => {
               return <MiniUser key={user.id} user={user} />;
             })}
@@ -277,6 +280,9 @@ const Data = (props: any) => {
   const dataProps: Interface__DataProps = {
     headers: [
       {
+        th: l.settings_navs.master_data.pic_division,
+      },
+      {
         th: "PIC",
         align: "center",
       },
@@ -301,6 +307,10 @@ const Data = (props: any) => {
       data: item,
       dim: !!item.deletedAt,
       columns: [
+        {
+          td: <ClampText>{item?.title?.[lang]}</ClampText>,
+          value: item?.title?.[lang],
+        },
         {
           td: <DivisionPICs picDivision={item} />,
           value: "",

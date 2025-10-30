@@ -63,7 +63,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import * as yup from "yup";
 
-const BASE_ENDPOINT = "/api/master-data/activity-category";
+const BASE_ENDPOINT = "/api/master-data/pic-division";
 const PREFIX_ID = "monev_agenda_category";
 type Interface__Data = Interface__MonevPICDivision;
 
@@ -476,7 +476,6 @@ const Data = (props: any) => {
   const displayTable = displayMode === "table";
 
   // States
-
   const {
     error,
     initialLoading,
@@ -493,6 +492,7 @@ const Data = (props: any) => {
     params: filter,
     dependencies: [filter],
   });
+  console.debug(data);
   const dataProps: Interface__DataProps = {
     headers: [
       {
