@@ -350,8 +350,6 @@ const Quiz = (props: any) => {
           </MenuItem>
         </MenuTooltip>
       </NavLink>
-
-      <Divider my={1} />
     </>
   );
 };
@@ -498,6 +496,8 @@ const Update = (props: any) => {
 
   return (
     <>
+      <Divider my={1} />
+
       <MenuTooltip content={"Edit"}>
         <MenuItem value="edit" onClick={onOpen}>
           Edit

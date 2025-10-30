@@ -19,6 +19,23 @@ import {
 } from "./types";
 
 // Monev
+export interface Interface__MonevTarget extends Interface__CUD {
+  id: string;
+  validatedUser: Interface__User;
+  editedUser: Interface__User;
+  month: number;
+  year: number;
+  budgetTarget: number;
+  physicalTarget: number;
+  description: string;
+  validationStatus: number;
+  rejectionReason: string;
+  validateAt: string;
+}
+export interface Interface__MonevTargets extends Interface__CUD {
+  monevTargetOriginal: Interface__MonevTarget[];
+  monevTargetPendingUpdate: Interface__MonevTarget[];
+}
 export interface Interface__MonevPackageInformation extends Interface__CUD {
   id: string;
   createdUser: Interface__User;

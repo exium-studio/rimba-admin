@@ -1,6 +1,7 @@
 "use client";
 
 import { Btn } from "@/components/ui/btn";
+import { CContainer } from "@/components/ui/c-container";
 import {
   DisclosureBody,
   DisclosureContent,
@@ -9,14 +10,18 @@ import {
   DisclosureRoot,
 } from "@/components/ui/disclosure";
 import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-content";
+import { Divider } from "@/components/ui/divider";
 import { Field } from "@/components/ui/field";
 import { MenuItem } from "@/components/ui/menu";
 import { NumInput } from "@/components/ui/number-input";
+import { P } from "@/components/ui/p";
 import { PeriodPickerInput } from "@/components/ui/period-picker-input";
 import SearchInput from "@/components/ui/search-input";
+import { Skeleton } from "@/components/ui/skeleton";
 import { StringInput } from "@/components/ui/string-input";
 import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipProps } from "@/components/ui/tooltip";
+import BackButton from "@/components/widget/BackButton";
 import { ClampText } from "@/components/widget/ClampText";
 import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
 import { CreateMonevPICDivisionDisclosureTrigger } from "@/components/widget/CreateMonevPICDivisionDisclosure";
@@ -34,9 +39,12 @@ import {
   Interface__BatchOptionsTableOptionGenerator,
   Interface__DataProps,
   Interface__MonevPackageInformation,
+  Interface__MonevTargets,
   Interface__RowOptionsTableOptionGenerator,
   Interface__SelectOption,
 } from "@/constants/interfaces";
+import { L_MONTHS } from "@/constants/months";
+import { MIN_H_FEEDBACK_CONTAINER } from "@/constants/sizes";
 import { useDataDisplay } from "@/context/useDataDisplay";
 import useLang from "@/context/useLang";
 import useRenderTrigger from "@/context/useRenderTrigger";
@@ -53,20 +61,24 @@ import { capitalize, capitalizeWords, pluckString } from "@/utils/string";
 import { getActiveNavs } from "@/utils/url";
 import {
   Alert,
+  FieldRoot,
   FieldsetRoot,
   HStack,
   Icon,
+  InputGroup,
+  SimpleGrid,
   useDisclosure,
 } from "@chakra-ui/react";
 import {
   IconExclamationCircle,
+  IconFocus,
   IconPencilMinus,
   IconPlus,
   IconTrash,
 } from "@tabler/icons-react";
 import { useFormik } from "formik";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import * as yup from "yup";
 
 const BASE_ENDPOINT = "/api/monev/activity-package";
@@ -425,6 +437,243 @@ const DataUtils = (props: any) => {
   );
 };
 
+const TargetInputItem = (props: any) => {
+  // Props
+  const { target, ...restProps } = props;
+
+  // Contexts
+  const { l } = useLang();
+  const { themeConfig } = useThemeConfig();
+  const setRt = useRenderTrigger((s) => s.setRt);
+
+  // Hooks
+  const { req, loading } = useRequest({
+    id: "update-target",
+  });
+
+  // States
+  const formik = useFormik({
+    validateOnChange: false,
+    initialValues: {
+      budgetTarget: null as number | null,
+      physicalTarget: null as number | null,
+      description: "",
+    },
+    validationSchema: yup.object().shape({
+      budgetTarget: yup.number().required(l.msg_required_form),
+      physicalTarget: yup.number().required(l.msg_required_form),
+      description: yup.string().required(l.msg_required_form),
+    }),
+    onSubmit: (values) => {
+      const payload = values;
+      const config = {
+        url: `/api/monev/target/update/${target.id}`,
+        method: "PATCH",
+        data: payload,
+      };
+
+      req({
+        config,
+        onResolve: {
+          onSuccess: () => {
+            setRt((ps) => !ps);
+          },
+        },
+      });
+    },
+  });
+  const isChanged = useMemo(() => {
+    return (
+      target &&
+      (target.budgetTarget !== formik.values.budgetTarget ||
+        target.physicalTarget !== formik.values.physicalTarget ||
+        target.description !== formik.values.description)
+    );
+  }, [formik.values, target]);
+
+  useEffect(() => {
+    formik.setValues({
+      budgetTarget: target.budgetTarget,
+      physicalTarget: target.physicalTarget,
+      description: target.description,
+    });
+  }, [target]);
+
+  return (
+    <CContainer gap={2} {...restProps}>
+      <P fontWeight={"medium"}>{`${
+        L_MONTHS[target.month] || "Month is not 0 based"
+      } ${target.year}`}</P>
+
+      <CContainer
+        p={4}
+        border={"1px solid"}
+        borderColor={"border.muted"}
+        rounded={themeConfig.radii.component}
+      >
+        <form id={`target-${target.id}`} onSubmit={formik.handleSubmit}>
+          <FieldRoot gap={4} disabled={loading}>
+            <Field
+              invalid={!!formik.errors.budgetTarget}
+              errorText={formik.errors.budgetTarget as string}
+            >
+              <P color={"fg.muted"}>{l.budget_target}</P>
+
+              <InputGroup startAddon="Rp">
+                <NumInput
+                  inputValue={formik.values.budgetTarget}
+                  onChange={(inputValue) => {
+                    formik.setFieldValue("budgetTarget", inputValue);
+                  }}
+                  placeholder="xxx.xxx.xxx"
+                  roundedTopLeft={0}
+                  roundedBottomLeft={0}
+                />
+              </InputGroup>
+            </Field>
+
+            <Field
+              invalid={!!formik.errors.physicalTarget}
+              errorText={formik.errors.physicalTarget as string}
+            >
+              <P color={"fg.muted"}>{l.physical_target}</P>
+
+              <InputGroup endAddon="%">
+                <NumInput
+                  inputValue={formik.values.physicalTarget}
+                  onChange={(inputValue) => {
+                    formik.setFieldValue("physicalTarget", inputValue);
+                  }}
+                  max={100}
+                  roundedTopRight={0}
+                  roundedBottomRight={0}
+                  placeholder="xxx"
+                />
+              </InputGroup>
+            </Field>
+
+            <Field
+              invalid={!!formik.errors.description}
+              errorText={formik.errors.description as string}
+            >
+              <P color={"fg.muted"}>{l.description}</P>
+
+              <Textarea
+                inputValue={formik.values.description}
+                onChange={(inputValue) => {
+                  formik.setFieldValue("description", inputValue);
+                }}
+              />
+            </Field>
+          </FieldRoot>
+        </form>
+
+        <Btn
+          type="submit"
+          form={`target-${target.id}`}
+          w={"fit"}
+          ml={"auto"}
+          mt={4}
+          colorPalette={themeConfig.colorPalette}
+          variant={"outline"}
+          disabled={
+            !isChanged ||
+            !formik.values.budgetTarget ||
+            !formik.values.physicalTarget ||
+            !formik.values.description
+          }
+          loading={loading}
+        >
+          {l.save}
+        </Btn>
+      </CContainer>
+    </CContainer>
+  );
+};
+const Target = (props: any) => {
+  const ID = `${PREFIX_ID}_target`;
+
+  // Props
+  const { data } = props;
+  const resolvedData = data as Interface__Data;
+
+  // Hooks
+  const { open, onOpen, onClose } = useDisclosure();
+  useBackOnClose(
+    disclosureId(`${ID}-${resolvedData?.id}`),
+    open,
+    onOpen,
+    onClose
+  );
+
+  // States
+  const {
+    error,
+    initialLoading,
+    data: targetData,
+    onRetry,
+  } = useDataState<Interface__MonevTargets>({
+    initialData: undefined,
+    url: `/api/monev/target/${data.id}`,
+    conditions: open,
+    dependencies: [open],
+    dataResource: false,
+  });
+  const render = {
+    loading: <Skeleton flex={1} minH={MIN_H_FEEDBACK_CONTAINER} />,
+    error: <FeedbackRetry onRetry={onRetry} />,
+    empty: <FeedbackNoData />,
+    loaded: (
+      <SimpleGrid columns={[1, null, 2]} gap={4}>
+        {targetData?.monevTargetOriginal.map((target) => {
+          return <TargetInputItem key={target.id} target={target} />;
+        })}
+      </SimpleGrid>
+    ),
+  };
+
+  return (
+    <>
+      <MenuTooltip content={"Edit Target"}>
+        <MenuItem value="edit target" onClick={onOpen}>
+          Target
+          <Icon boxSize={"18px"} ml={"auto"}>
+            <IconFocus stroke={1.5} />
+          </Icon>
+        </MenuItem>
+      </MenuTooltip>
+
+      <DisclosureRoot open={open} lazyLoad size={"lg"}>
+        <DisclosureContent>
+          <DisclosureHeader>
+            <DisclosureHeaderContent title={`Edit Target`} />
+          </DisclosureHeader>
+
+          <DisclosureBody>
+            {initialLoading && render.loading}
+            {!initialLoading && (
+              <>
+                {error && render.error}
+                {!error && (
+                  <>
+                    {targetData && render.loaded}
+                    {(!targetData ||
+                      isEmptyArray(targetData?.monevTargetOriginal)) &&
+                      render.empty}
+                  </>
+                )}
+              </>
+            )}
+          </DisclosureBody>
+
+          <DisclosureFooter>
+            <BackButton />
+          </DisclosureFooter>
+        </DisclosureContent>
+      </DisclosureRoot>
+    </>
+  );
+};
 const Update = (props: any) => {
   const ID = `${PREFIX_ID}_update`;
 
@@ -507,8 +756,8 @@ const Update = (props: any) => {
       };
 
       const config = {
-        url: `${BASE_ENDPOINT}/create`,
-        method: "POST",
+        url: `${BASE_ENDPOINT}/update/${resolvedData.id}`,
+        method: "PATCH",
         data: payload,
       };
 
@@ -559,6 +808,8 @@ const Update = (props: any) => {
 
   return (
     <>
+      <Divider my={1} />
+
       <MenuTooltip content={"Edit"}>
         <MenuItem value="edit" onClick={onOpen}>
           Edit
@@ -929,6 +1180,9 @@ const Data = (props: any) => {
     })),
     rowOptions: [
       (row) => ({
+        override: <Target data={row.data} routeTitle={routeTitle} />,
+      }),
+      (row) => ({
         override: <Update data={row.data} routeTitle={routeTitle} />,
       }),
       (row) => ({
@@ -998,11 +1252,7 @@ const Data = (props: any) => {
               key={resolvedItem.id}
               item={{
                 id: resolvedItem.id,
-                title: (
-                  <ClampText fontWeight={"semibold"} lineClamp={3}>
-                    {resolvedItem.name}
-                  </ClampText>
-                ),
+                title: resolvedItem.name,
                 description: resolvedItem.description,
                 deletedAt: resolvedItem.deletedAt,
               }}

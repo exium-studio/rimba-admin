@@ -48,6 +48,7 @@ const translations = {
   "avg_kmis_score": "Nilai rata-rata",
   "back": "Kembali",
   "basic_info": "Informasi umum",
+  "budget_target": "Target anggaran",
   "camera": "Kamera",
   "cancel": "Batal",
   "category": "Kategori",
@@ -370,6 +371,7 @@ const translations = {
   "partner": "Partner",
   "password_confirmation": "Konfirmasi Password",
   "perma_delete": "Hapus permanen",
+  "physical_target": "Target fisik",
   "previous": "Sebelumnya",
   "private_navs": {
     "cms": {
@@ -412,6 +414,7 @@ const translations = {
   "quiz_duration": "Durasi quiz",
   "quiz_info": "Informasi quiz",
   "read_more": "Baca selengkapnya",
+  "realization": "Realisasi",
   "recieve": "Terima",
   "related_apps": "Aplikasi Terkait",
   "reset": "Reset",

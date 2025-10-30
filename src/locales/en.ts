@@ -48,6 +48,7 @@ const translations = {
   "avg_kmis_score": "Average score",
   "back": "Back",
   "basic_info": "Basic info",
+  "budget_target": "Budget target",
   "camera": "Camera",
   "cancel": "Cancel",
   "category": "Category",
@@ -370,6 +371,7 @@ const translations = {
   "partner": "Partner",
   "password_confirmation": "Password Confirmation",
   "perma_delete": "Permanent delete",
+  "physical_target": "Physical target",
   "previous": "Previous",
   "private_navs": {
     "cms": {
@@ -412,6 +414,7 @@ const translations = {
   "quiz_duration": "Quiz duration",
   "quiz_info": "Quiz info",
   "read_more": "Read more",
+  "realization": "Realization",
   "recieve": "Recieve",
   "related_apps": "Related App",
   "reset": "Reset",

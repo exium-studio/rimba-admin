@@ -1049,6 +1049,18 @@ export const not_answered = {
   id: "Belum terjawab",
   en: "Not answered",
 };
+export const realization = {
+  id: "Realisasi",
+  en: "Realization",
+};
+export const budget_target = {
+  id: "Target anggaran",
+  en: "Budget target",
+};
+export const physical_target = {
+  id: "Target fisik",
+  en: "Physical target",
+};
 
 // Message
 export const msg_is_public_kmis_material = {
