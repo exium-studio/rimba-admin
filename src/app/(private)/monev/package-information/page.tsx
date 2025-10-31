@@ -508,7 +508,7 @@ const TargetInputItem = (props: any) => {
       p={4}
       border={"1px solid"}
       borderColor={"border.muted"}
-      rounded={themeConfig.radii.component}
+      rounded={themeConfig.radii.container}
       {...restProps}
     >
       <HStack justify={"space-between"}>
