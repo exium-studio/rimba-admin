@@ -398,7 +398,7 @@ const Data = (props: any) => {
     error: <FeedbackRetry onRetry={onRetry} />,
     empty: <FeedbackNoData />,
     loaded: (
-      <SimpleGrid columns={[7]} flex={1}>
+      <SimpleGrid columns={[7]} flex={1} minH={["600px", null, "700px"]}>
         {data?.map((cal, idx) => {
           const today = new Date();
           const date = cal.date;
