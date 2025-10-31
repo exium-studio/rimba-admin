@@ -35,3 +35,33 @@ export const dateInRange = (
     (includeEndDate ? dateObj <= endDate : dateObj < endDate)
   );
 };
+
+export const getCalendarRange = ({
+  month,
+  year,
+}: {
+  month: number;
+  year: number;
+}) => {
+  // Use UTC everywhere to avoid local timezone shifts when serializing to ISO.
+  const firstOfMonthUTC = new Date(Date.UTC(year, month, 1));
+
+  // Shift weekday so Monday = 0, Sunday = 6 (use UTC weekday).
+  const startDay = (firstOfMonthUTC.getUTCDay() + 6) % 7;
+
+  // Calculate first visible date in UTC (6 rows × 7 days = 42 days).
+  const firstVisibleUTC = new Date(firstOfMonthUTC);
+  firstVisibleUTC.setUTCDate(firstOfMonthUTC.getUTCDate() - startDay);
+
+  // Last visible = firstVisible + 41 days
+  const lastVisibleUTC = new Date(firstVisibleUTC);
+  lastVisibleUTC.setUTCDate(firstVisibleUTC.getUTCDate() + 41);
+
+  // Return plain ISO date (YYYY-MM-DD)
+  const toISODate = (d: Date) => d.toISOString().slice(0, 10);
+
+  return {
+    firstVisible: toISODate(firstVisibleUTC),
+    lastVisible: toISODate(lastVisibleUTC),
+  };
+};

@@ -259,7 +259,11 @@ const MobileLayout = (props: any) => {
                                       pathname === menu.path;
 
                                     return (
-                                      <NavLink key={menu.path} to={menu.path}>
+                                      <NavLink
+                                        key={menu.path}
+                                        to={menu.path}
+                                        w={"full"}
+                                      >
                                         <MenuItem value={menu.path} h={"44px"}>
                                           <P lineClamp={1}>
                                             {pluckString(l, menu.labelKey)}

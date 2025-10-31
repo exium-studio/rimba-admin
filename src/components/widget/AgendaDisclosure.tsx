@@ -12,7 +12,10 @@ import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-conte
 import { P } from "@/components/ui/p";
 import BackButton from "@/components/widget/BackButton";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
+import { Interface__MonevAgenda } from "@/constants/interfaces";
+import { useThemeConfig } from "@/context/useThemeConfig";
 import useBackOnClose from "@/hooks/useBackOnClose";
+import { isEmptyArray } from "@/utils/array";
 import { disclosureId } from "@/utils/disclosure";
 import { formatDate } from "@/utils/formatter";
 import { getLocalTimezone } from "@/utils/time";
@@ -20,22 +23,40 @@ import { StackProps, useDisclosure } from "@chakra-ui/react";
 
 export function AgendaDisclosure(props: any) {
   // Props
-  const { open, date } = props;
+  const { open, date, agendas } = props;
+
+  // Contexts
+  const { themeConfig } = useThemeConfig();
 
   return (
-    <DisclosureRoot open={open} lazyLoad>
+    <DisclosureRoot open={open} lazyLoad size={"xs"}>
       <DisclosureContent>
         <DisclosureHeader>
-          <DisclosureHeaderContent title={`Agenda`} />
+          <DisclosureHeaderContent
+            title={`Agenda ${formatDate(date, {
+              timezoneKey: getLocalTimezone().key,
+              variant: "dayShortMonthYear",
+            })}`}
+          />
         </DisclosureHeader>
 
         <DisclosureBody>
-          <P>{`${date?.fullDate}`}</P>
-          <P>{`${formatDate(date?.fullDate, {
-            timezoneKey: getLocalTimezone().key,
-          })}`}</P>
+          {isEmptyArray(agendas) && <FeedbackNoData />}
 
-          <FeedbackNoData />
+          <CContainer gap={2}>
+            {agendas?.map((agenda: Interface__MonevAgenda) => (
+              <CContainer
+                key={agenda?.id}
+                py={2}
+                px={4}
+                rounded={themeConfig.radii.component}
+                border={"1px solid"}
+                borderColor={"border.muted"}
+              >
+                <P>{agenda?.name}</P>
+              </CContainer>
+            ))}
+          </CContainer>
         </DisclosureBody>
 
         <DisclosureFooter>
@@ -48,18 +69,14 @@ export function AgendaDisclosure(props: any) {
 
 interface AgendaDisclosureTriggerProps extends StackProps {
   id: string;
-  date: {
-    fullDate: Date;
-    date: number;
-    month: number;
-    year: number;
-  };
+  date: string;
+  agendas: Interface__MonevAgenda[];
 }
 export const AgendaDisclosureTrigger = (
   props: AgendaDisclosureTriggerProps
 ) => {
   // Props
-  const { id, date, children, ...restProps } = props;
+  const { id, date, agendas, children, ...restProps } = props;
 
   // Hooks
   const { open, onOpen, onClose } = useDisclosure();
@@ -71,7 +88,7 @@ export const AgendaDisclosureTrigger = (
         {children}
       </CContainer>
 
-      <AgendaDisclosure open={open} date={date} />
+      <AgendaDisclosure open={open} date={date} agendas={agendas} />
     </>
   );
 };

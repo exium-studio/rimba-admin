@@ -19,6 +19,10 @@ import {
 } from "./types";
 
 // Monev
+export interface Interface__MonevAgendaCalendar {
+  date: string;
+  agendas: Interface__MonevAgenda[];
+}
 export interface Interface__MonevAgenda extends Interface__CUD {
   id: string;
   createdUser: Interface__User;
