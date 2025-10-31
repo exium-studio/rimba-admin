@@ -41,6 +41,7 @@ import { back } from "@/utils/client";
 import { getCalendarRange } from "@/utils/date";
 import { disclosureId } from "@/utils/disclosure";
 import {
+  Circle,
   FieldRoot,
   Group,
   HStack,
@@ -382,6 +383,9 @@ const Data = (props: any) => {
   // Props
   const { period } = props;
 
+  // Contexts
+  const { themeConfig } = useThemeConfig();
+
   // States
   const { firstVisible, lastVisible } = getCalendarRange(period);
   const { error, loading, data, onRetry } = useDataState<
@@ -426,13 +430,29 @@ const Data = (props: any) => {
                   }}
                   transition={"200ms"}
                 >
-                  <P
-                    fontSize={["sm", null, "md"]}
-                    fontWeight={isDateToday ? "extrabold" : ""}
-                    opacity={isDateInThisPeriod ? 1 : 0.3}
-                  >
-                    {`${Number(date.split("-")[2])}`}
-                  </P>
+                  <HStack justify={"space-between"}>
+                    <P
+                      fontSize={["sm", null, "md"]}
+                      fontWeight={isDateToday ? "extrabold" : ""}
+                      opacity={isDateInThisPeriod ? 1 : 0.3}
+                    >
+                      {`${Number(date.split("-")[2])}`}
+                    </P>
+
+                    {cal?.agendas?.length > 0 && (
+                      <Circle
+                        p={"2px"}
+                        w={"16px"}
+                        h={"16px"}
+                        bg={themeConfig.primaryColor}
+                        color={"body"}
+                      >
+                        <P fontSize={"sm"}>{`${
+                          cal?.agendas?.length < 9 ? cal?.agendas?.length : "9+"
+                        }`}</P>
+                      </Circle>
+                    )}
+                  </HStack>
                 </CContainer>
               </AgendaDisclosureTrigger>
             );
