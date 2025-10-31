@@ -21,7 +21,7 @@ import {
 // Monev
 export interface Interface__MonevRealizationAccount {
   name: string;
-  value: number;
+  value: number | null;
 }
 export interface Interface__MonevRealization extends Interface__CUD {
   id: string;
@@ -34,7 +34,7 @@ export interface Interface__MonevRealization extends Interface__CUD {
   progress: number;
   description: string;
   problem: string;
-  validationStatus: number;
+  validationStatus: number; // 1 = pending, 2 = approved, 3 = rejected
   rejectionReason: string;
   validateAt: string;
 }

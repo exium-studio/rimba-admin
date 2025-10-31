@@ -17,7 +17,6 @@ import { NumInput } from "@/components/ui/number-input";
 import { P } from "@/components/ui/p";
 import { PeriodPickerInput } from "@/components/ui/period-picker-input";
 import SearchInput from "@/components/ui/search-input";
-import { Skeleton } from "@/components/ui/skeleton";
 import { StringInput } from "@/components/ui/string-input";
 import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipProps } from "@/components/ui/tooltip";
@@ -31,6 +30,11 @@ import { DataGridItem } from "@/components/widget/DataGridItem";
 import { DataTable } from "@/components/widget/DataTable";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
+import {
+  RealizationList,
+  RealizationListDisclosureTrigger,
+  TargetDisclosureTrigger,
+} from "@/components/widget/PackageInformationWidgets";
 import { PageContainer, PageContent } from "@/components/widget/Page";
 import { SelectMonevPackageContractType } from "@/components/widget/SelectMonevPackageContractType";
 import { SelectMonevPICDivision } from "@/components/widget/SelectMonevPICDivision";
@@ -39,13 +43,9 @@ import {
   Interface__BatchOptionsTableOptionGenerator,
   Interface__DataProps,
   Interface__MonevPackageInformation,
-  Interface__MonevRealization,
-  Interface__MonevTargets,
   Interface__RowOptionsTableOptionGenerator,
   Interface__SelectOption,
 } from "@/constants/interfaces";
-import { L_MONTHS } from "@/constants/months";
-import { MIN_H_FEEDBACK_CONTAINER } from "@/constants/sizes";
 import { useDataDisplay } from "@/context/useDataDisplay";
 import useLang from "@/context/useLang";
 import useRenderTrigger from "@/context/useRenderTrigger";
@@ -62,12 +62,9 @@ import { capitalize, capitalizeWords, pluckString } from "@/utils/string";
 import { getActiveNavs } from "@/utils/url";
 import {
   Alert,
-  FieldRoot,
   FieldsetRoot,
   HStack,
   Icon,
-  InputGroup,
-  SimpleGrid,
   useDisclosure,
 } from "@chakra-ui/react";
 import {
@@ -81,7 +78,7 @@ import {
 } from "@tabler/icons-react";
 import { useFormik } from "formik";
 import { usePathname } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import * as yup from "yup";
 
 const BASE_ENDPOINT = "/api/monev/activity-package";
@@ -440,390 +437,6 @@ const DataUtils = (props: any) => {
   );
 };
 
-const TargetInputItem = (props: any) => {
-  // Props
-  const { target, ...restProps } = props;
-
-  // Contexts
-  const { l } = useLang();
-  const { themeConfig } = useThemeConfig();
-  const setRt = useRenderTrigger((s) => s.setRt);
-
-  // Hooks
-  const { req, loading } = useRequest({
-    id: "update-target",
-  });
-
-  // States
-  const formik = useFormik({
-    validateOnChange: false,
-    initialValues: {
-      budgetTarget: null as number | null,
-      physicalTarget: null as number | null,
-      description: "",
-    },
-    validationSchema: yup.object().shape({
-      budgetTarget: yup.number().required(l.msg_required_form),
-      physicalTarget: yup.number().required(l.msg_required_form),
-      description: yup.string().required(l.msg_required_form),
-    }),
-    onSubmit: (values) => {
-      const payload = values;
-      const config = {
-        url: `/api/monev/target/update/${target.id}`,
-        method: "PATCH",
-        data: payload,
-      };
-
-      req({
-        config,
-        onResolve: {
-          onSuccess: () => {
-            setRt((ps) => !ps);
-          },
-        },
-      });
-    },
-  });
-  const isChanged = useMemo(() => {
-    return (
-      target &&
-      (target.budgetTarget !== formik.values.budgetTarget ||
-        target.physicalTarget !== formik.values.physicalTarget ||
-        target.description !== formik.values.description)
-    );
-  }, [formik.values, target]);
-
-  useEffect(() => {
-    formik.setValues({
-      budgetTarget: target.budgetTarget,
-      physicalTarget: target.physicalTarget,
-      description: target.description,
-    });
-  }, [target]);
-
-  return (
-    <CContainer
-      gap={4}
-      p={4}
-      border={"1px solid"}
-      borderColor={"border.muted"}
-      rounded={themeConfig.radii.container}
-      {...restProps}
-    >
-      <HStack justify={"space-between"}>
-        <P fontWeight={"medium"}>{`${
-          L_MONTHS[target.month] || "Month is not 0 based"
-        }`}</P>
-
-        <P fontWeight={"medium"} color={"fg.subtle"}>{`${target.year}`}</P>
-      </HStack>
-
-      <CContainer>
-        <form id={`target-${target.id}`} onSubmit={formik.handleSubmit}>
-          <FieldRoot gap={4} disabled={loading}>
-            <Field
-              invalid={!!formik.errors.budgetTarget}
-              errorText={formik.errors.budgetTarget as string}
-            >
-              <P color={"fg.muted"}>{l.budget_target}</P>
-
-              <InputGroup startAddon="Rp">
-                <NumInput
-                  inputValue={formik.values.budgetTarget}
-                  onChange={(inputValue) => {
-                    formik.setFieldValue("budgetTarget", inputValue);
-                  }}
-                  placeholder="xxx.xxx.xxx"
-                  roundedTopLeft={0}
-                  roundedBottomLeft={0}
-                />
-              </InputGroup>
-            </Field>
-
-            <Field
-              invalid={!!formik.errors.physicalTarget}
-              errorText={formik.errors.physicalTarget as string}
-            >
-              <P color={"fg.muted"}>{l.physical_target}</P>
-
-              <InputGroup endAddon="%">
-                <NumInput
-                  inputValue={formik.values.physicalTarget}
-                  onChange={(inputValue) => {
-                    formik.setFieldValue("physicalTarget", inputValue);
-                  }}
-                  max={100}
-                  roundedTopRight={0}
-                  roundedBottomRight={0}
-                  placeholder="xxx"
-                />
-              </InputGroup>
-            </Field>
-
-            <Field
-              invalid={!!formik.errors.description}
-              errorText={formik.errors.description as string}
-            >
-              <P color={"fg.muted"}>{l.description}</P>
-
-              <Textarea
-                inputValue={formik.values.description}
-                onChange={(inputValue) => {
-                  formik.setFieldValue("description", inputValue);
-                }}
-              />
-            </Field>
-          </FieldRoot>
-
-          <HStack>
-            <Btn
-              type="submit"
-              w={"fit"}
-              ml={"auto"}
-              mt={4}
-              colorPalette={themeConfig.colorPalette}
-              variant={"outline"}
-              disabled={
-                !isChanged ||
-                !formik.values.budgetTarget ||
-                !formik.values.physicalTarget ||
-                !formik.values.description
-              }
-              loading={loading}
-            >
-              {l.save}
-            </Btn>
-          </HStack>
-        </form>
-      </CContainer>
-    </CContainer>
-  );
-};
-const TargetDisclosure = (props: any) => {
-  // Props
-  const { open, data } = props;
-
-  // States
-  const {
-    error,
-    initialLoading,
-    data: targetData,
-    onRetry,
-  } = useDataState<Interface__MonevTargets>({
-    initialData: undefined,
-    url: `/api/monev/target/${data.id}`,
-    conditions: open,
-    dependencies: [open],
-    dataResource: false,
-    withLoadingBar: false,
-  });
-  const render = {
-    loading: <Skeleton flex={1} minH={MIN_H_FEEDBACK_CONTAINER} />,
-    error: <FeedbackRetry onRetry={onRetry} />,
-    empty: <FeedbackNoData />,
-    loaded: (
-      <CContainer gap={4}>
-        <SimpleGrid columns={[1, null, 2]} gap={4}>
-          {targetData?.monevTargetOriginal.map((target) => {
-            return <TargetInputItem key={target.id} target={target} />;
-          })}
-        </SimpleGrid>
-      </CContainer>
-    ),
-  };
-
-  return (
-    <DisclosureRoot open={open} lazyLoad size={"lg"}>
-      <DisclosureContent>
-        <DisclosureHeader>
-          <DisclosureHeaderContent title={`Edit Target`} />
-        </DisclosureHeader>
-
-        <DisclosureBody>
-          {initialLoading && render.loading}
-          {!initialLoading && (
-            <>
-              {error && render.error}
-              {!error && (
-                <>
-                  {targetData && render.loaded}
-                  {(!targetData ||
-                    isEmptyArray(targetData?.monevTargetOriginal)) &&
-                    render.empty}
-                </>
-              )}
-            </>
-          )}
-        </DisclosureBody>
-
-        <DisclosureFooter>
-          <BackButton />
-        </DisclosureFooter>
-      </DisclosureContent>
-    </DisclosureRoot>
-  );
-};
-const TargetDisclosureTrigger = (props: any) => {
-  // Props
-  const { id, data, ...restProps } = props;
-
-  // Hooks
-  const { open, onOpen, onClose } = useDisclosure();
-  useBackOnClose(
-    disclosureId(id || `${PREFIX_ID}-target-${data?.id}`),
-    open,
-    onOpen,
-    onClose
-  );
-
-  return (
-    <>
-      <CContainer onClick={onOpen} {...restProps}></CContainer>
-
-      <TargetDisclosure open={open} data={data} />
-    </>
-  );
-};
-const RealizationInputItem = (props: any) => {
-  // Props
-  const { realization, ...restProps } = props;
-
-  // Contexts
-  const { l } = useLang();
-  const { themeConfig } = useThemeConfig();
-  const setRt = useRenderTrigger((s) => s.setRt);
-
-  // Hooks
-  const { req, loading } = useRequest({
-    id: "update-realization",
-  });
-
-  // States
-  const formik = useFormik({
-    validateOnChange: false,
-    initialValues: {
-      budgetTarget: null as number | null,
-      physicalTarget: null as number | null,
-      description: "",
-    },
-    validationSchema: yup.object().shape({
-      budgetTarget: yup.number().required(l.msg_required_form),
-      physicalTarget: yup.number().required(l.msg_required_form),
-      description: yup.string().required(l.msg_required_form),
-    }),
-    onSubmit: (values) => {
-      const payload = values;
-      const config = {
-        url: `/api/monev/monthly-realization/update/${realization.id}`,
-        method: "PATCH",
-        data: payload,
-      };
-
-      req({
-        config,
-        onResolve: {
-          onSuccess: () => {
-            setRt((ps) => !ps);
-          },
-        },
-      });
-    },
-  });
-
-  useEffect(() => {
-    formik.setValues({
-      budgetTarget: realization.budgetTarget,
-      physicalTarget: realization.physicalTarget,
-      description: realization.description,
-    });
-  }, [realization]);
-
-  return (
-    <CContainer gap={2} {...restProps}>
-      <P fontWeight={"medium"}>{`${
-        L_MONTHS[realization.month] || "Month is not 0 based"
-      } ${realization.year}`}</P>
-
-      <CContainer
-        p={4}
-        border={"1px solid"}
-        borderColor={"border.muted"}
-        rounded={themeConfig.radii.component}
-      >
-        <form id={`target-${realization.id}`} onSubmit={formik.handleSubmit}>
-          <FieldRoot gap={4} disabled={loading}></FieldRoot>
-        </form>
-      </CContainer>
-    </CContainer>
-  );
-};
-const RealizationList = (props: any) => {
-  // Props
-  const { data, ...restProps } = props;
-
-  // States
-  const monthlyRealization = data?.monthlyRealization;
-
-  return (
-    <SimpleGrid columns={[2, 3, 5]} gap={4} {...restProps}>
-      {monthlyRealization?.monevMonthlyRealizationOriginal?.map(
-        (realization: Interface__MonevRealization) => {
-          return (
-            <RealizationInputItem
-              key={realization?.id}
-              realization={realization}
-            />
-          );
-        }
-      )}
-    </SimpleGrid>
-  );
-};
-const RealizationDisclosure = (props: any) => {
-  // Props
-  const { open, data } = props;
-
-  return (
-    <DisclosureRoot open={open} lazyLoad size={"lg"}>
-      <DisclosureContent>
-        <DisclosureHeader>
-          <DisclosureHeaderContent title={`Edit Target`} />
-        </DisclosureHeader>
-
-        <DisclosureBody>
-          <RealizationList data={data} />
-        </DisclosureBody>
-
-        <DisclosureFooter>
-          <BackButton />
-        </DisclosureFooter>
-      </DisclosureContent>
-    </DisclosureRoot>
-  );
-};
-const RealizationDisclosureTrigger = (props: any) => {
-  // Props
-  const { data, ...restProps } = props;
-
-  // Hooks
-  const { open, onOpen, onClose } = useDisclosure();
-  useBackOnClose(
-    disclosureId(`${PREFIX_ID}-${data?.id}`),
-    open,
-    onOpen,
-    onClose
-  );
-
-  return (
-    <>
-      <CContainer onClick={onOpen} {...restProps}></CContainer>
-
-      <RealizationDisclosure open={open} data={data} />
-    </>
-  );
-};
-
 const Detail = (props: any) => {
   const ID = `${PREFIX_ID}_detail`;
 
@@ -876,7 +489,7 @@ const Detail = (props: any) => {
                   >
                     <Btn
                       colorPalette={themeConfig.colorPalette}
-                      variant={"outline"}
+                      variant={"ghost"}
                       size={"xs"}
                     >
                       Target
@@ -1006,7 +619,7 @@ const Realization = (props: any) => {
   );
 
   return (
-    <RealizationDisclosureTrigger data={resolvedData}>
+    <RealizationListDisclosureTrigger data={resolvedData}>
       <MenuTooltip content={l.realization}>
         <MenuItem value="realization" onClick={onOpen}>
           {l.realization}
@@ -1015,7 +628,7 @@ const Realization = (props: any) => {
           </Icon>
         </MenuItem>
       </MenuTooltip>
-    </RealizationDisclosureTrigger>
+    </RealizationListDisclosureTrigger>
   );
 };
 const Update = (props: any) => {

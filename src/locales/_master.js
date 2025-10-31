@@ -1073,6 +1073,58 @@ export const input_monthly_realization = {
   id: "Input realisasi bulanan",
   en: "Input monthly realization",
 };
+export const uninputted = {
+  id: "Belum diisi",
+  en: "Not filled in",
+};
+export const unvalidated = {
+  id: "Belum diverifikasi",
+  en: "Unvalidated",
+};
+export const validated = {
+  id: "Diverifikasi",
+  en: "Validated",
+};
+export const rejected = {
+  id: "Ditolak",
+  en: "Rejected",
+};
+export const evidence = {
+  id: "Bukti",
+  en: "Evidence",
+};
+export const budget_realization = {
+  id: "Realisasi anggaran",
+  en: "Budget realization",
+};
+export const progress = {
+  id: "Progres",
+  en: "Progress",
+};
+export const physical_progress = {
+  id: "Progres",
+  en: "Progress",
+};
+export const problem = {
+  id: "Masalah",
+  en: "Problem",
+};
+export const input_realization_budget_title = {
+  id: "Realisasi Anggaran Berdasarkan Akun Belanja",
+  en: "Budget realization based on account",
+};
+export const input_realization_physical_title = {
+  id: "Realisasi Fisik",
+  en: "Physical realization",
+};
+export const current_data = {
+  id: "Data saat ini",
+  en: "Current data",
+};
+export const pending_data = {
+  id: "Data tertunda",
+  en: "Pending data",
+};
 
 // Message
 export const msg_is_public_kmis_material = {

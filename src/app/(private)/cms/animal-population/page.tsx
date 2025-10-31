@@ -570,16 +570,19 @@ const Update = (props: any) => {
                     existingFiles={resolvedData.speciesImage}
                     onDeleteFile={(fileData) => {
                       formik.setFieldValue(
-                        "files",
+                        "deleteDocumentIds",
                         Array.from(
-                          new Set([...formik.values.files, fileData.id])
+                          new Set([
+                            ...formik.values.deleteDocumentIds,
+                            fileData.id,
+                          ])
                         )
                       );
                     }}
                     onUndoDeleteFile={(fileData) => {
                       formik.setFieldValue(
-                        "files",
-                        formik.values.files.filter(
+                        "deleteDocumentIds",
+                        formik.values.deleteDocumentIds.filter(
                           (id: string) => id !== fileData.id
                         )
                       );
