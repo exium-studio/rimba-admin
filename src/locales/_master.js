@@ -1061,6 +1061,18 @@ export const physical_target = {
   id: "Target fisik",
   en: "Physical target",
 };
+export const pic_division = {
+  id: "Divisi PIC",
+  en: "PIC Division",
+};
+export const activity_package_information = {
+  id: "Informasi paket kegiatan",
+  en: "Activity package information",
+};
+export const input_monthly_realization = {
+  id: "Input realisasi bulanan",
+  en: "Input monthly realization",
+};
 
 // Message
 export const msg_is_public_kmis_material = {

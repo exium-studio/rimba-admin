@@ -172,6 +172,7 @@ export const MenuRoot = (props: MenuRootProps) => {
     <ChakraMenu.Root
       positioning={{ hideWhenDetached: true }}
       unmountOnExit={false}
+      lazyMount={false}
       {...restProps}
     >
       {children}

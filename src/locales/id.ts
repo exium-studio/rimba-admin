@@ -4,6 +4,7 @@ const translations = {
   "account_status": "Status akun",
   "activate": "Aktifkan",
   "active": "Aktif",
+  "activity_package_information": "Informasi paket kegiatan",
   "adaptive_dark_mode": "Mode gelap adaptif",
   "add": "Tambah",
   "added": "Ditambahkan",
@@ -213,6 +214,7 @@ const translations = {
     "title": "Zona waktu diatur secara otomatis",
     "description": "${timezone}"
   },
+  "input_monthly_realization": "Input realisasi bulanan",
   "january": "Januari",
   "july": "Juli",
   "june": "Juni",
@@ -372,6 +374,7 @@ const translations = {
   "password_confirmation": "Konfirmasi Password",
   "perma_delete": "Hapus permanen",
   "physical_target": "Target fisik",
+  "pic_division": "Divisi PIC",
   "previous": "Sebelumnya",
   "private_navs": {
     "cms": {

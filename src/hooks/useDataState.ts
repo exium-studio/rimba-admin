@@ -17,6 +17,7 @@ interface Props<T> {
   initialLimit?: number;
   intialOffset?: number;
   dataResource?: boolean;
+  withLoadingBar?: boolean;
   // withLimit?: boolean;
   // withPagination?: boolean;
 }
@@ -37,6 +38,7 @@ const useDataState = <T = any>(props: Props<T>) => {
     initialLimit = 15,
     intialOffset = 0,
     dataResource = true,
+    withLoadingBar = true,
   } = props;
 
   // Contexts
@@ -186,7 +188,7 @@ const useDataState = <T = any>(props: Props<T>) => {
 
   // trigger loading bar on initialLoading | loading  is true
   useEffect(() => {
-    setLoadingBar(loading);
+    if (withLoadingBar) setLoadingBar(loading);
   }, [loading]);
 
   return {

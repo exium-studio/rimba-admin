@@ -4,6 +4,7 @@ const translations = {
   "account_status": "Account status",
   "activate": "Activate",
   "active": "Active",
+  "activity_package_information": "Activity package information",
   "adaptive_dark_mode": "Adaptive dark mode",
   "add": "Add",
   "added": "Added",
@@ -213,6 +214,7 @@ const translations = {
     "title": "Timezone automatically set",
     "description": "${timezone}"
   },
+  "input_monthly_realization": "Input monthly realization",
   "january": "January",
   "july": "July",
   "june": "June",
@@ -372,6 +374,7 @@ const translations = {
   "password_confirmation": "Password Confirmation",
   "perma_delete": "Permanent delete",
   "physical_target": "Physical target",
+  "pic_division": "PIC Division",
   "previous": "Previous",
   "private_navs": {
     "cms": {

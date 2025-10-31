@@ -39,6 +39,7 @@ import {
   Interface__BatchOptionsTableOptionGenerator,
   Interface__DataProps,
   Interface__MonevPackageInformation,
+  Interface__MonevRealization,
   Interface__MonevTargets,
   Interface__RowOptionsTableOptionGenerator,
   Interface__SelectOption,
@@ -56,7 +57,7 @@ import useRequest from "@/hooks/useRequest";
 import { isEmptyArray, last } from "@/utils/array";
 import { back } from "@/utils/client";
 import { disclosureId } from "@/utils/disclosure";
-import { formatDate } from "@/utils/formatter";
+import { formatDate, formatNumber } from "@/utils/formatter";
 import { capitalize, capitalizeWords, pluckString } from "@/utils/string";
 import { getActiveNavs } from "@/utils/url";
 import {
@@ -70,7 +71,8 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import {
-  IconExclamationCircle,
+  IconAlertTriangle,
+  IconInfoCircle,
   IconPencilMinus,
   IconPlus,
   IconTargetArrow,
@@ -501,17 +503,23 @@ const TargetInputItem = (props: any) => {
   }, [target]);
 
   return (
-    <CContainer gap={2} {...restProps}>
-      <P fontWeight={"medium"}>{`${
-        L_MONTHS[target.month] || "Month is not 0 based"
-      } ${target.year}`}</P>
+    <CContainer
+      gap={4}
+      p={4}
+      border={"1px solid"}
+      borderColor={"border.muted"}
+      rounded={themeConfig.radii.component}
+      {...restProps}
+    >
+      <HStack justify={"space-between"}>
+        <P fontWeight={"medium"}>{`${
+          L_MONTHS[target.month] || "Month is not 0 based"
+        }`}</P>
 
-      <CContainer
-        p={4}
-        border={"1px solid"}
-        borderColor={"border.muted"}
-        rounded={themeConfig.radii.component}
-      >
+        <P fontWeight={"medium"} color={"fg.subtle"}>{`${target.year}`}</P>
+      </HStack>
+
+      <CContainer>
         <form id={`target-${target.id}`} onSubmit={formik.handleSubmit}>
           <FieldRoot gap={4} disabled={loading}>
             <Field
@@ -567,26 +575,27 @@ const TargetInputItem = (props: any) => {
               />
             </Field>
           </FieldRoot>
-        </form>
 
-        <Btn
-          type="submit"
-          form={`target-${target.id}`}
-          w={"fit"}
-          ml={"auto"}
-          mt={4}
-          colorPalette={themeConfig.colorPalette}
-          variant={"outline"}
-          disabled={
-            !isChanged ||
-            !formik.values.budgetTarget ||
-            !formik.values.physicalTarget ||
-            !formik.values.description
-          }
-          loading={loading}
-        >
-          {l.save}
-        </Btn>
+          <HStack>
+            <Btn
+              type="submit"
+              w={"fit"}
+              ml={"auto"}
+              mt={4}
+              colorPalette={themeConfig.colorPalette}
+              variant={"outline"}
+              disabled={
+                !isChanged ||
+                !formik.values.budgetTarget ||
+                !formik.values.physicalTarget ||
+                !formik.values.description
+              }
+              loading={loading}
+            >
+              {l.save}
+            </Btn>
+          </HStack>
+        </form>
       </CContainer>
     </CContainer>
   );
@@ -607,6 +616,7 @@ const TargetDisclosure = (props: any) => {
     conditions: open,
     dependencies: [open],
     dataResource: false,
+    withLoadingBar: false,
   });
   const render = {
     loading: <Skeleton flex={1} minH={MIN_H_FEEDBACK_CONTAINER} />,
@@ -656,6 +666,144 @@ const TargetDisclosure = (props: any) => {
 };
 const TargetDisclosureTrigger = (props: any) => {
   // Props
+  const { id, data, ...restProps } = props;
+
+  // Hooks
+  const { open, onOpen, onClose } = useDisclosure();
+  useBackOnClose(
+    disclosureId(id || `${PREFIX_ID}-target-${data?.id}`),
+    open,
+    onOpen,
+    onClose
+  );
+
+  return (
+    <>
+      <CContainer onClick={onOpen} {...restProps}></CContainer>
+
+      <TargetDisclosure open={open} data={data} />
+    </>
+  );
+};
+const RealizationInputItem = (props: any) => {
+  // Props
+  const { realization, ...restProps } = props;
+
+  // Contexts
+  const { l } = useLang();
+  const { themeConfig } = useThemeConfig();
+  const setRt = useRenderTrigger((s) => s.setRt);
+
+  // Hooks
+  const { req, loading } = useRequest({
+    id: "update-realization",
+  });
+
+  // States
+  const formik = useFormik({
+    validateOnChange: false,
+    initialValues: {
+      budgetTarget: null as number | null,
+      physicalTarget: null as number | null,
+      description: "",
+    },
+    validationSchema: yup.object().shape({
+      budgetTarget: yup.number().required(l.msg_required_form),
+      physicalTarget: yup.number().required(l.msg_required_form),
+      description: yup.string().required(l.msg_required_form),
+    }),
+    onSubmit: (values) => {
+      const payload = values;
+      const config = {
+        url: `/api/monev/monthly-realization/update/${realization.id}`,
+        method: "PATCH",
+        data: payload,
+      };
+
+      req({
+        config,
+        onResolve: {
+          onSuccess: () => {
+            setRt((ps) => !ps);
+          },
+        },
+      });
+    },
+  });
+
+  useEffect(() => {
+    formik.setValues({
+      budgetTarget: realization.budgetTarget,
+      physicalTarget: realization.physicalTarget,
+      description: realization.description,
+    });
+  }, [realization]);
+
+  return (
+    <CContainer gap={2} {...restProps}>
+      <P fontWeight={"medium"}>{`${
+        L_MONTHS[realization.month] || "Month is not 0 based"
+      } ${realization.year}`}</P>
+
+      <CContainer
+        p={4}
+        border={"1px solid"}
+        borderColor={"border.muted"}
+        rounded={themeConfig.radii.component}
+      >
+        <form id={`target-${realization.id}`} onSubmit={formik.handleSubmit}>
+          <FieldRoot gap={4} disabled={loading}></FieldRoot>
+        </form>
+      </CContainer>
+    </CContainer>
+  );
+};
+const RealizationList = (props: any) => {
+  // Props
+  const { data, ...restProps } = props;
+
+  // States
+  const monthlyRealization = data?.monthlyRealization;
+
+  return (
+    <SimpleGrid columns={[2, 3, 5]} gap={4} {...restProps}>
+      {monthlyRealization?.monevMonthlyRealizationOriginal?.map(
+        (realization: Interface__MonevRealization) => {
+          return (
+            <RealizationInputItem
+              key={realization?.id}
+              realization={realization}
+            />
+          );
+        }
+      )}
+    </SimpleGrid>
+  );
+};
+const RealizationDisclosure = (props: any) => {
+  // Props
+  const { open, data } = props;
+
+  return (
+    <DisclosureRoot open={open} lazyLoad size={"lg"}>
+      <DisclosureContent>
+        <DisclosureHeader>
+          <DisclosureHeaderContent title={`Edit Target`} />
+        </DisclosureHeader>
+
+        <DisclosureBody>
+          <RealizationList data={data} />
+        </DisclosureBody>
+
+        <DisclosureFooter>
+          <BackButton />
+        </DisclosureFooter>
+      </DisclosureContent>
+    </DisclosureRoot>
+  );
+};
+const RealizationDisclosureTrigger = (props: any) => {
+  // Props
   const { data, ...restProps } = props;
 
   // Hooks
@@ -671,7 +819,141 @@ const TargetDisclosureTrigger = (props: any) => {
     <>
       <CContainer onClick={onOpen} {...restProps}></CContainer>
 
-      <TargetDisclosure open={open} data={data} />
+      <RealizationDisclosure open={open} data={data} />
+    </>
+  );
+};
+
+const Detail = (props: any) => {
+  const ID = `${PREFIX_ID}_detail`;
+
+  // Props
+  const { data } = props;
+  const resolvedData = data as Interface__Data;
+
+  // Contexts
+  const { l } = useLang();
+  const { themeConfig } = useThemeConfig();
+
+  // Hooks
+  const { open, onOpen, onClose } = useDisclosure();
+  useBackOnClose(
+    disclosureId(`${ID}-${resolvedData?.id}`),
+    open,
+    onOpen,
+    onClose
+  );
+
+  return (
+    <>
+      <MenuTooltip content={"Detail"}>
+        <MenuItem value="detail" onClick={onOpen}>
+          Detail
+          <Icon boxSize={"18px"} ml={"auto"}>
+            <IconInfoCircle stroke={1.5} />
+          </Icon>
+        </MenuItem>
+      </MenuTooltip>
+
+      <DisclosureRoot open={open} lazyLoad size={"lg"}>
+        <DisclosureContent>
+          <DisclosureHeader>
+            <DisclosureHeaderContent title={`Detail`} />
+          </DisclosureHeader>
+
+          <DisclosureBody>
+            <CContainer gap={8}>
+              <CContainer gap={4}>
+                <HStack justify={"space-between"}>
+                  <P fontSize={"lg"} fontWeight={"semibold"}>
+                    {capitalizeWords(l.activity_package_information)}
+                  </P>
+
+                  <TargetDisclosureTrigger
+                    id={`target-from-detail-${resolvedData?.id}`}
+                    data={resolvedData}
+                    w={"fit"}
+                  >
+                    <Btn
+                      colorPalette={themeConfig.colorPalette}
+                      variant={"outline"}
+                      size={"xs"}
+                    >
+                      Target
+                    </Btn>
+                  </TargetDisclosureTrigger>
+                </HStack>
+
+                <CContainer gap={2}>
+                  <HStack align={"start"} gap={4}>
+                    <P flex={1} flexShrink={0} color={"fg.muted"}>
+                      {l.mak}
+                    </P>
+
+                    <P flex={[1, null, 2]}>{`${data?.mak}`}</P>
+                  </HStack>
+
+                  <HStack align={"start"} gap={4}>
+                    <P flex={1} flexShrink={0} color={"fg.muted"}>
+                      {l.unit_output}
+                    </P>
+
+                    <P flex={[1, null, 2]}>{`${data?.unitOutput}`}</P>
+                  </HStack>
+
+                  <HStack align={"start"} gap={4}>
+                    <P flex={1} flexShrink={0} color={"fg.muted"}>
+                      {l.code_output}
+                    </P>
+
+                    <P flex={[1, null, 2]}>{`${data?.codeOutput}`}</P>
+                  </HStack>
+
+                  <HStack align={"start"} gap={4}>
+                    <P flex={1} flexShrink={0} color={"fg.muted"}>
+                      {"Volume"}
+                    </P>
+
+                    <P flex={[1, null, 2]}>{`${data?.volume}`}</P>
+                  </HStack>
+
+                  <HStack align={"start"} gap={4}>
+                    <P flex={1} flexShrink={0} color={"fg.muted"}>
+                      {l.pic_division}
+                    </P>
+
+                    <P flex={[1, null, 2]}>{`${data?.picDivision?.title}`}</P>
+                  </HStack>
+
+                  <HStack align={"start"} gap={4}>
+                    <P flex={1} flexShrink={0} color={"fg.muted"}>
+                      {l.partner}
+                    </P>
+
+                    <P flex={[1, null, 2]}>{`${data?.partner}`}</P>
+                  </HStack>
+                </CContainer>
+              </CContainer>
+
+              <CContainer gap={4}>
+                <HStack justify={"space-between"} h={"32px"}>
+                  <P fontSize={"lg"} fontWeight={"semibold"}>
+                    {capitalizeWords(l.input_monthly_realization)}
+                  </P>
+                </HStack>
+
+                <CContainer>
+                  <RealizationList data={data} />
+                </CContainer>
+              </CContainer>
+            </CContainer>
+          </DisclosureBody>
+
+          <DisclosureFooter>
+            <BackButton />
+          </DisclosureFooter>
+        </DisclosureContent>
+      </DisclosureRoot>
     </>
   );
 };
@@ -723,37 +1005,9 @@ const Realization = (props: any) => {
     onClose
   );
 
-  // States
-  const {
-    error,
-    initialLoading,
-    data: targetData,
-    onRetry,
-  } = useDataState<Interface__MonevTargets>({
-    initialData: undefined,
-    url: `/api/monev/target/${data.id}`,
-    conditions: open,
-    dependencies: [open],
-    dataResource: false,
-  });
-  const render = {
-    loading: <Skeleton flex={1} minH={MIN_H_FEEDBACK_CONTAINER} />,
-    error: <FeedbackRetry onRetry={onRetry} />,
-    empty: <FeedbackNoData />,
-    loaded: (
-      <CContainer gap={4}>
-        <SimpleGrid columns={[1, null, 2]} gap={4}>
-          {targetData?.monevTargetOriginal.map((target) => {
-            return <TargetInputItem key={target.id} target={target} />;
-          })}
-        </SimpleGrid>
-      </CContainer>
-    ),
-  };
-
   return (
-    <>
-      <MenuTooltip content={`${l.realization}`}>
+    <RealizationDisclosureTrigger data={resolvedData}>
+      <MenuTooltip content={l.realization}>
         <MenuItem value="realization" onClick={onOpen}>
           {l.realization}
           <Icon boxSize={"18px"} ml={"auto"}>
@@ -761,36 +1015,7 @@ const Realization = (props: any) => {
           </Icon>
         </MenuItem>
       </MenuTooltip>
-
-      <DisclosureRoot open={open} lazyLoad size={"lg"}>
-        <DisclosureContent>
-          <DisclosureHeader>
-            <DisclosureHeaderContent title={`Edit Target`} />
-          </DisclosureHeader>
-
-          <DisclosureBody>
-            {initialLoading && render.loading}
-            {!initialLoading && (
-              <>
-                {error && render.error}
-                {!error && (
-                  <>
-                    {targetData && render.loaded}
-                    {(!targetData ||
-                      isEmptyArray(targetData?.monevTargetOriginal)) &&
-                      render.empty}
-                  </>
-                )}
-              </>
-            )}
-          </DisclosureBody>
-
-          <DisclosureFooter>
-            <BackButton />
-          </DisclosureFooter>
-        </DisclosureContent>
-      </DisclosureRoot>
-    </>
+    </RealizationDisclosureTrigger>
   );
 };
 const Update = (props: any) => {
@@ -1175,7 +1400,7 @@ const Delete = (props: any) => {
       confirmLabel={
         <>
           <Icon>
-            <IconExclamationCircle stroke={1.5} />
+            <IconAlertTriangle stroke={1.5} />
           </Icon>
 
           {`${l.perma_delete}`}
@@ -1235,8 +1460,9 @@ const Data = (props: any) => {
         sortable: true,
       },
       {
-        th: l.description,
+        th: l.pagu,
         sortable: true,
+        align: "end",
       },
 
       // timestamps
@@ -1260,8 +1486,9 @@ const Data = (props: any) => {
           value: item.name,
         },
         {
-          td: <ClampText>{`${item.description}`}</ClampText>,
-          value: item.description,
+          td: formatNumber(item.pagu),
+          value: item.pagu,
+          align: "end",
         },
 
         // timestamps
@@ -1286,6 +1513,9 @@ const Data = (props: any) => {
       ],
     })),
     rowOptions: [
+      (row) => ({
+        override: <Detail data={row.data} routeTitle={routeTitle} />,
+      }),
       (row) => ({
         override: <Target data={row.data} routeTitle={routeTitle} />,
       }),
