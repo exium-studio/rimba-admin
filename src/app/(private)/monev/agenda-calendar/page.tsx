@@ -232,7 +232,7 @@ const Create = (props: BtnProps) => {
 
           <DisclosureBody>
             <form id={ID} onSubmit={formik.handleSubmit}>
-              <FieldRoot gap={4}>
+              <FieldRoot gap={4} disabled={loading}>
                 <Field
                   label={l.category}
                   invalid={!!formik.errors.category}
