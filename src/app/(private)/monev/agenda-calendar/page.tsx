@@ -398,45 +398,47 @@ const Data = (props: any) => {
     error: <FeedbackRetry onRetry={onRetry} />,
     empty: <FeedbackNoData />,
     loaded: (
-      <SimpleGrid columns={[7]} flex={1} minH={["600px", null, "700px"]}>
-        {data?.map((cal, idx) => {
-          const today = new Date();
-          const date = cal.date;
-          const month = Number(cal.date.split("-")[1]);
-          const isDateToday = today.toISOString().split("T")[0] === cal.date;
-          const isDateInThisPeriod = month - 1 === period.month;
+      <CContainer className="scrollY">
+        <SimpleGrid columns={[7]} flex={1} minH={["600px", null, "700px"]}>
+          {data?.map((cal, idx) => {
+            const today = new Date();
+            const date = cal.date;
+            const month = Number(cal.date.split("-")[1]);
+            const isDateToday = today.toISOString().split("T")[0] === cal.date;
+            const isDateInThisPeriod = month - 1 === period.month;
 
-          return (
-            <AgendaDisclosureTrigger
-              key={`${date}`}
-              id={`${date}`}
-              date={date}
-              agendas={cal?.agendas}
-            >
-              <CContainer
-                flex={1}
-                p={[2, null, 4]}
-                borderLeft={idx > 0 ? "1px solid" : ""}
-                borderTop={idx > 0 ? "1px solid" : ""}
-                borderColor={"border.muted"}
-                cursor={"pointer"}
-                _hover={{
-                  bg: "d1",
-                }}
-                transition={"200ms"}
+            return (
+              <AgendaDisclosureTrigger
+                key={`${date}`}
+                id={`${date}`}
+                date={date}
+                agendas={cal?.agendas}
               >
-                <P
-                  fontSize={["sm", null, "md"]}
-                  fontWeight={isDateToday ? "extrabold" : ""}
-                  opacity={isDateInThisPeriod ? 1 : 0.3}
+                <CContainer
+                  flex={1}
+                  p={[2, null, 4]}
+                  borderLeft={idx % 7 !== 0 ? "1px solid" : ""}
+                  borderTop={idx > 0 ? "1px solid" : ""}
+                  borderColor={"border.muted"}
+                  cursor={"pointer"}
+                  _hover={{
+                    bg: "d1",
+                  }}
+                  transition={"200ms"}
                 >
-                  {`${Number(date.split("-")[2])}`}
-                </P>
-              </CContainer>
-            </AgendaDisclosureTrigger>
-          );
-        })}
-      </SimpleGrid>
+                  <P
+                    fontSize={["sm", null, "md"]}
+                    fontWeight={isDateToday ? "extrabold" : ""}
+                    opacity={isDateInThisPeriod ? 1 : 0.3}
+                  >
+                    {`${Number(date.split("-")[2])}`}
+                  </P>
+                </CContainer>
+              </AgendaDisclosureTrigger>
+            );
+          })}
+        </SimpleGrid>
+      </CContainer>
     ),
   };
 
@@ -504,7 +506,7 @@ export default function Page() {
           flex={1}
           borderTop={"1px solid"}
           borderColor={"border.muted"}
-          overflow={"clip"}
+          overflow={"auto"}
         >
           <SimpleGrid
             columns={[7]}
