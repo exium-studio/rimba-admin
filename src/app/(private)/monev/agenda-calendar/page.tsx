@@ -1,19 +1,64 @@
 "use client";
 
-import { Btn } from "@/components/ui/btn";
+import { Btn, BtnProps } from "@/components/ui/btn";
 import { CContainer } from "@/components/ui/c-container";
+import { DatePickerInput } from "@/components/ui/date-picker-input";
+import { DateTimePickerInput } from "@/components/ui/date-time-picker-input";
+import {
+  DisclosureBody,
+  DisclosureContent,
+  DisclosureFooter,
+  DisclosureHeader,
+  DisclosureRoot,
+} from "@/components/ui/disclosure";
+import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-content";
+import { Field } from "@/components/ui/field";
 import { P } from "@/components/ui/p";
 import { PeriodPickerInput } from "@/components/ui/period-picker-input";
+import { StringInput } from "@/components/ui/string-input";
+import { Textarea } from "@/components/ui/textarea";
+import { TimePickerInput } from "@/components/ui/time-picker-input";
 import { AgendaDisclosureTrigger } from "@/components/widget/AgendaDisclosure";
+import {
+  CreateMonevAgendaCategoryDisclosure,
+  CreateMonevAgendaCategoryDisclosureTrigger,
+} from "@/components/widget/CreateMonevAgendaCategoryDisclosure";
 import { PageContainer, PageContent } from "@/components/widget/Page";
+import { SelectMonevAgendaCategory } from "@/components/widget/SelectMonevAgendaCategory";
+import {
+  Interface__MonevAgenda,
+  Interface__SelectOption,
+} from "@/constants/interfaces";
 import { Type__Period } from "@/constants/types";
 import useLang from "@/context/useLang";
+import useRenderTrigger from "@/context/useRenderTrigger";
+import { useThemeConfig } from "@/context/useThemeConfig";
+import useBackOnClose from "@/hooks/useBackOnClose";
 import { useIsSmScreenWidth } from "@/hooks/useIsSmScreenWidth";
-import { Group, Icon, SimpleGrid } from "@chakra-ui/react";
-import { IconCaretLeftFilled, IconCaretRightFilled } from "@tabler/icons-react";
+import useRequest from "@/hooks/useRequest";
+import { back } from "@/utils/client";
+import { disclosureId } from "@/utils/disclosure";
+import {
+  FieldRoot,
+  Group,
+  HStack,
+  Icon,
+  SimpleGrid,
+  useDisclosure,
+} from "@chakra-ui/react";
+import {
+  IconCaretLeftFilled,
+  IconCaretRightFilled,
+  IconPlus,
+} from "@tabler/icons-react";
 import { addDays, startOfWeek } from "date-fns";
+import { useFormik } from "formik";
 import { useState } from "react";
+import * as yup from "yup";
 
+const BASE_ENDPOINT = "/api/monev/activity-calendar";
+const PREFIX_ID = "monev_agenda_calendar";
+type Interface__Data = Interface__MonevAgenda;
 const DEFAULT_PERIOD = {
   month: new Date().getMonth(),
   year: new Date().getFullYear(),
@@ -52,6 +97,18 @@ const PeriodPicker = (props: any) => {
 
   return (
     <Group {...restProps}>
+      <Btn
+        iconButton
+        clicky={false}
+        variant={"outline"}
+        onClick={() => cycleMonth("decrement")}
+        size={"md"}
+      >
+        <Icon boxSize={4}>
+          <IconCaretLeftFilled />
+        </Icon>
+      </Btn>
+
       <PeriodPickerInput
         flex={1}
         size={"md"}
@@ -70,18 +127,6 @@ const PeriodPicker = (props: any) => {
         iconButton
         clicky={false}
         variant={"outline"}
-        onClick={() => cycleMonth("decrement")}
-        size={"md"}
-      >
-        <Icon boxSize={4}>
-          <IconCaretLeftFilled />
-        </Icon>
-      </Btn>
-
-      <Btn
-        iconButton
-        clicky={false}
-        variant={"outline"}
         onClick={() => cycleMonth("increment")}
         size={"md"}
       >
@@ -90,6 +135,238 @@ const PeriodPicker = (props: any) => {
         </Icon>
       </Btn>
     </Group>
+  );
+};
+
+const Create = (props: BtnProps) => {
+  const ID = `${PREFIX_ID}_create`;
+
+  // Contexts
+  const { l } = useLang();
+  const { themeConfig } = useThemeConfig();
+  const setRt = useRenderTrigger((s) => s.setRt);
+
+  // Hooks
+  const { open, onOpen, onClose } = useDisclosure();
+  useBackOnClose(disclosureId(ID), open, onOpen, onClose);
+  const { req, loading } = useRequest({
+    id: ID,
+  });
+
+  // States
+  const formik = useFormik({
+    validateOnChange: false,
+    initialValues: {
+      category: null as Interface__SelectOption[] | null,
+      name: "",
+      description: "",
+      location: "",
+      startedDate: null as any,
+      finishedDate: null as any,
+      startedTime: "",
+      finishedTime: "",
+    },
+    validationSchema: yup.object().shape({
+      category: yup.array().required(l.msg_required_form),
+      name: yup.string().required(l.msg_required_form),
+      description: yup.string().required(l.msg_required_form),
+      location: yup.string().required(l.msg_required_form),
+      startedDate: yup.array().required(l.msg_required_form),
+      finishedDate: yup.array().required(l.msg_required_form),
+      startedTime: yup.string().required(l.msg_required_form),
+      finishedTime: yup.string().required(l.msg_required_form),
+    }),
+    onSubmit: (values, { resetForm }) => {
+      back();
+
+      const payload = {
+        activityCategoryId: values.category?.[0]?.id ?? null,
+        name: values.name,
+        description: values.description,
+        location: values.location,
+        startedDate: values.startedDate[0],
+        finishedDate: values.finishedDate[0],
+        startedTime: values.startedTime,
+        finishedTime: values.finishedTime,
+      };
+
+      const config = {
+        url: `${BASE_ENDPOINT}/create`,
+        method: "POST",
+        data: payload,
+      };
+
+      req({
+        config,
+        onResolve: {
+          onSuccess: () => {
+            setRt((ps) => !ps);
+            resetForm();
+          },
+        },
+      });
+    },
+  });
+
+  return (
+    <>
+      <Btn
+        pl={3}
+        size={"md"}
+        colorPalette={themeConfig.colorPalette}
+        onClick={onOpen}
+        {...props}
+      >
+        <Icon>
+          <IconPlus stroke={1.5} />
+        </Icon>
+
+        {l.add}
+      </Btn>
+
+      <DisclosureRoot open={open} lazyLoad size={"xs"}>
+        <DisclosureContent>
+          <DisclosureHeader>
+            <DisclosureHeaderContent title={`${l.add} Agenda`} />
+          </DisclosureHeader>
+
+          <DisclosureBody>
+            <form id={ID} onSubmit={formik.handleSubmit}>
+              <FieldRoot gap={4}>
+                <Field
+                  label={l.category}
+                  invalid={!!formik.errors.category}
+                  errorText={formik.errors.category as string}
+                >
+                  <HStack w={"full"}>
+                    <SelectMonevAgendaCategory
+                      inputValue={formik.values.category}
+                      onConfirm={(inputValue) => {
+                        formik.setFieldValue("category", inputValue);
+                      }}
+                      flex={1}
+                    />
+
+                    <CreateMonevAgendaCategoryDisclosureTrigger>
+                      <Btn iconButton variant={"outline"}>
+                        <Icon>
+                          <IconPlus stroke={1.5} />
+                        </Icon>
+                      </Btn>
+                    </CreateMonevAgendaCategoryDisclosureTrigger>
+                  </HStack>
+                </Field>
+
+                <Field
+                  label={l.name}
+                  invalid={!!formik.errors.name}
+                  errorText={formik.errors.name as string}
+                >
+                  <StringInput
+                    inputValue={formik.values.name}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("name", inputValue);
+                    }}
+                  />
+                </Field>
+
+                <Field
+                  label={l.description}
+                  invalid={!!formik.errors.description}
+                  errorText={formik.errors.description as string}
+                >
+                  <Textarea
+                    inputValue={formik.values.description}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("description", inputValue);
+                    }}
+                  />
+                </Field>
+
+                <Field
+                  label={l.location}
+                  invalid={!!formik.errors.location}
+                  errorText={formik.errors.location as string}
+                >
+                  <StringInput
+                    inputValue={formik.values.location}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("location", inputValue);
+                    }}
+                  />
+                </Field>
+
+                <Field
+                  label={l.start_date}
+                  invalid={!!formik.errors.startedDate}
+                  errorText={formik.errors.startedDate as string}
+                >
+                  <DatePickerInput
+                    id="start-date"
+                    inputValue={formik.values.startedDate}
+                    onConfirm={(inputValue) => {
+                      formik.setFieldValue("startedDate", inputValue);
+                    }}
+                  />
+                </Field>
+
+                <Field
+                  label={l.end_date}
+                  invalid={!!formik.errors.finishedDate}
+                  errorText={formik.errors.finishedDate as string}
+                >
+                  <DatePickerInput
+                    id="end-date"
+                    inputValue={formik.values.finishedDate}
+                    onConfirm={(inputValue) => {
+                      formik.setFieldValue("finishedDate", inputValue);
+                    }}
+                  />
+                </Field>
+
+                <Field
+                  label={l.start_time}
+                  invalid={!!formik.errors.startedTime}
+                  errorText={formik.errors.startedTime as string}
+                >
+                  <TimePickerInput
+                    id="start-time"
+                    inputValue={formik.values.startedTime}
+                    onConfirm={(inputValue) => {
+                      formik.setFieldValue("startedTime", inputValue);
+                    }}
+                  />
+                </Field>
+
+                <Field
+                  label={l.end_time}
+                  invalid={!!formik.errors.finishedTime}
+                  errorText={formik.errors.finishedTime as string}
+                >
+                  <TimePickerInput
+                    id="end-time"
+                    inputValue={formik.values.finishedTime}
+                    onConfirm={(inputValue) => {
+                      formik.setFieldValue("finishedTime", inputValue);
+                    }}
+                  />
+                </Field>
+              </FieldRoot>
+            </form>
+          </DisclosureBody>
+
+          <DisclosureFooter>
+            <Btn
+              type="submit"
+              form={ID}
+              colorPalette={themeConfig.colorPalette}
+            >
+              {l.add}
+            </Btn>
+          </DisclosureFooter>
+        </DisclosureContent>
+      </DisclosureRoot>
+    </>
   );
 };
 
@@ -141,14 +418,16 @@ export default function Page() {
   return (
     <PageContainer>
       <PageContent>
-        <CContainer p={4}>
+        <HStack wrap={["wrap", null, "nowrap"]} p={4} justify={"space-between"}>
           <PeriodPicker
             period={period}
             setPeriod={setPeriod}
             zIndex={2}
-            w={"fit"}
+            w={["full", null, "fit"]}
           />
-        </CContainer>
+
+          <Create w={["full", null, "fit"]} />
+        </HStack>
 
         <CContainer
           flex={1}

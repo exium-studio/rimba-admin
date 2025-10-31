@@ -1125,6 +1125,14 @@ export const pending_data = {
   id: "Data tertunda",
   en: "Pending data",
 };
+export const start_time = {
+  id: "Waktu mulai",
+  en: "Start time",
+};
+export const end_time = {
+  id: "Waktu selesai",
+  en: "End time",
+};
 
 // Message
 export const msg_is_public_kmis_material = {

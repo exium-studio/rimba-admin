@@ -83,6 +83,7 @@ const translations = {
   "end_date_time": "Waktu selesai",
   "end_month": "Bulan selesai",
   "end_period": "Periode selesai",
+  "end_time": "Waktu selesai",
   "error_400_default": {
     "title": "Bad request",
     "description": "Periksa kembali data atau langkah yang dilakukan."
@@ -500,6 +501,7 @@ const translations = {
   "start_date_time": "Waktu mulai",
   "start_month": "Bulan mulai",
   "start_period": "Periode mulai",
+  "start_time": "Waktu mulai",
   "student": "Pelajar",
   "submit": "Submit",
   "success_200_default": {

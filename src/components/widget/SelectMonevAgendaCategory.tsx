@@ -19,7 +19,7 @@ export const SelectMonevAgendaCategory = (
   const { ...restProps } = props;
 
   // Contexts
-  const { l, lang } = useLang();
+  const { l } = useLang();
 
   // Hooks
   const rt = useRenderTrigger((s) => s.rt);
@@ -51,7 +51,7 @@ export const SelectMonevAgendaCategory = (
           const newOptions = r?.data?.data?.data
             ?.map((item: any) => ({
               id: item?.id,
-              label: item?.name[lang],
+              label: item?.title,
             }))
             .sort((a: Interface__SelectOption, b: Interface__SelectOption) =>
               a?.label?.localeCompare(b?.label)

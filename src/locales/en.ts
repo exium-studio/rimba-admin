@@ -83,6 +83,7 @@ const translations = {
   "end_date_time": "End time",
   "end_month": "End month",
   "end_period": "End period",
+  "end_time": "End time",
   "error_400_default": {
     "title": "Bad request",
     "description": "Please review your data or actions."
@@ -500,6 +501,7 @@ const translations = {
   "start_date_time": "Start time",
   "start_month": "Start month",
   "start_period": "Start period",
+  "start_time": "Start time",
   "student": "Student",
   "submit": "Submit",
   "success_200_default": {

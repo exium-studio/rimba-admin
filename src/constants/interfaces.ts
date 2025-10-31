@@ -19,6 +19,18 @@ import {
 } from "./types";
 
 // Monev
+export interface Interface__MonevAgenda extends Interface__CUD {
+  id: string;
+  createdUser: Interface__User;
+  activityCategory: Interface__MonevAgendaCategory;
+  name: string;
+  description: string;
+  location: string;
+  statedDate: string;
+  finishedDate: string;
+  startedTime: string;
+  finishedTime: string;
+}
 export interface Interface__MonevRealizationAccount {
   name: string;
   value: number | null;
