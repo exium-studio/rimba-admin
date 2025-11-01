@@ -145,16 +145,16 @@ export const PRIVATE_NAVS: Interface__NavItem[] = [
                 path: `/monev/data-sharing`,
                 allowedRoles: ["1", "3"],
               },
-              {
-                labelKey: "private_navs.monev.package_validation",
-                path: `/monev/package-validation`,
-                allowedRoles: ["1"],
-              },
-              {
-                labelKey: "private_navs.monev.realization_validation",
-                path: `/monev/realization-validation`,
-                allowedRoles: ["1"],
-              },
+              // {
+              //   labelKey: "private_navs.monev.package_validation",
+              //   path: `/monev/package-validation`,
+              //   allowedRoles: ["1"],
+              // },
+              // {
+              //   labelKey: "private_navs.monev.realization_validation",
+              //   path: `/monev/realization-validation`,
+              //   allowedRoles: ["1"],
+              // },
             ],
           },
         ],
