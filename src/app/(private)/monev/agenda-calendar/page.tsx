@@ -36,7 +36,6 @@ import {
 import { useState } from "react";
 
 const BASE_ENDPOINT = "/api/monev/activity-calendar";
-const PREFIX_ID = "monev_agenda_calendar";
 type Interface__Data = Interface__MonevAgendaCalendar;
 const DEFAULT_PERIOD = {
   month: new Date().getMonth(),

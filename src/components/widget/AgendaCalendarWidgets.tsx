@@ -46,6 +46,7 @@ import {
   IconCategory,
   IconClock,
   IconMapPin,
+  IconPencilMinus,
   IconPlus,
 } from "@tabler/icons-react";
 import { useFormik } from "formik";
@@ -295,6 +296,253 @@ export const CreateDisclosureTrigger = (props: any) => {
     </>
   );
 };
+export const EditDisclosure = (props: any) => {
+  const ID = `${PREFIX_ID}_edit`;
+
+  // Props
+  const { open, agenda } = props;
+
+  // Contexts
+  const { l } = useLang();
+  const { themeConfig } = useThemeConfig();
+  const setRt = useRenderTrigger((s) => s.setRt);
+
+  // Hooks
+  const { req, loading } = useRequest({
+    id: ID,
+  });
+
+  // States
+  const formik = useFormik({
+    validateOnChange: false,
+    initialValues: {
+      category: null as Interface__SelectOption[] | null,
+      name: "",
+      description: "",
+      location: "",
+      startedDate: null as any,
+      finishedDate: null as any,
+      startedTime: "",
+      finishedTime: "",
+    },
+    validationSchema: yup.object().shape({
+      category: yup.array().required(l.msg_required_form),
+      name: yup.string().required(l.msg_required_form),
+      description: yup.string().required(l.msg_required_form),
+      location: yup.string().required(l.msg_required_form),
+      startedDate: yup.array().required(l.msg_required_form),
+      finishedDate: yup.array().required(l.msg_required_form),
+      startedTime: yup.string().required(l.msg_required_form),
+      finishedTime: yup.string().required(l.msg_required_form),
+    }),
+    onSubmit: (values, { resetForm }) => {
+      back();
+
+      const payload = {
+        activityCategoryId: values.category?.[0]?.id ?? null,
+        name: values.name,
+        description: values.description,
+        location: values.location,
+        startedDate: values.startedDate[0],
+        finishedDate: values.finishedDate[0],
+        startedTime: values.startedTime,
+        finishedTime: values.finishedTime,
+      };
+
+      const config = {
+        url: `${BASE_ENDPOINT}/update/${agenda.id}`,
+        method: "PATCH",
+        data: payload,
+      };
+
+      req({
+        config,
+        onResolve: {
+          onSuccess: () => {
+            setRt((ps) => !ps);
+            resetForm();
+          },
+        },
+      });
+    },
+  });
+
+  useEffect(() => {
+    formik.setValues({
+      category: [
+        {
+          id: agenda?.activityCategory?.id,
+          label: agenda?.activityCategory?.title,
+        },
+      ],
+      name: agenda.name,
+      description: agenda.description,
+      location: agenda.location,
+      startedDate: [new Date(agenda.startedDate).toISOString()],
+      finishedDate: [new Date(agenda.finishedDate).toISOString()],
+      startedTime: agenda.startedTime,
+      finishedTime: agenda.finishedTime,
+    });
+  }, [agenda]);
+
+  return (
+    <DisclosureRoot open={open} lazyLoad size={"xs"}>
+      <DisclosureContent>
+        <DisclosureHeader>
+          <DisclosureHeaderContent title={`Edit Agenda`} />
+        </DisclosureHeader>
+
+        <DisclosureBody>
+          <form id={ID} onSubmit={formik.handleSubmit}>
+            <FieldRoot gap={4} disabled={loading}>
+              <Field
+                label={l.category}
+                invalid={!!formik.errors.category}
+                errorText={formik.errors.category as string}
+              >
+                <HStack w={"full"}>
+                  <SelectMonevAgendaCategory
+                    inputValue={formik.values.category}
+                    onConfirm={(inputValue) => {
+                      formik.setFieldValue("category", inputValue);
+                    }}
+                    flex={1}
+                  />
+
+                  <CreateMonevAgendaCategoryDisclosureTrigger>
+                    <Btn iconButton variant={"outline"}>
+                      <Icon>
+                        <IconPlus stroke={1.5} />
+                      </Icon>
+                    </Btn>
+                  </CreateMonevAgendaCategoryDisclosureTrigger>
+                </HStack>
+              </Field>
+
+              <Field
+                label={l.name}
+                invalid={!!formik.errors.name}
+                errorText={formik.errors.name as string}
+              >
+                <StringInput
+                  inputValue={formik.values.name}
+                  onChange={(inputValue) => {
+                    formik.setFieldValue("name", inputValue);
+                  }}
+                />
+              </Field>
+
+              <Field
+                label={l.description}
+                invalid={!!formik.errors.description}
+                errorText={formik.errors.description as string}
+              >
+                <Textarea
+                  inputValue={formik.values.description}
+                  onChange={(inputValue) => {
+                    formik.setFieldValue("description", inputValue);
+                  }}
+                />
+              </Field>
+
+              <Field
+                label={l.location}
+                invalid={!!formik.errors.location}
+                errorText={formik.errors.location as string}
+              >
+                <StringInput
+                  inputValue={formik.values.location}
+                  onChange={(inputValue) => {
+                    formik.setFieldValue("location", inputValue);
+                  }}
+                />
+              </Field>
+
+              <Field
+                label={l.start_date}
+                invalid={!!formik.errors.startedDate}
+                errorText={formik.errors.startedDate as string}
+              >
+                <DatePickerInput
+                  id="start-date"
+                  inputValue={formik.values.startedDate}
+                  onConfirm={(inputValue) => {
+                    formik.setFieldValue("startedDate", inputValue);
+                  }}
+                />
+              </Field>
+
+              <Field
+                label={l.end_date}
+                invalid={!!formik.errors.finishedDate}
+                errorText={formik.errors.finishedDate as string}
+              >
+                <DatePickerInput
+                  id="end-date"
+                  inputValue={formik.values.finishedDate}
+                  onConfirm={(inputValue) => {
+                    formik.setFieldValue("finishedDate", inputValue);
+                  }}
+                />
+              </Field>
+
+              <Field
+                label={l.start_time}
+                invalid={!!formik.errors.startedTime}
+                errorText={formik.errors.startedTime as string}
+              >
+                <TimePickerInput
+                  id="start-time"
+                  inputValue={formik.values.startedTime}
+                  onConfirm={(inputValue) => {
+                    formik.setFieldValue("startedTime", inputValue);
+                  }}
+                />
+              </Field>
+
+              <Field
+                label={l.end_time}
+                invalid={!!formik.errors.finishedTime}
+                errorText={formik.errors.finishedTime as string}
+              >
+                <TimePickerInput
+                  id="end-time"
+                  inputValue={formik.values.finishedTime}
+                  onConfirm={(inputValue) => {
+                    formik.setFieldValue("finishedTime", inputValue);
+                  }}
+                />
+              </Field>
+            </FieldRoot>
+          </form>
+        </DisclosureBody>
+
+        <DisclosureFooter>
+          <Btn type="submit" form={ID} colorPalette={themeConfig.colorPalette}>
+            {l.save}
+          </Btn>
+        </DisclosureFooter>
+      </DisclosureContent>
+    </DisclosureRoot>
+  );
+};
+export const EditDisclosureTrigger = (props: any) => {
+  // Props
+  const { id = `${PREFIX_ID}_edit`, agenda, children, ...restProps } = props;
+
+  const { open, onOpen, onClose } = useDisclosure();
+  useBackOnClose(disclosureId(id), open, onOpen, onClose);
+
+  return (
+    <>
+      <CContainer w={"fit"} onClick={onOpen} {...restProps}>
+        {children}
+      </CContainer>
+
+      <EditDisclosure open={open} agenda={agenda} />
+    </>
+  );
+};
 export function AgendaDisclosure(props: any) {
   // Props
   const { open, date, agendas } = props;
@@ -330,11 +578,24 @@ export function AgendaDisclosure(props: any) {
                   borderColor={"border.muted"}
                   gap={4}
                 >
-                  <CContainer gap={1}>
-                    <P fontWeight={"medium"}>{agenda?.name}</P>
+                  <HStack align={"start"}>
+                    <CContainer gap={1}>
+                      <P fontWeight={"medium"}>{agenda?.name}</P>
 
-                    <P color={"fg.muted"}>{agenda?.description}</P>
-                  </CContainer>
+                      <P color={"fg.muted"}>{agenda?.description}</P>
+                    </CContainer>
+
+                    <EditDisclosureTrigger
+                      id={`edit-agenda-${agenda.id}`}
+                      agenda={agenda}
+                    >
+                      <Btn iconButton size={"md"} variant={"ghost"}>
+                        <Icon>
+                          <IconPencilMinus stroke={1.5} />
+                        </Icon>
+                      </Btn>
+                    </EditDisclosureTrigger>
+                  </HStack>
 
                   <CContainer gap={2}>
                     <HStack color={"fg.subtle"}>
