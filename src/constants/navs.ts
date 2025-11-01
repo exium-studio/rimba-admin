@@ -148,7 +148,12 @@ export const PRIVATE_NAVS: Interface__NavItem[] = [
               {
                 labelKey: "private_navs.monev.package_validation",
                 path: `/monev/package-validation`,
-                allowedRoles: ["1", "3"],
+                allowedRoles: ["1"],
+              },
+              {
+                labelKey: "private_navs.monev.realization_validation",
+                path: `/monev/realization-validation`,
+                allowedRoles: ["1"],
               },
             ],
           },

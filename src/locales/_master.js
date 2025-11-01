@@ -93,6 +93,10 @@ export const private_navs = {
       id: "Validasi Paket",
       en: "Package Validation",
     },
+    realization_validation: {
+      id: "Validasi Realisasi",
+      en: "Realization Validation",
+    },
   },
   settings: {
     id: "Pengaturan",
