@@ -225,6 +225,9 @@ export const TargetDisclosure = (props: any) => {
   // Props
   const { open, data } = props;
 
+  // Contexts
+  const { l } = useLang();
+
   // States
   const {
     error,
@@ -239,17 +242,61 @@ export const TargetDisclosure = (props: any) => {
     dataResource: false,
     withLoadingBar: false,
   });
+  const currentTargetData = targetData?.monevTargetOriginal;
+  const pendingTargetData = targetData?.monevTargetPendingUpdate;
+
   const render = {
     loading: <Skeleton flex={1} minH={MIN_H_FEEDBACK_CONTAINER} />,
     error: <FeedbackRetry onRetry={onRetry} />,
     empty: <FeedbackNoData />,
     loaded: (
-      <CContainer gap={4}>
-        <SimpleGrid columns={[1, null, 2]} gap={4}>
+      <CContainer gap={4} mt={-2}>
+        <Tabs.Root lazyMount unmountOnExit defaultValue="tab-1">
+          <Tabs.List>
+            <Tabs.Trigger value="tab-1">{l.current_data}</Tabs.Trigger>
+            <Tabs.Trigger value="tab-2">{l.pending_data}</Tabs.Trigger>
+          </Tabs.List>
+
+          <>
+            <Tabs.Content value="tab-1">
+              <>
+                {isEmptyArray(currentTargetData) && <FeedbackNoData />}
+
+                {!isEmptyArray(currentTargetData) && (
+                  <SimpleGrid columns={[1, null, 2]} gap={4}>
+                    {currentTargetData?.map((target) => {
+                      return (
+                        <TargetInputItem key={target.id} target={target} />
+                      );
+                    })}
+                  </SimpleGrid>
+                )}
+              </>
+            </Tabs.Content>
+
+            <Tabs.Content value="tab-2">
+              <>
+                {isEmptyArray(pendingTargetData) && <FeedbackNoData />}
+
+                {!isEmptyArray(pendingTargetData) && (
+                  <SimpleGrid columns={[1, null, 2]} gap={4}>
+                    {pendingTargetData?.map((target) => {
+                      return (
+                        <TargetInputItem key={target.id} target={target} />
+                      );
+                    })}
+                  </SimpleGrid>
+                )}
+              </>
+            </Tabs.Content>
+          </>
+        </Tabs.Root>
+
+        {/* <SimpleGrid columns={[1, null, 2]} gap={4}>
           {targetData?.monevTargetOriginal.map((target) => {
             return <TargetInputItem key={target.id} target={target} />;
           })}
-        </SimpleGrid>
+        </SimpleGrid> */}
       </CContainer>
     ),
   };
