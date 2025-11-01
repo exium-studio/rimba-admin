@@ -126,14 +126,10 @@ export const settings_navs = {
       en: "App permissions",
     },
   },
-  master_data: {
+  cms_master_data: {
     index: {
-      id: "Master Data",
-      en: "Master Data",
-    },
-    topic_category: {
-      id: "Kategori Topic",
-      en: "Topic Category",
+      id: "CMS Master Data",
+      en: "CMS Master Data",
     },
     activity_category: {
       id: "Kategori Aktivitas",
@@ -146,6 +142,22 @@ export const settings_navs = {
     animal_category: {
       id: "Kategori Satwa",
       en: "Animal Category",
+    },
+  },
+  kmis_master_data: {
+    index: {
+      id: "KMIS Master Data",
+      en: "KMIS Master Data",
+    },
+    topic_category: {
+      id: "Kategori Topic",
+      en: "Topic Category",
+    },
+  },
+  monev_master_data: {
+    index: {
+      id: "Monev Master Data",
+      en: "Monev Master Data",
     },
     agenda_category: {
       id: "Kategori Agenda",

@@ -478,12 +478,18 @@ const translations = {
       "regional": "Regional",
       "permissions": "App permissions"
     },
-    "master_data": {
-      "index": "Master Data",
-      "topic_category": "Topic Category",
+    "cms_master_data": {
+      "index": "CMS Master Data",
       "activity_category": "Activity Category",
       "news_category": "News Category",
-      "animal_category": "Animal Category",
+      "animal_category": "Animal Category"
+    },
+    "kmis_master_data": {
+      "index": "KMIS Master Data",
+      "topic_category": "Topic Category"
+    },
+    "monev_master_data": {
+      "index": "Monev Master Data",
       "agenda_category": "Agenda Category",
       "pic_division": "PIC Division",
       "pic_assignment": "PIC Assignment"

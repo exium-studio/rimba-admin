@@ -202,48 +202,60 @@ export const OTHER_NAVS: Interface__NavItem[] = [
             ],
           },
           {
-            groupLabelKey: "settings_navs.master_data.index",
+            groupLabelKey: "settings_navs.cms_master_data.index",
             allowedRoles: ["1"],
             list: [
               {
                 icon: IconCategory,
-                labelKey: "settings_navs.master_data.topic_category",
-                path: `/settings/topic-category`,
-                backPath: `/settings`,
-              },
-              {
-                icon: IconCategory,
-                labelKey: "settings_navs.master_data.activity_category",
+                labelKey: "settings_navs.cms_master_data.activity_category",
                 path: `/settings/activity-category`,
                 backPath: `/settings`,
               },
               {
                 icon: IconCategory,
-                labelKey: "settings_navs.master_data.news_category",
+                labelKey: "settings_navs.cms_master_data.news_category",
                 path: `/settings/news-category`,
                 backPath: `/settings`,
               },
               {
                 icon: IconCategory,
-                labelKey: "settings_navs.master_data.animal_category",
+                labelKey: "settings_navs.cms_master_data.animal_category",
                 path: `/settings/animal-category`,
                 backPath: `/settings`,
               },
+            ],
+          },
+          {
+            groupLabelKey: "settings_navs.kmis_master_data.index",
+            allowedRoles: ["1"],
+            list: [
               {
                 icon: IconCategory,
-                labelKey: "settings_navs.master_data.agenda_category",
+                labelKey: "settings_navs.kmis_master_data.topic_category",
+                path: `/settings/topic-category`,
+                backPath: `/settings`,
+              },
+            ],
+          },
+          {
+            groupLabelKey: "settings_navs.monev_master_data.index",
+            allowedRoles: ["1"],
+            list: [
+              {
+                icon: IconCategory,
+                labelKey: "settings_navs.monev_master_data.agenda_category",
                 path: `/settings/agenda-category`,
                 backPath: `/settings`,
               },
               {
                 icon: IconUsers,
-                labelKey: "settings_navs.master_data.pic_division",
+                labelKey: "settings_navs.monev_master_data.pic_division",
                 path: `/settings/pic-division`,
                 backPath: `/settings`,
               },
               {
                 icon: IconChecklist,
-                labelKey: "settings_navs.master_data.pic_assignment",
+                labelKey: "settings_navs.monev_master_data.pic_assignment",
                 path: `/settings/pic-assignment`,
                 backPath: `/settings`,
               },

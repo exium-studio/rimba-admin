@@ -478,12 +478,18 @@ const translations = {
       "regional": "Regional",
       "permissions": "Izin aplikasi"
     },
-    "master_data": {
-      "index": "Master Data",
-      "topic_category": "Kategori Topic",
+    "cms_master_data": {
+      "index": "CMS Master Data",
       "activity_category": "Kategori Aktivitas",
       "news_category": "Kategori Berita",
-      "animal_category": "Kategori Satwa",
+      "animal_category": "Kategori Satwa"
+    },
+    "kmis_master_data": {
+      "index": "KMIS Master Data",
+      "topic_category": "Kategori Topic"
+    },
+    "monev_master_data": {
+      "index": "Monev Master Data",
       "agenda_category": "Kategori Agenda",
       "pic_division": "Divisi PIC",
       "pic_assignment": "Penugasan PIC"
