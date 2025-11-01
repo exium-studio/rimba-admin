@@ -566,6 +566,7 @@ export function AgendaDisclosure(props: any) {
   // Contexts
   const { l } = useLang();
   const { themeConfig } = useThemeConfig();
+  const setRt = useRenderTrigger((s) => s.setRt);
 
   // Hooks
   const { req, loading } = useRequest({
@@ -593,7 +594,9 @@ export function AgendaDisclosure(props: any) {
     req({
       config,
       onResolve: {
-        onSuccess: () => {},
+        onSuccess: () => {
+          setRt((ps) => !ps);
+        },
       },
     });
   }
