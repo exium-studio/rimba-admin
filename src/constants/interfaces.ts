@@ -103,6 +103,8 @@ export interface Interface__MonevPackageInformation extends Interface__CUD {
   partner: string;
   validationStatus: number; // 1: pending, 2: approved, 3: rejected
   rejectionReason: string;
+  monevMonthlyRealization?: Interface__MonevRealization[];
+  monevMonthlyRealizationPendingUpdate?: Interface__MonevRealization[];
 }
 export interface Interface__MonevPICDivision extends Interface__CUD {
   id: string;

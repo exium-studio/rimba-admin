@@ -820,7 +820,9 @@ const Data = (props: any) => {
       },
       {
         th: l.document,
-        align: "center",
+        wrapperProps: {
+          pl: "24px",
+        },
       },
       {
         th: l.description,
@@ -854,7 +856,6 @@ const Data = (props: any) => {
         {
           td: <FilesList data={item} />,
           value: "",
-          align: "center",
         },
         {
           td: <ClampText>{`${item.description[lang]}`}</ClampText>,

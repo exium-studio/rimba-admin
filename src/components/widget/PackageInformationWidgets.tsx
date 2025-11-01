@@ -305,7 +305,7 @@ export const TargetDisclosure = (props: any) => {
     <DisclosureRoot open={open} lazyLoad size={"lg"}>
       <DisclosureContent>
         <DisclosureHeader>
-          <DisclosureHeaderContent title={`Edit Target`} />
+          <DisclosureHeaderContent title={`Target`} />
         </DisclosureHeader>
 
         <DisclosureBody>

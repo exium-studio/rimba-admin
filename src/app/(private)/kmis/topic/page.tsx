@@ -497,8 +497,6 @@ const Update = (props: any) => {
 
   return (
     <>
-      <Divider my={1} />
-
       <MenuTooltip content={"Edit"}>
         <MenuItem value="edit" onClick={onOpen}>
           Edit
@@ -943,12 +941,6 @@ const Data = (props: any) => {
     })),
     rowOptions: [
       (row) => ({
-        override: <Material data={row.data} />,
-      }),
-      (row) => ({
-        override: <Quiz data={row.data} />,
-      }),
-      (row) => ({
         override: <Update data={row.data} routeTitle={routeTitle} />,
       }),
       (row) => ({
@@ -968,6 +960,19 @@ const Data = (props: any) => {
             routeTitle={routeTitle}
           />
         ),
+      }),
+
+      (row) => ({
+        override: (
+          <>
+            <Divider my={1} />
+
+            <Material data={row.data} />
+          </>
+        ),
+      }),
+      (row) => ({
+        override: <Quiz data={row.data} />,
       }),
     ] as Interface__RowOptionsTableOptionGenerator<Interface__Data>[],
     batchOptions: [

@@ -30,6 +30,7 @@ import { DataGridItem } from "@/components/widget/DataGridItem";
 import { DataTable } from "@/components/widget/DataTable";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
+import { DotIndicator } from "@/components/widget/Indicator";
 import {
   RealizationList,
   RealizationListDisclosureTrigger,
@@ -437,11 +438,11 @@ const DataUtils = (props: any) => {
   );
 };
 
-const Detail = (props: any) => {
+const DetailTrigger = (props: any) => {
   const ID = `${PREFIX_ID}_detail`;
 
   // Props
-  const { data } = props;
+  const { data, children, ...restProps } = props;
   const resolvedData = data as Interface__Data;
 
   // Contexts
@@ -459,14 +460,9 @@ const Detail = (props: any) => {
 
   return (
     <>
-      <MenuTooltip content={"Detail"}>
-        <MenuItem value="detail" onClick={onOpen}>
-          Detail
-          <Icon boxSize={"18px"} ml={"auto"}>
-            <IconInfoCircle stroke={1.5} />
-          </Icon>
-        </MenuItem>
-      </MenuTooltip>
+      <CContainer w={"fit"} onClick={onOpen} {...restProps}>
+        {children}
+      </CContainer>
 
       <DisclosureRoot open={open} lazyLoad size={"lg"}>
         <DisclosureContent>
@@ -568,67 +564,6 @@ const Detail = (props: any) => {
         </DisclosureContent>
       </DisclosureRoot>
     </>
-  );
-};
-const Target = (props: any) => {
-  const ID = `${PREFIX_ID}_target`;
-
-  // Props
-  const { data } = props;
-  const resolvedData = data as Interface__Data;
-
-  // Hooks
-  const { open, onOpen, onClose } = useDisclosure();
-  useBackOnClose(
-    disclosureId(`${ID}-${resolvedData?.id}`),
-    open,
-    onOpen,
-    onClose
-  );
-
-  return (
-    <TargetDisclosureTrigger data={resolvedData}>
-      <MenuTooltip content={"Edit Target"}>
-        <MenuItem value="edit target" onClick={onOpen}>
-          Target
-          <Icon boxSize={"18px"} ml={"auto"}>
-            <IconTargetArrow stroke={1.5} />
-          </Icon>
-        </MenuItem>
-      </MenuTooltip>
-    </TargetDisclosureTrigger>
-  );
-};
-const Realization = (props: any) => {
-  const ID = `${PREFIX_ID}_target`;
-
-  // Props
-  const { data } = props;
-  const resolvedData = data as Interface__Data;
-
-  // Contexts
-  const { l } = useLang();
-
-  // Hooks
-  const { open, onOpen, onClose } = useDisclosure();
-  useBackOnClose(
-    disclosureId(`${ID}-${resolvedData?.id}`),
-    open,
-    onOpen,
-    onClose
-  );
-
-  return (
-    <RealizationListDisclosureTrigger data={resolvedData}>
-      <MenuTooltip content={l.realization}>
-        <MenuItem value="realization" onClick={onOpen}>
-          {l.realization}
-          <Icon boxSize={"18px"} ml={"auto"}>
-            <IconTimeline stroke={1.5} />
-          </Icon>
-        </MenuItem>
-      </MenuTooltip>
-    </RealizationListDisclosureTrigger>
   );
 };
 const Update = (props: any) => {
@@ -765,8 +700,6 @@ const Update = (props: any) => {
 
   return (
     <>
-      <Divider my={1} />
-
       <MenuTooltip content={"Edit"}>
         <MenuItem value="edit" onClick={onOpen}>
           Edit
@@ -1077,6 +1010,24 @@ const Data = (props: any) => {
         sortable: true,
         align: "end",
       },
+      {
+        th: "Detail",
+        wrapperProps: {
+          pl: "24px",
+        },
+      },
+      {
+        th: "Target",
+        wrapperProps: {
+          pl: "24px",
+        },
+      },
+      {
+        th: l.realization,
+        wrapperProps: {
+          pl: "24px",
+        },
+      },
 
       // timestamps
       {
@@ -1103,6 +1054,56 @@ const Data = (props: any) => {
           value: item.pagu,
           align: "end",
         },
+        {
+          td: (
+            <DetailTrigger data={item} routeTitle={routeTitle}>
+              <Btn size={"xs"} variant={"ghost"} pl={"6px"}>
+                <Icon>
+                  <IconInfoCircle stroke={1.5} />
+                </Icon>
+                Detail
+              </Btn>
+            </DetailTrigger>
+          ),
+          value: "",
+        },
+        {
+          td: (
+            <TargetDisclosureTrigger data={item} routeTitle={routeTitle}>
+              <Btn size={"xs"} variant={"ghost"} pl={"6px"}>
+                <Icon>
+                  <IconTargetArrow stroke={1.5} />
+                </Icon>
+                Target
+                {/* TODO deteksi kalau ada data yg perlu validasi */}
+                {!isEmptyArray(item?.monevMonthlyRealizationPendingUpdate) && (
+                  <DotIndicator ml={2} />
+                )}
+              </Btn>
+            </TargetDisclosureTrigger>
+          ),
+          value: "",
+        },
+        {
+          td: (
+            <RealizationListDisclosureTrigger
+              data={item}
+              routeTitle={routeTitle}
+            >
+              <Btn size={"xs"} variant={"ghost"} pl={"6px"}>
+                <Icon>
+                  <IconTimeline stroke={1.5} />
+                </Icon>
+                {l.realization}
+
+                {!isEmptyArray(item?.monevMonthlyRealizationPendingUpdate) && (
+                  <DotIndicator ml={2} />
+                )}
+              </Btn>
+            </RealizationListDisclosureTrigger>
+          ),
+          value: "",
+        },
 
         // timestamps
         {
@@ -1127,15 +1128,6 @@ const Data = (props: any) => {
     })),
     rowOptions: [
       (row) => ({
-        override: <Detail data={row.data} routeTitle={routeTitle} />,
-      }),
-      (row) => ({
-        override: <Target data={row.data} routeTitle={routeTitle} />,
-      }),
-      (row) => ({
-        override: <Realization data={row.data} routeTitle={routeTitle} />,
-      }),
-      (row) => ({
         override: <Update data={row.data} routeTitle={routeTitle} />,
       }),
       (row) => ({
@@ -1145,6 +1137,53 @@ const Data = (props: any) => {
             disabled={!!row.data.deletedAt}
             routeTitle={routeTitle}
           />
+        ),
+      }),
+
+      (row) => ({
+        override: (
+          <>
+            <Divider my={1} />
+
+            <DetailTrigger data={row.data} routeTitle={routeTitle} w={"full"}>
+              <MenuTooltip content={"Detail"}>
+                <MenuItem value="detail">
+                  Detail
+                  <Icon boxSize={"18px"} ml={"auto"}>
+                    <IconInfoCircle stroke={1.5} />
+                  </Icon>
+                </MenuItem>
+              </MenuTooltip>
+            </DetailTrigger>
+          </>
+        ),
+      }),
+      (row) => ({
+        override: (
+          <TargetDisclosureTrigger data={row.data}>
+            <MenuTooltip content={"Edit Target"}>
+              <MenuItem value="edit target">
+                Target
+                <Icon boxSize={"18px"} ml={"auto"}>
+                  <IconTargetArrow stroke={1.5} />
+                </Icon>
+              </MenuItem>
+            </MenuTooltip>
+          </TargetDisclosureTrigger>
+        ),
+      }),
+      (row) => ({
+        override: (
+          <RealizationListDisclosureTrigger data={row.data}>
+            <MenuTooltip content={l.realization}>
+              <MenuItem value="realization">
+                {l.realization}
+                <Icon boxSize={"18px"} ml={"auto"}>
+                  <IconTimeline stroke={1.5} />
+                </Icon>
+              </MenuItem>
+            </MenuTooltip>
+          </RealizationListDisclosureTrigger>
         ),
       }),
     ] as Interface__RowOptionsTableOptionGenerator<Interface__Data>[],
