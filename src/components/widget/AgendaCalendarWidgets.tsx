@@ -17,6 +17,7 @@ import { StringInput } from "@/components/ui/string-input";
 import { Textarea } from "@/components/ui/textarea";
 import { TimePickerInput } from "@/components/ui/time-picker-input";
 import BackButton from "@/components/widget/BackButton";
+import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
 import { CreateMonevAgendaCategoryDisclosureTrigger } from "@/components/widget/CreateMonevAgendaCategoryDisclosure";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import { SelectMonevAgendaCategory } from "@/components/widget/SelectMonevAgendaCategory";
@@ -43,12 +44,14 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import {
+  IconAlertTriangle,
   IconCalendar,
   IconCategory,
   IconClock,
   IconMapPin,
   IconPencilMinus,
   IconPlus,
+  IconTrash,
 } from "@tabler/icons-react";
 import { useFormik } from "formik";
 import { useEffect } from "react";
@@ -564,6 +567,37 @@ export function AgendaDisclosure(props: any) {
   const { l } = useLang();
   const { themeConfig } = useThemeConfig();
 
+  // Hooks
+  const { req, loading } = useRequest({
+    id: "delete-agenda",
+    loadingMessage: {
+      title: `${l.delete_} Agenda`,
+    },
+    successMessage: {
+      title: `${l.delete_} Agenda ${l.successful}`,
+    },
+  });
+
+  // Utils
+  function onDelete(agenda: Interface__MonevAgenda) {
+    back();
+
+    const config = {
+      url: `${BASE_ENDPOINT}/delete`,
+      method: "DELETE",
+      data: {
+        deleteIds: [agenda?.id],
+      },
+    };
+
+    req({
+      config,
+      onResolve: {
+        onSuccess: () => {},
+      },
+    });
+  }
+
   return (
     <DisclosureRoot open={open} lazyLoad size={"xs"}>
       <DisclosureContent>
@@ -590,12 +624,16 @@ export function AgendaDisclosure(props: any) {
                 >
                   <HStack align={"start"}>
                     <CContainer gap={1} p={4} py={3}>
-                      <P fontWeight={"medium"}>{agenda?.name}</P>
-
-                      <P color={"fg.muted"}>{agenda?.description}</P>
+                      <P
+                        fontSize={"lg"}
+                        fontWeight={"semibold"}
+                        lineHeight={1.4}
+                      >
+                        {agenda?.name}
+                      </P>
                     </CContainer>
 
-                    <CContainer w={"fit"} p={1}>
+                    <HStack w={"fit"} p={1}>
                       <EditDisclosureTrigger
                         id={`edit-agenda-${agenda.id}`}
                         agenda={agenda}
@@ -606,8 +644,42 @@ export function AgendaDisclosure(props: any) {
                           </Icon>
                         </Btn>
                       </EditDisclosureTrigger>
-                    </CContainer>
+
+                      <ConfirmationDisclosureTrigger
+                        id={`delete-agenda-${agenda.id}`}
+                        title={l.perma_delete}
+                        description={l.msg_cannot_be_undone}
+                        confirmLabel={
+                          <>
+                            <Icon>
+                              <IconAlertTriangle stroke={1.5} />
+                            </Icon>
+
+                            {`${l.perma_delete}`}
+                          </>
+                        }
+                        onConfirm={() => {
+                          onDelete(agenda);
+                        }}
+                        confirmButtonProps={{
+                          color: "fg.error",
+                          colorPalette: "gray",
+                          variant: "outline",
+                        }}
+                        loading={loading}
+                      >
+                        <Btn iconButton size={"md"} variant={"ghost"}>
+                          <Icon>
+                            <IconTrash stroke={1.5} />
+                          </Icon>
+                        </Btn>
+                      </ConfirmationDisclosureTrigger>
+                    </HStack>
                   </HStack>
+
+                  <CContainer px={4}>
+                    <P color={"fg.muted"}>{agenda?.description}</P>
+                  </CContainer>
 
                   <CContainer gap={2} p={4} pb={4}>
                     <HStack color={"fg.subtle"}>
