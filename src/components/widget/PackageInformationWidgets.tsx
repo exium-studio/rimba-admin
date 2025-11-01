@@ -436,7 +436,14 @@ export const RealizationDisclosure = (props: any) => {
 
   useEffect(() => {
     formik.setValues({
-      budgetRealization: realization?.budgetRealization,
+      budgetRealization: isEmptyArray(realization?.budgetRealization)
+        ? [
+            {
+              name: "",
+              value: null,
+            },
+          ]
+        : realization?.budgetRealization,
       progress: [realization?.progress],
       description: realization?.description,
       problem: realization?.problem,

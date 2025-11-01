@@ -214,7 +214,7 @@ export const PeriodPickerInput = (props: Props__PeriodPickerInput) => {
             <Btn
               onClick={handleConfirm}
               colorPalette={themeConfig.colorPalette}
-              disabled={(required && empty) || !required}
+              disabled={required && empty}
             >
               {l.confirm}
             </Btn>
