@@ -76,6 +76,7 @@ const translations = {
   "deleted": "Dihapus",
   "deleted_file": "File dihapus",
   "description": "Deskripsi",
+  "document": "Dokumen",
   "duration": "Durasi",
   "educator": "Pengajar",
   "empty_answer": "Jawaban kosong",

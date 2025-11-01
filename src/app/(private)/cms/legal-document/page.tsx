@@ -109,7 +109,7 @@ const Create = (props: any) => {
       title: capitalize(`${l.add} ${routeTitle}`),
     },
     successMessage: {
-      title: capitalize(`${l.add} {routeTitle} ${l.successful}`),
+      title: capitalize(`${l.add} ${routeTitle} ${l.successful}`),
     },
   });
 
@@ -367,9 +367,7 @@ const FilesList = (props: any) => {
       <DisclosureRoot open={open} lazyLoad size={"xs"}>
         <DisclosureContent>
           <DisclosureHeader>
-            <DisclosureHeaderContent
-              title={l.private_navs.cms.legal_document}
-            />
+            <DisclosureHeaderContent title={l.document} />
           </DisclosureHeader>
 
           <DisclosureBody>

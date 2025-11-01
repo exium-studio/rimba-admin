@@ -76,6 +76,7 @@ const translations = {
   "deleted": "Deleted",
   "deleted_file": "Removed file",
   "description": "Description",
+  "document": "Document",
   "duration": "Duration",
   "educator": "Educator",
   "empty_answer": "Empty answer",

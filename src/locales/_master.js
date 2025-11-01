@@ -181,6 +181,10 @@ export const settings_navs = {
 };
 
 // Semantic UI
+export const document = {
+  id: "Dokumen",
+  en: "Document",
+};
 export const perma_delete = {
   id: "Hapus permanen",
   en: "Permanent delete",
