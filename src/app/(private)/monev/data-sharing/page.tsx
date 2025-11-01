@@ -358,18 +358,18 @@ const Update = (props: any) => {
       }).concat(
         min1FileExist({
           resolvedData,
-          existingKey: "document",
+          existingKey: "report",
           deletedKey: "deleteDocumentIds",
           newKey: "files",
           message: l.msg_required_form,
         })
       ),
-      titleId: yup.string().required(l.msg_required_form),
-      titleEn: yup.string().required(l.msg_required_form),
-      descriptionId: yup.string().required(l.msg_required_form),
-      descriptionEn: yup.string().required(l.msg_required_form),
+      name: yup.string().required(l.msg_required_form),
+      description: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values) => {
+      back();
+
       const payload = new FormData();
       payload.append("files", values.files[0]);
       payload.append(
@@ -390,7 +390,6 @@ const Update = (props: any) => {
         onResolve: {
           onSuccess: () => {
             setRt((ps) => !ps);
-            back();
           },
         },
       });
