@@ -249,7 +249,7 @@ export const OTHER_NAVS: Interface__NavItem[] = [
               },
               {
                 icon: IconUsers,
-                labelKey: "settings_navs.monev_master_data.pic_division",
+                labelKey: "settings_navs.monev_monev_master_data.pic_division",
                 path: `/settings/pic-division`,
                 backPath: `/settings`,
               },

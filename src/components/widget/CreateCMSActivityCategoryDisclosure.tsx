@@ -37,7 +37,7 @@ export const CreateCMSActivityCategoryDisclosure = (props: any) => {
   const { l } = useLang();
   const { themeConfig } = useThemeConfig();
   const setRt = useRenderTrigger((s) => s.setRt);
-  const routeTitle = l.settings_navs.master_data.activity_category;
+  const routeTitle = l.settings_navs.cms_master_data.activity_category;
 
   // Hooks
   const { req, loading } = useRequest({

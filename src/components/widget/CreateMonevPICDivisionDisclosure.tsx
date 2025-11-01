@@ -37,7 +37,7 @@ export const CreateMonevPICDivisionDisclosure = (props: any) => {
   const { l } = useLang();
   const { themeConfig } = useThemeConfig();
   const setRt = useRenderTrigger((s) => s.setRt);
-  const routeTitle = l.settings_navs.master_data.pic_division;
+  const routeTitle = l.settings_navs.monev_master_data.pic_division;
 
   // Hooks
   const { req, loading } = useRequest({

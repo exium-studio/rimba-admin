@@ -69,7 +69,7 @@ export const SelectMonevPICDivision = (
   return (
     <SelectInput
       id={ID}
-      title={capitalizeWords(l.settings_navs.master_data.pic_division)}
+      title={capitalizeWords(l.settings_navs.monev_master_data.pic_division)}
       loading={loading}
       selectOptions={selectOptions}
       fetch={fetch}

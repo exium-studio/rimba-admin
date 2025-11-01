@@ -37,7 +37,7 @@ export const CreateMonevAgendaCategoryDisclosure = (props: any) => {
   const { l } = useLang();
   const { themeConfig } = useThemeConfig();
   const setRt = useRenderTrigger((s) => s.setRt);
-  const routeTitle = l.settings_navs.master_data.agenda_category;
+  const routeTitle = l.settings_navs.monev_master_data.agenda_category;
 
   // Hooks
   const { req, loading } = useRequest({

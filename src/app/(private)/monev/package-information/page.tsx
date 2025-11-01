@@ -231,7 +231,7 @@ const Create = (props: any) => {
             <form id={ID} onSubmit={formik.handleSubmit}>
               <FieldsetRoot disabled={loading}>
                 <Field
-                  label={l.settings_navs.master_data.pic_division}
+                  label={l.settings_navs.monev_master_data.pic_division}
                   invalid={!!formik.errors.picDivision}
                   errorText={formik.errors.picDivision as string}
                 >
@@ -786,7 +786,7 @@ const Update = (props: any) => {
             <form id={ID} onSubmit={formik.handleSubmit}>
               <FieldsetRoot disabled={loading}>
                 <Field
-                  label={l.settings_navs.master_data.pic_division}
+                  label={l.settings_navs.monev_master_data.pic_division}
                   invalid={!!formik.errors.picDivision}
                   errorText={formik.errors.picDivision as string}
                 >

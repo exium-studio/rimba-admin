@@ -69,7 +69,7 @@ export const SelectMonevAgendaCategory = (
   return (
     <SelectInput
       id={ID}
-      title={capitalizeWords(l.settings_navs.master_data.agenda_category)}
+      title={capitalizeWords(l.settings_navs.monev_master_data.agenda_category)}
       loading={loading}
       selectOptions={selectOptions}
       fetch={fetch}

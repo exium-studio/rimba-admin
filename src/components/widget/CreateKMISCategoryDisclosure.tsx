@@ -37,7 +37,7 @@ export const CreateKMISCategoryDisclosure = (props: any) => {
   const { l } = useLang();
   const { themeConfig } = useThemeConfig();
   const setRt = useRenderTrigger((s) => s.setRt);
-  const routeTitle = l.settings_navs.master_data.topic_category;
+  const routeTitle = l.settings_navs.kmis_master_data.topic_category;
 
   // Hooks
   const { req, loading } = useRequest({

@@ -281,7 +281,7 @@ const Data = (props: any) => {
   const dataProps: Interface__DataProps = {
     headers: [
       {
-        th: l.settings_navs.master_data.pic_division,
+        th: l.settings_navs.monev_master_data.pic_division,
       },
       {
         th: "PIC",
