@@ -137,6 +137,8 @@ const Create = (props: any) => {
       total: yup.number().required(l.msg_required_form),
     }),
     onSubmit: (values) => {
+      back();
+
       const payload = new FormData();
       if (!isEmptyArray(values.files)) payload.append("files", values.files[0]);
       payload.append("categoryId", `${formik.values.category?.[0]?.id}`);
@@ -167,7 +169,6 @@ const Create = (props: any) => {
         onResolve: {
           onSuccess: () => {
             setRt((ps) => !ps);
-            back();
           },
         },
       });
@@ -456,6 +457,8 @@ const Update = (props: any) => {
       total: yup.number().required(l.msg_required_form),
     }),
     onSubmit: (values) => {
+      back();
+
       const payload = new FormData();
       if (!isEmptyArray(values.files)) payload.append("files", values.files[0]);
       payload.append("categoryId", `${formik.values.category?.[0]?.id}`);
@@ -486,7 +489,6 @@ const Update = (props: any) => {
         onResolve: {
           onSuccess: () => {
             setRt((ps) => !ps);
-            back();
           },
         },
       });

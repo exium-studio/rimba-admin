@@ -134,6 +134,8 @@ const Create = (props: any) => {
       descriptionEn: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values) => {
+      back();
+
       const payload = new FormData();
       payload.append("files", values.files[0]);
       payload.append(
@@ -162,7 +164,6 @@ const Create = (props: any) => {
         onResolve: {
           onSuccess: () => {
             setRt((ps) => !ps);
-            back();
           },
         },
       });
@@ -445,6 +446,8 @@ const Update = (props: any) => {
       descriptionEn: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values) => {
+      back();
+
       const payload = new FormData();
       payload.append("files", values.files[0]);
       payload.append(
@@ -477,7 +480,6 @@ const Update = (props: any) => {
         onResolve: {
           onSuccess: () => {
             setRt((ps) => !ps);
-            back();
           },
         },
       });

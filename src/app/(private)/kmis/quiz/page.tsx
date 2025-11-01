@@ -178,6 +178,8 @@ const Import = (props: any) => {
       }).required(l.msg_required_form),
     }),
     onSubmit: (values) => {
+      back();
+
       const payload = new FormData();
       if (values.files) payload.append("files", values.files[0]);
 
@@ -192,7 +194,6 @@ const Import = (props: any) => {
         onResolve: {
           onSuccess: () => {
             setRt((ps) => !ps);
-            back();
           },
         },
       });

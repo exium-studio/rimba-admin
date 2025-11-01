@@ -122,6 +122,8 @@ const Create = (props: any) => {
       anwerEn: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values) => {
+      back();
+
       const payload = new FormData();
       payload.append(
         "question",
@@ -149,7 +151,6 @@ const Create = (props: any) => {
         onResolve: {
           onSuccess: () => {
             setRt((ps) => !ps);
-            back();
           },
         },
       });
@@ -360,6 +361,8 @@ const Update = (props: any) => {
       anwerEn: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values) => {
+      back();
+
       const payload = new FormData();
       payload.append(
         "question",
@@ -387,7 +390,6 @@ const Update = (props: any) => {
         onResolve: {
           onSuccess: () => {
             setRt((ps) => !ps);
-            back();
           },
         },
       });

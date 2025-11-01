@@ -111,6 +111,8 @@ const Create = (props: any) => {
       email: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values) => {
+      back();
+
       const payload = new FormData();
       payload.append("name", values.name);
       payload.append("email", values.email);
@@ -126,7 +128,6 @@ const Create = (props: any) => {
         onResolve: {
           onSuccess: () => {
             setRt((ps) => !ps);
-            back();
           },
         },
       });
@@ -263,6 +264,8 @@ const Update = (props: any) => {
       email: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values) => {
+      back();
+
       const payload = new FormData();
       payload.append("name", values.name);
       payload.append("email", values.email);
@@ -279,7 +282,6 @@ const Update = (props: any) => {
         onResolve: {
           onSuccess: () => {
             setRt((ps) => !ps);
-            back();
           },
         },
       });

@@ -71,6 +71,7 @@ type Interface__Data = Interface__MonevDataSharing;
 const MenuTooltip = (props: TooltipProps) => {
   // Props
   const { children, content, ...restProps } = props;
+
   return (
     <Tooltip
       content={content}
@@ -124,6 +125,8 @@ const Create = (props: any) => {
       description: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values) => {
+      back();
+
       const payload = new FormData();
       if (!isEmptyArray(values.files)) {
         for (const file of values.files) {
@@ -144,7 +147,6 @@ const Create = (props: any) => {
         onResolve: {
           onSuccess: () => {
             setRt((ps) => !ps);
-            back();
           },
         },
       });

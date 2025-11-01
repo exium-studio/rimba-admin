@@ -66,6 +66,8 @@ export const CreateCMSAnimalCategoryDisclosure = (props: any) => {
       descriptionEn: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values, { resetForm }) => {
+      back();
+
       const payload = new FormData();
       payload.append(
         "name",
@@ -93,7 +95,6 @@ export const CreateCMSAnimalCategoryDisclosure = (props: any) => {
         onResolve: {
           onSuccess: () => {
             setRt((ps) => !ps);
-            back();
             resetForm();
           },
         },

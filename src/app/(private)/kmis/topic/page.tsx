@@ -415,6 +415,8 @@ const Update = (props: any) => {
       quizDuration: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values) => {
+      back();
+
       const payload = new FormData();
       if (values.files?.[0]) {
         payload.append("files", values.files[0]);
@@ -444,7 +446,6 @@ const Update = (props: any) => {
         onResolve: {
           onSuccess: () => {
             setRt((ps) => !ps);
-            back();
           },
         },
       });

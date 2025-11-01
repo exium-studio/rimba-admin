@@ -149,6 +149,8 @@ const Create = (props: any) => {
       contentEn: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values) => {
+      back();
+
       const payload = new FormData();
       payload.append("categoryId", `${values.category?.[0]?.id}`);
       payload.append("files", values.files[0]);
@@ -191,7 +193,6 @@ const Create = (props: any) => {
         onResolve: {
           onSuccess: () => {
             setRt((ps) => !ps);
-            back();
           },
         },
       });
@@ -550,6 +551,8 @@ const Update = (props: any) => {
       contentEn: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values) => {
+      back();
+
       const payload = new FormData();
       payload.append("categoryId", `${values.category?.[0]?.id}`);
       if (!isEmptyArray(values.files)) payload.append("files", values.files[0]);
@@ -592,7 +595,6 @@ const Update = (props: any) => {
         onResolve: {
           onSuccess: () => {
             setRt((ps) => !ps);
-            back();
           },
         },
       });

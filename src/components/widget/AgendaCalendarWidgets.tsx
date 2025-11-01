@@ -602,7 +602,7 @@ export function AgendaDisclosure(props: any) {
   }
 
   return (
-    <DisclosureRoot open={open} lazyLoad size={"xs"}>
+    <DisclosureRoot open={open} lazyLoad>
       <DisclosureContent>
         <DisclosureHeader>
           <DisclosureHeaderContent

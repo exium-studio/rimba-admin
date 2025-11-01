@@ -162,6 +162,8 @@ const Update = (props: any) => {
       description: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values) => {
+      back();
+
       const config = {
         url: `${BASE_ENDPOINT}/update/${resolvedData.id}`,
         method: "PATCH",
@@ -173,7 +175,6 @@ const Update = (props: any) => {
         onResolve: {
           onSuccess: () => {
             setRt((ps) => !ps);
-            back();
           },
         },
       });

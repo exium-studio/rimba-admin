@@ -172,6 +172,8 @@ const Update = (props: any) => {
       descriptionEn: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values) => {
+      back();
+
       const payload = new FormData();
       payload.append(
         "name",
@@ -199,7 +201,6 @@ const Update = (props: any) => {
         onResolve: {
           onSuccess: () => {
             setRt((ps) => !ps);
-            back();
           },
         },
       });

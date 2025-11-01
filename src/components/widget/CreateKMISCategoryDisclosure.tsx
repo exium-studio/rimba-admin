@@ -59,6 +59,8 @@ export const CreateKMISCategoryDisclosure = (props: any) => {
       description: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values, { resetForm }) => {
+      back();
+
       const payload = new FormData();
       payload.append("title", values.title);
       payload.append("description", values.description);
@@ -74,7 +76,6 @@ export const CreateKMISCategoryDisclosure = (props: any) => {
         onResolve: {
           onSuccess: () => {
             setRt((ps) => !ps);
-            back();
             resetForm();
           },
         },

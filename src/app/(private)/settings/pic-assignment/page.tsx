@@ -165,6 +165,8 @@ const Update = (props: any) => {
       pics: yup.array(),
     }),
     onSubmit: (values) => {
+      back();
+
       const payload = values.pics?.map(
         (pic: Interface__SelectOption) => pic.id
       );
@@ -180,7 +182,6 @@ const Update = (props: any) => {
         onResolve: {
           onSuccess: () => {
             setRt((ps) => !ps);
-            back();
           },
         },
       });
