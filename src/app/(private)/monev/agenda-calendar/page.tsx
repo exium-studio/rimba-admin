@@ -139,7 +139,7 @@ const Data = (props: any) => {
     error: <FeedbackRetry onRetry={onRetry} />,
     empty: <FeedbackNoData />,
     loaded: (
-      <CContainer className="scrollY">
+      <CContainer flex={1} className="scrollY">
         <SimpleGrid
           columns={[7]}
           flex={1}
@@ -167,6 +167,7 @@ const Data = (props: any) => {
                   bg: "d1",
                 }}
                 transition={"200ms"}
+                flex={1}
               >
                 <Stack
                   flexDir={["column", null, "row"]}
@@ -197,7 +198,7 @@ const Data = (props: any) => {
                   )}
                 </Stack>
 
-                <CContainer p={1} gap={1}>
+                <CContainer p={1} gap={1} mt={"auto"}>
                   {cal?.agendas?.map((agenda, idx) => {
                     return (
                       idx < 2 && (
