@@ -584,33 +584,32 @@ export function AgendaDisclosure(props: any) {
               return (
                 <CContainer
                   key={agenda?.id}
-                  p={4}
-                  py={3}
                   rounded={themeConfig.radii.component}
                   border={"1px solid"}
                   borderColor={"border.muted"}
-                  gap={4}
                 >
                   <HStack align={"start"}>
-                    <CContainer gap={1}>
+                    <CContainer gap={1} p={4} py={3}>
                       <P fontWeight={"medium"}>{agenda?.name}</P>
 
                       <P color={"fg.muted"}>{agenda?.description}</P>
                     </CContainer>
 
-                    <EditDisclosureTrigger
-                      id={`edit-agenda-${agenda.id}`}
-                      agenda={agenda}
-                    >
-                      <Btn iconButton size={"md"} variant={"ghost"}>
-                        <Icon>
-                          <IconPencilMinus stroke={1.5} />
-                        </Icon>
-                      </Btn>
-                    </EditDisclosureTrigger>
+                    <CContainer w={"fit"} p={1}>
+                      <EditDisclosureTrigger
+                        id={`edit-agenda-${agenda.id}`}
+                        agenda={agenda}
+                      >
+                        <Btn iconButton size={"md"} variant={"ghost"}>
+                          <Icon>
+                            <IconPencilMinus stroke={1.5} />
+                          </Icon>
+                        </Btn>
+                      </EditDisclosureTrigger>
+                    </CContainer>
                   </HStack>
 
-                  <CContainer gap={2}>
+                  <CContainer gap={2} p={4} pb={4}>
                     <HStack color={"fg.subtle"}>
                       <Icon boxSize={5}>
                         <IconCategory stroke={1.5} />
