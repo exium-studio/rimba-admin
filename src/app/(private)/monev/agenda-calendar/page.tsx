@@ -139,7 +139,7 @@ const Data = (props: any) => {
     error: <FeedbackRetry onRetry={onRetry} />,
     empty: <FeedbackNoData />,
     loaded: (
-      <CContainer flex={1} className="scrollY">
+      <CContainer flex={1} className="scrollYAlt">
         <SimpleGrid
           columns={[7]}
           flex={1}
@@ -160,7 +160,7 @@ const Data = (props: any) => {
                 date={date}
                 agendas={cal?.agendas}
                 borderLeft={idx % 7 !== 0 ? "1px solid" : ""}
-                borderTop={idx > 0 ? "1px solid" : ""}
+                borderTop={idx > 6 ? "1px solid" : ""}
                 borderColor={"border.muted"}
                 cursor={"pointer"}
                 _hover={{
