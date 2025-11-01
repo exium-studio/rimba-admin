@@ -134,7 +134,7 @@ const translations = {
   },
   "error_422_duplicate_kmis_topic_title": {
     "title": "Duplicate data",
-    "description": "The title already exists, please review."
+    "description": "The title/name already exists, please review."
   },
   "error_422_duplicate_question": {
     "title": "Duplicate data",

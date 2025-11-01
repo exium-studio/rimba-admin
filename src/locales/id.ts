@@ -134,7 +134,7 @@ const translations = {
   },
   "error_422_duplicate_kmis_topic_title": {
     "title": "Data duplikat",
-    "description": "Judul yang sama sudah ada, periksa kembali."
+    "description": "Judul/name yang sama sudah ada, periksa kembali."
   },
   "error_422_duplicate_question": {
     "title": "Data duplikat",

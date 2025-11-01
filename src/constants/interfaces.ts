@@ -30,7 +30,7 @@ export interface Interface__MonevAgenda extends Interface__CUD {
   name: string;
   description: string;
   location: string;
-  statedDate: string;
+  startedDate: string;
   finishedDate: string;
   startedTime: string;
   finishedTime: string;

@@ -2,65 +2,42 @@
 
 import { Btn } from "@/components/ui/btn";
 import { CContainer } from "@/components/ui/c-container";
-import { DatePickerInput } from "@/components/ui/date-picker-input";
-import {
-  DisclosureBody,
-  DisclosureContent,
-  DisclosureFooter,
-  DisclosureHeader,
-  DisclosureRoot,
-} from "@/components/ui/disclosure";
-import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-content";
-import { Field } from "@/components/ui/field";
 import { P } from "@/components/ui/p";
 import { PeriodPickerInput } from "@/components/ui/period-picker-input";
 import { Skeleton } from "@/components/ui/skeleton";
-import { StringInput } from "@/components/ui/string-input";
-import { Textarea } from "@/components/ui/textarea";
-import { TimePickerInput } from "@/components/ui/time-picker-input";
-import { AgendaDisclosureTrigger } from "@/components/widget/AgendaDisclosure";
-import { CreateMonevAgendaCategoryDisclosureTrigger } from "@/components/widget/CreateMonevAgendaCategoryDisclosure";
+import {
+  AgendaDisclosureTrigger,
+  CreateDisclosureTrigger,
+} from "@/components/widget/AgendaCalendarWidgets";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
 import { PageContainer, PageContent } from "@/components/widget/Page";
-import { SelectMonevAgendaCategory } from "@/components/widget/SelectMonevAgendaCategory";
-import {
-  Interface__MonevAgendaCalendar,
-  Interface__SelectOption,
-} from "@/constants/interfaces";
+import { Interface__MonevAgendaCalendar } from "@/constants/interfaces";
 import { Type__Period } from "@/constants/types";
 import useLang from "@/context/useLang";
-import useRenderTrigger from "@/context/useRenderTrigger";
 import { useThemeConfig } from "@/context/useThemeConfig";
-import useBackOnClose from "@/hooks/useBackOnClose";
 import useDataState from "@/hooks/useDataState";
 import { useIsSmScreenWidth } from "@/hooks/useIsSmScreenWidth";
-import useRequest from "@/hooks/useRequest";
 import { isEmptyArray } from "@/utils/array";
-import { back } from "@/utils/client";
 import { getCalendarRange } from "@/utils/date";
-import { disclosureId } from "@/utils/disclosure";
 import {
   Circle,
-  FieldRoot,
   Group,
   HStack,
   Icon,
   SimpleGrid,
-  useDisclosure,
+  Stack,
 } from "@chakra-ui/react";
 import {
   IconCaretLeftFilled,
   IconCaretRightFilled,
   IconPlus,
 } from "@tabler/icons-react";
-import { useFormik } from "formik";
-import { useEffect, useState } from "react";
-import * as yup from "yup";
+import { useState } from "react";
 
 const BASE_ENDPOINT = "/api/monev/activity-calendar";
 const PREFIX_ID = "monev_agenda_calendar";
-// type Interface__Data = Interface__MonevAgenda;
+type Interface__Data = Interface__MonevAgendaCalendar;
 const DEFAULT_PERIOD = {
   month: new Date().getMonth(),
   year: new Date().getFullYear(),
@@ -140,245 +117,6 @@ const PeriodPicker = (props: any) => {
   );
 };
 
-const CreateDisclosure = (props: any) => {
-  const ID = `${PREFIX_ID}_create`;
-
-  // Props
-  const { open, initialStartedDate } = props;
-
-  // Contexts
-  const { l } = useLang();
-  const { themeConfig } = useThemeConfig();
-  const setRt = useRenderTrigger((s) => s.setRt);
-
-  // Hooks
-  const { req, loading } = useRequest({
-    id: ID,
-  });
-
-  // States
-  const formik = useFormik({
-    validateOnChange: false,
-    initialValues: {
-      category: null as Interface__SelectOption[] | null,
-      name: "",
-      description: "",
-      location: "",
-      startedDate: null as any,
-      finishedDate: null as any,
-      startedTime: "",
-      finishedTime: "",
-    },
-    validationSchema: yup.object().shape({
-      category: yup.array().required(l.msg_required_form),
-      name: yup.string().required(l.msg_required_form),
-      description: yup.string().required(l.msg_required_form),
-      location: yup.string().required(l.msg_required_form),
-      startedDate: yup.array().required(l.msg_required_form),
-      finishedDate: yup.array().required(l.msg_required_form),
-      startedTime: yup.string().required(l.msg_required_form),
-      finishedTime: yup.string().required(l.msg_required_form),
-    }),
-    onSubmit: (values, { resetForm }) => {
-      back();
-
-      const payload = {
-        activityCategoryId: values.category?.[0]?.id ?? null,
-        name: values.name,
-        description: values.description,
-        location: values.location,
-        startedDate: values.startedDate[0],
-        finishedDate: values.finishedDate[0],
-        startedTime: values.startedTime,
-        finishedTime: values.finishedTime,
-      };
-
-      const config = {
-        url: `${BASE_ENDPOINT}/create`,
-        method: "POST",
-        data: payload,
-      };
-
-      req({
-        config,
-        onResolve: {
-          onSuccess: () => {
-            setRt((ps) => !ps);
-            resetForm();
-          },
-        },
-      });
-    },
-  });
-
-  useEffect(() => {
-    if (initialStartedDate)
-      formik.setFieldValue("startedDate", [initialStartedDate]);
-  }, [initialStartedDate]);
-
-  return (
-    <DisclosureRoot open={open} lazyLoad size={"xs"}>
-      <DisclosureContent>
-        <DisclosureHeader>
-          <DisclosureHeaderContent title={`${l.add} Agenda`} />
-        </DisclosureHeader>
-
-        <DisclosureBody>
-          <form id={ID} onSubmit={formik.handleSubmit}>
-            <FieldRoot gap={4} disabled={loading}>
-              <Field
-                label={l.category}
-                invalid={!!formik.errors.category}
-                errorText={formik.errors.category as string}
-              >
-                <HStack w={"full"}>
-                  <SelectMonevAgendaCategory
-                    inputValue={formik.values.category}
-                    onConfirm={(inputValue) => {
-                      formik.setFieldValue("category", inputValue);
-                    }}
-                    flex={1}
-                  />
-
-                  <CreateMonevAgendaCategoryDisclosureTrigger>
-                    <Btn iconButton variant={"outline"}>
-                      <Icon>
-                        <IconPlus stroke={1.5} />
-                      </Icon>
-                    </Btn>
-                  </CreateMonevAgendaCategoryDisclosureTrigger>
-                </HStack>
-              </Field>
-
-              <Field
-                label={l.name}
-                invalid={!!formik.errors.name}
-                errorText={formik.errors.name as string}
-              >
-                <StringInput
-                  inputValue={formik.values.name}
-                  onChange={(inputValue) => {
-                    formik.setFieldValue("name", inputValue);
-                  }}
-                />
-              </Field>
-
-              <Field
-                label={l.description}
-                invalid={!!formik.errors.description}
-                errorText={formik.errors.description as string}
-              >
-                <Textarea
-                  inputValue={formik.values.description}
-                  onChange={(inputValue) => {
-                    formik.setFieldValue("description", inputValue);
-                  }}
-                />
-              </Field>
-
-              <Field
-                label={l.location}
-                invalid={!!formik.errors.location}
-                errorText={formik.errors.location as string}
-              >
-                <StringInput
-                  inputValue={formik.values.location}
-                  onChange={(inputValue) => {
-                    formik.setFieldValue("location", inputValue);
-                  }}
-                />
-              </Field>
-
-              <Field
-                label={l.start_date}
-                invalid={!!formik.errors.startedDate}
-                errorText={formik.errors.startedDate as string}
-              >
-                <DatePickerInput
-                  id="start-date"
-                  inputValue={formik.values.startedDate}
-                  onConfirm={(inputValue) => {
-                    formik.setFieldValue("startedDate", inputValue);
-                  }}
-                />
-              </Field>
-
-              <Field
-                label={l.end_date}
-                invalid={!!formik.errors.finishedDate}
-                errorText={formik.errors.finishedDate as string}
-              >
-                <DatePickerInput
-                  id="end-date"
-                  inputValue={formik.values.finishedDate}
-                  onConfirm={(inputValue) => {
-                    formik.setFieldValue("finishedDate", inputValue);
-                  }}
-                />
-              </Field>
-
-              <Field
-                label={l.start_time}
-                invalid={!!formik.errors.startedTime}
-                errorText={formik.errors.startedTime as string}
-              >
-                <TimePickerInput
-                  id="start-time"
-                  inputValue={formik.values.startedTime}
-                  onConfirm={(inputValue) => {
-                    formik.setFieldValue("startedTime", inputValue);
-                  }}
-                />
-              </Field>
-
-              <Field
-                label={l.end_time}
-                invalid={!!formik.errors.finishedTime}
-                errorText={formik.errors.finishedTime as string}
-              >
-                <TimePickerInput
-                  id="end-time"
-                  inputValue={formik.values.finishedTime}
-                  onConfirm={(inputValue) => {
-                    formik.setFieldValue("finishedTime", inputValue);
-                  }}
-                />
-              </Field>
-            </FieldRoot>
-          </form>
-        </DisclosureBody>
-
-        <DisclosureFooter>
-          <Btn type="submit" form={ID} colorPalette={themeConfig.colorPalette}>
-            {l.add}
-          </Btn>
-        </DisclosureFooter>
-      </DisclosureContent>
-    </DisclosureRoot>
-  );
-};
-const CreateDisclosureTrigger = (props: any) => {
-  // Props
-  const {
-    id = `${PREFIX_ID}_create`,
-    children,
-    initialStartedDate,
-    ...restProps
-  } = props;
-
-  const { open, onOpen, onClose } = useDisclosure();
-  useBackOnClose(disclosureId(id), open, onOpen, onClose);
-
-  return (
-    <>
-      <CContainer w={"fit"} onClick={onOpen} {...restProps}>
-        {children}
-      </CContainer>
-
-      <CreateDisclosure open={open} initialStartedDate={initialStartedDate} />
-    </>
-  );
-};
 const Data = (props: any) => {
   // Props
   const { period } = props;
@@ -388,8 +126,8 @@ const Data = (props: any) => {
 
   // States
   const { firstVisible, lastVisible } = getCalendarRange(period);
-  const { error, loading, data, onRetry } = useDataState<
-    Interface__MonevAgendaCalendar[]
+  const { error, initialLoading, loading, data, onRetry } = useDataState<
+    Interface__Data[]
   >({
     initialData: undefined,
     url: `${BASE_ENDPOINT}/index`,
@@ -403,7 +141,12 @@ const Data = (props: any) => {
     empty: <FeedbackNoData />,
     loaded: (
       <CContainer className="scrollY">
-        <SimpleGrid columns={[7]} flex={1} minH={["600px", null, "700px"]}>
+        <SimpleGrid
+          columns={[7]}
+          flex={1}
+          minH={["600px", null, "700px"]}
+          gridAutoRows={"1fr"}
+        >
           {data?.map((cal, idx) => {
             const today = new Date();
             const date = cal.date;
@@ -417,42 +160,62 @@ const Data = (props: any) => {
                 id={`${date}`}
                 date={date}
                 agendas={cal?.agendas}
+                borderLeft={idx % 7 !== 0 ? "1px solid" : ""}
+                borderTop={idx > 0 ? "1px solid" : ""}
+                borderColor={"border.muted"}
+                cursor={"pointer"}
+                _hover={{
+                  bg: "d1",
+                }}
+                transition={"200ms"}
               >
-                <CContainer
-                  flex={1}
+                <Stack
+                  flexDir={["column", null, "row"]}
+                  align={"center"}
+                  justify={"space-between"}
                   p={[2, null, 4]}
-                  borderLeft={idx % 7 !== 0 ? "1px solid" : ""}
-                  borderTop={idx > 0 ? "1px solid" : ""}
-                  borderColor={"border.muted"}
-                  cursor={"pointer"}
-                  _hover={{
-                    bg: "d1",
-                  }}
-                  transition={"200ms"}
                 >
-                  <HStack justify={"space-between"}>
-                    <P
-                      fontSize={["sm", null, "md"]}
-                      fontWeight={isDateToday ? "extrabold" : ""}
-                      opacity={isDateInThisPeriod ? 1 : 0.3}
-                    >
-                      {`${Number(date.split("-")[2])}`}
-                    </P>
+                  <P
+                    fontSize={["sm", null, "md"]}
+                    fontWeight={isDateToday ? "extrabold" : ""}
+                    opacity={loading ? 0.3 : isDateInThisPeriod ? 1 : 0.3}
+                  >
+                    {`${Number(date.split("-")[2])}`}
+                  </P>
 
-                    {cal?.agendas?.length > 0 && (
-                      <Circle
-                        p={"2px"}
-                        w={"16px"}
-                        h={"16px"}
-                        bg={themeConfig.primaryColor}
-                        color={"body"}
-                      >
-                        <P fontSize={"sm"}>{`${
-                          cal?.agendas?.length < 9 ? cal?.agendas?.length : "9+"
-                        }`}</P>
-                      </Circle>
-                    )}
-                  </HStack>
+                  {cal?.agendas?.length > 0 && (
+                    <Circle
+                      p={"2px"}
+                      w={"18px"}
+                      h={"18px"}
+                      bg={`${themeConfig.colorPalette}.subtle`}
+                      color={themeConfig.primaryColor}
+                    >
+                      <P fontSize={["xs", null, "sm"]}>{`${
+                        cal?.agendas?.length < 9 ? cal?.agendas?.length : "9+"
+                      }`}</P>
+                    </Circle>
+                  )}
+                </Stack>
+
+                <CContainer p={1} gap={1}>
+                  {cal?.agendas?.map((agenda, idx) => {
+                    return (
+                      idx < 2 && (
+                        <CContainer
+                          key={agenda?.id}
+                          p={1}
+                          px={2}
+                          rounded={themeConfig.radii.component}
+                          bg={`${themeConfig.colorPalette}.subtle`}
+                        >
+                          <P fontSize={["sm", null, "md"]} lineClamp={1}>
+                            {agenda?.name}
+                          </P>
+                        </CContainer>
+                      )
+                    );
+                  })}
                 </CContainer>
               </AgendaDisclosureTrigger>
             );
@@ -464,8 +227,8 @@ const Data = (props: any) => {
 
   return (
     <>
-      {loading && render.loading}
-      {!loading && (
+      {initialLoading && render.loading}
+      {!initialLoading && (
         <>
           {error && render.error}
           {!error && (

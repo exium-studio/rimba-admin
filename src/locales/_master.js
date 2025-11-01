@@ -1627,8 +1627,8 @@ export const error_422_duplicate_file_name = {
 export const error_422_duplicate_kmis_topic_title = {
   title: { id: "Data duplikat", en: "Duplicate data" },
   description: {
-    id: "Judul yang sama sudah ada, periksa kembali.",
-    en: "The title already exists, please review.",
+    id: "Judul/name yang sama sudah ada, periksa kembali.",
+    en: "The title/name already exists, please review.",
   },
 };
 export const error_422_duplicate_kmis_quiz_option = {
