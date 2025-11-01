@@ -11,6 +11,7 @@ import {
 } from "@/components/widget/AgendaCalendarWidgets";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
+import { DotIndicator } from "@/components/widget/Indicator";
 import { PageContainer, PageContent } from "@/components/widget/Page";
 import { Interface__MonevAgendaCalendar } from "@/constants/interfaces";
 import { Type__Period } from "@/constants/types";
@@ -20,14 +21,7 @@ import useDataState from "@/hooks/useDataState";
 import { useIsSmScreenWidth } from "@/hooks/useIsSmScreenWidth";
 import { isEmptyArray } from "@/utils/array";
 import { getCalendarRange } from "@/utils/date";
-import {
-  Circle,
-  Group,
-  HStack,
-  Icon,
-  SimpleGrid,
-  Stack,
-} from "@chakra-ui/react";
+import { Group, HStack, Icon, SimpleGrid, Stack } from "@chakra-ui/react";
 import {
   IconCaretLeftFilled,
   IconCaretRightFilled,
@@ -183,7 +177,9 @@ const Data = (props: any) => {
                     {`${Number(date.split("-")[2])}`}
                   </P>
 
-                  {cal?.agendas?.length > 0 && (
+                  {cal?.agendas?.length > 2 && <DotIndicator />}
+
+                  {/* {cal?.agendas?.length > 0 && (
                     <Circle
                       p={"2px"}
                       w={"18px"}
@@ -195,7 +191,7 @@ const Data = (props: any) => {
                         cal?.agendas?.length < 9 ? cal?.agendas?.length : "9+"
                       }`}</P>
                     </Circle>
-                  )}
+                  )} */}
                 </Stack>
 
                 <CContainer p={1} gap={1} mt={"auto"}>
