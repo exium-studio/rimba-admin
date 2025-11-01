@@ -411,7 +411,7 @@ const translations = {
       "package_information": "Informasi Paket",
       "monitoring": "Monitoring",
       "activity_calendar": "Kalendar Kegiatan",
-      "data_sharing": "Berbagi Data",
+      "data_sharing": "Berbagi Dokumen",
       "package_validation": "Validasi Paket",
       "realization_validation": "Validasi Realisasi"
     },

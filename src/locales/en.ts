@@ -411,7 +411,7 @@ const translations = {
       "package_information": "Package Information",
       "monitoring": "Monitoring",
       "activity_calendar": "Activity Calendar",
-      "data_sharing": "Data Sharing",
+      "data_sharing": "Document Sharing",
       "package_validation": "Package Validation",
       "realization_validation": "Realization Validation"
     },

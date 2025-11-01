@@ -59,7 +59,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import {
-  IconEye,
+  IconFiles,
   IconPencilMinus,
   IconPlus,
   IconRestore,
@@ -359,10 +359,10 @@ const FilesList = (props: any) => {
         {...restProps}
       >
         <Icon boxSize={5}>
-          <IconEye stroke={1.5} />
+          <IconFiles stroke={1.5} />
         </Icon>
 
-        {l.view}
+        {l.document}
       </Btn>
 
       <DisclosureRoot open={open} lazyLoad size={"xs"}>
@@ -819,12 +819,12 @@ const Data = (props: any) => {
         sortable: true,
       },
       {
-        th: l.description,
-        sortable: true,
+        th: l.document,
+        align: "center",
       },
       {
-        th: "Files",
-        align: "center",
+        th: l.description,
+        sortable: true,
       },
 
       // timestamps
@@ -852,13 +852,13 @@ const Data = (props: any) => {
           value: item.title[lang],
         },
         {
-          td: <ClampText>{`${item.description[lang]}`}</ClampText>,
-          value: item.description[lang],
-        },
-        {
           td: <FilesList data={item} />,
           value: "",
           align: "center",
+        },
+        {
+          td: <ClampText>{`${item.description[lang]}`}</ClampText>,
+          value: item.description[lang],
         },
 
         // timestamps

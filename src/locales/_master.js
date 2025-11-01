@@ -86,8 +86,8 @@ export const private_navs = {
       en: "Activity Calendar",
     },
     data_sharing: {
-      id: "Berbagi Data",
-      en: "Data Sharing",
+      id: "Berbagi Dokumen",
+      en: "Document Sharing",
     },
     package_validation: {
       id: "Validasi Paket",

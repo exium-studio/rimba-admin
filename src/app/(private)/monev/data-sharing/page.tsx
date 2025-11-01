@@ -53,7 +53,7 @@ import { getActiveNavs } from "@/utils/url";
 import { fileValidation, min1FileExist } from "@/utils/validationSchema";
 import { FieldsetRoot, HStack, Icon, useDisclosure } from "@chakra-ui/react";
 import {
-  IconEye,
+  IconFiles,
   IconPencilMinus,
   IconPlus,
   IconRestore,
@@ -119,7 +119,7 @@ const Create = (props: any) => {
     validationSchema: yup.object().shape({
       files: fileValidation({
         maxSizeMB: 10,
-        allowedExtensions: ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx"],
+        allowedExtensions: ["pdf"],
       }).required(l.msg_required_form),
       name: yup.string().required(l.msg_required_form),
       description: yup.string().required(l.msg_required_form),
@@ -188,8 +188,8 @@ const Create = (props: any) => {
                   <FileInput
                     dropzone
                     maxFiles={5}
-                    accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation"
-                    acceptPlaceholder=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx"
+                    accept="application/pdf"
+                    acceptPlaceholder=".pdf"
                     inputValue={formik.values.files}
                     onChange={(inputValue) => {
                       formik.setFieldValue("files", inputValue);
@@ -287,10 +287,10 @@ const FilesList = (props: any) => {
         {...restProps}
       >
         <Icon boxSize={5}>
-          <IconEye stroke={1.5} />
+          <IconFiles stroke={1.5} />
         </Icon>
 
-        {l.view}
+        {l.document}
       </Btn>
 
       <DisclosureRoot open={open} lazyLoad size={"xs"}>
@@ -674,12 +674,12 @@ const Data = (props: any) => {
         sortable: true,
       },
       {
-        th: l.description,
-        sortable: true,
+        th: l.document,
+        align: "center",
       },
       {
-        th: "Files",
-        align: "center",
+        th: l.description,
+        sortable: true,
       },
 
       // timestamps
@@ -707,13 +707,13 @@ const Data = (props: any) => {
           value: item.name,
         },
         {
-          td: <ClampText>{`${item.description}`}</ClampText>,
-          value: item.description,
-        },
-        {
           td: <FilesList data={item} />,
           value: "",
           align: "center",
+        },
+        {
+          td: <ClampText>{`${item.description}`}</ClampText>,
+          value: item.description,
         },
 
         // timestamps
