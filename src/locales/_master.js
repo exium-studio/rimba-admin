@@ -1422,6 +1422,13 @@ export const loading_reset_password = {
 };
 
 // Success Toast
+export const success_default = {
+  title: { id: "Request berhasil", en: "Request successful" },
+  description: {
+    id: "Proses berjalan tanpa kendala.",
+    en: "Process completed without issues.",
+  },
+};
 export const success_online = {
   title: {
     id: "Koneksi pulih",
@@ -1430,13 +1437,6 @@ export const success_online = {
   description: {
     id: "Anda kembali online.",
     en: "You are back online.",
-  },
-};
-export const success_default = {
-  title: { id: "Request successful", en: "Request successful" },
-  description: {
-    id: "Proses berjalan tanpa kendala.",
-    en: "Process completed without issues.",
   },
 };
 export const success_signin = {

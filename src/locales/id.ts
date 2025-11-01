@@ -537,7 +537,7 @@ const translations = {
     "description": "Resource berhasil dimodifikasi menggunakan instance-manipulation."
   },
   "success_default": {
-    "title": "Request successful",
+    "title": "Request berhasil",
     "description": "Proses berjalan tanpa kendala."
   },
   "success_online": {

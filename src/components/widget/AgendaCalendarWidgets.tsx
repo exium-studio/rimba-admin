@@ -33,6 +33,7 @@ import { isEmptyArray } from "@/utils/array";
 import { back } from "@/utils/client";
 import { disclosureId } from "@/utils/disclosure";
 import { formatDate, formatTime } from "@/utils/formatter";
+import { capitalize } from "@/utils/string";
 import { getLocalTimezone } from "@/utils/time";
 import {
   FieldRoot,
@@ -70,6 +71,12 @@ export const CreateDisclosure = (props: any) => {
   // Hooks
   const { req, loading } = useRequest({
     id: ID,
+    loadingMessage: {
+      title: capitalize(`${l.add} Agenda`),
+    },
+    successMessage: {
+      title: capitalize(`${l.add} Agenda ${l.successful}`),
+    },
   });
 
   // States
@@ -310,6 +317,12 @@ export const EditDisclosure = (props: any) => {
   // Hooks
   const { req, loading } = useRequest({
     id: ID,
+    loadingMessage: {
+      title: capitalize(`Edit Agenda`),
+    },
+    successMessage: {
+      title: capitalize(`Edit Agenda ${l.successful}`),
+    },
   });
 
   // States

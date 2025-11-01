@@ -93,7 +93,7 @@ export const CreateKMISCategoryDisclosure = (props: any) => {
           <form id={ID} onSubmit={formik.handleSubmit}>
             <FieldsetRoot disabled={loading}>
               <Field
-                label={l.title}
+                label={l.name}
                 invalid={!!formik.errors.title}
                 errorText={formik.errors.title as string}
               >
