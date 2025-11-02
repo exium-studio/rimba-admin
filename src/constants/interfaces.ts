@@ -192,7 +192,8 @@ export interface Interface__KMISLearningAttempt extends Interface__CUD {
   wrongCount: number;
   emptyCount: number;
   scoreTotal: number;
-  feedback: string | null;
+  feedback: number | null;
+  feedbackComment: string | null;
   certificate: Interface__StorageFile[];
 }
 export interface Interface__KMISTopic extends Interface__CUD {

@@ -45,7 +45,7 @@ import { formatDate, formatDuration, formatNumber } from "@/utils/formatter";
 import { capitalizeWords, pluckString } from "@/utils/string";
 import { fileUrl, getActiveNavs, imgUrl } from "@/utils/url";
 import { HStack, Icon, SimpleGrid, useDisclosure } from "@chakra-ui/react";
-import { IconArrowUpRight, IconEye } from "@tabler/icons-react";
+import { IconArrowUpRight, IconEye, IconStarFilled } from "@tabler/icons-react";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
@@ -255,10 +255,33 @@ const ResultDetail = (props: any) => {
 
               <HStack align={"start"}>
                 <P w={"120px"} color={"fg.muted"} flexShrink={0}>
+                  Rating
+                </P>
+                <P>:</P>
+                {resolvedAttempt.feedback ? (
+                  <HStack gap={1}>
+                    {Array.from(
+                      { length: resolvedAttempt.feedback },
+                      (_, i) => {
+                        return (
+                          <Icon key={i} color={"yellow.500"} boxSize={5}>
+                            <IconStarFilled />
+                          </Icon>
+                        );
+                      }
+                    )}
+                  </HStack>
+                ) : (
+                  "-"
+                )}
+              </HStack>
+
+              <HStack align={"start"}>
+                <P w={"120px"} color={"fg.muted"} flexShrink={0}>
                   Feedback
                 </P>
                 <P>:</P>
-                <P>{resolvedAttempt.feedback || "-"}</P>
+                <P>{resolvedAttempt.feedbackComment || "-"}</P>
               </HStack>
 
               <HStack align={"start"}>
