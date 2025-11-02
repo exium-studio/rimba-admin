@@ -35,7 +35,7 @@ export const StringInput = forwardRef<HTMLInputElement, Props__StringInput>(
       flexShrink,
       flexGrow,
       flexBasis,
-      maxChar = null,
+      maxChar = 255,
       ...restProps
     } = props;
 

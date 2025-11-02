@@ -83,7 +83,7 @@ export function slugify(input: string, opts: SlugifyOptions = {}): string {
     lowercase = true,
     removeAccents = true,
     strict = true,
-    maxLength = 255,
+    maxLength,
   } = opts;
 
   if (!input) return "";
