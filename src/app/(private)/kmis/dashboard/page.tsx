@@ -92,7 +92,7 @@ const UserFinishedAttempt = (props: Props__UserFinishedAttempt) => {
   const chart = useChart({
     data: data?.userStatsAttemptFinished?.map((item: any, i: number) => ({
       month: MONTHS[lang][i],
-      value: item.value,
+      user: item.value,
     })),
   });
 
@@ -121,13 +121,13 @@ const UserFinishedAttempt = (props: Props__UserFinishedAttempt) => {
           />
           <Line
             isAnimationActive={false}
-            dataKey={chart.key("value")}
+            dataKey={chart.key("user")}
             fill={chart.color(themeConfig.primaryColorHex)}
             stroke={chart.color(themeConfig.primaryColorHex)}
             strokeWidth={2}
           >
             <LabelList
-              dataKey={chart.key("value")}
+              dataKey={chart.key("user")}
               position="right"
               offset={10}
               style={{

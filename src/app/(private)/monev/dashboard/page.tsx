@@ -91,7 +91,7 @@ const BudgetTargetLineChart = (props: Props__Chart) => {
   const chart = useChart({
     data: data?.statsBudgetTarget?.map((item: any, i: number) => ({
       month: MONTHS[lang][i],
-      value: item.value,
+      budget: item.value,
     })),
   });
 
@@ -120,13 +120,13 @@ const BudgetTargetLineChart = (props: Props__Chart) => {
           />
           <Line
             isAnimationActive={false}
-            dataKey={chart.key("value")}
+            dataKey={chart.key("budget")}
             fill={chart.color(themeConfig.primaryColorHex)}
             stroke={chart.color(themeConfig.primaryColorHex)}
             strokeWidth={2}
           >
             <LabelList
-              dataKey={chart.key("value")}
+              dataKey={chart.key("budget")}
               position="right"
               offset={10}
               style={{
@@ -152,7 +152,7 @@ const BudgetRealizationLineChart = (props: Props__Chart) => {
   const chart = useChart({
     data: data?.statsBudgetRealization?.map((item: any, i: number) => ({
       month: MONTHS[lang][i],
-      value: item.value,
+      budget: item.value,
     })),
   });
 
@@ -181,13 +181,13 @@ const BudgetRealizationLineChart = (props: Props__Chart) => {
           />
           <Line
             isAnimationActive={false}
-            dataKey={chart.key("value")}
+            dataKey={chart.key("budget")}
             fill={chart.color(themeConfig.primaryColorHex)}
             stroke={chart.color(themeConfig.primaryColorHex)}
             strokeWidth={2}
           >
             <LabelList
-              dataKey={chart.key("value")}
+              dataKey={chart.key("budget")}
               position="right"
               offset={10}
               style={{
