@@ -692,10 +692,6 @@ const Data = (props: any) => {
         th: l.updated,
         sortable: true,
       },
-      {
-        th: l.deleted,
-        sortable: true,
-      },
     ],
     rows: data?.map((item, idx) => ({
       id: item.id,
@@ -733,15 +729,6 @@ const Data = (props: any) => {
             dashEmpty: true,
           }),
           value: item.updatedAt,
-          dataType: "date",
-        },
-        {
-          td: formatDate(item.deletedAt, {
-            variant: "numeric",
-            withTime: true,
-            dashEmpty: true,
-          }),
-          value: item.deletedAt,
           dataType: "date",
         },
       ],
