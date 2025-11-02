@@ -262,7 +262,7 @@ export default function Page() {
   return (
     <PageContainer>
       <PageContent>
-        <HStack wrap={["wrap", null, "nowrap"]} p={4} justify={"space-between"}>
+        <HStack wrap={["wrap", null, "nowrap"]} p={3} justify={"space-between"}>
           <PeriodPicker
             period={period}
             setPeriod={setPeriod}
