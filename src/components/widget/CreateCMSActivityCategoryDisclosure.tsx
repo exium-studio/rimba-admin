@@ -215,7 +215,7 @@ export const CreateCMSActivityCategoryDisclosureTrigger = (props: any) => {
 
   // Hooks
   const { open, onOpen, onClose } = useDisclosure();
-  useBackOnClose(id || `create-kmis-category`, open, onOpen, onClose);
+  useBackOnClose(id || `create-activity-category`, open, onOpen, onClose);
   return (
     <>
       <CContainer w={"fit"} onClick={onOpen} {...restProps}>

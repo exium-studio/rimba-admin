@@ -21,7 +21,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipProps } from "@/components/ui/tooltip";
 import { ClampText } from "@/components/widget/ClampText";
 import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
-import { CreateCMSActivityCategoryDisclosureTrigger } from "@/components/widget/CreateCMSActivityCategoryDisclosure";
+import { CreateCMSNewsCategoryDisclosureTrigger } from "@/components/widget/CreateCMSNewsCategoryDisclosure";
 import { DataDisplayToggle } from "@/components/widget/DataDisplayToggle";
 import { DataGrid } from "@/components/widget/DataGrid";
 import { DataGridItem } from "@/components/widget/DataGridItem";
@@ -260,13 +260,13 @@ const Create = (props: any) => {
                           flex={1}
                         />
 
-                        <CreateCMSActivityCategoryDisclosureTrigger>
+                        <CreateCMSNewsCategoryDisclosureTrigger>
                           <Btn iconButton variant={"outline"}>
                             <Icon>
                               <IconPlus stroke={1.5} />
                             </Icon>
                           </Btn>
-                        </CreateCMSActivityCategoryDisclosureTrigger>
+                        </CreateCMSNewsCategoryDisclosureTrigger>
                       </HStack>
                     </Field>
 

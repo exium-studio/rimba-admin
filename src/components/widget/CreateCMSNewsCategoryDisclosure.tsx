@@ -37,7 +37,7 @@ export const CreateCMSNewsCategoryDisclosure = (props: any) => {
   const { l } = useLang();
   const { themeConfig } = useThemeConfig();
   const setRt = useRenderTrigger((s) => s.setRt);
-  const routeTitle = l.settings_navs.cms_master_data.activity_category;
+  const routeTitle = l.settings_navs.cms_master_data.news_category;
 
   // Hooks
   const { req, loading } = useRequest({
@@ -215,7 +215,7 @@ export const CreateCMSNewsCategoryDisclosureTrigger = (props: any) => {
 
   // Hooks
   const { open, onOpen, onClose } = useDisclosure();
-  useBackOnClose(id || `create-kmis-category`, open, onOpen, onClose);
+  useBackOnClose(id || `create-cms-news-category`, open, onOpen, onClose);
   return (
     <>
       <CContainer w={"fit"} onClick={onOpen} {...restProps}>
