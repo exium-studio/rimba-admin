@@ -173,7 +173,11 @@ const Update = (props: any) => {
     onSubmit: (values) => {
       back();
 
-      const payload = values.PICs;
+      const payload = {
+        userPic: values.PICs,
+      };
+
+      console.debug(payload);
 
       const config = {
         url: `${BASE_ENDPOINT}/assign/${resolvedData.id}`,
@@ -216,7 +220,7 @@ const Update = (props: any) => {
         </MenuItem>
       </MenuTooltip>
 
-      <DisclosureRoot open={open} lazyLoad size={"xs"}>
+      <DisclosureRoot open={open} lazyLoad size={"md"}>
         <DisclosureContent>
           <DisclosureHeader>
             <DisclosureHeaderContent title={`Edit ${routeTitle}`} />
@@ -242,7 +246,7 @@ const Update = (props: any) => {
                               formik.setFieldValue("PICs", updated);
                             }}
                             flex={3}
-                            placeholder={l.expenditure_realization_account}
+                            placeholder={l.name}
                           />
                           <StringInput
                             inputValue={item?.email}
@@ -252,12 +256,13 @@ const Update = (props: any) => {
                               formik.setFieldValue("PICs", updated);
                             }}
                             flex={2}
-                            placeholder="Nominal"
+                            placeholder="Email"
                           />
 
                           <Btn
                             iconButton
                             variant={"outline"}
+                            size={"md"}
                             onClick={() => {
                               formik.setFieldValue("PICs", [
                                 ...formik.values.PICs.filter(
@@ -280,6 +285,8 @@ const Update = (props: any) => {
                       }
                       w={formik.values.PICs.length > 0 ? "fit" : "full"}
                       ml={"auto"}
+                      pl={3}
+                      size={"md"}
                       onClick={() => {
                         formik.setFieldValue("PICs", [
                           ...formik.values.PICs,

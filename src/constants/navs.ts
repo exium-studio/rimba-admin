@@ -14,7 +14,7 @@ import {
 } from "@tabler/icons-react";
 
 // Role Ids
-// 1 Super Admin (id 1 & 2 God Admin)
+// 1 Super Admin (id 1 = exium & 2 = demigod)
 // 2 Educator
 // 3 Monev
 // 4 Public

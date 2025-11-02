@@ -560,6 +560,7 @@ export const RealizationDisclosure = (props: any) => {
                           <Btn
                             iconButton
                             variant={"outline"}
+                            size={"md"}
                             onClick={() => {
                               formik.setFieldValue("budgetRealization", [
                                 ...formik.values.budgetRealization.filter(
@@ -588,6 +589,8 @@ export const RealizationDisclosure = (props: any) => {
                           : "full"
                       }
                       ml={"auto"}
+                      pl={3}
+                      size={"md"}
                       onClick={() => {
                         formik.setFieldValue("budgetRealization", [
                           ...formik.values.budgetRealization,
