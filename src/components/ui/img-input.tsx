@@ -55,7 +55,7 @@ export const ImgInput = (props: Props__FileInput) => {
   }, [existing, inputValue]);
 
   return (
-    <CContainer gap={3}>
+    <CContainer gap={3} flex={restProps?.flex}>
       {!isEmptyArray(existing) && (
         <CContainer
           p={2}

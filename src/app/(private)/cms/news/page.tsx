@@ -274,6 +274,7 @@ const Create = (props: any) => {
                       label={"Thumbnail"}
                       invalid={!!formik.errors.files}
                       errorText={formik.errors.files as string}
+                      flex={1}
                     >
                       <ImgInput
                         inputValue={formik.values.files}
@@ -281,6 +282,7 @@ const Create = (props: any) => {
                           formik.setFieldValue("files", inputValue);
                         }}
                         minH={"300px"}
+                        flex={1}
                       />
                     </Field>
                   </CContainer>
