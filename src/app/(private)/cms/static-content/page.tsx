@@ -612,13 +612,13 @@ const ImageForm = (props: any) => {
           existingFiles={content.image}
           onDeleteFile={(fileData) => {
             formik.setFieldValue(
-              "",
+              "deleteDocumentIds",
               Array.from(new Set([...formik.values.files, fileData.id]))
             );
           }}
           onUndoDeleteFile={(fileData) => {
             formik.setFieldValue(
-              "",
+              "deleteDocumentIds",
               formik.values.files.filter((id: string) => id !== fileData.id)
             );
           }}
