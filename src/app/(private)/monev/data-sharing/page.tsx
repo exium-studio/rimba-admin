@@ -119,7 +119,18 @@ const Create = (props: any) => {
     validationSchema: yup.object().shape({
       files: fileValidation({
         maxSizeMB: 10,
-        allowedExtensions: ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx"],
+        allowedExtensions: [
+          "pdf",
+          "doc",
+          "docx",
+          "xls",
+          "xlsx",
+          "ppt",
+          "pptx",
+          "png",
+          "jpg",
+          "jpeg",
+        ],
       }).required(l.msg_required_form),
       name: yup.string().required(l.msg_required_form),
       description: yup.string().required(l.msg_required_form),
@@ -188,8 +199,8 @@ const Create = (props: any) => {
                   <FileInput
                     dropzone
                     maxFiles={5}
-                    accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation"
-                    acceptPlaceholder=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx"
+                    accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation, image/png, image/jpeg, image/webp"
+                    acceptPlaceholder=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .jpg, .jpeg, .png"
                     inputValue={formik.values.files}
                     onChange={(inputValue) => {
                       formik.setFieldValue("files", inputValue);
@@ -356,7 +367,18 @@ const Update = (props: any) => {
     },
     validationSchema: yup.object().shape({
       files: fileValidation({
-        allowedExtensions: ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx"],
+        allowedExtensions: [
+          "pdf",
+          "doc",
+          "docx",
+          "xls",
+          "xlsx",
+          "ppt",
+          "pptx",
+          "png",
+          "jpg",
+          "jpeg",
+        ],
       }).concat(
         min1FileExist({
           resolvedData,
@@ -435,8 +457,8 @@ const Update = (props: any) => {
                   <FileInput
                     dropzone
                     maxFiles={5}
-                    accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation"
-                    acceptPlaceholder=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx"
+                    accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation, image/png, image/jpeg, image/webp"
+                    acceptPlaceholder=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .jpg, .jpeg, .png"
                     inputValue={formik.values.files}
                     onChange={(inputValue) => {
                       formik.setFieldValue("files", inputValue);
