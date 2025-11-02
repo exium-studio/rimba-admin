@@ -275,8 +275,10 @@ const Update = (props: any) => {
                     })}
 
                     <Btn
-                      variant={"ghost"}
-                      w={"fit"}
+                      variant={
+                        formik.values.PICs.length > 0 ? "ghost" : "outline"
+                      }
+                      w={formik.values.PICs.length > 0 ? "fit" : "full"}
                       ml={"auto"}
                       onClick={() => {
                         formik.setFieldValue("PICs", [

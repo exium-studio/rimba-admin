@@ -577,8 +577,16 @@ export const RealizationDisclosure = (props: any) => {
                     })}
 
                     <Btn
-                      variant={"ghost"}
-                      w={"fit"}
+                      variant={
+                        formik.values.budgetRealization.length > 0
+                          ? "ghost"
+                          : "outline"
+                      }
+                      w={
+                        formik.values.budgetRealization.length > 0
+                          ? "fit"
+                          : "full"
+                      }
                       ml={"auto"}
                       onClick={() => {
                         formik.setFieldValue("budgetRealization", [
