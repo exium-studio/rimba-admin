@@ -685,16 +685,16 @@ export function AgendaDisclosure(props: any) {
                   </CContainer>
 
                   <CContainer gap={2} p={4} pb={4}>
-                    <HStack color={"fg.subtle"}>
-                      <Icon boxSize={5}>
+                    <HStack color={"fg.subtle"} align={"start"}>
+                      <Icon boxSize={5} mt={"1px"}>
                         <IconCategory stroke={1.5} />
                       </Icon>
 
                       <P>{agenda?.activityCategory?.title}</P>
                     </HStack>
 
-                    <HStack color={"fg.subtle"}>
-                      <Icon boxSize={5}>
+                    <HStack color={"fg.subtle"} align={"start"}>
+                      <Icon boxSize={5} mt={"1px"}>
                         <IconCalendar stroke={1.5} />
                       </Icon>
 
@@ -707,8 +707,8 @@ export function AgendaDisclosure(props: any) {
                       })}`}</P>
                     </HStack>
 
-                    <HStack color={"fg.subtle"}>
-                      <Icon boxSize={5}>
+                    <HStack color={"fg.subtle"} align={"start"}>
+                      <Icon boxSize={5} mt={"1px"}>
                         <IconClock stroke={1.5} />
                       </Icon>
 
@@ -717,8 +717,8 @@ export function AgendaDisclosure(props: any) {
                       )}`}</P>
                     </HStack>
 
-                    <HStack color={"fg.subtle"}>
-                      <Icon boxSize={5}>
+                    <HStack color={"fg.subtle"} align={"start"}>
+                      <Icon boxSize={5} mt={"1px"}>
                         <IconMapPin stroke={1.5} />
                       </Icon>
 
