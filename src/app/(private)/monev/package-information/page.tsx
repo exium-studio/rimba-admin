@@ -1058,10 +1058,11 @@ const Data = (props: any) => {
           td: (
             <DetailTrigger data={item} routeTitle={routeTitle}>
               <Btn size={"xs"} variant={"ghost"} pl={"6px"}>
-                <Icon>
+                <Icon boxSize={5}>
                   <IconInfoCircle stroke={1.5} />
                 </Icon>
-                Detail
+
+                {`Detail`}
               </Btn>
             </DetailTrigger>
           ),
@@ -1071,10 +1072,12 @@ const Data = (props: any) => {
           td: (
             <TargetDisclosureTrigger data={item} routeTitle={routeTitle}>
               <Btn size={"xs"} variant={"ghost"} pl={"6px"}>
-                <Icon>
+                <Icon boxSize={5}>
                   <IconTargetArrow stroke={1.5} />
                 </Icon>
-                Target
+
+                {`Target`}
+
                 {/* TODO deteksi kalau ada data yg perlu validasi */}
                 {!isEmptyArray(item?.monevMonthlyRealizationPendingUpdate) && (
                   <DotIndicator ml={2} />
@@ -1091,9 +1094,10 @@ const Data = (props: any) => {
               routeTitle={routeTitle}
             >
               <Btn size={"xs"} variant={"ghost"} pl={"6px"}>
-                <Icon>
+                <Icon boxSize={5}>
                   <IconTimeline stroke={1.5} />
                 </Icon>
+
                 {l.realization}
 
                 {!isEmptyArray(item?.monevMonthlyRealizationPendingUpdate) && (
