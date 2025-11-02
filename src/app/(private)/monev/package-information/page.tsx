@@ -2,6 +2,7 @@
 
 import { Btn } from "@/components/ui/btn";
 import { CContainer } from "@/components/ui/c-container";
+import { DatePickerInput } from "@/components/ui/date-picker-input";
 import {
   DisclosureBody,
   DisclosureContent,
@@ -58,6 +59,7 @@ import useRequest from "@/hooks/useRequest";
 import { isEmptyArray, last } from "@/utils/array";
 import { back } from "@/utils/client";
 import { disclosureId } from "@/utils/disclosure";
+import { download } from "@/utils/file";
 import { formatDate, formatNumber } from "@/utils/formatter";
 import { capitalize, capitalizeWords, pluckString } from "@/utils/string";
 import { getActiveNavs } from "@/utils/url";
@@ -70,6 +72,7 @@ import {
 } from "@chakra-ui/react";
 import {
   IconAlertTriangle,
+  IconFileExport,
   IconInfoCircle,
   IconPencilMinus,
   IconPlus,
@@ -77,6 +80,7 @@ import {
   IconTimeline,
   IconTrash,
 } from "@tabler/icons-react";
+import { AxiosRequestConfig } from "axios";
 import { useFormik } from "formik";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -418,6 +422,91 @@ const Create = (props: any) => {
     </>
   );
 };
+const Export = () => {
+  // Contexts
+  const { l } = useLang();
+
+  // Hooks
+  const { req, loading } = useRequest({
+    id: `${PREFIX_ID}_export`,
+    loadingMessage: {
+      title: `Export`,
+    },
+    successMessage: {
+      title: `Export ${l.successful}`,
+    },
+  });
+
+  // States
+  const [filter, setFilter] = useState<any>({
+    startDate: null,
+    endDate: null,
+  });
+
+  // Utils
+  async function onExport() {
+    back();
+
+    const config: AxiosRequestConfig = {
+      url: `${BASE_ENDPOINT}/export`,
+      method: "GET",
+      responseType: "blob",
+      params: {
+        startDate: filter.startDate?.[0],
+        endDate: filter.endDate?.[0],
+      },
+    };
+
+    req({
+      config,
+      onResolve: {
+        onSuccess: (r) => {
+          download(r.data, `${l.activity_package_information}`, "zip");
+        },
+      },
+    });
+  }
+
+  return (
+    <ConfirmationDisclosureTrigger
+      id={`export-package-confirmation`}
+      title={"Export"}
+      description={l.msg_export_data_confirmation}
+      confirmLabel={"Export"}
+      onConfirm={onExport}
+      addonElement={
+        <HStack mt={4}>
+          <DatePickerInput
+            id="created-at-after"
+            inputValue={filter.startDate}
+            onConfirm={(inputValue) => {
+              setFilter({ ...filter, startDate: inputValue });
+            }}
+            flex={1}
+            placeholder={`${l.created} ${l.after.toLowerCase()}`}
+          />
+          <DatePickerInput
+            id="created-at-before"
+            inputValue={filter.endDate}
+            onConfirm={(inputValue) => {
+              setFilter({ ...filter, endDate: inputValue });
+            }}
+            flex={1}
+            placeholder={`${l.created} ${l.before.toLowerCase()}`}
+          />
+        </HStack>
+      }
+    >
+      <Btn variant={"outline"} loading={loading}>
+        <Icon>
+          <IconFileExport stroke={1.5} />
+        </Icon>
+        Export
+      </Btn>
+    </ConfirmationDisclosureTrigger>
+  );
+};
+
 const DataUtils = (props: any) => {
   // Props
   const { filter, setFilter, routeTitle, ...restProps } = props;
@@ -432,6 +521,8 @@ const DataUtils = (props: any) => {
       />
 
       <DataDisplayToggle navKey={PREFIX_ID} />
+
+      <Export />
 
       <Create routeTitle={routeTitle} />
     </HStack>

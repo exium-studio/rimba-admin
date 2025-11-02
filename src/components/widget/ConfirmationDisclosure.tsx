@@ -23,6 +23,7 @@ interface DisclosureProps {
   onConfirm: () => void;
   confirmButtonProps?: BtnProps;
   loading?: boolean;
+  addonElement?: any;
 }
 export const ConfirmationDisclosure = (props: DisclosureProps) => {
   // Props
@@ -34,6 +35,7 @@ export const ConfirmationDisclosure = (props: DisclosureProps) => {
     onConfirm,
     confirmButtonProps,
     loading = false,
+    addonElement,
   } = props;
 
   // Contexts
@@ -48,6 +50,8 @@ export const ConfirmationDisclosure = (props: DisclosureProps) => {
 
         <DisclosureBody>
           <P>{description}</P>
+
+          {addonElement}
         </DisclosureBody>
 
         <DisclosureFooter>
@@ -77,6 +81,7 @@ interface TriggerProps extends StackProps {
   confirmButtonProps?: BtnProps;
   loading?: boolean;
   disabled?: any;
+  addonElement?: any;
 }
 export const ConfirmationDisclosureTrigger = (props: TriggerProps) => {
   // Props
@@ -90,6 +95,7 @@ export const ConfirmationDisclosureTrigger = (props: TriggerProps) => {
     confirmButtonProps,
     loading,
     disabled,
+    addonElement,
     ...restProps
   } = props;
 
@@ -115,6 +121,7 @@ export const ConfirmationDisclosureTrigger = (props: TriggerProps) => {
         onConfirm={onConfirm}
         confirmButtonProps={confirmButtonProps}
         loading={loading}
+        addonElement={addonElement}
       />
     </>
   );

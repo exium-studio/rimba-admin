@@ -1157,8 +1157,28 @@ export const expenditure_realization_account = {
   id: "Realisasi anggaran berdasarkan akun belanja",
   en: "Budget realization based on account",
 };
+export const from = {
+  id: "Dari",
+  en: "From",
+};
+export const to = {
+  id: "Sampai",
+  en: "To",
+};
+export const after = {
+  id: "Setelah",
+  en: "After",
+};
+export const before = {
+  id: "Sebelum",
+  en: "Before",
+};
 
 // Message
+export const msg_export_data_confirmation = {
+  id: "Anda yakin ingin mengekspor data ini?",
+  en: "Are you sure you want to export this data?",
+};
 export const msg_is_public_kmis_material = {
   id: "Apakah materi ini dapat diakses oleh publik?",
   en: "Is this material accessible to the public?",
