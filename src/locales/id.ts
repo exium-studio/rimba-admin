@@ -199,6 +199,7 @@ const translations = {
   },
   "evidence": "Bukti",
   "example_UI": "Contoh UI",
+  "expenditure_realization_account": "Realisasi anggaran berdasarkan akun belanja",
   "explanation": "Penjelasan",
   "february": "Februari",
   "finished": "Selesai",

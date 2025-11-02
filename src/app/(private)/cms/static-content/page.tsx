@@ -15,7 +15,7 @@ export default function Page() {
   const authToken = useAuthMiddleware((s) => s.authToken);
 
   // States
-  const previewURL = `${baseUrl}?authToken=${authToken}`;
+  const previewURL = `${baseUrl}?CMSAuthToken=${authToken}`;
   const p = 16;
 
   return (

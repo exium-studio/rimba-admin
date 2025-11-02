@@ -539,6 +539,7 @@ export const RealizationDisclosure = (props: any) => {
                               );
                             }}
                             flex={3}
+                            placeholder={l.expenditure_realization_account}
                           />
                           <NumInput
                             inputValue={item?.value}
@@ -553,6 +554,7 @@ export const RealizationDisclosure = (props: any) => {
                               );
                             }}
                             flex={2}
+                            placeholder="Nominal"
                           />
 
                           <Btn

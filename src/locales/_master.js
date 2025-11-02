@@ -1153,6 +1153,10 @@ export const end_time = {
   id: "Waktu selesai",
   en: "End time",
 };
+export const expenditure_realization_account = {
+  id: "Realisasi anggaran berdasarkan akun belanja",
+  en: "Budget realization based on account",
+};
 
 // Message
 export const msg_is_public_kmis_material = {

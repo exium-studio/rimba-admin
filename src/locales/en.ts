@@ -199,6 +199,7 @@ const translations = {
   },
   "evidence": "Evidence",
   "example_UI": "Example UI",
+  "expenditure_realization_account": "Budget realization based on account",
   "explanation": "Explanation",
   "february": "February",
   "finished": "Finished",
