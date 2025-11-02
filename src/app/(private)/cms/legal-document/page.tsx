@@ -533,22 +533,21 @@ const Update = (props: any) => {
                     }}
                     existingFiles={resolvedData.document}
                     onDeleteFile={(fileData) => {
+                      const current: string[] =
+                        formik.values.deleteDocumentIds || [];
+
                       formik.setFieldValue(
                         "deleteDocumentIds",
-                        Array.from(
-                          new Set([
-                            ...formik.values.deleteDocumentIds,
-                            fileData.id,
-                          ])
-                        )
+                        Array.from(new Set([...current, fileData.id]))
                       );
                     }}
                     onUndoDeleteFile={(fileData) => {
+                      const current: string[] =
+                        formik.values.deleteDocumentIds || [];
+
                       formik.setFieldValue(
                         "deleteDocumentIds",
-                        formik.values.deleteDocumentIds.filter(
-                          (id: string) => id !== fileData.id
-                        )
+                        current.filter((id: string) => id !== fileData.id)
                       );
                     }}
                   />

@@ -119,7 +119,7 @@ const Create = (props: any) => {
     validationSchema: yup.object().shape({
       files: fileValidation({
         maxSizeMB: 10,
-        allowedExtensions: ["pdf"],
+        allowedExtensions: ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx"],
       }).required(l.msg_required_form),
       name: yup.string().required(l.msg_required_form),
       description: yup.string().required(l.msg_required_form),
@@ -188,8 +188,8 @@ const Create = (props: any) => {
                   <FileInput
                     dropzone
                     maxFiles={5}
-                    accept="application/pdf"
-                    acceptPlaceholder=".pdf"
+                    accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation"
+                    acceptPlaceholder=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx"
                     inputValue={formik.values.files}
                     onChange={(inputValue) => {
                       formik.setFieldValue("files", inputValue);
@@ -443,22 +443,21 @@ const Update = (props: any) => {
                     }}
                     existingFiles={resolvedData.report}
                     onDeleteFile={(fileData) => {
+                      const current: string[] =
+                        formik.values.deleteDocumentIds || [];
+
                       formik.setFieldValue(
                         "deleteDocumentIds",
-                        Array.from(
-                          new Set([
-                            ...formik.values.deleteDocumentIds,
-                            fileData.id,
-                          ])
-                        )
+                        Array.from(new Set([...current, fileData.id]))
                       );
                     }}
                     onUndoDeleteFile={(fileData) => {
+                      const current: string[] =
+                        formik.values.deleteDocumentIds || [];
+
                       formik.setFieldValue(
                         "deleteDocumentIds",
-                        formik.values.deleteDocumentIds.filter(
-                          (id: string) => id !== fileData.id
-                        )
+                        current.filter((id: string) => id !== fileData.id)
                       );
                     }}
                   />
