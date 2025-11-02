@@ -572,6 +572,10 @@ const ImageForm = (props: any) => {
       if (!isEmptyArray(values.files)) {
         payload.append("files", values.files[0]);
       }
+      payload.append(
+        "deleteDocumentIds",
+        JSON.stringify(values.deleteDocumentIds)
+      );
 
       const config = {
         url: `/api/cms/content/update/${content.id}`,
@@ -665,6 +669,10 @@ const ImageArrayForm = (props: any) => {
       if (!isEmptyArray(values.files)) {
         payload.append("files", values.files[0]);
       }
+      payload.append(
+        "deleteDocumentIds",
+        JSON.stringify(values.deleteDocumentIds)
+      );
 
       const config = {
         url: `/api/cms/content/update/${content.id}`,
