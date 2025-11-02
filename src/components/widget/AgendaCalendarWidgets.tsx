@@ -636,7 +636,7 @@ export function AgendaDisclosure(props: any) {
                       </P>
                     </CContainer>
 
-                    <HStack w={"fit"} p={1}>
+                    <HStack w={"fit"} p={1} gap={0}>
                       <EditDisclosureTrigger
                         id={`edit-agenda-${agenda.id}`}
                         agenda={agenda}
