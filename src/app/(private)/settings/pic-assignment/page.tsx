@@ -45,7 +45,7 @@ import { formatDate } from "@/utils/formatter";
 import { capitalize, pluckString } from "@/utils/string";
 import { getActiveNavs } from "@/utils/url";
 import { FieldsetRoot, HStack, Icon, useDisclosure } from "@chakra-ui/react";
-import { IconPencilMinus } from "@tabler/icons-react";
+import { IconPencilMinus, IconUsersGroup } from "@tabler/icons-react";
 import { useFormik } from "formik";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -59,17 +59,17 @@ const DivisionPICs = (props: any) => {
   // Props
   const { picDivision, ...restProps } = props;
 
-  // Contexts
-  const { l } = useLang();
-
   // Hooks
   const { open, onOpen, onClose } = useDisclosure();
   useBackOnClose(disclosureId(`PIC-${picDivision?.id}`), open, onOpen, onClose);
 
   return (
     <>
-      <Btn onClick={onOpen} size={"sm"} variant={"subtle"} {...restProps}>
-        {l.view}
+      <Btn onClick={onOpen} size={"sm"} variant={"ghost"} {...restProps}>
+        <Icon boxSize={5}>
+          <IconUsersGroup stroke={1.5} />
+        </Icon>
+        PIC
       </Btn>
 
       <DisclosureRoot open={open} lazyLoad size={"xs"}>
