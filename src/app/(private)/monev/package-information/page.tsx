@@ -723,12 +723,23 @@ const Update = (props: any) => {
                   invalid={!!formik.errors.picDivision}
                   errorText={formik.errors.picDivision as string}
                 >
-                  <SelectMonevPICDivision
-                    inputValue={formik.values.picDivision}
-                    onConfirm={(inputValue) => {
-                      formik.setFieldValue("picDivision", inputValue);
-                    }}
-                  />
+                  <HStack w={"full"}>
+                    <SelectMonevPICDivision
+                      inputValue={formik.values.picDivision}
+                      onConfirm={(inputValue) => {
+                        formik.setFieldValue("picDivision", inputValue);
+                      }}
+                      flex={1}
+                    />
+
+                    <CreateMonevPICDivisionDisclosureTrigger>
+                      <Btn iconButton variant={"outline"}>
+                        <Icon>
+                          <IconPlus stroke={1.5} />
+                        </Icon>
+                      </Btn>
+                    </CreateMonevPICDivisionDisclosureTrigger>
+                  </HStack>
                 </Field>
 
                 <Field
