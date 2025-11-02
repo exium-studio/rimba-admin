@@ -48,6 +48,8 @@ const translations = {
   "average_quiz_score": "Rata-rata skor total quiz",
   "average_rating": "Rata-rata rating",
   "avg_kmis_score": "Nilai rata-rata",
+  "avg_physical_target": "Rata-rata target fisik",
+  "avg_progress_realization": "Rata-rata progres realisasi",
   "back": "Kembali",
   "basic_info": "Informasi umum",
   "before": "Sebelum",

@@ -48,6 +48,8 @@ const translations = {
   "average_quiz_score": "Average total quiz score",
   "average_rating": "Average rating",
   "avg_kmis_score": "Average score",
+  "avg_physical_target": "Average physical target",
+  "avg_progress_realization": "Average progress realization",
   "back": "Back",
   "basic_info": "Basic info",
   "before": "Before",

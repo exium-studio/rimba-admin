@@ -1173,6 +1173,14 @@ export const before = {
   id: "Sebelum",
   en: "Before",
 };
+export const avg_physical_target = {
+  id: "Rata-rata target fisik",
+  en: "Average physical target",
+};
+export const avg_progress_realization = {
+  id: "Rata-rata progres realisasi",
+  en: "Average progress realization",
+};
 
 // Message
 export const msg_export_data_confirmation = {

@@ -66,12 +66,12 @@ const StatItem = (props: Props__StatItem) => {
       </Circle>
 
       <CContainer>
-        <P fontWeight={"medium"} color={"fg.subtle"}>
-          {label}
-        </P>
-
         <P fontSize={"xl"} fontWeight={"bold"}>
           {value}
+        </P>
+
+        <P fontWeight={"medium"} color={"fg.subtle"}>
+          {label}
         </P>
       </CContainer>
     </HStack>
