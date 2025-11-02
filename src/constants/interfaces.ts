@@ -19,6 +19,10 @@ import {
 } from "./types";
 
 // Monev
+export interface Interface__MonevPICAccount {
+  name: string;
+  email: string;
+}
 export interface Interface__MonevDataSharing extends Interface__CUD {
   id: string;
   createdUser: Interface__User;
@@ -110,7 +114,7 @@ export interface Interface__MonevPICDivision extends Interface__CUD {
   id: string;
   title: string;
   description: string;
-  picUser?: Interface__User[];
+  userPic: Interface__MonevPICAccount[];
 }
 export interface Interface__MonevAgendaCategory extends Interface__CUD {
   id: string;

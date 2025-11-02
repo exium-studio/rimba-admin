@@ -1,6 +1,7 @@
 "use client";
 
 import { Btn } from "@/components/ui/btn";
+import { CContainer } from "@/components/ui/c-container";
 import {
   DisclosureBody,
   DisclosureContent,
@@ -12,6 +13,7 @@ import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-conte
 import { Field } from "@/components/ui/field";
 import { MenuItem } from "@/components/ui/menu";
 import SearchInput from "@/components/ui/search-input";
+import { StringInput } from "@/components/ui/string-input";
 import { Tooltip, TooltipProps } from "@/components/ui/tooltip";
 import BackButton from "@/components/widget/BackButton";
 import { ClampText } from "@/components/widget/ClampText";
@@ -22,13 +24,12 @@ import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
 import { MiniUser } from "@/components/widget/MiniUser";
 import { PageContent } from "@/components/widget/Page";
-import { SelectSSOUsers } from "@/components/widget/SelectSSOUsers";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
 import {
   Interface__DataProps,
+  Interface__MonevPICAccount,
   Interface__MonevPICDivision,
   Interface__RowOptionsTableOptionGenerator,
-  Interface__SelectOption,
   Interface__User,
 } from "@/constants/interfaces";
 import { useDataDisplay } from "@/context/useDataDisplay";
@@ -45,7 +46,12 @@ import { formatDate } from "@/utils/formatter";
 import { capitalize, pluckString } from "@/utils/string";
 import { getActiveNavs } from "@/utils/url";
 import { FieldsetRoot, HStack, Icon, useDisclosure } from "@chakra-ui/react";
-import { IconPencilMinus, IconUsersGroup } from "@tabler/icons-react";
+import {
+  IconPencilMinus,
+  IconPlus,
+  IconTrash,
+  IconUsersGroup,
+} from "@tabler/icons-react";
 import { useFormik } from "formik";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -79,9 +85,9 @@ const DivisionPICs = (props: any) => {
           </DisclosureHeader>
 
           <DisclosureBody>
-            {isEmptyArray(picDivision.picUser) && <FeedbackNoData />}
+            {isEmptyArray(picDivision.userPic) && <FeedbackNoData />}
 
-            {picDivision.picUser?.map((user: Interface__User) => {
+            {picDivision.userPic?.map((user: Interface__User) => {
               return <MiniUser key={user.id} user={user} />;
             })}
           </DisclosureBody>
@@ -159,17 +165,15 @@ const Update = (props: any) => {
   const formik = useFormik({
     validateOnChange: false,
     initialValues: {
-      pics: [] as Interface__SelectOption[] | null,
+      PICs: [] as Interface__MonevPICAccount[],
     },
     validationSchema: yup.object().shape({
-      pics: yup.array(),
+      PICs: yup.array(),
     }),
     onSubmit: (values) => {
       back();
 
-      const payload = values.pics?.map(
-        (pic: Interface__SelectOption) => pic.id
-      );
+      const payload = values.PICs;
 
       const config = {
         url: `${BASE_ENDPOINT}/assign/${resolvedData.id}`,
@@ -190,11 +194,14 @@ const Update = (props: any) => {
 
   useEffect(() => {
     formik.setValues({
-      pics:
-        resolvedData.picUser?.map((pic) => ({
-          id: pic.id,
-          label: pic.name,
-        })) || [],
+      PICs: !isEmptyArray(resolvedData.userPic)
+        ? resolvedData.userPic
+        : [
+            {
+              name: "",
+              email: "",
+            },
+          ],
     });
   }, [open, resolvedData]);
 
@@ -220,16 +227,73 @@ const Update = (props: any) => {
               <FieldsetRoot disabled={loading}>
                 <Field
                   label={"PIC"}
-                  invalid={!!formik.errors.pics}
-                  errorText={formik.errors.pics as string}
+                  invalid={!!formik.errors.PICs}
+                  errorText={formik.errors.PICs as string}
                 >
-                  <SelectSSOUsers
-                    inputValue={formik.values.pics}
-                    onChange={(inputValue) => {
-                      formik.setFieldValue("pics", inputValue);
-                    }}
-                    multiple
-                  />
+                  <CContainer gap={2}>
+                    {formik.values.PICs.map((item, idx) => {
+                      return (
+                        <HStack key={idx}>
+                          <StringInput
+                            inputValue={item?.name}
+                            onChange={(inputValue) => {
+                              const updated = [...formik.values.PICs];
+                              updated[idx].name = inputValue;
+                              formik.setFieldValue("PICs", updated);
+                            }}
+                            flex={3}
+                            placeholder={l.expenditure_realization_account}
+                          />
+                          <StringInput
+                            inputValue={item?.email}
+                            onChange={(inputValue) => {
+                              const updated = [...formik.values.PICs];
+                              updated[idx].email = inputValue;
+                              formik.setFieldValue("PICs", updated);
+                            }}
+                            flex={2}
+                            placeholder="Nominal"
+                          />
+
+                          <Btn
+                            iconButton
+                            variant={"outline"}
+                            onClick={() => {
+                              formik.setFieldValue("PICs", [
+                                ...formik.values.PICs.filter(
+                                  (_, fidx) => idx !== fidx
+                                ),
+                              ]);
+                            }}
+                          >
+                            <Icon>
+                              <IconTrash stroke={1.5} />
+                            </Icon>
+                          </Btn>
+                        </HStack>
+                      );
+                    })}
+
+                    <Btn
+                      variant={"ghost"}
+                      w={"fit"}
+                      ml={"auto"}
+                      onClick={() => {
+                        formik.setFieldValue("PICs", [
+                          ...formik.values.PICs,
+                          {
+                            name: "",
+                            value: null,
+                          },
+                        ]);
+                      }}
+                    >
+                      <Icon>
+                        <IconPlus stroke={1.5} />
+                      </Icon>
+                      {l.add}
+                    </Btn>
+                  </CContainer>
                 </Field>
               </FieldsetRoot>
             </form>
