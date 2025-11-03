@@ -1,38 +1,19 @@
 "use client";
 
-import { APP } from "@/constants/_meta";
+import { useColorMode } from "@/components/ui/color-mode";
+import { DefaultFallback } from "@/components/widget/DefaultFallback";
+import { LoadingBar } from "@/components/widget/LoadingBar";
+import useADM from "@/context/useADM";
 import { useFirefoxPaddingY } from "@/hooks/useFirefoxPaddingY";
 import useOfflineAlert from "@/hooks/useOfflineAlert";
-import { Center } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { Img } from "../ui/img";
-import GlobalDisclosure from "./GlobalDisclosure";
-import { useColorMode } from "@/components/ui/color-mode";
-import useADM from "@/context/useADM";
-import { LoadingBar } from "@/components/widget/LoadingBar";
 import { purgeDisclosureSearchParams } from "@/utils/disclosure";
-import { SVGS_PATH } from "@/constants/paths";
+import { useEffect, useState } from "react";
+import GlobalDisclosure from "./GlobalDisclosure";
 
 interface Props {
   children: React.ReactNode;
   fallback?: React.ReactNode;
 }
-
-const DefaultFallback = () => {
-  return (
-    <Center w={"100w"} minH={"100dvh"} color={"fg.subtle"}>
-      <Img
-        alt={`${APP.name} Logo`}
-        src={`${SVGS_PATH}/logo_gray.svg`}
-        width={"48px"}
-        height={"48px"}
-        imageProps={{
-          priority: true,
-        }}
-      />
-    </Center>
-  );
-};
 
 // persist mounted state across route changes
 let mountedGlobal = false;
