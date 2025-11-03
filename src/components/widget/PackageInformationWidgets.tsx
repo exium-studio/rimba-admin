@@ -54,6 +54,7 @@ import {
 } from "@chakra-ui/react";
 import {
   IconCheck,
+  IconCoins,
   IconExclamationMark,
   IconInfoCircle,
   IconMinus,
@@ -342,7 +343,7 @@ export const TargetInputItem = (props: any) => {
     </CContainer>
   );
 };
-export const TargetDisclosure = (props: any) => {
+export const TargetListDisclosure = (props: any) => {
   // Props
   const { open, data } = props;
 
@@ -407,7 +408,7 @@ export const TargetDisclosure = (props: any) => {
                 {!isEmptyArray(pendingTargetData) && (
                   <CContainer gap={2}>
                     <HStack gap={4} px={2} color={"fg.muted"}>
-                      <P w={"120px"} ml={2}>
+                      <P w={"140px"} ml={2}>
                         {l.period}
                       </P>
                       <P flex={2} textAlign={"right"}>
@@ -430,7 +431,7 @@ export const TargetDisclosure = (props: any) => {
                           borderColor={"border.muted"}
                           gap={4}
                         >
-                          <HStack w={"120px"} ml={2}>
+                          <HStack w={"140px"} ml={2}>
                             <ClampText>{`${L_MONTHS[target.month]} ${
                               target?.year
                             }`}</ClampText>
@@ -512,7 +513,7 @@ export const TargetDisclosure = (props: any) => {
     </DisclosureRoot>
   );
 };
-export const TargetDisclosureTrigger = (props: any) => {
+export const TargetListDisclosureTrigger = (props: any) => {
   // Props
   const { id, data, ...restProps } = props;
 
@@ -529,7 +530,7 @@ export const TargetDisclosureTrigger = (props: any) => {
     <>
       <CContainer onClick={onOpen} {...restProps}></CContainer>
 
-      <TargetDisclosure open={open} data={data} />
+      <TargetListDisclosure open={open} data={data} />
     </>
   );
 };
@@ -973,12 +974,72 @@ export const RealizationItem = (props: any) => {
     </CContainer>
   );
 };
+const BudgetRealization = (props: any) => {
+  // Props
+  const { id, budgetRealization, ...restProps } = props;
+
+  // Contexts
+  const { l } = useLang();
+
+  // Hooks
+  const { open, onOpen, onClose } = useDisclosure();
+  useBackOnClose(disclosureId(id), open, onOpen, onClose);
+
+  return (
+    <>
+      <Btn variant={"ghost"} size={"md"} onClick={onOpen} {...restProps}>
+        <Icon>
+          <IconCoins stroke={1.5} />
+        </Icon>
+
+        {l.budget_realization}
+      </Btn>
+
+      <DisclosureRoot open={open} lazyLoad size={"xs"}>
+        <DisclosureContent>
+          <DisclosureHeader>
+            <DisclosureHeaderContent title={`${l.budget_realization}`} />
+          </DisclosureHeader>
+
+          <DisclosureBody>
+            <CContainer gap={2}>
+              {isEmptyArray(budgetRealization) && <FeedbackNoData />}
+
+              {budgetRealization?.map(
+                (budget: Interface__MonevRealizationAccount, idx: number) => {
+                  return (
+                    <HStack key={idx}>
+                      <ClampText flex={1} w={"fit"}>
+                        {budget?.name}
+                      </ClampText>
+
+                      <Box flex={1} h={"1px"} bg={"border.muted"} />
+
+                      <P flex={1} flexShrink={0} textAlign={"right"}>
+                        {formatNumber(budget?.value)}
+                      </P>
+                    </HStack>
+                  );
+                }
+              )}
+            </CContainer>
+          </DisclosureBody>
+
+          <DisclosureFooter>
+            <BackButton />
+          </DisclosureFooter>
+        </DisclosureContent>
+      </DisclosureRoot>
+    </>
+  );
+};
 export const RealizationList = (props: any) => {
   // Props
   const { data, ...restProps } = props;
 
   // Contexts
   const { l } = useLang();
+  const { themeConfig } = useThemeConfig();
 
   // States
   const monthlyRealization = data?.monthlyRealization;
@@ -1007,72 +1068,147 @@ export const RealizationList = (props: any) => {
               {isEmptyArray(currentMonthlyRealizations) && <FeedbackNoData />}
 
               {!isEmptyArray(currentMonthlyRealizations) && (
-                <SimpleGrid columns={[2, 3, 4]} gap={4} {...restProps}>
-                  {currentMonthlyRealizations?.map(
-                    (realization: Interface__MonevRealization) => {
-                      return (
-                        <RealizationItem
-                          key={realization?.id}
-                          realization={realization}
-                        />
-                      );
-                    }
-                  )}
-                </SimpleGrid>
+                <>
+                  <SimpleGrid columns={[2, 3, 4]} gap={4} {...restProps}>
+                    {currentMonthlyRealizations?.map(
+                      (realization: Interface__MonevRealization) => {
+                        return (
+                          <RealizationItem
+                            key={realization?.id}
+                            realization={realization}
+                          />
+                        );
+                      }
+                    )}
+                  </SimpleGrid>
+
+                  <HStack wrap={"wrap"} gap={4} mt={8}>
+                    <HStack>
+                      <RealizationItemIcon
+                        status={"4"}
+                        boxSize={3}
+                        containerP={"2px"}
+                      />
+
+                      <P>{l.uninputted}</P>
+                    </HStack>
+
+                    <HStack>
+                      <RealizationItemIcon
+                        status={"1"}
+                        boxSize={3}
+                        containerP={"2px"}
+                      />
+
+                      <P>{l.unvalidated}</P>
+                    </HStack>
+
+                    <HStack>
+                      <RealizationItemIcon
+                        status={"3"}
+                        boxSize={3}
+                        containerP={"2px"}
+                      />
+
+                      <P>{l.rejected}</P>
+                    </HStack>
+
+                    <HStack>
+                      <RealizationItemIcon
+                        status={"2"}
+                        boxSize={3}
+                        containerP={"2px"}
+                      />
+
+                      <P>{l.validated}</P>
+                    </HStack>
+                  </HStack>
+                </>
               )}
             </>
           </Tabs.Content>
 
           <Tabs.Content value="tab-2">
             <>
-              {isEmptyArray(pendingUpdateMonthlyRealizations) && (
-                <FeedbackNoData />
-              )}
+              {isEmptyArray(currentMonthlyRealizations) && <FeedbackNoData />}
 
-              {!isEmptyArray(pendingUpdateMonthlyRealizations) && (
-                <SimpleGrid columns={[2, 3, 4]} gap={4} {...restProps}>
-                  {pendingUpdateMonthlyRealizations?.map(
-                    (realization: Interface__MonevRealization) => {
-                      return (
-                        <RealizationItem
-                          key={realization?.id}
-                          realization={realization}
+              {!isEmptyArray(currentMonthlyRealizations) && (
+                <CContainer gap={2}>
+                  <HStack gap={4} px={2} color={"fg.muted"}>
+                    <P w={"140px"} ml={2}>
+                      {l.period}
+                    </P>
+                    <P w={"170px"} pl={4}>
+                      {l.budget_target}
+                    </P>
+                    <P flex={1}>{l.progress}</P>
+
+                    <Box w={"80px"} h={"30px"} ml={8} />
+                  </HStack>
+
+                  {currentMonthlyRealizations?.map((realization) => {
+                    return (
+                      <HStack
+                        key={realization.id}
+                        p={2}
+                        rounded={themeConfig.radii.component}
+                        border={"1px solid"}
+                        borderColor={"border.muted"}
+                        gap={4}
+                      >
+                        <HStack w={"140px"} ml={2}>
+                          <ClampText>{`${L_MONTHS[realization.month]} ${
+                            realization?.year
+                          }`}</ClampText>
+
+                          <SimplePopover
+                            content={
+                              <P>{`${realization.description || "-"}`}</P>
+                            }
+                          >
+                            <Btn
+                              iconButton
+                              size={"2xs"}
+                              rounded={"full"}
+                              variant={"ghost"}
+                            >
+                              <Icon boxSize={5}>
+                                <IconInfoCircle stroke={1.5} />
+                              </Icon>
+                            </Btn>
+                          </SimplePopover>
+                        </HStack>
+
+                        {realization?.budgetRealization ? (
+                          <BudgetRealization
+                            id={`budget-realization-${realization.id}`}
+                            budgetRealization={realization?.budgetRealization}
+                            w={"170px"}
+                          />
+                        ) : (
+                          <P w={"170px"}>{"-"}</P>
+                        )}
+
+                        <P flex={1}>
+                          {realization?.progress
+                            ? `${realization?.progress}%`
+                            : "-"}
+                        </P>
+
+                        <ValidationButtons
+                          id={`validate-realization-${realization.id}`}
+                          validationAPI={`/api/monev/monthly-realization/verification/${realization.id}`}
+                          ml={8}
                         />
-                      );
-                    }
-                  )}
-                </SimpleGrid>
+                      </HStack>
+                    );
+                  })}
+                </CContainer>
               )}
             </>
           </Tabs.Content>
         </>
       </Tabs.Root>
-
-      <HStack wrap={"wrap"} gap={4}>
-        <HStack>
-          <RealizationItemIcon status={"4"} boxSize={3} containerP={"2px"} />
-
-          <P>{l.uninputted}</P>
-        </HStack>
-
-        <HStack>
-          <RealizationItemIcon status={"1"} boxSize={3} containerP={"2px"} />
-
-          <P>{l.unvalidated}</P>
-        </HStack>
-
-        <HStack>
-          <RealizationItemIcon status={"3"} boxSize={3} containerP={"2px"} />
-
-          <P>{l.rejected}</P>
-        </HStack>
-
-        <HStack>
-          <RealizationItemIcon status={"2"} boxSize={3} containerP={"2px"} />
-
-          <P>{l.validated}</P>
-        </HStack>
-      </HStack>
     </CContainer>
   );
 };

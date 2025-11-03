@@ -35,7 +35,7 @@ import { DotIndicator } from "@/components/widget/Indicator";
 import {
   RealizationList,
   RealizationListDisclosureTrigger,
-  TargetDisclosureTrigger,
+  TargetListDisclosureTrigger,
 } from "@/components/widget/PackageInformationWidgets";
 import { PageContainer, PageContent } from "@/components/widget/Page";
 import { SelectMonevPackageContractType } from "@/components/widget/SelectMonevPackageContractType";
@@ -578,7 +578,7 @@ const DetailTrigger = (props: any) => {
                     {capitalizeWords(l.activity_package_information)}
                   </P>
 
-                  <TargetDisclosureTrigger
+                  <TargetListDisclosureTrigger
                     id={`target-from-detail-${resolvedData?.id}`}
                     data={resolvedData}
                     w={"fit"}
@@ -590,7 +590,7 @@ const DetailTrigger = (props: any) => {
                     >
                       Target
                     </Btn>
-                  </TargetDisclosureTrigger>
+                  </TargetListDisclosureTrigger>
                 </HStack>
 
                 <CContainer gap={2}>
@@ -1189,7 +1189,7 @@ const Data = (props: any) => {
         },
         {
           td: (
-            <TargetDisclosureTrigger data={item} routeTitle={routeTitle}>
+            <TargetListDisclosureTrigger data={item} routeTitle={routeTitle}>
               <Btn size={"xs"} variant={"ghost"} pl={"6px"}>
                 <Icon boxSize={5}>
                   <IconTargetArrow stroke={1.5} />
@@ -1202,7 +1202,7 @@ const Data = (props: any) => {
                   <DotIndicator ml={2} />
                 )}
               </Btn>
-            </TargetDisclosureTrigger>
+            </TargetListDisclosureTrigger>
           ),
           value: "",
         },
@@ -1283,7 +1283,7 @@ const Data = (props: any) => {
       }),
       (row) => ({
         override: (
-          <TargetDisclosureTrigger data={row.data}>
+          <TargetListDisclosureTrigger data={row.data}>
             <MenuTooltip content={"Edit Target"}>
               <MenuItem value="edit target">
                 Target
@@ -1292,7 +1292,7 @@ const Data = (props: any) => {
                 </Icon>
               </MenuItem>
             </MenuTooltip>
-          </TargetDisclosureTrigger>
+          </TargetListDisclosureTrigger>
         ),
       }),
       (row) => ({

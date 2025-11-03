@@ -57,7 +57,7 @@ export interface Interface__MonevRealization extends Interface__CUD {
   evidence: Interface__StorageFile[];
   month: number;
   year: number;
-  budgerRealization: Interface__MonevRealizationAccount[];
+  budgetRealization: Interface__MonevRealizationAccount[];
   progress: number;
   description: string;
   problem: string;
