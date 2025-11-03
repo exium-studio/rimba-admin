@@ -109,6 +109,8 @@ export interface Interface__MonevPackageInformation extends Interface__CUD {
   rejectionReason: string;
   monevMonthlyRealization?: Interface__MonevRealization[];
   monevMonthlyRealizationPendingUpdate?: Interface__MonevRealization[];
+  pendingTarget?: boolean;
+  pendingRealization?: boolean;
 }
 export interface Interface__MonevPICDivision extends Interface__CUD {
   id: string;

@@ -1198,9 +1198,7 @@ const Data = (props: any) => {
                 {`Target`}
 
                 {/* TODO deteksi kalau ada data yg perlu validasi */}
-                {!isEmptyArray(item?.monevMonthlyRealizationPendingUpdate) && (
-                  <DotIndicator ml={2} />
-                )}
+                {item?.pendingTarget && <DotIndicator ml={2} />}
               </Btn>
             </TargetListDisclosureTrigger>
           ),
@@ -1219,9 +1217,7 @@ const Data = (props: any) => {
 
                 {l.realization}
 
-                {!isEmptyArray(item?.monevMonthlyRealizationPendingUpdate) && (
-                  <DotIndicator ml={2} />
-                )}
+                {item?.pendingRealization && <DotIndicator ml={2} />}
               </Btn>
             </RealizationListDisclosureTrigger>
           ),
