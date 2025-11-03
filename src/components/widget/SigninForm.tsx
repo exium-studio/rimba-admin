@@ -448,7 +448,7 @@ const SigninForm = (props: Props) => {
       form: (
         <SSOAuthForm
           indexRoute={"/monev/dashboard"}
-          signinAPI={`/api/sso/signin`}
+          signinAPI={`/api/monev/signin`}
         />
       ),
     },
