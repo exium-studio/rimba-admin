@@ -82,7 +82,8 @@ export const PeriodPickerInput = (props: Props__PeriodPickerInput) => {
     l.december,
   ];
   const [selected, setSelected] = useState<Type__Period>(DEFAULT);
-  const empty = selected.year === null || selected.month === null;
+  const isEmpty = selected.year === null || selected.month === null;
+  const isIncomplete = selected.year === null || selected.month === null;
 
   // handle initial value on open
   useEffect(() => {
@@ -95,7 +96,7 @@ export const PeriodPickerInput = (props: Props__PeriodPickerInput) => {
   }, [open, inputValue]);
 
   const handleConfirm = () => {
-    if (!empty) {
+    if (!isEmpty) {
       onConfirm?.({ month: selected.month, year: selected.year });
     } else {
       onConfirm?.(null);
@@ -107,7 +108,7 @@ export const PeriodPickerInput = (props: Props__PeriodPickerInput) => {
     <>
       <Tooltip
         content={
-          !empty
+          !isEmpty
             ? formatDate(new Date(selected.year!, selected.month!), {
                 variant: "monthYear",
               })
@@ -217,7 +218,7 @@ export const PeriodPickerInput = (props: Props__PeriodPickerInput) => {
             <Btn
               onClick={handleConfirm}
               colorPalette={themeConfig.colorPalette}
-              disabled={required && empty}
+              disabled={required && (isEmpty || isIncomplete)}
             >
               {l.confirm}
             </Btn>
