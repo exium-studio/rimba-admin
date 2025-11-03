@@ -15,6 +15,7 @@ import {
   Icon,
   SimpleGrid,
   useDisclosure,
+  useFieldContext,
 } from "@chakra-ui/react";
 import { IconCircleFilled } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
@@ -57,12 +58,14 @@ export const PeriodPickerInput = (props: Props__PeriodPickerInput) => {
   // Contexts
   const { l } = useLang();
   const { themeConfig } = useThemeConfig();
+  const fc = useFieldContext();
 
   // Hooks
   const { open, onOpen, onClose } = useDisclosure();
   useBackOnClose(disclosureId(resolvedId), open, onOpen, onClose);
 
   // States
+  const resolvedInvalid = invalid ?? fc?.invalid;
   const resolvedPlaceholder = placeholder || l.select_period;
   const MONTHS = [
     l.january,
@@ -117,7 +120,7 @@ export const PeriodPickerInput = (props: Props__PeriodPickerInput) => {
           variant={"outline"}
           justifyContent={"start"}
           onClick={onOpen}
-          borderColor={invalid ? "border.error" : "border.muted"}
+          borderColor={resolvedInvalid ? "border.error" : "border.muted"}
           {...restProps}
         >
           {!inputValue && <P color={"placeholder"}>{resolvedPlaceholder}</P>}
