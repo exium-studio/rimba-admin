@@ -300,7 +300,9 @@ const Create = (props: any) => {
       correctOption: yup.array().required(l.msg_required_form),
       explanation: yup.string().required(l.msg_required_form),
     }),
-    onSubmit: (values) => {
+    onSubmit: (values, { resetForm }) => {
+      back();
+
       const payload = new FormData();
       payload.append("topicId", `${values.topic?.[0]?.id}`);
       payload.append("question", values.question);
@@ -321,7 +323,8 @@ const Create = (props: any) => {
         config,
         onResolve: {
           onSuccess: () => {
-            back();
+            resetForm();
+            formik.setFieldValue("topic", filter.topic);
             setRt((ps) => !ps);
           },
         },
@@ -560,6 +563,8 @@ const Update = (props: any) => {
       explanation: yup.string().required(l.msg_required_form),
     }),
     onSubmit: (values, { resetForm }) => {
+      back();
+
       const payload = new FormData();
       payload.append("topicId", `${values.topic?.[0]?.id}`);
       payload.append("question", values.question);
@@ -581,7 +586,6 @@ const Update = (props: any) => {
         onResolve: {
           onSuccess: () => {
             resetForm();
-            back();
             setRt((ps) => !ps);
           },
         },

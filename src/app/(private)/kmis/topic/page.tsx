@@ -139,6 +139,8 @@ const Create = (props: any) => {
       quizDuration: yup.number().required(l.msg_required_form),
     }),
     onSubmit: (values, { resetForm }) => {
+      back();
+
       const payload = new FormData();
       payload.append("files", values.files?.[0]);
       payload.append("categoryId", `${values.category?.[0]?.id}`);
@@ -158,7 +160,6 @@ const Create = (props: any) => {
         onResolve: {
           onSuccess: () => {
             resetForm();
-            back();
             setRt((ps) => !ps);
           },
         },
