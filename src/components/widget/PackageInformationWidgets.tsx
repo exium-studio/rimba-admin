@@ -1055,7 +1055,7 @@ export const RealizationList = (props: any) => {
           <Tabs.Trigger value="tab-1">{l.current_data}</Tabs.Trigger>
 
           <Tabs.Trigger value="tab-2">
-            {l.pending_data}{" "}
+            {l.unvalidated}{" "}
             {!isEmptyArray(pendingUpdateMonthlyRealizations) && (
               <DotIndicator ml={1} />
             )}
