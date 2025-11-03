@@ -8,7 +8,6 @@ import {
   IconSchool,
   IconSettings,
   IconShieldHalf,
-  IconUser,
   IconUsers,
   IconWorld,
 } from "@tabler/icons-react";
@@ -175,12 +174,12 @@ export const OTHER_NAVS: Interface__NavItem[] = [
           {
             groupLabelKey: "settings_navs.main.index",
             list: [
-              {
-                icon: IconUser,
-                labelKey: "my_profile",
-                path: `/settings/profile`,
-                backPath: `/settings`,
-              },
+              // {
+              //   icon: IconUser,
+              //   labelKey: "my_profile",
+              //   path: `/settings/profile`,
+              //   backPath: `/settings`,
+              // },
               {
                 icon: IconDeviceDesktop,
                 labelKey: "settings_navs.main.display",

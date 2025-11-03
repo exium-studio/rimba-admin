@@ -4,10 +4,9 @@ import { Btn } from "@/components/ui/btn";
 import { CContainer } from "@/components/ui/c-container";
 import { Divider } from "@/components/ui/divider";
 import { Img } from "@/components/ui/img";
-import { NavLink } from "@/components/ui/nav-link";
 import { P } from "@/components/ui/p";
 import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
-import { DotIndicator } from "@/components/widget/Indicator";
+import { ResetPasswordDisclosure } from "@/components/widget/ResetPasswordDisclosure";
 import { SVGS_PATH } from "@/constants/paths";
 import useAuthMiddleware from "@/context/useAuthMiddleware";
 import useLang from "@/context/useLang";
@@ -16,8 +15,8 @@ import useRequest from "@/hooks/useRequest";
 import { getUserData } from "@/utils/auth";
 import { back, removeStorage } from "@/utils/client";
 import { Icon, StackProps } from "@chakra-ui/react";
-import { IconLogout, IconUser } from "@tabler/icons-react";
-import { usePathname, useRouter } from "next/navigation";
+import { IconLockOpen, IconLogout } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
 
 export const MiniMyProfile = (props: StackProps) => {
   // Contexts
@@ -33,7 +32,6 @@ export const MiniMyProfile = (props: StackProps) => {
   });
   const router = useRouter();
   router.prefetch("/");
-  const pathname = usePathname();
 
   // States
   const user = getUserData();
@@ -93,7 +91,7 @@ export const MiniMyProfile = (props: StackProps) => {
       <Divider />
 
       <CContainer gap={1} p={"6px"}>
-        <NavLink to={`/settings/profile`} w={"full"}>
+        <ResetPasswordDisclosure w={"full"}>
           <Btn
             clicky={false}
             px={2}
@@ -102,16 +100,11 @@ export const MiniMyProfile = (props: StackProps) => {
             pos={"relative"}
           >
             <Icon boxSize={5}>
-              <IconUser stroke={1.5} />
+              <IconLockOpen stroke={1.5} />
             </Icon>
-
-            {l.my_profile}
-
-            {pathname.includes("/profile") && (
-              <DotIndicator ml={"auto"} mr={1} />
-            )}
+            Reset password
           </Btn>
-        </NavLink>
+        </ResetPasswordDisclosure>
 
         <ConfirmationDisclosureTrigger
           id="signout"
@@ -136,7 +129,7 @@ export const MiniMyProfile = (props: StackProps) => {
             <Icon boxSize={5}>
               <IconLogout stroke={1.5} />
             </Icon>
-            Sign Out
+            Sign out
           </Btn>
         </ConfirmationDisclosureTrigger>
       </CContainer>

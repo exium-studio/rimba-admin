@@ -39,7 +39,7 @@ import { Divider } from "../ui/divider";
 import { P } from "../ui/p";
 import { PasswordInput } from "../ui/password-input";
 import { StringInput } from "../ui/string-input";
-import ResetPasswordDisclosure from "./ResetPasswordDisclosure";
+import { ResetPasswordDisclosure } from "./ResetPasswordDisclosure";
 import { H1 } from "@/components/ui/heading";
 
 interface Props extends StackProps {}

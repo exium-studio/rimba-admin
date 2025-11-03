@@ -339,7 +339,7 @@ const Step3 = (props: any) => {
   );
 };
 
-const ResetPasswordDisclosure = (props: any) => {
+export const ResetPasswordDisclosure = (props: any) => {
   // Props
   const { children, ...restProps } = props;
 
@@ -379,5 +379,3 @@ const ResetPasswordDisclosure = (props: any) => {
     </>
   );
 };
-
-export default ResetPasswordDisclosure;
