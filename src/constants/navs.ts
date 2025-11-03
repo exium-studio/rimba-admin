@@ -13,9 +13,9 @@ import {
 } from "@tabler/icons-react";
 
 // Role Ids
-// 1 Super Admin (id 1 = exium & 2 = demigod)
+// 1 Super Admin/SSO default
 // 2 Educator
-// 3 Monev
+// 3 Monev/SSO monev assignee
 // 4 Public
 
 export const PRIVATE_NAVS: Interface__NavItem[] = [

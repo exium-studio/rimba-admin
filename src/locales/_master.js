@@ -1098,8 +1098,12 @@ export const uninputted = {
   en: "Not filled in",
 };
 export const unvalidated = {
-  id: "Belum diverifikasi",
+  id: "Belum divalidasi",
   en: "Unvalidated",
+};
+export const validation = {
+  id: "Validasi",
+  en: "Validation",
 };
 export const validated = {
   id: "Diverifikasi",
@@ -1181,8 +1185,40 @@ export const avg_progress_realization = {
   id: "Rata-rata progres realisasi",
   en: "Average progress realization",
 };
+export const manage = {
+  id: "Kelola",
+  en: "Manage",
+};
+export const validate = {
+  id: "Validasi",
+  en: "Validate",
+};
+export const period = {
+  id: "Periode",
+  en: "Period",
+};
+export const unverivied = {
+  id: "Belum diverifikasi",
+  en: "Unverified",
+};
+export const reject = {
+  id: "Tolak",
+  en: "Reject",
+};
+export const reason = {
+  id: "Alasan",
+  en: "Reason",
+};
 
 // Message
+export const msg_validate_confirmation = {
+  id: "Anda yakin ingin memvalidasi data ini?",
+  en: "Are you sure you want to validate this data?",
+};
+export const msg_reject_confirmation = {
+  id: "Anda yakin ingin menolak data ini?",
+  en: "Are you sure you want to reject this data?",
+};
 export const msg_export_data_confirmation = {
   id: "Anda yakin ingin mengekspor data ini?",
   en: "Are you sure you want to export this data?",

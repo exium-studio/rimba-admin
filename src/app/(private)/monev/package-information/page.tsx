@@ -57,6 +57,7 @@ import useDataState from "@/hooks/useDataState";
 import { useIsSmScreenWidth } from "@/hooks/useIsSmScreenWidth";
 import useRequest from "@/hooks/useRequest";
 import { isEmptyArray, last } from "@/utils/array";
+import { getUserData } from "@/utils/auth";
 import { back } from "@/utils/client";
 import { disclosureId } from "@/utils/disclosure";
 import { download } from "@/utils/file";
@@ -511,6 +512,10 @@ const DataUtils = (props: any) => {
   // Props
   const { filter, setFilter, routeTitle, ...restProps } = props;
 
+  // States
+  const user = getUserData();
+  const isSuperAdmin = user?.role?.id === "1";
+
   return (
     <HStack p={3} {...restProps}>
       <SearchInput
@@ -522,9 +527,13 @@ const DataUtils = (props: any) => {
 
       <DataDisplayToggle navKey={PREFIX_ID} />
 
-      <Export />
+      {isSuperAdmin && (
+        <>
+          <Export />
 
-      <Create routeTitle={routeTitle} />
+          <Create routeTitle={routeTitle} />
+        </>
+      )}
     </HStack>
   );
 };
@@ -585,6 +594,14 @@ const DetailTrigger = (props: any) => {
                 </HStack>
 
                 <CContainer gap={2}>
+                  <HStack align={"start"} gap={4}>
+                    <P flex={1} flexShrink={0} color={"fg.muted"}>
+                      {l.pagu}
+                    </P>
+
+                    <P flex={[1, null, 2]}>{`${data?.pagu}`}</P>
+                  </HStack>
+
                   <HStack align={"start"} gap={4}>
                     <P flex={1} flexShrink={0} color={"fg.muted"}>
                       {l.mak}

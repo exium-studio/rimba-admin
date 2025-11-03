@@ -211,7 +211,7 @@ const Update = (props: any) => {
     <>
       <MenuTooltip content={"Edit"}>
         <MenuItem value="edit" onClick={onOpen}>
-          Edit PIC
+          {`${l.manage} PIC`}
           <Icon boxSize={"18px"} ml={"auto"}>
             <IconPencilMinus stroke={1.5} />
           </Icon>
@@ -221,7 +221,7 @@ const Update = (props: any) => {
       <DisclosureRoot open={open} lazyLoad size={"md"}>
         <DisclosureContent>
           <DisclosureHeader>
-            <DisclosureHeaderContent title={`Edit ${routeTitle}`} />
+            <DisclosureHeaderContent title={`${l.manage} PIC`} />
           </DisclosureHeader>
 
           <DisclosureBody>

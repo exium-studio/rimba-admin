@@ -16,8 +16,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { StringInput } from "@/components/ui/string-input";
 import { Textarea } from "@/components/ui/textarea";
 import BackButton from "@/components/widget/BackButton";
+import { ClampText } from "@/components/widget/ClampText";
+import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
+import { DotIndicator } from "@/components/widget/Indicator";
+import SimplePopover from "@/components/widget/SimplePopover";
 import {
   Interface__MonevRealization,
   Interface__MonevRealizationAccount,
@@ -34,8 +38,10 @@ import useRequest from "@/hooks/useRequest";
 import { isEmptyArray } from "@/utils/array";
 import { back } from "@/utils/client";
 import { disclosureId } from "@/utils/disclosure";
+import { formatNumber } from "@/utils/formatter";
 import { fileValidation, min1FileExist } from "@/utils/validationSchema";
 import {
+  Box,
   Circle,
   FieldRoot,
   HStack,
@@ -49,16 +55,131 @@ import {
 import {
   IconCheck,
   IconExclamationMark,
+  IconInfoCircle,
   IconMinus,
   IconPlus,
   IconTrash,
   IconX,
 } from "@tabler/icons-react";
 import { useFormik } from "formik";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import * as yup from "yup";
 
 const PREFIX_ID = "monev_package_information";
+
+const ValidationButtons = (props: any) => {
+  // Props
+  const { id, validationAPI, ...restProps } = props;
+
+  // Contexts
+  const { l } = useLang();
+  const setRt = useRenderTrigger((s) => s.setRt);
+
+  // Hooks
+  const { req, loading } = useRequest({
+    id: id,
+    loadingMessage: {
+      title: `${l.validate}`,
+    },
+    successMessage: {
+      title: `${l.validation} ${l.successful}`,
+    },
+  });
+
+  // States
+  const [validationStatus, setValidationStatus] = useState<number | null>(null);
+  const [rejectionReason, setRejectionReason] = useState<string>("");
+
+  // Utils
+  function onValidate() {
+    back();
+
+    const payload = {
+      validationStatus: validationStatus,
+      rejectionReason: rejectionReason,
+    };
+
+    const config = {
+      url: validationAPI,
+      method: "PATCH",
+      data: payload,
+    };
+
+    req({
+      config: config,
+      onResolve: {
+        onSuccess: () => {
+          setRt((ps) => !ps);
+        },
+      },
+    });
+  }
+
+  return (
+    <HStack w={"80px"} justify={"end"} gap={1} {...restProps}>
+      <ConfirmationDisclosureTrigger
+        id={`${id}-reject`}
+        title={l.reject}
+        description={l.msg_reject_confirmation}
+        confirmLabel={l.reject}
+        onConfirm={onValidate}
+        addonElement={
+          <Field label={l.reason} mt={4}>
+            <Textarea
+              inputValue={rejectionReason}
+              onChange={(inputValue) => {
+                setRejectionReason(inputValue);
+              }}
+            />
+          </Field>
+        }
+        confirmButtonProps={{
+          colorPalette: "red",
+          variant: "outline",
+          disabled: !!!rejectionReason,
+        }}
+      >
+        <Btn
+          iconButton
+          colorPalette={"red"}
+          variant={"ghost"}
+          size={"sm"}
+          onClick={() => {
+            setValidationStatus(3);
+          }}
+          disabled={loading}
+        >
+          <Icon boxSize={5}>
+            <IconX stroke={1.5} />
+          </Icon>
+        </Btn>
+      </ConfirmationDisclosureTrigger>
+
+      <ConfirmationDisclosureTrigger
+        id={`${id}-validate`}
+        title={l.validate}
+        description={l.msg_validate_confirmation}
+        confirmLabel={l.validate}
+        onConfirm={onValidate}
+      >
+        <Btn
+          iconButton
+          colorPalette={"green"}
+          variant={"ghost"}
+          size={"sm"}
+          onClick={() => {
+            setValidationStatus(2);
+          }}
+          disabled={loading}
+        >
+          <Icon boxSize={5}>
+            <IconCheck stroke={1.5} />
+          </Icon>
+        </Btn>
+      </ConfirmationDisclosureTrigger>
+    </HStack>
+  );
+};
 
 export const TargetInputItem = (props: any) => {
   // Props
@@ -227,6 +348,7 @@ export const TargetDisclosure = (props: any) => {
 
   // Contexts
   const { l } = useLang();
+  const { themeConfig } = useThemeConfig();
 
   // States
   const {
@@ -254,7 +376,11 @@ export const TargetDisclosure = (props: any) => {
         <Tabs.Root lazyMount unmountOnExit defaultValue="tab-1">
           <Tabs.List>
             <Tabs.Trigger value="tab-1">{l.current_data}</Tabs.Trigger>
-            <Tabs.Trigger value="tab-2">{l.pending_data}</Tabs.Trigger>
+
+            <Tabs.Trigger value="tab-2">
+              {l.unvalidated}{" "}
+              {!isEmptyArray(pendingTargetData) && <DotIndicator ml={1} />}
+            </Tabs.Trigger>
           </Tabs.List>
 
           <>
@@ -279,24 +405,78 @@ export const TargetDisclosure = (props: any) => {
                 {isEmptyArray(pendingTargetData) && <FeedbackNoData />}
 
                 {!isEmptyArray(pendingTargetData) && (
-                  <SimpleGrid columns={[1, null, 2]} gap={4}>
+                  <CContainer gap={2}>
+                    <HStack gap={4} px={2} color={"fg.muted"}>
+                      <P w={"120px"} ml={2}>
+                        {l.period}
+                      </P>
+                      <P flex={2} textAlign={"right"}>
+                        {l.budget_target}
+                      </P>
+                      <P flex={2} textAlign={"right"}>
+                        {l.physical_target}
+                      </P>
+
+                      <Box w={"80px"} h={"30px"} ml={8} />
+                    </HStack>
+
                     {pendingTargetData?.map((target) => {
                       return (
-                        <TargetInputItem key={target.id} target={target} />
+                        <HStack
+                          key={target.id}
+                          p={2}
+                          rounded={themeConfig.radii.component}
+                          border={"1px solid"}
+                          borderColor={"border.muted"}
+                          gap={4}
+                        >
+                          <HStack w={"120px"} ml={2}>
+                            <ClampText>{`${L_MONTHS[target.month]} ${
+                              target?.year
+                            }`}</ClampText>
+
+                            <SimplePopover
+                              content={<P>{`${target.description || "-"}`}</P>}
+                            >
+                              <Btn
+                                iconButton
+                                size={"2xs"}
+                                rounded={"full"}
+                                variant={"ghost"}
+                              >
+                                <Icon boxSize={5}>
+                                  <IconInfoCircle stroke={1.5} />
+                                </Icon>
+                              </Btn>
+                            </SimplePopover>
+                          </HStack>
+
+                          <P flex={2} textAlign={"right"}>{`${
+                            target?.budgetTarget
+                              ? `Rp ${formatNumber(target?.budgetTarget)}`
+                              : "-"
+                          }`}</P>
+
+                          <P flex={2} textAlign={"right"}>{`${
+                            target?.physicalTarget
+                              ? `${target?.physicalTarget}%`
+                              : "-"
+                          }`}</P>
+
+                          <ValidationButtons
+                            id={`validate-target-${target.id}`}
+                            validationAPI={`/api/monev/target/verification/${target.id}`}
+                            ml={8}
+                          />
+                        </HStack>
                       );
                     })}
-                  </SimpleGrid>
+                  </CContainer>
                 )}
               </>
             </Tabs.Content>
           </>
         </Tabs.Root>
-
-        {/* <SimpleGrid columns={[1, null, 2]} gap={4}>
-          {targetData?.monevTargetOriginal.map((target) => {
-            return <TargetInputItem key={target.id} target={target} />;
-          })}
-        </SimpleGrid> */}
       </CContainer>
     ),
   };
@@ -353,6 +533,7 @@ export const TargetDisclosureTrigger = (props: any) => {
     </>
   );
 };
+
 export const RealizationItemIcon = (props: any) => {
   // Props
   const { status, containerP, ...restProps } = props;
@@ -811,7 +992,13 @@ export const RealizationList = (props: any) => {
       <Tabs.Root lazyMount unmountOnExit defaultValue="tab-1">
         <Tabs.List>
           <Tabs.Trigger value="tab-1">{l.current_data}</Tabs.Trigger>
-          <Tabs.Trigger value="tab-2">{l.pending_data}</Tabs.Trigger>
+
+          <Tabs.Trigger value="tab-2">
+            {l.pending_data}{" "}
+            {!isEmptyArray(pendingUpdateMonthlyRealizations) && (
+              <DotIndicator ml={1} />
+            )}
+          </Tabs.Trigger>
         </Tabs.List>
 
         <>
