@@ -137,7 +137,11 @@ const Create = (props: any) => {
       back();
 
       const payload = new FormData();
-      payload.append("files", values.files[0]);
+      if (!isEmptyArray(values.files)) {
+        for (const file of values.files) {
+          payload.append("files", file);
+        }
+      }
       payload.append(
         "title",
         JSON.stringify({
@@ -449,7 +453,11 @@ const Update = (props: any) => {
       back();
 
       const payload = new FormData();
-      payload.append("files", values.files[0]);
+      if (!isEmptyArray(values.files)) {
+        for (const file of values.files) {
+          payload.append("files", file);
+        }
+      }
       payload.append(
         "deleteDocumentIds",
         JSON.stringify(values.deleteDocumentIds)
