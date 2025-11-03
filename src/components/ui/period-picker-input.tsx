@@ -83,7 +83,9 @@ export const PeriodPickerInput = (props: Props__PeriodPickerInput) => {
   ];
   const [selected, setSelected] = useState<Type__Period>(DEFAULT);
   const isEmpty = selected.year === null || selected.month === null;
-  const isIncomplete = selected.year === null || selected.month === null;
+  const isIncomplete =
+    (selected.year === null && selected.month !== null) ||
+    (selected.year !== null && selected.month === null);
 
   // handle initial value on open
   useEffect(() => {
@@ -218,7 +220,7 @@ export const PeriodPickerInput = (props: Props__PeriodPickerInput) => {
             <Btn
               onClick={handleConfirm}
               colorPalette={themeConfig.colorPalette}
-              disabled={required && (isEmpty || isIncomplete)}
+              disabled={(required && isEmpty) || isIncomplete}
             >
               {l.confirm}
             </Btn>
