@@ -1130,9 +1130,11 @@ export const RealizationList = (props: any) => {
 
           <Tabs.Content value="tab-2">
             <>
-              {isEmptyArray(currentMonthlyRealizations) && <FeedbackNoData />}
+              {isEmptyArray(pendingUpdateMonthlyRealizations) && (
+                <FeedbackNoData />
+              )}
 
-              {!isEmptyArray(currentMonthlyRealizations) && (
+              {!isEmptyArray(pendingUpdateMonthlyRealizations) && (
                 <CContainer gap={2}>
                   <HStack gap={4} px={2} color={"fg.muted"}>
                     <P w={"140px"} ml={2}>
@@ -1146,7 +1148,7 @@ export const RealizationList = (props: any) => {
                     <Box w={"80px"} h={"30px"} ml={8} />
                   </HStack>
 
-                  {currentMonthlyRealizations?.map((realization) => {
+                  {pendingUpdateMonthlyRealizations?.map((realization) => {
                     return (
                       <HStack
                         key={realization.id}
