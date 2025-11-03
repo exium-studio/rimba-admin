@@ -177,8 +177,6 @@ const Update = (props: any) => {
         userPic: values.PICs,
       };
 
-      console.debug(payload);
-
       const config = {
         url: `${BASE_ENDPOINT}/assign/${resolvedData.id}`,
         method: "PATCH",

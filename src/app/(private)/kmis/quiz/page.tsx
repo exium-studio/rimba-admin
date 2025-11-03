@@ -570,8 +570,6 @@ const Update = (props: any) => {
       payload.append("correctOption", values.correctOption?.[0]?.id);
       payload.append("explanation", values.explanation);
 
-      console.debug(values.explanation);
-
       const config = {
         url: `${BASE_ENDPOINT}/update/${resolvedData.id}`,
         method: "PATCH",
