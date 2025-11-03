@@ -21,7 +21,14 @@ import useDataState from "@/hooks/useDataState";
 import { useIsSmScreenWidth } from "@/hooks/useIsSmScreenWidth";
 import { isEmptyArray } from "@/utils/array";
 import { getCalendarRange } from "@/utils/date";
-import { Group, HStack, Icon, SimpleGrid, Stack } from "@chakra-ui/react";
+import {
+  Circle,
+  Group,
+  HStack,
+  Icon,
+  SimpleGrid,
+  Stack,
+} from "@chakra-ui/react";
 import {
   IconCaretLeftFilled,
   IconCaretRightFilled,
@@ -167,15 +174,22 @@ const Data = (props: any) => {
                   flexDir={["column", null, "row"]}
                   align={"center"}
                   justify={"space-between"}
-                  p={[2, null, 4]}
+                  p={2}
                 >
-                  <P
-                    fontSize={["sm", null, "md"]}
-                    fontWeight={isDateToday ? "extrabold" : ""}
-                    opacity={loading ? 0.3 : isDateInThisPeriod ? 1 : 0.3}
+                  <Circle
+                    w={"30px"}
+                    h={"30px"}
+                    border={isDateToday ? "1px solid" : ""}
+                    borderColor={themeConfig.primaryColor}
                   >
-                    {`${Number(date.split("-")[2])}`}
-                  </P>
+                    <P
+                      fontSize={["sm", null, "md"]}
+                      fontWeight={isDateToday ? "extrabold" : ""}
+                      opacity={loading ? 0.3 : isDateInThisPeriod ? 1 : 0.3}
+                    >
+                      {`${Number(date.split("-")[2])}`}
+                    </P>
+                  </Circle>
 
                   {cal?.agendas?.length > 2 && <DotIndicator />}
 
