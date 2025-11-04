@@ -2,13 +2,14 @@
 
 import { Avatar } from "@/components/ui/avatar";
 import { Field } from "@/components/ui/field";
+import { H1 } from "@/components/ui/heading";
 import { NavLink } from "@/components/ui/nav-link";
 import { DotIndicator } from "@/components/widget/Indicator";
 import useAuthMiddleware from "@/context/useAuthMiddleware";
 import useLang from "@/context/useLang";
 import { useThemeConfig } from "@/context/useThemeConfig";
 import useRequest from "@/hooks/useRequest";
-import { getUserData } from "@/utils/auth";
+import { getAuthToken, getUserData } from "@/utils/auth";
 import { back, removeStorage, setStorage } from "@/utils/client";
 import { pluckString } from "@/utils/string";
 import {
@@ -40,7 +41,6 @@ import { P } from "../ui/p";
 import { PasswordInput } from "../ui/password-input";
 import { StringInput } from "../ui/string-input";
 import { ResetPasswordDisclosure } from "./ResetPasswordDisclosure";
-import { H1 } from "@/components/ui/heading";
 
 interface Props extends StackProps {}
 
@@ -103,8 +103,13 @@ const SSOAuthForm = (props: any) => {
         config,
         onResolve: {
           onSuccess: (r: any) => {
-            setStorage("__auth_token", r.data.data?.token);
-            setStorage("__user_data", JSON.stringify(r.data.data?.user));
+            setStorage("__auth_token", r.data.data?.token, "local", 259200000);
+            setStorage(
+              "__user_data",
+              JSON.stringify(r.data.data?.user),
+              "local",
+              259200000
+            );
             setVerifiedAuthToken(r.data.data?.token);
             setPermissions(r.data.data?.permissions);
             router.push(indexRoute);
@@ -240,8 +245,13 @@ const BasicAuthForm = (props: any) => {
         config,
         onResolve: {
           onSuccess: (r: any) => {
-            setStorage("__auth_token", r.data.data?.token);
-            setStorage("__user_data", JSON.stringify(r.data.data?.user));
+            setStorage("__auth_token", r.data.data?.token, "local", 259200000);
+            setStorage(
+              "__user_data",
+              JSON.stringify(r.data.data?.user),
+              "local",
+              259200000
+            );
             setVerifiedAuthToken(r.data.data?.token);
             setPermissions(r.data.data?.permissions);
             router.push(indexRoute);
@@ -414,7 +424,7 @@ const SigninForm = (props: Props) => {
   // Contexts
   const { l } = useLang();
   const { themeConfig } = useThemeConfig();
-  const verifiedAuthToken = useAuthMiddleware((s) => s.verifiedAuthToken);
+  const authToken = getAuthToken();
   const user = getUserData();
 
   // Hooks
@@ -483,7 +493,7 @@ const SigninForm = (props: Props) => {
       rounded={themeConfig.radii.container}
       {...restProps}
     >
-      {verifiedAuthToken ? (
+      {authToken ? (
         <Signedin indexRoute={indexRoute} />
       ) : (
         <>
