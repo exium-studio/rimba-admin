@@ -259,15 +259,15 @@ export default function KMISDashboardPage() {
           />
 
           <StatItem
-            icon={STATS_REGISTRY.avgPhysicalTarget.icon}
-            label={STATS_REGISTRY.avgPhysicalTarget.label}
-            value={`${formatNumber(data?.avgPhysicalTarget)}%` || "-"}
-          />
-
-          <StatItem
             icon={STATS_REGISTRY.sumBudgetRealization.icon}
             label={STATS_REGISTRY.sumBudgetRealization.label}
             value={formatNumber(data?.sumBudgetRealization) || "-"}
+          />
+
+          <StatItem
+            icon={STATS_REGISTRY.avgPhysicalTarget.icon}
+            label={STATS_REGISTRY.avgPhysicalTarget.label}
+            value={`${formatNumber(data?.avgPhysicalTarget)}%` || "-"}
           />
 
           <StatItem
