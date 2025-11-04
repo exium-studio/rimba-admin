@@ -1,4 +1,4 @@
-export function client() {
+export function isClient() {
   return typeof window !== "undefined";
 }
 
@@ -6,30 +6,56 @@ export function back() {
   window.history.back();
 }
 
+export const setStorage = (
+  key: string,
+  value: string,
+  type: "local" | "session" = "local",
+  expireInMs?: number // optional expiration in ms
+) => {
+  if (isClient()) return;
+
+  const storage = type === "local" ? localStorage : sessionStorage;
+
+  // wrap value with optional expiration timestamp
+  const payload = JSON.stringify({
+    value,
+    expireAt: expireInMs ? Date.now() + expireInMs : null,
+  });
+
+  storage.setItem(key, payload);
+};
+
 export const getStorage = (
   key: string,
   type: "local" | "session" = "local"
 ): string | null => {
-  if (!client()) return null;
-  const storage = type === "local" ? localStorage : sessionStorage;
-  return storage.getItem(key);
-};
+  if (isClient()) return null;
 
-export const setStorage = (
-  key: string,
-  value: string,
-  type: "local" | "session" = "local"
-) => {
-  if (!client()) return;
   const storage = type === "local" ? localStorage : sessionStorage;
-  storage.setItem(key, value);
+  const raw = storage.getItem(key);
+  if (!raw) return null;
+
+  try {
+    const parsed = JSON.parse(raw);
+
+    // if expired, remove and return null
+    if (parsed.expireAt && Date.now() > parsed.expireAt) {
+      storage.removeItem(key);
+      return null;
+    }
+
+    return parsed.value;
+  } catch {
+    // fallback if old data not JSON formatted
+    return raw;
+  }
 };
 
 export const removeStorage = (
   key: string,
   type: "local" | "session" = "local"
 ) => {
-  if (!client()) return;
+  if (!isClient()) return;
   const storage = type === "local" ? localStorage : sessionStorage;
   storage.removeItem(key);
 };

@@ -23,6 +23,7 @@ import {
   IconCoins,
   IconMoneybag,
   IconPercentage,
+  IconReceipt,
   IconTimeline,
 } from "@tabler/icons-react";
 import {
@@ -208,6 +209,10 @@ export default function KMISDashboardPage() {
 
   // States
   const STATS_REGISTRY = {
+    hibah: {
+      icon: <IconCoins stroke={1.5} />,
+      label: "Networth hibah",
+    },
     totalActivityPackages: {
       icon: <IconActivity stroke={1.5} />,
       label: l.activity_package_information,
@@ -221,7 +226,7 @@ export default function KMISDashboardPage() {
       label: l.avg_physical_target,
     },
     sumBudgetRealization: {
-      icon: <IconCoins stroke={1.5} />,
+      icon: <IconReceipt stroke={1.5} />,
       label: `Total ${l.budget_realization.toLowerCase()}`,
     },
     avgProgressRealization: {
@@ -283,9 +288,11 @@ export default function KMISDashboardPage() {
           />
         </SimpleGrid>
 
-        <BudgetTargetLineChart data={data} />
+        <SimpleGrid columns={[1, null, 2]} gap={4}>
+          <BudgetTargetLineChart data={data} />
 
-        <BudgetRealizationLineChart data={data} />
+          <BudgetRealizationLineChart data={data} />
+        </SimpleGrid>
       </CContainer>
     ),
   };
