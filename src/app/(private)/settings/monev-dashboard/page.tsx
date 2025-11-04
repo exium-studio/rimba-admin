@@ -1,7 +1,7 @@
 "use client";
 
-import { CContainer } from "@/components/ui/c-container";
+import { PageContent } from "@/components/widget/Page";
 
 export default function Page() {
-  return <CContainer></CContainer>;
+  return <PageContent></PageContent>;
 }

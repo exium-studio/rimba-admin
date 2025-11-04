@@ -1,7 +1,6 @@
 import { Interface__NavItem } from "@/constants/interfaces";
 import {
   IconCategory,
-  IconChartBar,
   IconChecklist,
   IconDeviceDesktopAnalytics,
   IconLanguage,
@@ -241,12 +240,12 @@ export const OTHER_NAVS: Interface__NavItem[] = [
             groupLabelKey: "settings_navs.monev_master_data.index",
             allowedRoles: ["1"],
             list: [
-              {
-                icon: IconChartBar,
-                labelKey: "settings_navs.monev_master_data.dashboard",
-                path: `/settings/monev-dashboard`,
-                backPath: `/settings`,
-              },
+              // {
+              //   icon: IconChartBar,
+              //   labelKey: "settings_navs.monev_master_data.dashboard",
+              //   path: `/settings/monev-dashboard`,
+              //   backPath: `/settings`,
+              // },
               {
                 icon: IconCategory,
                 labelKey: "settings_navs.monev_master_data.agenda_category",
