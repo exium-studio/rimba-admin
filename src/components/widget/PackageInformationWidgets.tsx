@@ -36,6 +36,7 @@ import useBackOnClose from "@/hooks/useBackOnClose";
 import useDataState from "@/hooks/useDataState";
 import useRequest from "@/hooks/useRequest";
 import { isEmptyArray } from "@/utils/array";
+import { getUserData } from "@/utils/auth";
 import { back } from "@/utils/client";
 import { disclosureId } from "@/utils/disclosure";
 import { formatNumber } from "@/utils/formatter";
@@ -88,6 +89,8 @@ const ValidationButtons = (props: any) => {
   });
 
   // States
+  const user = getUserData();
+  const isSuperAdmin = user?.role?.id === "1";
   const [validationStatus, setValidationStatus] = useState<number | null>(null);
   const [rejectionReason, setRejectionReason] = useState<string>("");
 
@@ -117,68 +120,70 @@ const ValidationButtons = (props: any) => {
   }
 
   return (
-    <HStack w={"80px"} justify={"end"} gap={1} {...restProps}>
-      <ConfirmationDisclosureTrigger
-        id={`${id}-reject`}
-        title={l.reject}
-        description={l.msg_reject_confirmation}
-        confirmLabel={l.reject}
-        onConfirm={onValidate}
-        addonElement={
-          <Field label={l.reason} mt={4}>
-            <Textarea
-              inputValue={rejectionReason}
-              onChange={(inputValue) => {
-                setRejectionReason(inputValue);
-              }}
-            />
-          </Field>
-        }
-        confirmButtonProps={{
-          colorPalette: "red",
-          variant: "outline",
-          disabled: !!!rejectionReason,
-        }}
-      >
-        <Btn
-          iconButton
-          colorPalette={"red"}
-          variant={"ghost"}
-          size={"sm"}
-          onClick={() => {
-            setValidationStatus(3);
+    isSuperAdmin && (
+      <HStack w={"80px"} justify={"end"} gap={1} {...restProps}>
+        <ConfirmationDisclosureTrigger
+          id={`${id}-reject`}
+          title={l.reject}
+          description={l.msg_reject_confirmation}
+          confirmLabel={l.reject}
+          onConfirm={onValidate}
+          addonElement={
+            <Field label={l.reason} mt={4}>
+              <Textarea
+                inputValue={rejectionReason}
+                onChange={(inputValue) => {
+                  setRejectionReason(inputValue);
+                }}
+              />
+            </Field>
+          }
+          confirmButtonProps={{
+            colorPalette: "red",
+            variant: "outline",
+            disabled: !!!rejectionReason,
           }}
-          disabled={loading}
         >
-          <Icon boxSize={5}>
-            <IconX stroke={1.5} />
-          </Icon>
-        </Btn>
-      </ConfirmationDisclosureTrigger>
+          <Btn
+            iconButton
+            colorPalette={"red"}
+            variant={"ghost"}
+            size={"sm"}
+            onClick={() => {
+              setValidationStatus(3);
+            }}
+            disabled={loading}
+          >
+            <Icon boxSize={5}>
+              <IconX stroke={1.5} />
+            </Icon>
+          </Btn>
+        </ConfirmationDisclosureTrigger>
 
-      <ConfirmationDisclosureTrigger
-        id={`${id}-validate`}
-        title={l.validate}
-        description={l.msg_validate_confirmation}
-        confirmLabel={l.validate}
-        onConfirm={onValidate}
-      >
-        <Btn
-          iconButton
-          colorPalette={"green"}
-          variant={"ghost"}
-          size={"sm"}
-          onClick={() => {
-            setValidationStatus(2);
-          }}
-          disabled={loading}
+        <ConfirmationDisclosureTrigger
+          id={`${id}-validate`}
+          title={l.validate}
+          description={l.msg_validate_confirmation}
+          confirmLabel={l.validate}
+          onConfirm={onValidate}
         >
-          <Icon boxSize={5}>
-            <IconCheck stroke={1.5} />
-          </Icon>
-        </Btn>
-      </ConfirmationDisclosureTrigger>
-    </HStack>
+          <Btn
+            iconButton
+            colorPalette={"green"}
+            variant={"ghost"}
+            size={"sm"}
+            onClick={() => {
+              setValidationStatus(2);
+            }}
+            disabled={loading}
+          >
+            <Icon boxSize={5}>
+              <IconCheck stroke={1.5} />
+            </Icon>
+          </Btn>
+        </ConfirmationDisclosureTrigger>
+      </HStack>
+    )
   );
 };
 
