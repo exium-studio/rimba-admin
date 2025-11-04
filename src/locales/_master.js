@@ -114,8 +114,8 @@ export const settings_navs = {
       en: "Main",
     },
     display: {
-      id: "Tampilan",
-      en: "Display",
+      id: "Personalisasi",
+      en: "Personalize",
     },
     regional: {
       id: "Regional",

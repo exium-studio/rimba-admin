@@ -489,7 +489,7 @@ const translations = {
   "settings_navs": {
     "main": {
       "index": "Utama",
-      "display": "Tampilan",
+      "display": "Personalisasi",
       "regional": "Regional",
       "permissions": "Izin aplikasi"
     },

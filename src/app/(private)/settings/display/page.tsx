@@ -32,9 +32,9 @@ import {
   SimpleGrid,
 } from "@chakra-ui/react";
 import {
+  IconColorSwatch,
   IconLayout,
   IconMoon2,
-  IconPalette,
   IconRadiusTopLeft,
 } from "@tabler/icons-react";
 import { useEffect, useRef, useState } from "react";
@@ -246,7 +246,7 @@ const Theme = () => {
       <ItemHeaderContainer>
         <HStack>
           <Icon boxSize={5}>
-            <IconPalette stroke={1.5} />
+            <IconColorSwatch stroke={1.5} />
           </Icon>
           <ItemHeaderTitle>{l.theme}</ItemHeaderTitle>
         </HStack>

@@ -489,7 +489,7 @@ const translations = {
   "settings_navs": {
     "main": {
       "index": "Main",
-      "display": "Display",
+      "display": "Personalize",
       "regional": "Regional",
       "permissions": "App permissions"
     },
