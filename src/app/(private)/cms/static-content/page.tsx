@@ -12,10 +12,10 @@ export default function Page() {
   const iss = useIsSmScreenWidth();
 
   // Contexts
-  const authToken = useAuthMiddleware((s) => s.authToken);
+  const verifiedAuthToken = useAuthMiddleware((s) => s.verifiedAuthToken);
 
   // States
-  const previewURL = `${baseUrl}?CMSAuthToken=${authToken}`;
+  const previewURL = `${baseUrl}?CMSAuthToken=${verifiedAuthToken}`;
   const p = 16;
 
   return (
