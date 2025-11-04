@@ -1224,16 +1224,16 @@ export const activity_package = {
 
 // Message
 export const msg_validate_confirmation = {
-  id: "Anda yakin ingin memvalidasi data ini?",
-  en: "Are you sure you want to validate this data?",
+  id: "Data akan divalidasi dan siap digunakan.",
+  en: "The data will be validated and ready to use.",
 };
 export const msg_reject_confirmation = {
-  id: "Anda yakin ingin menolak data ini?",
-  en: "Are you sure you want to reject this data?",
+  id: "Data akan ditolak dan tidak diproses.",
+  en: "The data will be rejected and not processed.",
 };
 export const msg_export_data_confirmation = {
-  id: "Anda yakin ingin mengekspor data ini?",
-  en: "Are you sure you want to export this data?",
+  id: "File ekspor akan dibuat dari data saat ini.",
+  en: "An export file will be generated from the current data.",
 };
 export const msg_is_public_kmis_material = {
   id: "Apakah materi ini dapat diakses oleh publik?",
@@ -1324,8 +1324,8 @@ export const msg_signin_as_educator = {
   en: "Signin as Educator account",
 };
 export const msg_signout = {
-  id: "Anda yakin ingin keluar?",
-  en: "Are you sure you want to sign out?",
+  id: "Anda akan keluar dari sesi ini.",
+  en: "You will be signed out of this session.",
 };
 export const msg_ADM_active = {
   id: "Mode gelap adaptif aktif",
