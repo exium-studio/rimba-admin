@@ -36,7 +36,7 @@ export const private_navs = {
       en: "KMIS",
     },
     dashboard: {
-      id: "Dasbor KMIS",
+      id: "Dashboard KMIS",
       en: "KMIS Dashboard",
     },
     topic: {
@@ -70,7 +70,7 @@ export const private_navs = {
       en: "Monev",
     },
     dashboard: {
-      id: "Dasbor Monev",
+      id: "Dashboard Monev",
       en: "Monev Dashboard",
     },
     package_information: {
@@ -193,6 +193,10 @@ export const settings_navs = {
 };
 
 // Semantic UI
+export const budget_progress = {
+  id: "Progres anggaran",
+  en: "Budget progress",
+};
 export const document = {
   id: "Dokumen",
   en: "Document",
@@ -1126,8 +1130,8 @@ export const progress = {
   en: "Progress",
 };
 export const physical_progress = {
-  id: "Progres",
-  en: "Progress",
+  id: "Progres fisik",
+  en: "Physical progress",
 };
 export const problem = {
   id: "Masalah",
@@ -1208,6 +1212,10 @@ export const reject = {
 export const reason = {
   id: "Alasan",
   en: "Reason",
+};
+export const activity_package = {
+  id: "Paket kegiatan",
+  en: "Activity package",
 };
 
 // Message

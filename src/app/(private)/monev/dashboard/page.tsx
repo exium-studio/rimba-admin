@@ -16,7 +16,14 @@ import useDataState from "@/hooks/useDataState";
 import { hexWithOpacity } from "@/utils/color";
 import { formatNumber } from "@/utils/formatter";
 import { Chart, useChart } from "@chakra-ui/charts";
-import { Circle, HStack, Icon, SimpleGrid, StackProps } from "@chakra-ui/react";
+import {
+  Circle,
+  GridItem,
+  HStack,
+  Icon,
+  SimpleGrid,
+  StackProps,
+} from "@chakra-ui/react";
 import {
   IconActivity,
   IconCalendarEvent,
@@ -36,7 +43,7 @@ import {
 } from "recharts";
 
 interface Props__StatItem extends StackProps {
-  icon: any;
+  icon?: any;
   label: string;
   value: string;
   iconBg?: string;
@@ -56,14 +63,16 @@ const StatItem = (props: Props__StatItem) => {
       rounded={themeConfig.radii.container}
       {...restProps}
     >
-      <Circle
-        p={3}
-        bg={iconBg || `${hexWithOpacity(themeConfig.primaryColorHex, 0.075)}`}
-      >
-        <Icon boxSize={8} color={themeConfig.primaryColorHex}>
-          {icon}
-        </Icon>
-      </Circle>
+      {icon && (
+        <Circle
+          p={3}
+          bg={iconBg || `${hexWithOpacity(themeConfig.primaryColorHex, 0.075)}`}
+        >
+          <Icon boxSize={8} color={themeConfig.primaryColorHex}>
+            {icon}
+          </Icon>
+        </Circle>
+      )}
 
       <CContainer>
         <P fontSize={"xl"} fontWeight={"bold"}>
@@ -206,6 +215,7 @@ const BudgetRealizationLineChart = (props: Props__Chart) => {
 export default function KMISDashboardPage() {
   // Contexts
   const { l } = useLang();
+  const { themeConfig } = useThemeConfig();
 
   // States
   const STATS_REGISTRY = {
@@ -215,7 +225,7 @@ export default function KMISDashboardPage() {
     },
     totalActivityPackages: {
       icon: <IconActivity stroke={1.5} />,
-      label: l.activity_package_information,
+      label: l.activity_package,
     },
     sumBudgetTarget: {
       icon: <IconMoneybag stroke={1.5} />,
@@ -250,7 +260,15 @@ export default function KMISDashboardPage() {
     empty: <FeedbackNoData />,
     loaded: (
       <CContainer gap={4}>
-        <SimpleGrid columns={[2, null, 3]} gap={4}>
+        <SimpleGrid columns={[1, 2, 4]} gap={4}>
+          <GridItem colSpan={2}>
+            <StatItem
+              icon={STATS_REGISTRY.hibah.icon}
+              label={STATS_REGISTRY.hibah.label}
+              value={formatNumber(data?.hibah) || "-"}
+            />
+          </GridItem>
+
           <StatItem
             icon={STATS_REGISTRY.totalActivityPackages.icon}
             label={STATS_REGISTRY.totalActivityPackages.label}
@@ -258,34 +276,82 @@ export default function KMISDashboardPage() {
           />
 
           <StatItem
-            icon={STATS_REGISTRY.sumBudgetTarget.icon}
-            label={STATS_REGISTRY.sumBudgetTarget.label}
-            value={formatNumber(data?.sumBudgetTarget) || "-"}
-          />
-
-          <StatItem
-            icon={STATS_REGISTRY.sumBudgetRealization.icon}
-            label={STATS_REGISTRY.sumBudgetRealization.label}
-            value={formatNumber(data?.sumBudgetRealization) || "-"}
-          />
-
-          <StatItem
-            icon={STATS_REGISTRY.avgPhysicalTarget.icon}
-            label={STATS_REGISTRY.avgPhysicalTarget.label}
-            value={`${formatNumber(data?.avgPhysicalTarget)}%` || "-"}
-          />
-
-          <StatItem
-            icon={STATS_REGISTRY.avgProgressRealization.icon}
-            label={STATS_REGISTRY.avgProgressRealization.label}
-            value={`${formatNumber(data?.avgProgressRealization)}%` || "-"}
-          />
-
-          <StatItem
             icon={STATS_REGISTRY.totalActivityCalendar.icon}
             label={STATS_REGISTRY.totalActivityCalendar.label}
             value={formatNumber(data?.totalActivityCalendar) || "-"}
           />
+        </SimpleGrid>
+
+        <SimpleGrid columns={[1, null, 2]} gap={4}>
+          <CContainer
+            p={4}
+            gap={4}
+            bg={"body"}
+            rounded={themeConfig.radii.component}
+          >
+            <HStack>
+              {/* <Circle
+                p={1}
+                bg={`${hexWithOpacity(themeConfig.primaryColorHex, 0.075)}`}
+                color={themeConfig.primaryColor}
+              >
+                <Icon boxSize={5}>
+                  <IconReceipt stroke={1.5} />
+                </Icon>
+              </Circle> */}
+
+              <P fontWeight={"semibold"}>{l.budget_progress}</P>
+            </HStack>
+
+            <SimpleGrid columns={2} gap={4}>
+              <StatItem
+                label={STATS_REGISTRY.totalActivityPackages.label}
+                value={formatNumber(data?.totalActivityPackages) || "-"}
+                p={1}
+              />
+
+              <StatItem
+                label={STATS_REGISTRY.sumBudgetTarget.label}
+                value={formatNumber(data?.sumBudgetTarget) || "-"}
+                p={1}
+              />
+            </SimpleGrid>
+          </CContainer>
+
+          <CContainer
+            p={4}
+            gap={4}
+            bg={"body"}
+            rounded={themeConfig.radii.component}
+          >
+            <HStack>
+              {/* <Circle
+                p={1}
+                bg={`${hexWithOpacity(themeConfig.primaryColorHex, 0.075)}`}
+                color={themeConfig.primaryColor}
+              >
+                <Icon boxSize={5}>
+                  <IconPercentage stroke={1.5} />
+                </Icon>
+              </Circle> */}
+
+              <P fontWeight={"semibold"}>{l.physical_progress}</P>
+            </HStack>
+
+            <SimpleGrid columns={2} gap={4}>
+              <StatItem
+                label={STATS_REGISTRY.avgPhysicalTarget.label}
+                value={`${formatNumber(data?.avgPhysicalTarget)}%` || "-"}
+                p={1}
+              />
+
+              <StatItem
+                label={STATS_REGISTRY.avgProgressRealization.label}
+                value={`${formatNumber(data?.avgProgressRealization)}%` || "-"}
+                p={1}
+              />
+            </SimpleGrid>
+          </CContainer>
         </SimpleGrid>
 
         <SimpleGrid columns={[1, null, 2]} gap={4}>
