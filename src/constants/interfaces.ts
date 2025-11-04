@@ -52,6 +52,7 @@ export interface Interface__MonevRealizationAccount {
 }
 export interface Interface__MonevRealization extends Interface__CUD {
   id: string;
+  monev_monthly_realization_id?: string;
   validatedUser: Interface__User;
   editedUser: Interface__User;
   evidence: Interface__StorageFile[];
@@ -71,6 +72,7 @@ export interface Interface__MonevRealizations extends Interface__CUD {
 }
 export interface Interface__MonevTarget extends Interface__CUD {
   id: string;
+  monev_target_id?: string;
   validatedUser: Interface__User;
   editedUser: Interface__User;
   month: number;
