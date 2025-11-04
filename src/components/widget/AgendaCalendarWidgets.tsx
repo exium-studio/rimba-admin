@@ -207,7 +207,7 @@ export const CreateDisclosure = (props: any) => {
                 invalid={!!formik.errors.location}
                 errorText={formik.errors.location as string}
               >
-                <StringInput
+                <Textarea
                   inputValue={formik.values.location}
                   onChange={(inputValue) => {
                     formik.setFieldValue("location", inputValue);
@@ -466,7 +466,7 @@ export const EditDisclosure = (props: any) => {
                 invalid={!!formik.errors.location}
                 errorText={formik.errors.location as string}
               >
-                <StringInput
+                <Textarea
                   inputValue={formik.values.location}
                   onChange={(inputValue) => {
                     formik.setFieldValue("location", inputValue);
