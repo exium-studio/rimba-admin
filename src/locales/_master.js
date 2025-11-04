@@ -159,6 +159,10 @@ export const settings_navs = {
       id: "Monev Master Data",
       en: "Monev Master Data",
     },
+    dashboard: {
+      id: "Dashboard",
+      en: "Dashboard",
+    },
     agenda_category: {
       id: "Kategori Agenda",
       en: "Agenda Category",

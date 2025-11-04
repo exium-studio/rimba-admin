@@ -40,7 +40,7 @@ export const SelectMonevPICDivision = (
       method: "GET",
       params: {
         limit: "all",
-        without_trashed: 1,
+        with_trashed: 0,
       },
     };
 

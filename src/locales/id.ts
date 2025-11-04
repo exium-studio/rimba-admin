@@ -505,6 +505,7 @@ const translations = {
     },
     "monev_master_data": {
       "index": "Monev Master Data",
+      "dashboard": "Dashboard",
       "agenda_category": "Kategori Agenda",
       "pic_division": "Divisi PIC",
       "pic_assignment": "Penugasan PIC"

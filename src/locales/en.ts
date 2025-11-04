@@ -505,6 +505,7 @@ const translations = {
     },
     "monev_master_data": {
       "index": "Monev Master Data",
+      "dashboard": "Dashboard",
       "agenda_category": "Agenda Category",
       "pic_division": "PIC Division",
       "pic_assignment": "PIC Assignment"
