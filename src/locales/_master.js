@@ -1718,6 +1718,13 @@ export const error_422_default = {
     en: "Some data is invalid, please review.",
   },
 };
+export const error_422_target_required = {
+  title: { id: "Validation failed", en: "Validation failed" },
+  description: {
+    id: "Target di periode terkait belum diisi",
+    en: "Target is not filled in the associated period",
+  },
+};
 export const error_422_file_required = {
   title: { id: "Validation failed", en: "Validation failed" },
   description: {

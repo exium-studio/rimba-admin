@@ -623,7 +623,7 @@ export const RealizationDisclosure = (props: any) => {
       description: yup.string().required(l.msg_required_form),
       problem: yup.string().required(l.msg_required_form),
       files: fileValidation({
-        allowedExtensions: ["jpg", "jpeg", "png", "pdf"],
+        allowedExtensions: ["pdf", "png", "jpeg", "jpg", "zip"],
       }).concat(
         min1FileExist({
           resolvedData: realization,
@@ -880,6 +880,8 @@ export const RealizationDisclosure = (props: any) => {
                     onChange={(inputValue) => {
                       formik.setFieldValue("files", inputValue);
                     }}
+                    accept="application/pdf, image/png, image/jpeg, image/jpg, .zip"
+                    acceptPlaceholder=".pdf, .png, .jpg, .jpeg, .zip"
                     existingFiles={realization?.evidence}
                     onDeleteFile={(fileData) => {
                       formik.setFieldValue(

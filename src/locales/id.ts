@@ -151,6 +151,10 @@ const translations = {
     "title": "Validation failed",
     "description": "File harus diisi, min. 1"
   },
+  "error_422_target_required": {
+    "title": "Validation failed",
+    "description": "Target di periode terkait belum diisi"
+  },
   "error_429_default": {
     "title": "Too many requests",
     "description": "Silakan coba lagi nanti."

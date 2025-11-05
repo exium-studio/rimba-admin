@@ -151,6 +151,10 @@ const translations = {
     "title": "Validation failed",
     "description": "File is required, min. 1"
   },
+  "error_422_target_required": {
+    "title": "Validation failed",
+    "description": "Target is not filled in the associated period"
+  },
   "error_429_default": {
     "title": "Too many requests",
     "description": "Please try again later."
