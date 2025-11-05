@@ -27,6 +27,7 @@ import useLang from "@/context/useLang";
 import useRenderTrigger from "@/context/useRenderTrigger";
 import { useThemeConfig } from "@/context/useThemeConfig";
 import useBackOnClose from "@/hooks/useBackOnClose";
+import { useContainerDimension } from "@/hooks/useContainerDimension";
 import useDataState from "@/hooks/useDataState";
 import useRequest from "@/hooks/useRequest";
 import { isEmptyArray } from "@/utils/array";
@@ -60,7 +61,7 @@ import {
   IconTimeline,
 } from "@tabler/icons-react";
 import { useFormik } from "formik";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import {
   CartesianGrid,
   LabelList,
@@ -532,7 +533,11 @@ export default function KMISDashboardPage() {
   const { l } = useLang();
   const { themeConfig } = useThemeConfig();
 
+  // Refs
+  const containerRef = useRef<HTMLDivElement>(null);
+
   // States
+  const { width: containerWidth } = useContainerDimension(containerRef);
   const user = getUserData();
   const isSuperAdmin = user?.role?.id === "1";
   const STATS_REGISTRY = {
@@ -699,7 +704,7 @@ export default function KMISDashboardPage() {
           <BudgetRealizationLineChart data={data} />
         </SimpleGrid>
 
-        <SimpleGrid columns={[1, null, 2]} gap={4}>
+        <SimpleGrid columns={containerWidth < 1000 ? 1 : 2} gap={4}>
           <ItemContainer>
             <ItemHeaderContainer borderless>
               <HStack w={"full"} justify={"space-between"}>
@@ -770,7 +775,7 @@ export default function KMISDashboardPage() {
   };
 
   return (
-    <PageContainer>
+    <PageContainer ref={containerRef}>
       {initialLoading && render.loading}
       {!initialLoading && (
         <>

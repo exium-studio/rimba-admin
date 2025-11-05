@@ -3,41 +3,48 @@
 import { CContainer } from "@/components/ui/c-container";
 import { useThemeConfig } from "@/context/useThemeConfig";
 import { StackProps } from "@chakra-ui/react";
+import { forwardRef } from "react";
 
-export const PageContainer = (props: StackProps) => {
-  // Props
-  const { children, ...restProps } = props;
+export const PageContainer = forwardRef<HTMLDivElement, StackProps>(
+  (props, ref) => {
+    const { children, ...restProps } = props;
 
-  return (
-    <CContainer
-      flex={1}
-      gap={4}
-      p={[2, null, 4]}
-      pt={"0 !important"}
-      overflow={"auto"}
-      {...restProps}
-    >
-      {children}
-    </CContainer>
-  );
-};
+    return (
+      <CContainer
+        ref={ref}
+        flex={1}
+        gap={4}
+        p={[2, null, 4]}
+        pt={"0 !important"}
+        overflow={"auto"}
+        {...restProps}
+      >
+        {children}
+      </CContainer>
+    );
+  }
+);
 
-export const PageContent = (props: StackProps) => {
-  // Props
-  const { children, ...restProps } = props;
+PageContainer.displayName = "PageContainer";
 
-  // Contexts
-  const { themeConfig } = useThemeConfig();
+export const PageContent = forwardRef<HTMLDivElement, StackProps>(
+  (props, ref) => {
+    const { children, ...restProps } = props;
+    const { themeConfig } = useThemeConfig();
 
-  return (
-    <CContainer
-      flex={1}
-      bg={"body"}
-      rounded={themeConfig.radii.container}
-      overflow={"auto"}
-      {...restProps}
-    >
-      {children}
-    </CContainer>
-  );
-};
+    return (
+      <CContainer
+        ref={ref}
+        flex={1}
+        bg={"body"}
+        rounded={themeConfig.radii.container}
+        overflow={"auto"}
+        {...restProps}
+      >
+        {children}
+      </CContainer>
+    );
+  }
+);
+
+PageContent.displayName = "PageContent";
