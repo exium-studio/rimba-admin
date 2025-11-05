@@ -22,7 +22,7 @@ interface Props extends StackProps {
 }
 
 export function PDFViewer(props: Props) {
-  const { fileUrl, aspectRatio = 210 / 297, ...restProps } = props;
+  const { fileUrl, aspectRatio = 10 / 12, ...restProps } = props;
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
   const workerUrl = useMemo(() => {
