@@ -1,6 +1,18 @@
 "use client";
 
+import { Btn } from "@/components/ui/btn";
 import { CContainer } from "@/components/ui/c-container";
+import {
+  DisclosureBody,
+  DisclosureContent,
+  DisclosureFooter,
+  DisclosureHeader,
+  DisclosureRoot,
+} from "@/components/ui/disclosure";
+import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-content";
+import { Field } from "@/components/ui/field";
+import { FileInput } from "@/components/ui/file-input";
+import { NumInput } from "@/components/ui/number-input";
 import { P } from "@/components/ui/p";
 import { Skeleton } from "@/components/ui/skeleton";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
@@ -9,30 +21,46 @@ import { ItemContainer } from "@/components/widget/ItemContainer";
 import { ItemHeaderContainer } from "@/components/widget/ItemHeaderContainer";
 import ItemHeaderTitle from "@/components/widget/ItemHeaderTitle";
 import { PageContainer } from "@/components/widget/Page";
+import { PDFViewer } from "@/components/widget/PDFViewer";
 import { MONTHS } from "@/constants/months";
 import useLang from "@/context/useLang";
+import useRenderTrigger from "@/context/useRenderTrigger";
 import { useThemeConfig } from "@/context/useThemeConfig";
+import useBackOnClose from "@/hooks/useBackOnClose";
 import useDataState from "@/hooks/useDataState";
+import useRequest from "@/hooks/useRequest";
+import { isEmptyArray } from "@/utils/array";
+import { getUserData } from "@/utils/auth";
+import { back } from "@/utils/client";
 import { hexWithOpacity } from "@/utils/color";
+import { disclosureId } from "@/utils/disclosure";
 import { formatNumber } from "@/utils/formatter";
+import { capitalizeWords } from "@/utils/string";
+import { fileValidation, min1FileExist } from "@/utils/validationSchema";
 import { Chart, useChart } from "@chakra-ui/charts";
 import {
+  Center,
   Circle,
+  FieldRoot,
   GridItem,
   HStack,
   Icon,
   SimpleGrid,
   StackProps,
+  useDisclosure,
 } from "@chakra-ui/react";
 import {
   IconActivity,
   IconCalendarEvent,
   IconCoins,
   IconMoneybag,
+  IconPencilMinus,
   IconPercentage,
   IconReceipt,
   IconTimeline,
 } from "@tabler/icons-react";
+import { useFormik } from "formik";
+import { useEffect } from "react";
 import {
   CartesianGrid,
   LabelList,
@@ -41,6 +69,7 @@ import {
   Tooltip,
   XAxis,
 } from "recharts";
+import * as yup from "yup";
 
 interface Props__StatItem extends StackProps {
   icon?: any;
@@ -211,6 +240,292 @@ const BudgetRealizationLineChart = (props: Props__Chart) => {
     </ItemContainer>
   );
 };
+const EditHibahNetworthTrigger = (props: any) => {
+  // Props
+  const { children, STATS_REGISTRY, dashboard, ...restProps } = props;
+
+  // Contexts
+  const { l } = useLang();
+  const { themeConfig } = useThemeConfig();
+  const setRt = useRenderTrigger((s) => s.setRt);
+
+  // Hooks
+  const { open, onOpen, onClose } = useDisclosure();
+  useBackOnClose(disclosureId(`edit-hibah-networth`), open, onOpen, onClose);
+  const { req, loading } = useRequest({
+    id: "edit-hibah-networth",
+    loadingMessage: {
+      title: `Edit ${STATS_REGISTRY?.networthHibah?.label.toLowerCase()}`,
+    },
+    successMessage: {
+      title: `Edit ${STATS_REGISTRY?.networthHibah?.label.toLowerCase()} ${l.successful.toLowerCase()}`,
+    },
+  });
+
+  // States
+  const formik = useFormik({
+    validateOnChange: false,
+    initialValues: {
+      networthHibah: null as number | null,
+      frameworkFiles: [] as any[],
+      planFiles: [] as any[],
+      deleteFrameworkFileIds: [],
+      deletePlanFileIds: [],
+    },
+    validationSchema: yup
+      .object()
+      .shape({ networthHibah: yup.number().required(l.msg_required_form) }),
+    onSubmit: (values) => {
+      back();
+
+      const payload = new FormData();
+      payload.append("hibah", `${values.networthHibah}`);
+      payload.append("description", "-");
+
+      const config = {
+        method: "PATCH",
+        url: `/api/master-data/monev-dashboard/update/1`,
+        data: payload,
+      };
+
+      req({
+        config,
+        onResolve: {
+          onSuccess: () => {
+            setRt((ps) => !ps);
+          },
+        },
+      });
+    },
+  });
+
+  useEffect(() => {
+    formik.setValues({
+      networthHibah: dashboard?.networthHibah,
+      frameworkFiles: [],
+      planFiles: [],
+      deleteFrameworkFileIds: [],
+      deletePlanFileIds: [],
+    });
+  }, [dashboard]);
+
+  return (
+    <>
+      <CContainer w={"fit"} onClick={onOpen} {...restProps}>
+        {children}
+      </CContainer>
+
+      <DisclosureRoot open={open} lazyLoad size={"xs"}>
+        <DisclosureContent>
+          <DisclosureHeader>
+            <DisclosureHeaderContent
+              title={`Edit ${capitalizeWords(
+                STATS_REGISTRY?.networthHibah?.label
+              )}`}
+            />
+          </DisclosureHeader>
+
+          <DisclosureBody>
+            <form id="edit_hibah_networth" onSubmit={formik.handleSubmit}>
+              <FieldRoot disabled={loading}>
+                <Field
+                  label={"Networth"}
+                  invalid={!!formik.errors.networthHibah}
+                  errorText={formik.errors.networthHibah as string}
+                >
+                  <NumInput
+                    inputValue={formik.values.networthHibah}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("networthHibah", inputValue);
+                    }}
+                  />
+                </Field>
+              </FieldRoot>
+            </form>
+          </DisclosureBody>
+
+          <DisclosureFooter colorPalette={themeConfig.colorPalette}>
+            <Btn type="submit" form={`edit_hibah_networth`} loading={loading}>
+              {l.save}
+            </Btn>
+          </DisclosureFooter>
+        </DisclosureContent>
+      </DisclosureRoot>
+    </>
+  );
+};
+const EditFilesTrigger = (props: any) => {
+  // Props
+  const { children, type, dashboard, ...restProps } = props;
+
+  // Contexts
+  const { l } = useLang();
+  const { themeConfig } = useThemeConfig();
+  const setRt = useRenderTrigger((s) => s.setRt);
+
+  // Hooks
+  const isFrameworkFile = type === "framework";
+  const resolvedExistingDocumentKey: "frameworkFiles" | "planFiles" =
+    isFrameworkFile ? "frameworkFiles" : "planFiles";
+  const resolvedDeleteDocumentIds:
+    | "deleteFrameworkFileIds"
+    | "deletePlanFileIds" = `${
+    isFrameworkFile ? "deleteFrameworkFileIds" : "deletePlanFileIds"
+  }`;
+  const { open, onOpen, onClose } = useDisclosure();
+  useBackOnClose(disclosureId(`edit-files`), open, onOpen, onClose);
+  const { req, loading } = useRequest({
+    id: "edit-files",
+    loadingMessage: {
+      title: `Edit ${
+        isFrameworkFile
+          ? l.framework_file.toLowerCase()
+          : l.plan_file.toLowerCase()
+      }`,
+    },
+    successMessage: {
+      title: `Edit ${
+        isFrameworkFile
+          ? l.framework_file.toLowerCase()
+          : l.plan_file.toLowerCase()
+      } ${l.successful.toLowerCase()}`,
+    },
+  });
+
+  // States
+  const formik = useFormik({
+    validateOnChange: false,
+    initialValues: {
+      files: [] as any[],
+      deleteFrameworkFileIds: [],
+      deletePlanFileIds: [],
+    },
+    validationSchema: yup.object().shape({
+      files: fileValidation({
+        allowedExtensions: ["pdf"],
+      }).concat(
+        min1FileExist({
+          resolvedData: dashboard,
+          existingKey: resolvedExistingDocumentKey,
+          deletedKey: resolvedDeleteDocumentIds,
+          newKey: "files",
+          message: l.msg_required_form,
+        })
+      ),
+    }),
+    onSubmit: (values) => {
+      back();
+
+      const payload = new FormData();
+      payload.append("hibah", `${dashboard?.networthHibah}`);
+      payload.append("description", "-");
+      if (values.files?.[0]) {
+        for (const file of values.files) {
+          payload.append(
+            isFrameworkFile ? "frameworkFiles" : "planFiles",
+            file
+          );
+        }
+      }
+      if (!isEmptyArray(values.deleteFrameworkFileIds)) {
+        payload.append(
+          "deleteFrameworkFileIds",
+          JSON.stringify(values.deleteFrameworkFileIds)
+        );
+      }
+      if (!isEmptyArray(values.deletePlanFileIds)) {
+        payload.append(
+          "deletePlanFileIds",
+          JSON.stringify(values.deletePlanFileIds)
+        );
+      }
+
+      const config = {
+        method: "PATCH",
+        url: `/api/master-data/monev-dashboard/update/1`,
+        data: payload,
+      };
+
+      req({
+        config,
+        onResolve: {
+          onSuccess: () => {
+            setRt((ps) => !ps);
+          },
+        },
+      });
+    },
+  });
+
+  return (
+    <>
+      <CContainer w={"fit"} onClick={onOpen} {...restProps}>
+        {children}
+      </CContainer>
+
+      <DisclosureRoot open={open} lazyLoad size={"xs"}>
+        <DisclosureContent>
+          <DisclosureHeader>
+            <DisclosureHeaderContent
+              title={`Edit ${capitalizeWords(
+                isFrameworkFile
+                  ? l.framework_file.toLowerCase()
+                  : l.plan_file.toLowerCase()
+              )}`}
+            />
+          </DisclosureHeader>
+
+          <DisclosureBody>
+            <form id="edit_files" onSubmit={formik.handleSubmit}>
+              <FieldRoot disabled={loading}>
+                <Field
+                  label={l.document}
+                  invalid={!!formik.errors.files}
+                  errorText={formik.errors.files as string}
+                >
+                  <FileInput
+                    dropzone
+                    inputValue={formik.values.files}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("files", inputValue);
+                    }}
+                    accept="application/pdf"
+                    acceptPlaceholder=".pdf"
+                    existingFiles={dashboard?.[resolvedExistingDocumentKey]}
+                    onDeleteFile={(fileData) => {
+                      const current: string[] =
+                        formik.values[resolvedDeleteDocumentIds] || [];
+
+                      formik.setFieldValue(
+                        resolvedDeleteDocumentIds,
+                        Array.from(new Set([...current, fileData.id]))
+                      );
+                    }}
+                    onUndoDeleteFile={(fileData) => {
+                      const current: string[] =
+                        formik.values[resolvedDeleteDocumentIds] || [];
+
+                      formik.setFieldValue(
+                        resolvedDeleteDocumentIds,
+                        current.filter((id: string) => id !== fileData.id)
+                      );
+                    }}
+                  />
+                </Field>
+              </FieldRoot>
+            </form>
+          </DisclosureBody>
+
+          <DisclosureFooter colorPalette={themeConfig.colorPalette}>
+            <Btn type="submit" form={`edit_files`} loading={loading}>
+              {l.save}
+            </Btn>
+          </DisclosureFooter>
+        </DisclosureContent>
+      </DisclosureRoot>
+    </>
+  );
+};
 
 export default function KMISDashboardPage() {
   // Contexts
@@ -218,6 +533,8 @@ export default function KMISDashboardPage() {
   const { themeConfig } = useThemeConfig();
 
   // States
+  const user = getUserData();
+  const isSuperAdmin = user?.role?.id === "1";
   const STATS_REGISTRY = {
     networthHibah: {
       icon: <IconCoins stroke={1.5} />,
@@ -262,11 +579,33 @@ export default function KMISDashboardPage() {
       <CContainer gap={4}>
         <SimpleGrid columns={[1, 2, 4]} gap={4}>
           <GridItem colSpan={2}>
-            <StatItem
-              icon={STATS_REGISTRY.networthHibah.icon}
-              label={STATS_REGISTRY.networthHibah.label}
-              value={formatNumber(data?.dashboard?.networthHibah) || "-"}
-            />
+            <HStack
+              rounded={themeConfig.radii.component}
+              bg={"body"}
+              align={"start"}
+            >
+              <StatItem
+                icon={STATS_REGISTRY.networthHibah.icon}
+                label={STATS_REGISTRY.networthHibah.label}
+                value={formatNumber(data?.dashboard?.networthHibah) || "-"}
+              />
+
+              {isSuperAdmin && (
+                <EditHibahNetworthTrigger
+                  dashboard={data?.dashboard}
+                  STATS_REGISTRY={STATS_REGISTRY}
+                  mt={2}
+                  mr={2}
+                  ml={"auto"}
+                >
+                  <Btn iconButton size={"xs"} variant={"ghost"}>
+                    <Icon boxSize={5}>
+                      <IconPencilMinus stroke={1.5} />
+                    </Icon>
+                  </Btn>
+                </EditHibahNetworthTrigger>
+              )}
+            </HStack>
           </GridItem>
 
           <StatItem
@@ -358,6 +697,73 @@ export default function KMISDashboardPage() {
           <BudgetTargetLineChart data={data} />
 
           <BudgetRealizationLineChart data={data} />
+        </SimpleGrid>
+
+        <SimpleGrid columns={[1, null, 2]} gap={4}>
+          <ItemContainer>
+            <ItemHeaderContainer borderless>
+              <HStack w={"full"} justify={"space-between"}>
+                <ItemHeaderTitle>{l.framework_file}</ItemHeaderTitle>
+
+                {isSuperAdmin && (
+                  <EditFilesTrigger
+                    type={"framework"}
+                    dashboard={data?.dashboard}
+                  >
+                    <Btn iconButton variant={"ghost"} size={"xs"}>
+                      <Icon boxSize={5}>
+                        <IconPencilMinus stroke={1.5} />
+                      </Icon>
+                    </Btn>
+                  </EditFilesTrigger>
+                )}
+              </HStack>
+            </ItemHeaderContainer>
+
+            <CContainer>
+              {isEmptyArray(data?.dashboard?.frameworkFiles) && (
+                <Center aspectRatio={210 / 297} w={"full"}>
+                  <FeedbackNoData />
+                </Center>
+              )}
+
+              {!isEmptyArray(data?.dashboard?.frameworkFiles) && (
+                <PDFViewer
+                  fileUrl={data?.dashboard?.frameworkFiles[0]?.fileUrl}
+                />
+              )}
+            </CContainer>
+          </ItemContainer>
+
+          <ItemContainer>
+            <ItemHeaderContainer borderless>
+              <HStack w={"full"} justify={"space-between"}>
+                <ItemHeaderTitle>{l.plan_file}</ItemHeaderTitle>
+
+                {isSuperAdmin && (
+                  <EditFilesTrigger type={"plan"} dashboard={data?.dashboard}>
+                    <Btn iconButton variant={"ghost"} size={"xs"}>
+                      <Icon boxSize={5}>
+                        <IconPencilMinus stroke={1.5} />
+                      </Icon>
+                    </Btn>
+                  </EditFilesTrigger>
+                )}
+              </HStack>
+            </ItemHeaderContainer>
+
+            <CContainer>
+              {isEmptyArray(data?.dashboard?.planFiles) && (
+                <Center aspectRatio={210 / 297} w={"full"}>
+                  <FeedbackNoData />
+                </Center>
+              )}
+
+              {!isEmptyArray(data?.dashboard?.planFiles) && (
+                <PDFViewer fileUrl={data?.dashboard?.planFiles[0]?.fileUrl} />
+              )}
+            </CContainer>
+          </ItemContainer>
         </SimpleGrid>
       </CContainer>
     ),

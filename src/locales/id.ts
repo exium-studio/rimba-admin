@@ -211,6 +211,7 @@ const translations = {
   "finished": "Selesai",
   "finished_topic": "Topik selesai",
   "footer": "Footer",
+  "framework_file": "File framework",
   "friday": "Jumat",
   "from": "Dari",
   "get": "Dapatkan",
@@ -397,6 +398,7 @@ const translations = {
   "physical_progress": "Progres fisik",
   "physical_target": "Target fisik",
   "pic_division": "Divisi PIC",
+  "plan_file": "File rencana",
   "previous": "Sebelumnya",
   "private_navs": {
     "cms": {

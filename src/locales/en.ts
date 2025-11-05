@@ -211,6 +211,7 @@ const translations = {
   "finished": "Finished",
   "finished_topic": "Finished topic",
   "footer": "Footer",
+  "framework_file": "Framework file",
   "friday": "Friday",
   "from": "From",
   "get": "Get",
@@ -397,6 +398,7 @@ const translations = {
   "physical_progress": "Physical progress",
   "physical_target": "Physical target",
   "pic_division": "PIC Division",
+  "plan_file": "Plan file",
   "previous": "Previous",
   "private_navs": {
     "cms": {

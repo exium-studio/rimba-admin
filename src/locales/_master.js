@@ -1221,6 +1221,14 @@ export const activity_package = {
   id: "Paket kegiatan",
   en: "Activity package",
 };
+export const framework_file = {
+  id: "File framework",
+  en: "Framework file",
+};
+export const plan_file = {
+  id: "File rencana",
+  en: "Plan file",
+};
 
 // Message
 export const msg_validate_confirmation = {
