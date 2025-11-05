@@ -589,6 +589,7 @@ const DetailTrigger = (props: any) => {
                       size={"xs"}
                     >
                       Target
+                      {data?.pendingTarget && <DotIndicator ml={2} />}
                     </Btn>
                   </TargetListDisclosureTrigger>
                 </HStack>

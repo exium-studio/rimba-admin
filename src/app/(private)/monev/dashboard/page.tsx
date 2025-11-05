@@ -219,7 +219,7 @@ export default function KMISDashboardPage() {
 
   // States
   const STATS_REGISTRY = {
-    hibah: {
+    networthHibah: {
       icon: <IconCoins stroke={1.5} />,
       label: "Networth hibah",
     },
@@ -263,9 +263,9 @@ export default function KMISDashboardPage() {
         <SimpleGrid columns={[1, 2, 4]} gap={4}>
           <GridItem colSpan={2}>
             <StatItem
-              icon={STATS_REGISTRY.hibah.icon}
-              label={STATS_REGISTRY.hibah.label}
-              value={formatNumber(data?.hibah) || "-"}
+              icon={STATS_REGISTRY.networthHibah.icon}
+              label={STATS_REGISTRY.networthHibah.label}
+              value={formatNumber(data?.dashboard?.networthHibah) || "-"}
             />
           </GridItem>
 

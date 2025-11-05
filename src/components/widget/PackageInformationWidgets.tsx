@@ -1013,14 +1013,12 @@ const BudgetRealization = (props: any) => {
               {budgetRealization?.map(
                 (budget: Interface__MonevRealizationAccount, idx: number) => {
                   return (
-                    <HStack key={idx}>
-                      <ClampText flex={1} w={"fit"}>
-                        {budget?.name}
-                      </ClampText>
+                    <HStack key={idx} gap={4}>
+                      <ClampText w={"fit"}>{budget?.name}</ClampText>
 
                       <Box flex={1} h={"1px"} bg={"border.muted"} />
 
-                      <P flex={1} flexShrink={0} textAlign={"right"}>
+                      <P flexShrink={0} textAlign={"right"}>
                         {formatNumber(budget?.value)}
                       </P>
                     </HStack>
