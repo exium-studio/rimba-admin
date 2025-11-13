@@ -725,7 +725,7 @@ export default function KMISDashboardPage() {
               </HStack>
             </ItemHeaderContainer>
 
-            <CContainer maxH={containerWidth < 1100 ? "400px" : ""}>
+            <CContainer>
               {isEmptyArray(data?.dashboard?.frameworkFiles) && (
                 <Center aspectRatio={10 / 12} w={"full"}>
                   <FeedbackNoData />
@@ -735,6 +735,7 @@ export default function KMISDashboardPage() {
               {!isEmptyArray(data?.dashboard?.frameworkFiles) && (
                 <PDFViewer
                   fileUrl={data?.dashboard?.frameworkFiles[0]?.fileUrl}
+                  maxH={containerWidth < 1100 ? "600px" : ""}
                 />
               )}
             </CContainer>
@@ -757,7 +758,7 @@ export default function KMISDashboardPage() {
               </HStack>
             </ItemHeaderContainer>
 
-            <CContainer maxH={containerWidth < 1100 ? "400px" : ""}>
+            <CContainer>
               {isEmptyArray(data?.dashboard?.planFiles) && (
                 <Center aspectRatio={10 / 12} w={"full"}>
                   <FeedbackNoData />
@@ -765,7 +766,10 @@ export default function KMISDashboardPage() {
               )}
 
               {!isEmptyArray(data?.dashboard?.planFiles) && (
-                <PDFViewer fileUrl={data?.dashboard?.planFiles[0]?.fileUrl} />
+                <PDFViewer
+                  fileUrl={data?.dashboard?.planFiles[0]?.fileUrl}
+                  maxH={containerWidth < 1100 ? "600px" : ""}
+                />
               )}
             </CContainer>
           </ItemContainer>

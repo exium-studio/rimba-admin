@@ -36,7 +36,16 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["@chakra-ui/react"],
   },
-  webpack(config, { dev }) {
+  webpack(config, { dev, isServer }) {
+    if (!isServer) {
+      // avoid importing native node modules in the browser
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        canvas: false,
+        fs: false,
+        path: false,
+      };
+    }
     if (dev) {
       config.cache = {
         type: "memory",
