@@ -704,7 +704,7 @@ export default function KMISDashboardPage() {
           <BudgetRealizationLineChart data={data} />
         </SimpleGrid>
 
-        <SimpleGrid columns={containerWidth < 1000 ? 1 : 2} gap={4}>
+        <SimpleGrid columns={containerWidth < 1100 ? 1 : 2} gap={4}>
           <ItemContainer>
             <ItemHeaderContainer borderless>
               <HStack w={"full"} justify={"space-between"}>
