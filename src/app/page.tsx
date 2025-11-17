@@ -5,11 +5,11 @@ import { ColorModeButton } from "@/components/ui/color-mode";
 import { LangMenu } from "@/components/ui/lang-menu";
 import BrandWatermark from "@/components/widget/BrandWatermark";
 import { PartnersLogo } from "@/components/widget/PartnersLogo";
-import SigninForm from "@/components/widget/SigninForm";
+import { SigninForm } from "@/components/widget/SigninForm";
 import { useThemeConfig } from "@/context/useThemeConfig";
 import { Box, Center, HStack, SimpleGrid } from "@chakra-ui/react";
 
-export default function IndexRoute() {
+export default function Page() {
   // Contexts
   const { themeConfig } = useThemeConfig();
 

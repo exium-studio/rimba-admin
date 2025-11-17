@@ -9,7 +9,7 @@ import useAuthMiddleware from "@/context/useAuthMiddleware";
 import useLang from "@/context/useLang";
 import { useThemeConfig } from "@/context/useThemeConfig";
 import useRequest from "@/hooks/useRequest";
-import { getAuthToken, getUserData } from "@/utils/auth";
+import { getUserData } from "@/utils/auth";
 import { back, removeStorage, setStorage } from "@/utils/client";
 import { pluckString } from "@/utils/string";
 import {
@@ -51,6 +51,7 @@ const SSOAuthForm = (props: any) => {
   // Contexts
   const { l } = useLang();
   const { themeConfig } = useThemeConfig();
+  const setAuthToken = useAuthMiddleware((s) => s.setAuthToken);
   const setVerifiedAuthToken = useAuthMiddleware((s) => s.setVerifiedAuthToken);
   const setPermissions = useAuthMiddleware((s) => s.setPermissions);
 
@@ -60,21 +61,6 @@ const SSOAuthForm = (props: any) => {
     id: "signin",
     loadingMessage: l.loading_signin,
     successMessage: l.success_signin,
-    errorMessage: {
-      400: {
-        VALIDATION_FAILED: {
-          ...l.error_signin_wrong_credentials,
-        },
-        INVALID_CREDENTIALS: {
-          ...l.error_signin_wrong_credentials,
-        },
-      },
-      403: {
-        FORBIDDEN_ROLE: {
-          ...l.error_signin_wrong_credentials,
-        },
-      },
-    },
   });
 
   // States
@@ -110,6 +96,7 @@ const SSOAuthForm = (props: any) => {
               "local",
               259200000
             );
+            setAuthToken(r.data.data?.token);
             setVerifiedAuthToken(r.data.data?.token);
             setPermissions(r.data.data?.permissions);
             router.push(indexRoute);
@@ -193,6 +180,7 @@ const BasicAuthForm = (props: any) => {
   // Contexts
   const { l } = useLang();
   const { themeConfig } = useThemeConfig();
+  const setAuthToken = useAuthMiddleware((s) => s.setAuthToken);
   const setVerifiedAuthToken = useAuthMiddleware((s) => s.setVerifiedAuthToken);
   const setPermissions = useAuthMiddleware((s) => s.setPermissions);
 
@@ -202,21 +190,6 @@ const BasicAuthForm = (props: any) => {
     id: "signin",
     loadingMessage: l.loading_signin,
     successMessage: l.success_signin,
-    errorMessage: {
-      400: {
-        VALIDATION_FAILED: {
-          ...l.error_signin_wrong_credentials,
-        },
-        INVALID_CREDENTIALS: {
-          ...l.error_signin_wrong_credentials,
-        },
-      },
-      403: {
-        FORBIDDEN_ROLE: {
-          ...l.error_signin_wrong_credentials,
-        },
-      },
-    },
   });
 
   // States
@@ -252,6 +225,7 @@ const BasicAuthForm = (props: any) => {
               "local",
               259200000
             );
+            setAuthToken(r.data.data?.token);
             setVerifiedAuthToken(r.data.data?.token);
             setPermissions(r.data.data?.permissions);
             router.push(indexRoute);
@@ -347,7 +321,6 @@ const Signedin = (props: any) => {
   const { l } = useLang();
   const { themeConfig } = useThemeConfig();
   const removeAuth = useAuthMiddleware((s) => s.removeAuth);
-  const user = getUserData();
 
   // Hooks
   const { req, loading } = useRequest({
@@ -355,6 +328,9 @@ const Signedin = (props: any) => {
     loadingMessage: l.loading_signout,
     successMessage: l.success_signout,
   });
+
+  // States
+  const user = getUserData();
 
   // Utils
   function onSignout() {
@@ -417,15 +393,17 @@ const Signedin = (props: any) => {
   );
 };
 
-const SigninForm = (props: Props) => {
+export const SigninForm = (props: Props) => {
   // Props
   const { ...restProps } = props;
 
   // Contexts
   const { l } = useLang();
   const { themeConfig } = useThemeConfig();
-  const authToken = getAuthToken();
+  const authToken = useAuthMiddleware((s) => s.authToken);
   const user = getUserData();
+
+  console.debug("authToken", authToken);
 
   // Hooks
   const searchParams = useSearchParams();
@@ -596,5 +574,3 @@ const SigninForm = (props: Props) => {
     </CContainer>
   );
 };
-
-export default SigninForm;
