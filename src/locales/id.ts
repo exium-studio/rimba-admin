@@ -71,6 +71,7 @@ const translations = {
   "correct_answer": "Jawaban benar",
   "count": "Jumlah",
   "created": "Dibuat",
+  "created_by": "Dibuat oleh",
   "current_data": "Data saat ini",
   "dark_mode": "Mode gelap",
   "date_format": "Format tanggal",

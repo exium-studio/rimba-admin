@@ -71,6 +71,7 @@ const translations = {
   "correct_answer": "Correct answer",
   "count": "Count",
   "created": "Created",
+  "created_by": "Created by",
   "current_data": "Current data",
   "dark_mode": "Dark mode",
   "date_format": "Date format",

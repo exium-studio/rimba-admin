@@ -197,6 +197,10 @@ export const settings_navs = {
 };
 
 // Semantic UI
+export const created_by = {
+  id: "Dibuat oleh",
+  en: "Created by",
+};
 export const budget_progress = {
   id: "Progres anggaran",
   en: "Budget progress",

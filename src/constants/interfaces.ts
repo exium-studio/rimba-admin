@@ -25,8 +25,8 @@ export interface Interface__MonevPICAccount {
 }
 export interface Interface__MonevDataSharing extends Interface__CUD {
   id: string;
-  createdUser: Interface__User;
   report: Interface__StorageFile[];
+  createdUser: Interface__User;
   name: string;
   description: string;
 }
@@ -237,6 +237,7 @@ export interface Interface__KMISQuiz extends Interface__CUD {
   answerD: string;
   correctOption: string;
   explanation: string;
+  createdUser: Interface__User;
 }
 export interface Interface__KMISQuizResponse {
   selectedOption: string;

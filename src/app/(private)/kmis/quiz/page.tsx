@@ -957,6 +957,10 @@ const Data = (props: any) => {
 
       // timestamps
       {
+        th: l.created_by,
+        sortable: true,
+      },
+      {
         th: l.added,
         sortable: true,
       },
@@ -1010,6 +1014,10 @@ const Data = (props: any) => {
         },
 
         // timestamps
+        {
+          td: item?.createdUser?.name,
+          value: item?.createdUser?.name,
+        },
         {
           td: formatDate(item.createdAt, {
             variant: "numeric",
