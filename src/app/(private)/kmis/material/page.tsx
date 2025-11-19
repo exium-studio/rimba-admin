@@ -836,7 +836,7 @@ const Restore = (props: any) => {
     back();
     req({
       config: {
-        url: `${BASE_ENDPOINT}/activate`,
+        url: `${BASE_ENDPOINT}/restore`,
         method: "PATCH",
         data: {
           restoreIds: restoreIds,
