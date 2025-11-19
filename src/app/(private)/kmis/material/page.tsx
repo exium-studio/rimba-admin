@@ -901,7 +901,7 @@ const Delete = (props: any) => {
     req({
       config: {
         url: `${BASE_ENDPOINT}/delete`,
-        method: "PATCH",
+        method: "DELETE",
         data: {
           deleteIds: deleteIds,
         },
