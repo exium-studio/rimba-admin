@@ -215,6 +215,8 @@ const translations = {
   "february": "February",
   "finished": "Finished",
   "finished_topic": "Finished topic",
+  "fit_to_page": "Fit to page",
+  "fit_to_width": "Fit to width",
   "footer": "Footer",
   "framework_file": "Framework file",
   "friday": "Friday",
@@ -378,6 +380,7 @@ const translations = {
   "name": "Name",
   "navigation": "Navigation",
   "next": "Next",
+  "next_page": "Next page",
   "no": "No",
   "not_answered": "Not answered",
   "not_started": "Not started",
@@ -405,6 +408,7 @@ const translations = {
   "pic_division": "PIC Division",
   "plan_file": "Plan file",
   "previous": "Previous",
+  "previous_page": "Previous page",
   "private_navs": {
     "cms": {
       "index": "Landing Page",
@@ -628,7 +632,10 @@ const translations = {
   "will_be_deleted": "Will be deleted",
   "wrong_answer": "Wrong answer",
   "year": "Year",
-  "yes": "Yes"
+  "yes": "Yes",
+  "zoom_in": "Zoom in",
+  "zoom_out": "Zoom out",
+  "zoom_reset": "Reset zoom"
 };
 
 export default translations;
