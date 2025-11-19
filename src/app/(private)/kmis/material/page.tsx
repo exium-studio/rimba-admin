@@ -18,7 +18,6 @@ import { P } from "@/components/ui/p";
 import { RichEditor } from "@/components/ui/RichEditor";
 import SearchInput from "@/components/ui/search-input";
 import { StringInput } from "@/components/ui/string-input";
-import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipProps } from "@/components/ui/tooltip";
 import { ClampText } from "@/components/widget/ClampText";
@@ -482,12 +481,12 @@ const Create = (props: any) => {
                       />
                     </Field>
 
-                    <Field label={l.publicity} disabled>
+                    {/* <Field label={l.publicity} disabled>
                       <HStack justify={"space-between"} w={"full"}>
                         <P opacity={0.4}>{l.msg_is_public_kmis_material}</P>
                         <Switch disabled />
                       </HStack>
-                    </Field>
+                    </Field> */}
                   </CContainer>
                 </SimpleGrid>
 
@@ -778,12 +777,12 @@ const Update = (props: any) => {
                       />
                     </Field>
 
-                    <Field label={l.publicity} disabled>
+                    {/* <Field label={l.publicity} disabled>
                       <HStack justify={"space-between"} w={"full"}>
                         <P opacity={0.4}>{l.msg_is_public_kmis_material}</P>
                         <Switch disabled />
                       </HStack>
-                    </Field>
+                    </Field> */}
                   </CContainer>
                 </SimpleGrid>
 

@@ -77,7 +77,7 @@ export const InputComponent = (props: Props__FileInputInputComponent) => {
     placeholder,
     label,
     dropzone,
-    maxFileSize = 10,
+    maxFileSize = 50,
     maxFiles = 1,
     description,
     disabled,

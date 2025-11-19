@@ -10,7 +10,7 @@ type FileValidationParams = {
 };
 
 export const fileValidation = ({
-  maxSizeMB = 10,
+  maxSizeMB = 50,
   allowedExtensions,
   min,
   max,
