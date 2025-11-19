@@ -403,8 +403,6 @@ export const SigninForm = (props: Props) => {
   const authToken = useAuthMiddleware((s) => s.authToken);
   const user = getUserData();
 
-  console.debug("authToken", authToken);
-
   // Hooks
   const searchParams = useSearchParams();
   const activeRoleId = user?.role?.id || searchParams.get("roleId");
