@@ -811,7 +811,7 @@ const Update = (props: any) => {
   );
 };
 const Restore = (props: any) => {
-  const ID = `${PREFIX_ID}_activate`;
+  const ID = `${PREFIX_ID}_restore`;
 
   // Props
   const { restoreIds, clearSelectedRows, disabled, routeTitle } = props;
