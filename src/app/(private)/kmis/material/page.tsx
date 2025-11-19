@@ -63,9 +63,9 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import {
-  IconActivity,
   IconPencilMinus,
   IconPlus,
+  IconRestore,
   IconX,
 } from "@tabler/icons-react";
 import { useFormik } from "formik";
@@ -866,7 +866,7 @@ const Restore = (props: any) => {
         <MenuItem value="restore" disabled={disabled}>
           {l.restore}
           <Icon boxSize={"18px"} ml={"auto"}>
-            <IconActivity stroke={1.5} />
+            <IconRestore stroke={1.5} />
           </Icon>
         </MenuItem>
       </MenuTooltip>
