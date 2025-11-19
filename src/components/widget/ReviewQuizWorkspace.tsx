@@ -180,9 +180,11 @@ export const ReviewQuizWorkspace = (props: Props) => {
                 key={idx}
                 iconButton
                 size={"xs"}
-                variant={isAnswered ? "subtle" : "outline"}
-                colorPalette={isAnswered ? (isCorrect ? "green" : "red") : ""}
-                border={isActive ? "1px solid" : "none"}
+                variant={"outline"}
+                bg={isAnswered ? (isCorrect ? "p.400" : "fg.error") : ""}
+                color={isAnswered ? "white" : ""}
+                border={"1px solid"}
+                boxShadow={isActive ? `0 0 0 2px {colors.p.400}` : ""}
                 borderColor={
                   isAnswered ? (isCorrect ? "green" : "red") : "border.muted"
                 }
@@ -199,7 +201,7 @@ export const ReviewQuizWorkspace = (props: Props) => {
             <Box
               w={"12px"}
               aspectRatio={1}
-              bg={"bg.success"}
+              bg={"fg.success"}
               border={"1px solid"}
               borderColor={"fg.success"}
               rounded={"xs"}
@@ -211,7 +213,7 @@ export const ReviewQuizWorkspace = (props: Props) => {
             <Box
               w={"12px"}
               aspectRatio={1}
-              bg={"bg.error"}
+              bg={"fg.error"}
               border={"1px solid"}
               borderColor={"fg.error"}
               rounded={"xs"}
