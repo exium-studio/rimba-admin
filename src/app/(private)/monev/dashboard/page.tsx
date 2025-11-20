@@ -21,7 +21,7 @@ import { ItemContainer } from "@/components/widget/ItemContainer";
 import { ItemHeaderContainer } from "@/components/widget/ItemHeaderContainer";
 import ItemHeaderTitle from "@/components/widget/ItemHeaderTitle";
 import { PageContainer } from "@/components/widget/Page";
-import { SimplePDFViewer } from "@/components/widget/SimplePDFViewer";
+import { PDFViewer } from "@/components/widget/PDFViewer";
 import { MONTHS } from "@/constants/months";
 import useLang from "@/context/useLang";
 import useRenderTrigger from "@/context/useRenderTrigger";
@@ -733,7 +733,7 @@ export default function KMISDashboardPage() {
               )}
 
               {!isEmptyArray(data?.dashboard?.frameworkFiles) && (
-                <SimplePDFViewer
+                <PDFViewer
                   fileUrl={data?.dashboard?.frameworkFiles[0]?.fileUrl}
                   maxH={containerWidth < 1100 ? "600px" : ""}
                 />
@@ -766,7 +766,7 @@ export default function KMISDashboardPage() {
               )}
 
               {!isEmptyArray(data?.dashboard?.planFiles) && (
-                <SimplePDFViewer
+                <PDFViewer
                   fileUrl={data?.dashboard?.planFiles[0]?.fileUrl}
                   maxH={containerWidth < 1100 ? "600px" : ""}
                 />

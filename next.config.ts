@@ -12,7 +12,30 @@ const withPWA = require("@ducanh2912/next-pwa").default({
 });
 
 const nextConfig: NextConfig = {
-  reactStrictMode: true,
+  devIndicators: false,
+  reactStrictMode: false,
+  webpack(config, { dev, isServer }) {
+    config.resolve.alias.canvas = false;
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
+      path: false,
+      stream: false,
+      zlib: false,
+    };
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        canvas: false,
+        fs: false,
+        path: false,
+      };
+    }
+    if (dev) {
+      config.cache = { type: "memory" };
+    }
+    return config;
+  },
   images: {
     remotePatterns: [
       {
@@ -35,23 +58,6 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     optimizePackageImports: ["@chakra-ui/react"],
-  },
-  webpack(config, { dev, isServer }) {
-    if (!isServer) {
-      // avoid importing native node modules in the browser
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        canvas: false,
-        fs: false,
-        path: false,
-      };
-    }
-    if (dev) {
-      config.cache = {
-        type: "memory",
-      };
-    }
-    return config;
   },
 };
 
