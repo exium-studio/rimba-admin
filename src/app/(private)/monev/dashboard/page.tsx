@@ -725,7 +725,7 @@ export default function KMISDashboardPage() {
               </HStack>
             </ItemHeaderContainer>
 
-            <CContainer>
+            <CContainer p={1}>
               {isEmptyArray(data?.dashboard?.frameworkFiles) && (
                 <Center aspectRatio={10 / 12} w={"full"}>
                   <FeedbackNoData />
@@ -758,7 +758,7 @@ export default function KMISDashboardPage() {
               </HStack>
             </ItemHeaderContainer>
 
-            <CContainer>
+            <CContainer p={1}>
               {isEmptyArray(data?.dashboard?.planFiles) && (
                 <Center aspectRatio={10 / 12} w={"full"}>
                   <FeedbackNoData />
