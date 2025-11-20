@@ -63,7 +63,7 @@ const Toolbar = (props: Props__PDFToolbar) => {
   return (
     <HScroll className={"noScroll"} bg={"body"} {...restProps}>
       <HStack minW={"full"} w={"max"} gap={2} p={2}>
-        <HStack gap={0} mr={2} borderRightWidth={"1px"} pr={2}>
+        <HStack gap={0}>
           <UtilBtn
             onClick={utils.prevPage}
             disabled={!isSingleMode || pageNumber <= 1}
