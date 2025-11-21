@@ -600,6 +600,7 @@ const translations = {
   "timezone": "Timezone",
   "title": "Title",
   "to": "To",
+  "topic": "Topic",
   "total_answered": "Total answered",
   "total_completed_topic_by_user": "Total completed topics (all users)",
   "total_correct": "Total correct",

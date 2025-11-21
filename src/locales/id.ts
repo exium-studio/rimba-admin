@@ -600,6 +600,7 @@ const translations = {
   "timezone": "Zona waktu",
   "title": "Judul",
   "to": "Sampai",
+  "topic": "Topik",
   "total_answered": "Total terjawab",
   "total_completed_topic_by_user": "Total topik selesai (semua pengguna)",
   "total_correct": "Total benar",

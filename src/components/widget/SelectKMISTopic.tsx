@@ -64,7 +64,7 @@ export const SelectKMISTopic = (props: Omit<Props__SelectInput, "id">) => {
   return (
     <SelectInput
       id={ID}
-      title={capitalizeWords(l.category)}
+      title={capitalizeWords(l.topic)}
       loading={loading}
       selectOptions={selectOptions}
       fetch={fetch}

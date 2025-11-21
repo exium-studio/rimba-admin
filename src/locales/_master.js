@@ -1261,6 +1261,10 @@ export const plan_file = {
   id: "File rencana",
   en: "Plan file",
 };
+export const topic = {
+  id: "Topik",
+  en: "Topic",
+};
 
 // Message
 export const msg_validate_confirmation = {
