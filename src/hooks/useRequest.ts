@@ -3,6 +3,7 @@ import {
   Interface__Req,
   Interface__RequestState,
 } from "@/constants/interfaces";
+import useAuthMiddleware from "@/context/useAuthMiddleware";
 import useLang from "@/context/useLang";
 import { request } from "@/utils/request";
 import { useRouter } from "next/navigation";
@@ -38,6 +39,7 @@ export default function useRequest<T = any>(props: Props) {
 
   // Contexts
   const { l } = useLang();
+  const removeAuth = useAuthMiddleware((s) => s.removeAuth);
 
   // Hooks
   const router = useRouter();
@@ -219,11 +221,11 @@ export default function useRequest<T = any>(props: Props) {
         });
 
         switch (statusCode) {
-          // case 401:
-          // case 403:
-          //   clearAuthToken();
-          //   router?.push(signinPath);
-          //   break;
+          case 401:
+          case 403:
+            removeAuth();
+            router?.push(signinPath);
+            break;
           case 503:
             router?.push("/maintenance");
             break;

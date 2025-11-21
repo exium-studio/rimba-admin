@@ -152,6 +152,7 @@ const Create = (props: any) => {
       const payload = new FormData();
       payload.append("files", values.files?.[0]);
       payload.append("categoryId", `${values.category?.[0]?.id}`);
+      payload.append("topicType", `${values.topicType?.[0]?.id}`);
       payload.append("title", values.title);
       payload.append("description", values.description);
       payload.append("totalQuiz", "0");
@@ -314,6 +315,9 @@ const DataUtils = (props: any) => {
   // Props
   const { filter, setFilter, routeTitle, ...restProps } = props;
 
+  // Contexts
+  const { l } = useLang();
+
   return (
     <HStack p={3} {...restProps}>
       <SearchInput
@@ -321,6 +325,26 @@ const DataUtils = (props: any) => {
         onChange={(inputValue) => {
           setFilter({ ...filter, search: inputValue });
         }}
+      />
+
+      <SelectKMISTopicType
+        multiple
+        inputValue={filter.topicType?.map((item: string) => {
+          return {
+            id: item,
+            label: item,
+          };
+        })}
+        onConfirm={(inputValue) => {
+          setFilter({
+            ...filter,
+            topicType: inputValue?.map((item: any) => {
+              return item.id;
+            }),
+          });
+        }}
+        placeholder={l.topic_type}
+        w={"140px"}
       />
 
       <DataDisplayToggle navKey={PREFIX_ID} />
@@ -412,6 +436,7 @@ const Update = (props: any) => {
     initialValues: {
       files: null as any,
       category: null as unknown as Interface__SelectOption[],
+      topicType: null as unknown as Interface__SelectOption[],
       title: "",
       description: "",
       materialOrder: [] as Interface__KMISMaterial[] | undefined,
@@ -433,9 +458,15 @@ const Update = (props: any) => {
         })
       ),
       category: yup.array().required(l.msg_required_form),
+      topicType: yup.array().required(l.msg_required_form),
       title: yup.string().required(l.msg_required_form),
       description: yup.string().required(l.msg_required_form),
-      quizDuration: yup.string().required(l.msg_required_form),
+      quizDuration: yup.number().when("topicType", (topicType, schema) => {
+        if (Array.isArray(topicType) && topicType[0]?.id === "Pelatihan") {
+          return schema.required(l.msg_required_form);
+        }
+        return schema;
+      }),
     }),
     onSubmit: (values) => {
       back();
@@ -449,6 +480,7 @@ const Update = (props: any) => {
         JSON.stringify(values.deleteDocumentIds)
       );
       payload.append("categoryId", `${values.category?.[0]?.id}`);
+      payload.append("topicType", `${values.topicType?.[0]?.id}`);
       payload.append("title", values.title);
       payload.append("description", values.description);
       payload.append(
@@ -509,6 +541,12 @@ const Update = (props: any) => {
           label: resolvedData.category?.title,
         },
       ],
+      topicType: [
+        {
+          id: resolvedData.topicType,
+          label: resolvedData.topicType,
+        },
+      ],
       title: resolvedData.title,
       description: resolvedData.description,
       materialOrder: resolvedData.materialOrder,
@@ -560,6 +598,19 @@ const Update = (props: any) => {
                       </Btn>
                     </CreateKMISCategoryDisclosureTrigger>
                   </HStack>
+                </Field>
+
+                <Field
+                  label={l.topic_type}
+                  invalid={!!formik.errors.topicType}
+                  errorText={formik.errors.topicType as string}
+                >
+                  <SelectKMISTopicType
+                    inputValue={formik.values.topicType}
+                    onConfirm={(inputValue) => {
+                      formik.setFieldValue("topicType", inputValue);
+                    }}
+                  />
                 </Field>
 
                 <Field
@@ -677,6 +728,7 @@ const Update = (props: any) => {
                   label={`${l.quiz_duration} (${l.minute.toLowerCase()})`}
                   invalid={!!formik.errors.quizDuration}
                   errorText={formik.errors.quizDuration as string}
+                  disabled={formik.values.topicType?.[0]?.id !== "Pelatihan"}
                 >
                   <NumInput
                     inputValue={formik.values.quizDuration}
@@ -880,6 +932,10 @@ const Data = (props: any) => {
         th: l.category,
         sortable: true,
       },
+      {
+        th: l.topic_type,
+        sortable: true,
+      },
 
       // timestamps
       {
@@ -930,6 +986,10 @@ const Data = (props: any) => {
         {
           td: <ClampText>{`${item.category.title}`}</ClampText>,
           value: item.category.title,
+        },
+        {
+          td: <ClampText>{`${item.topicType}`}</ClampText>,
+          value: item.topicType,
         },
 
         // timestamps
@@ -1136,6 +1196,7 @@ export default function Page() {
   const routeTitle = pluckString(l, last(activeNav)!.labelKey);
   const DEFAULT_FILTER = {
     search: "",
+    topicType: ["Pelatihan", "Pengetahuan"],
   };
   const [filter, setFilter] = useState(DEFAULT_FILTER);
 

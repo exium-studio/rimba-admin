@@ -9,11 +9,14 @@ import { useEffect, useState } from "react";
 const SUFFIX_ID = "kmis_topic";
 const ENDPOINT = `/api/kmis/public-request/get-all-topic`;
 
-export const SelectKMISTopic = (props: Omit<Props__SelectInput, "id">) => {
+interface Props extends Omit<Props__SelectInput, "id"> {
+  topicType?: string[];
+}
+export const SelectKMISTopic = (props: Props) => {
   const ID = `select_${SUFFIX_ID}`;
 
   // Props
-  const { ...restProps } = props;
+  const { topicType = ["Pelatihan", "Pengetahuan"], ...restProps } = props;
 
   // Contexts
   const { l } = useLang();
@@ -35,7 +38,8 @@ export const SelectKMISTopic = (props: Omit<Props__SelectInput, "id">) => {
       url: ENDPOINT,
       method: "GET",
       params: {
-        limit: 99999999999,
+        limit: "all",
+        topicType: topicType,
       },
     };
 
