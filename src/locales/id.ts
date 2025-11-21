@@ -601,6 +601,7 @@ const translations = {
   "title": "Judul",
   "to": "Sampai",
   "topic": "Topik",
+  "topic_type": "Tipe topik",
   "total_answered": "Total terjawab",
   "total_completed_topic_by_user": "Total topik selesai (semua pengguna)",
   "total_correct": "Total benar",

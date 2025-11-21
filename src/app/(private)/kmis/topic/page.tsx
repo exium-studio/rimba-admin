@@ -33,6 +33,7 @@ import FeedbackRetry from "@/components/widget/FeedbackRetry";
 import { ImgViewer } from "@/components/widget/ImgViewer";
 import { PageContainer, PageContent } from "@/components/widget/Page";
 import { SelectKMISCategory } from "@/components/widget/SelectKMISCategory";
+import { SelectKMISTopicType } from "@/components/widget/SelectKMISTopicType";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
 import {
   Interface__BatchOptionsTableOptionGenerator,
@@ -124,6 +125,7 @@ const Create = (props: any) => {
     initialValues: {
       files: null as any,
       category: null as unknown as Interface__SelectOption[],
+      topicType: null as unknown as Interface__SelectOption[],
       title: "",
       description: "",
       quizDuration: null as unknown as number,
@@ -134,9 +136,15 @@ const Create = (props: any) => {
         allowedExtensions: ["jpg", "jpeg", "png"],
       }).required(l.msg_required_form),
       category: yup.array().required(l.msg_required_form),
+      topicType: yup.array().required(l.msg_required_form),
       title: yup.string().required(l.msg_required_form),
       description: yup.string().required(l.msg_required_form),
-      quizDuration: yup.number().required(l.msg_required_form),
+      quizDuration: yup.number().when("topicType", (topicType, schema) => {
+        if (Array.isArray(topicType) && topicType[0]?.id === "Pelatihan") {
+          return schema.required(l.msg_required_form);
+        }
+        return schema;
+      }),
     }),
     onSubmit: (values, { resetForm }) => {
       back();
@@ -219,6 +227,19 @@ const Create = (props: any) => {
                 </Field>
 
                 <Field
+                  label={l.topic_type}
+                  invalid={!!formik.errors.topicType}
+                  errorText={formik.errors.topicType as string}
+                >
+                  <SelectKMISTopicType
+                    inputValue={formik.values.topicType}
+                    onConfirm={(inputValue) => {
+                      formik.setFieldValue("topicType", inputValue);
+                    }}
+                  />
+                </Field>
+
+                <Field
                   label={"Thumbnail"}
                   invalid={!!formik.errors.files}
                   errorText={formik.errors.files as string}
@@ -261,6 +282,7 @@ const Create = (props: any) => {
                   label={`${l.quiz_duration} (${l.minute.toLowerCase()})`}
                   invalid={!!formik.errors.quizDuration}
                   errorText={formik.errors.quizDuration as string}
+                  disabled={formik.values.topicType?.[0]?.id !== "Pelatihan"}
                 >
                   <NumInput
                     inputValue={formik.values.quizDuration}

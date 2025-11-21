@@ -1265,6 +1265,10 @@ export const topic = {
   id: "Topik",
   en: "Topic",
 };
+export const topic_type = {
+  id: "Tipe topik",
+  en: "Topic type",
+};
 
 // Message
 export const msg_validate_confirmation = {

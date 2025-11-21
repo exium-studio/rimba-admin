@@ -601,6 +601,7 @@ const translations = {
   "title": "Title",
   "to": "To",
   "topic": "Topic",
+  "topic_type": "Topic type",
   "total_answered": "Total answered",
   "total_completed_topic_by_user": "Total completed topics (all users)",
   "total_correct": "Total correct",

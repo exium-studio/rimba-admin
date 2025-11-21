@@ -44,6 +44,17 @@ export const KMIS_CORRECT_ANSWER = [
   },
 ];
 
+export const KMIS_TOPIC_TYPE = [
+  {
+    id: "Pelatihan",
+    label: "Pelatihan",
+  },
+  {
+    id: "Pengetahuan",
+    label: "Pengetahuan",
+  },
+];
+
 export const MONEV_PACKAGE_ONTRACT_TYPE = [
   {
     id: "Swakelola 1",
