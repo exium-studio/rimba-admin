@@ -54,7 +54,6 @@ export const viewport: Viewport = {
 
 const figtree = Figtree({
   subsets: ["latin"],
-  display: "swap",
 });
 
 const RootLayout = (props: Props) => {
