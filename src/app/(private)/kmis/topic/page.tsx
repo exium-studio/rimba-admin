@@ -143,7 +143,7 @@ const Create = (props: any) => {
         if (Array.isArray(topicType) && topicType[0]?.id === "Pelatihan") {
           return schema.required(l.msg_required_form);
         }
-        return schema;
+        return schema.nullable();
       }),
     }),
     onSubmit: (values, { resetForm }) => {
@@ -156,7 +156,8 @@ const Create = (props: any) => {
       payload.append("title", values.title);
       payload.append("description", values.description);
       payload.append("totalQuiz", "0");
-      payload.append("quizDuration", `${values.quizDuration * 60}`);
+      if (values.quizDuration)
+        payload.append("quizDuration", `${values.quizDuration * 60}`);
 
       const config = {
         url: `${BASE_ENDPOINT}/create`,
@@ -465,7 +466,7 @@ const Update = (props: any) => {
         if (Array.isArray(topicType) && topicType[0]?.id === "Pelatihan") {
           return schema.required(l.msg_required_form);
         }
-        return schema;
+        return schema.nullable();
       }),
     }),
     onSubmit: (values) => {
@@ -488,7 +489,8 @@ const Update = (props: any) => {
         JSON.stringify(values.materialOrder?.map((m) => m.id))
       );
       payload.append("totalQuiz", `${values.totalQuiz}`);
-      payload.append("quizDuration", `${values.quizDuration * 60}`);
+      if (values.quizDuration)
+        payload.append("quizDuration", `${values.quizDuration * 60}`);
 
       const config = {
         url: `${BASE_ENDPOINT}/update/${resolvedData.id}`,
@@ -551,7 +553,9 @@ const Update = (props: any) => {
       description: resolvedData.description,
       materialOrder: resolvedData.materialOrder,
       totalQuiz: resolvedData.totalQuiz,
-      quizDuration: resolvedData.quizDuration / 60,
+      quizDuration: (resolvedData.quizDuration
+        ? resolvedData.quizDuration / 60
+        : null) as number,
       deleteDocumentIds: [],
     });
   }, [open, resolvedData]);

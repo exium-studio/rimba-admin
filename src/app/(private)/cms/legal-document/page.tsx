@@ -208,7 +208,7 @@ const Create = (props: any) => {
                 >
                   <FileInput
                     dropzone
-                    maxFiles={5}
+                    // maxFiles={5}
                     accept="application/pdf"
                     acceptPlaceholder=".pdf"
                     inputValue={formik.values.files}
@@ -532,7 +532,7 @@ const Update = (props: any) => {
                 >
                   <FileInput
                     dropzone
-                    maxFiles={5}
+                    // maxFiles={5}
                     accept="application/pdf"
                     acceptPlaceholder=".pdf"
                     inputValue={formik.values.files}
