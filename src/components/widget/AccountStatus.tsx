@@ -26,7 +26,7 @@ export const AccountStatus = (props: Props) => {
         colorPalette: "green",
       },
       3: {
-        label: l.deactive,
+        label: l.deactivated,
         colorPalette: "red",
       },
     };
@@ -34,6 +34,8 @@ export const AccountStatus = (props: Props) => {
   return (
     <Badge
       colorPalette={accountStatus[accountStatusId].colorPalette}
+      justifyContent={"center"}
+      w={"76px"}
       {...restProps}
     >
       {accountStatus[accountStatusId].label}

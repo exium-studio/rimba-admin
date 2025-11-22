@@ -913,7 +913,7 @@ export const active = {
   id: "Aktif",
   en: "Active",
 };
-export const deactive = {
+export const deactivated = {
   id: "Dinonaktifkan",
   en: "Deactivated",
 };

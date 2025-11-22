@@ -456,7 +456,7 @@ const Data = (props: any) => {
         sortable: true,
       },
       {
-        th: l.deactive,
+        th: l.deactivated,
         sortable: true,
       },
     ],
