@@ -117,6 +117,7 @@ const TopicFilter = (props: any) => {
         setFilter({ ...filter, topic: inputValue });
       }}
       placeholder={l.private_navs.kmis.topic}
+      topicType={["Pelatihan"]}
       {...restProps}
     />
   );
@@ -373,6 +374,7 @@ const Create = (props: any) => {
                     onConfirm={(inputValue) =>
                       formik.setFieldValue("topic", inputValue)
                     }
+                    topicType={["Pelatihan"]}
                   />
                 </Field>
 
@@ -646,6 +648,7 @@ const Update = (props: any) => {
                     onConfirm={(inputValue) =>
                       formik.setFieldValue("topic", inputValue)
                     }
+                    topicType={["Pelatihan"]}
                   />
                 </Field>
 

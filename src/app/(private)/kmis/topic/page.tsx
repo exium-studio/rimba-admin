@@ -386,14 +386,15 @@ const Quiz = (props: any) => {
 
   // States
   const topic = { id: data.id, label: data.title };
+  const isPublicTopic = data?.topicType !== "Pelatihan";
   const topicQuery = `?topic=${encodeURIComponent(JSON.stringify(topic))}`;
   const toUrl = `/kmis/quiz${topicQuery}`;
 
   return (
     <>
-      <NavLink to={toUrl} w={"full"}>
+      <NavLink to={isPublicTopic ? "#" : toUrl} w={"full"}>
         <MenuTooltip content={l.private_navs.kmis.quiz}>
-          <MenuItem value="quiz">
+          <MenuItem value="quiz" disabled={isPublicTopic}>
             <P lineClamp={1}>{l.private_navs.kmis.quiz}</P>
           </MenuItem>
         </MenuTooltip>
