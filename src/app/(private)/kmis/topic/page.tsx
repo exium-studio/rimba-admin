@@ -33,6 +33,7 @@ import FeedbackRetry from "@/components/widget/FeedbackRetry";
 import { ImgViewer } from "@/components/widget/ImgViewer";
 import { PageContainer, PageContent } from "@/components/widget/Page";
 import { SelectKMISCategory } from "@/components/widget/SelectKMISCategory";
+import { SelectKMISEducator } from "@/components/widget/SelectKMISEducator";
 import { SelectKMISTopicType } from "@/components/widget/SelectKMISTopicType";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
 import {
@@ -126,6 +127,7 @@ const Create = (props: any) => {
       files: null as any,
       category: null as unknown as Interface__SelectOption[],
       topicType: null as unknown as Interface__SelectOption[],
+      topicPic: null as Interface__SelectOption[] | null,
       title: "",
       description: "",
       quizDuration: null as unknown as number,
@@ -137,6 +139,7 @@ const Create = (props: any) => {
       }).required(l.msg_required_form),
       category: yup.array().required(l.msg_required_form),
       topicType: yup.array().required(l.msg_required_form),
+      topicPic: yup.array().required(l.msg_required_form),
       title: yup.string().required(l.msg_required_form),
       description: yup.string().required(l.msg_required_form),
       quizDuration: yup.number().when("topicType", (topicType, schema) => {
@@ -153,6 +156,10 @@ const Create = (props: any) => {
       payload.append("files", values.files?.[0]);
       payload.append("categoryId", `${values.category?.[0]?.id}`);
       payload.append("topicType", `${values.topicType?.[0]?.id}`);
+      if (values.topicPic)
+        values.topicPic.forEach((tp) =>
+          payload.append("topicPicIds", `${tp.id}`)
+        );
       payload.append("title", values.title);
       payload.append("description", values.description);
       payload.append("totalQuiz", "0");
@@ -237,6 +244,19 @@ const Create = (props: any) => {
                     inputValue={formik.values.topicType}
                     onConfirm={(inputValue) => {
                       formik.setFieldValue("topicType", inputValue);
+                    }}
+                  />
+                </Field>
+
+                <Field
+                  label={`PIC ${l.educator}`}
+                  invalid={!!formik.errors.topicPic}
+                  errorText={formik.errors.topicPic as string}
+                >
+                  <SelectKMISEducator
+                    inputValue={formik.values.topicPic}
+                    onConfirm={(inputValue) => {
+                      formik.setFieldValue("topicPic", inputValue);
                     }}
                   />
                 </Field>
@@ -439,6 +459,7 @@ const Update = (props: any) => {
       files: null as any,
       category: null as unknown as Interface__SelectOption[],
       topicType: null as unknown as Interface__SelectOption[],
+      topicPic: null as Interface__SelectOption[] | null,
       title: "",
       description: "",
       materialOrder: [] as Interface__KMISMaterial[] | undefined,
@@ -461,6 +482,7 @@ const Update = (props: any) => {
       ),
       category: yup.array().required(l.msg_required_form),
       topicType: yup.array().required(l.msg_required_form),
+      topicPic: yup.array().required(l.msg_required_form),
       title: yup.string().required(l.msg_required_form),
       description: yup.string().required(l.msg_required_form),
       quizDuration: yup.number().when("topicType", (topicType, schema) => {
@@ -483,6 +505,10 @@ const Update = (props: any) => {
       );
       payload.append("categoryId", `${values.category?.[0]?.id}`);
       payload.append("topicType", `${values.topicType?.[0]?.id}`);
+      if (values.topicPic)
+        values.topicPic.forEach((tp) =>
+          payload.append("topicPicIds", `${tp.id}`)
+        );
       payload.append("title", values.title);
       payload.append("description", values.description);
       payload.append(
@@ -550,6 +576,12 @@ const Update = (props: any) => {
           label: resolvedData.topicType,
         },
       ],
+      topicPic: resolvedData.topicPic
+        ? resolvedData.topicPic.map((tp) => ({
+            id: tp.id,
+            label: tp.name,
+          }))
+        : null,
       title: resolvedData.title,
       description: resolvedData.description,
       materialOrder: resolvedData.materialOrder,
@@ -614,6 +646,19 @@ const Update = (props: any) => {
                     inputValue={formik.values.topicType}
                     onConfirm={(inputValue) => {
                       formik.setFieldValue("topicType", inputValue);
+                    }}
+                  />
+                </Field>
+
+                <Field
+                  label={`PIC ${l.educator}`}
+                  invalid={!!formik.errors.topicPic}
+                  errorText={formik.errors.topicPic as string}
+                >
+                  <SelectKMISEducator
+                    inputValue={formik.values.topicPic}
+                    onConfirm={(inputValue) => {
+                      formik.setFieldValue("topicPic", inputValue);
                     }}
                   />
                 </Field>

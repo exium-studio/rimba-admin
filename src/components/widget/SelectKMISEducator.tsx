@@ -6,17 +6,15 @@ import useRequest from "@/hooks/useRequest";
 import { capitalizeWords } from "@/utils/string";
 import { useEffect, useState } from "react";
 
-const SUFFIX_ID = "kmis_topic";
-const ENDPOINT = `/api/kmis/public-request/get-all-topic-admin`;
+const SUFFIX_ID = "kmis_educator";
+const ENDPOINT = `/api/public-request/get-all-user-educator-admin`;
 
-interface Props extends Omit<Props__SelectInput, "id"> {
-  topicType?: string[];
-}
-export const SelectKMISTopic = (props: Props) => {
+interface Props extends Omit<Props__SelectInput, "id"> {}
+export const SelectKMISEducator = (props: Props) => {
   const ID = `select_${SUFFIX_ID}`;
 
   // Props
-  const { topicType = ["Pelatihan", "Pengetahuan"], ...restProps } = props;
+  const { ...restProps } = props;
 
   // Contexts
   const { l } = useLang();
@@ -39,7 +37,6 @@ export const SelectKMISTopic = (props: Props) => {
       method: "GET",
       params: {
         limit: "all",
-        topicType: topicType,
       },
     };
 
@@ -50,7 +47,7 @@ export const SelectKMISTopic = (props: Props) => {
           const newOptions = r?.data?.data?.data
             ?.map((item: any) => ({
               id: item?.id,
-              label: item?.title,
+              label: item?.name,
             }))
             .sort((a: Interface__SelectOption, b: Interface__SelectOption) =>
               a?.label?.localeCompare(b?.label)
@@ -68,7 +65,7 @@ export const SelectKMISTopic = (props: Props) => {
   return (
     <SelectInput
       id={ID}
-      title={capitalizeWords(l.topic)}
+      title={capitalizeWords(l.educator)}
       loading={loading}
       selectOptions={selectOptions}
       fetch={fetch}
