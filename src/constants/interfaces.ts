@@ -208,7 +208,7 @@ export interface Interface__KMISTopic extends Interface__CUD {
   id: string;
   category: Interface__KMISTopicCategory;
   topicType: string;
-  topicPic: Interface__User[];
+  userPic: Interface__User[];
   topicCover: Interface__StorageFile[];
   title: string;
   description: string;

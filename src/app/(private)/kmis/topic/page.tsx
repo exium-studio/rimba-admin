@@ -127,7 +127,7 @@ const Create = (props: any) => {
       files: null as any,
       category: null as unknown as Interface__SelectOption[],
       topicType: null as unknown as Interface__SelectOption[],
-      topicPic: null as Interface__SelectOption[] | null,
+      userPic: null as Interface__SelectOption[] | null,
       title: "",
       description: "",
       quizDuration: null as unknown as number,
@@ -139,7 +139,7 @@ const Create = (props: any) => {
       }).required(l.msg_required_form),
       category: yup.array().required(l.msg_required_form),
       topicType: yup.array().required(l.msg_required_form),
-      topicPic: yup.array().required(l.msg_required_form),
+      userPic: yup.array().required(l.msg_required_form),
       title: yup.string().required(l.msg_required_form),
       description: yup.string().required(l.msg_required_form),
       quizDuration: yup.number().when("topicType", (topicType, schema) => {
@@ -156,10 +156,8 @@ const Create = (props: any) => {
       payload.append("files", values.files?.[0]);
       payload.append("categoryId", `${values.category?.[0]?.id}`);
       payload.append("topicType", `${values.topicType?.[0]?.id}`);
-      if (values.topicPic)
-        values.topicPic.forEach((tp) =>
-          payload.append("topicPicIds", `${tp.id}`)
-        );
+      if (values.userPic)
+        values.userPic.forEach((tp) => payload.append("userPic", `${tp.id}`));
       payload.append("title", values.title);
       payload.append("description", values.description);
       payload.append("totalQuiz", "0");
@@ -250,13 +248,14 @@ const Create = (props: any) => {
 
                 <Field
                   label={`PIC ${l.educator}`}
-                  invalid={!!formik.errors.topicPic}
-                  errorText={formik.errors.topicPic as string}
+                  invalid={!!formik.errors.userPic}
+                  errorText={formik.errors.userPic as string}
                 >
                   <SelectKMISEducator
-                    inputValue={formik.values.topicPic}
+                    multiple
+                    inputValue={formik.values.userPic}
                     onConfirm={(inputValue) => {
-                      formik.setFieldValue("topicPic", inputValue);
+                      formik.setFieldValue("userPic", inputValue);
                     }}
                   />
                 </Field>
@@ -459,7 +458,7 @@ const Update = (props: any) => {
       files: null as any,
       category: null as unknown as Interface__SelectOption[],
       topicType: null as unknown as Interface__SelectOption[],
-      topicPic: null as Interface__SelectOption[] | null,
+      userPic: null as Interface__SelectOption[] | null,
       title: "",
       description: "",
       materialOrder: [] as Interface__KMISMaterial[] | undefined,
@@ -482,7 +481,7 @@ const Update = (props: any) => {
       ),
       category: yup.array().required(l.msg_required_form),
       topicType: yup.array().required(l.msg_required_form),
-      topicPic: yup.array().required(l.msg_required_form),
+      userPic: yup.array().required(l.msg_required_form),
       title: yup.string().required(l.msg_required_form),
       description: yup.string().required(l.msg_required_form),
       quizDuration: yup.number().when("topicType", (topicType, schema) => {
@@ -505,10 +504,8 @@ const Update = (props: any) => {
       );
       payload.append("categoryId", `${values.category?.[0]?.id}`);
       payload.append("topicType", `${values.topicType?.[0]?.id}`);
-      if (values.topicPic)
-        values.topicPic.forEach((tp) =>
-          payload.append("topicPicIds", `${tp.id}`)
-        );
+      if (values.userPic)
+        values.userPic.forEach((tp) => payload.append("userPic", `${tp.id}`));
       payload.append("title", values.title);
       payload.append("description", values.description);
       payload.append(
@@ -576,8 +573,8 @@ const Update = (props: any) => {
           label: resolvedData.topicType,
         },
       ],
-      topicPic: resolvedData.topicPic
-        ? resolvedData.topicPic.map((tp) => ({
+      userPic: resolvedData.userPic
+        ? resolvedData.userPic.map((tp) => ({
             id: tp.id,
             label: tp.name,
           }))
@@ -652,13 +649,14 @@ const Update = (props: any) => {
 
                 <Field
                   label={`PIC ${l.educator}`}
-                  invalid={!!formik.errors.topicPic}
-                  errorText={formik.errors.topicPic as string}
+                  invalid={!!formik.errors.userPic}
+                  errorText={formik.errors.userPic as string}
                 >
                   <SelectKMISEducator
-                    inputValue={formik.values.topicPic}
+                    multiple
+                    inputValue={formik.values.userPic}
                     onConfirm={(inputValue) => {
-                      formik.setFieldValue("topicPic", inputValue);
+                      formik.setFieldValue("userPic", inputValue);
                     }}
                   />
                 </Field>
