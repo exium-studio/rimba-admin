@@ -337,60 +337,6 @@ const DataUtils = (props: any) => {
   );
 };
 
-const FilesList = (props: any) => {
-  // Props
-  const { data, ...restProps } = props;
-
-  // Contexts
-  const { l } = useLang();
-
-  // Hooks
-  const { open, onOpen, onClose } = useDisclosure();
-  useBackOnClose(
-    disclosureId(`legal-docs-list-${data.id}`),
-    open,
-    onOpen,
-    onClose
-  );
-
-  return (
-    <>
-      <Btn
-        size={"xs"}
-        variant={"ghost"}
-        pl={"6px"}
-        onClick={onOpen}
-        {...restProps}
-      >
-        <Icon boxSize={5}>
-          <IconFiles stroke={1.5} />
-        </Icon>
-
-        {l.document}
-      </Btn>
-
-      <DisclosureRoot open={open} lazyLoad size={"xs"}>
-        <DisclosureContent>
-          <DisclosureHeader>
-            <DisclosureHeaderContent title={l.document} />
-          </DisclosureHeader>
-
-          <DisclosureBody>
-            <CContainer gap={4}>
-              {data?.document?.map((doc: Interface__StorageFile) => {
-                return <FileItem key={doc.id} fileData={doc} />;
-              })}
-            </CContainer>
-          </DisclosureBody>
-
-          <DisclosureFooter>
-            <BackButton />
-          </DisclosureFooter>
-        </DisclosureContent>
-      </DisclosureRoot>
-    </>
-  );
-};
 const Update = (props: any) => {
   const ID = `${PREFIX_ID}_update`;
 
@@ -792,6 +738,48 @@ const Delete = (props: any) => {
   );
 };
 
+const FilesListDisclosureTrigger = (props: any) => {
+  // Props
+  const { item, ...restProps } = props;
+
+  // Contexts
+  const { l } = useLang();
+
+  // Hooks
+  const { open, onOpen, onClose } = useDisclosure();
+  useBackOnClose(
+    disclosureId(`legal-docs-list-${item.id}`),
+    open,
+    onOpen,
+    onClose
+  );
+
+  return (
+    <>
+      <CContainer w={"fit"} onClick={onOpen} {...restProps} />
+
+      <DisclosureRoot open={open} lazyLoad size={"xs"}>
+        <DisclosureContent>
+          <DisclosureHeader>
+            <DisclosureHeaderContent title={l.document} />
+          </DisclosureHeader>
+
+          <DisclosureBody>
+            <CContainer gap={4}>
+              {item?.document?.map((doc: Interface__StorageFile) => {
+                return <FileItem key={doc.id} fileData={doc} />;
+              })}
+            </CContainer>
+          </DisclosureBody>
+
+          <DisclosureFooter>
+            <BackButton />
+          </DisclosureFooter>
+        </DisclosureContent>
+      </DisclosureRoot>
+    </>
+  );
+};
 const Data = (props: any) => {
   // Props
   const { filter, routeTitle } = props;
@@ -861,7 +849,17 @@ const Data = (props: any) => {
           value: item.title[lang],
         },
         {
-          td: <FilesList data={item} />,
+          td: (
+            <FilesListDisclosureTrigger item={item}>
+              <Btn size={"xs"} variant={"ghost"} pl={"6px"}>
+                <Icon boxSize={5}>
+                  <IconFiles stroke={1.5} />
+                </Icon>
+
+                {l.document}
+              </Btn>
+            </FilesListDisclosureTrigger>
+          ),
           value: "",
         },
         {

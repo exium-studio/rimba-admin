@@ -45,7 +45,11 @@ import { formatDate, formatDuration, formatNumber } from "@/utils/formatter";
 import { capitalizeWords, pluckString } from "@/utils/string";
 import { fileUrl, getActiveNavs, imgUrl } from "@/utils/url";
 import { HStack, Icon, SimpleGrid, useDisclosure } from "@chakra-ui/react";
-import { IconArrowUpRight, IconEye, IconStarFilled } from "@tabler/icons-react";
+import {
+  IconArrowUpRight,
+  IconClipboardCheck,
+  IconStarFilled,
+} from "@tabler/icons-react";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
@@ -71,9 +75,9 @@ const DataUtils = (props: any) => {
   );
 };
 
-const ResultDetail = (props: any) => {
+const ResultDetailDisclosureTrigger = (props: any) => {
   // Props
-  const { attempt, ...restProps } = props;
+  const { item, ...restProps } = props;
 
   // Contexts
   const { l } = useLang();
@@ -82,20 +86,19 @@ const ResultDetail = (props: any) => {
   // Hooks
   const { open, onOpen, onClose } = useDisclosure();
   useBackOnClose(
-    disclosureId(`answer-detail-${attempt.id}`),
+    disclosureId(`answer-detail-${item.id}`),
     open,
     onOpen,
     onClose
   );
-  const dataDisplay = useDataDisplay((s) => s.getDisplay("kmis_quiz_attempt"));
 
   // States
-  const resolvedAttempt: Interface__Data = attempt;
+  const resolvedAttempt: Interface__Data = item;
   const { error, initialLoading, data, onRetry } = useDataState<{
     learningParticipant: Interface__KMISLearningAttempt;
     exam: Interface__KMISQuizResponse[];
   }>({
-    url: `/api/kmis/learning-participant/show/${attempt.id}`,
+    url: `/api/kmis/learning-participant/show/${item.id}`,
     dependencies: [open],
     conditions: open,
     dataResource: false,
@@ -317,20 +320,7 @@ const ResultDetail = (props: any) => {
 
   return (
     <>
-      <Btn
-        size={"xs"}
-        variant={dataDisplay === "table" ? "ghost" : "outline"}
-        colorPalette={themeConfig.colorPalette}
-        pl={"6px"}
-        onClick={onOpen}
-        {...restProps}
-      >
-        <Icon boxSize={5}>
-          <IconEye stroke={1.5} />
-        </Icon>
-
-        {l.view}
-      </Btn>
+      <CContainer w={"fit"} onClick={onOpen} {...restProps} />
 
       <DisclosureRoot open={open} lazyLoad size={"xl"}>
         <DisclosureContent>
@@ -364,7 +354,6 @@ const ResultDetail = (props: any) => {
     </>
   );
 };
-
 const Data = (props: any) => {
   // Props
   const { filter, routeTitle } = props;
@@ -467,7 +456,21 @@ const Data = (props: any) => {
           align: "center",
         },
         {
-          td: <ResultDetail attempt={item} />,
+          td: (
+            <ResultDetailDisclosureTrigger item={item}>
+              <Btn
+                size={"xs"}
+                variant={displayTable ? "ghost" : "outline"}
+                pl={"6px"}
+              >
+                <Icon boxSize={5}>
+                  <IconClipboardCheck stroke={1.5} />
+                </Icon>
+
+                {l.result_detail}
+              </Btn>
+            </ResultDetailDisclosureTrigger>
+          ),
           value: "",
           align: "center",
         },

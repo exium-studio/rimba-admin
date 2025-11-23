@@ -1,6 +1,7 @@
 "use client";
 
 import { Btn } from "@/components/ui/btn";
+import { CContainer } from "@/components/ui/c-container";
 import {
   DisclosureBody,
   DisclosureContent,
@@ -21,6 +22,7 @@ import SearchInput from "@/components/ui/search-input";
 import { StringInput } from "@/components/ui/string-input";
 import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipProps } from "@/components/ui/tooltip";
+import BackButton from "@/components/widget/BackButton";
 import { ClampText } from "@/components/widget/ClampText";
 import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
 import { CreateKMISCategoryDisclosureTrigger } from "@/components/widget/CreateKMISCategoryDisclosure";
@@ -31,6 +33,7 @@ import { DataTable } from "@/components/widget/DataTable";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
 import { ImgViewer } from "@/components/widget/ImgViewer";
+import { MiniUser } from "@/components/widget/MiniUser";
 import { PageContainer, PageContent } from "@/components/widget/Page";
 import { SelectKMISCategory } from "@/components/widget/SelectKMISCategory";
 import { SelectKMISEducator } from "@/components/widget/SelectKMISEducator";
@@ -43,6 +46,7 @@ import {
   Interface__KMISTopic,
   Interface__RowOptionsTableOptionGenerator,
   Interface__SelectOption,
+  Interface__User,
 } from "@/constants/interfaces";
 import { useDataDisplay } from "@/context/useDataDisplay";
 import useLang from "@/context/useLang";
@@ -70,6 +74,7 @@ import {
   IconPencilMinus,
   IconPlus,
   IconRestore,
+  IconSchool,
   IconTrash,
 } from "@tabler/icons-react";
 import { useFormik } from "formik";
@@ -936,6 +941,51 @@ const Delete = (props: any) => {
   );
 };
 
+const EducatorListDisclosureTrigger = (props: any) => {
+  // Props
+  const { item, ...restProps } = props;
+
+  // Contexts
+  const { l } = useLang();
+
+  // Hooks
+  const { open, onOpen, onClose } = useDisclosure();
+  useBackOnClose(
+    disclosureId(`educator-list-${item?.id}`),
+    open,
+    onOpen,
+    onClose
+  );
+  return (
+    <>
+      <CContainer w={"fit"} onClick={onOpen} {...restProps} />
+
+      <DisclosureRoot open={open} lazyLoad size={"xs"}>
+        <DisclosureContent>
+          <DisclosureHeader>
+            <DisclosureHeaderContent title={`PIC ${l.educator}`} />
+          </DisclosureHeader>
+
+          <DisclosureBody>
+            {isEmptyArray(item?.userPic) && <FeedbackNoData />}
+
+            {!isEmptyArray(item?.userPic) && (
+              <CContainer gap={4}>
+                {item?.userPic?.map((pic: Interface__User) => {
+                  return <MiniUser key={pic?.id} user={pic} />;
+                })}
+              </CContainer>
+            )}
+          </DisclosureBody>
+
+          <DisclosureFooter>
+            <BackButton />
+          </DisclosureFooter>
+        </DisclosureContent>
+      </DisclosureRoot>
+    </>
+  );
+};
 const Data = (props: any) => {
   // Props
   const { filter, routeTitle } = props;
@@ -983,6 +1033,9 @@ const Data = (props: any) => {
       {
         th: l.topic_type,
         sortable: true,
+      },
+      {
+        th: `PIC ${l.educator}`,
       },
 
       // timestamps
@@ -1038,6 +1091,24 @@ const Data = (props: any) => {
         {
           td: <ClampText>{`${item.topicType}`}</ClampText>,
           value: item.topicType,
+        },
+        {
+          td: (
+            <EducatorListDisclosureTrigger item={item}>
+              <Btn
+                size={"xs"}
+                variant={displayTable ? "ghost" : "outline"}
+                pl={"6px"}
+              >
+                <Icon boxSize={5}>
+                  <IconSchool stroke={1.5} />
+                </Icon>
+                {`PIC ${l.educator}`}
+              </Btn>
+            </EducatorListDisclosureTrigger>
+          ),
+          value: "",
+          align: "center",
         },
 
         // timestamps

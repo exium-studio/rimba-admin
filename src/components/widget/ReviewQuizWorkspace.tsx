@@ -184,10 +184,8 @@ export const ReviewQuizWorkspace = (props: Props) => {
                 bg={isAnswered ? (isCorrect ? "p.400" : "fg.error") : ""}
                 color={isAnswered ? "white" : ""}
                 border={"1px solid"}
+                borderColor={"body"}
                 boxShadow={isActive ? `0 0 0 2px {colors.p.400}` : ""}
-                borderColor={
-                  isAnswered ? (isCorrect ? "green" : "red") : "border.muted"
-                }
                 onClick={() => setActiveIdx(idx)}
               >
                 {idx + 1}
