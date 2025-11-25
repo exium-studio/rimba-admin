@@ -1,15 +1,15 @@
 "use client";
 
-import { useColorMode, useColorModeValue } from "@/components/ui/color-mode";
 import { MAIN_BUTTON_SIZE } from "@/constants/sizes";
 import { useThemeConfig } from "@/context/useThemeConfig";
 import { Button, ButtonProps, IconButton } from "@chakra-ui/react";
-import { forwardRef, useMemo } from "react";
+import { useMemo, forwardRef } from "react";
 
 export interface BtnProps extends ButtonProps {
   children?: React.ReactNode;
   clicky?: boolean;
   iconButton?: boolean;
+  focusStyle?: boolean;
 }
 
 export const Btn = forwardRef<HTMLButtonElement, BtnProps>((props, ref) => {
@@ -20,21 +20,17 @@ export const Btn = forwardRef<HTMLButtonElement, BtnProps>((props, ref) => {
     iconButton = false,
     className = "",
     size,
+    focusStyle = true,
     ...restProps
   } = props;
 
   // Contexts
   const { themeConfig } = useThemeConfig();
-  const { colorMode } = useColorMode();
 
   // States, Refs
   const resolvedClassName = `${clicky ? "clicky" : ""} ${className}`.trim();
 
   // Memoized Active Style
-  const resolvedMutedColor = useColorModeValue(
-    `${props.colorPalette}.200 !important`,
-    `${props.colorPalette}.800 !important`
-  );
   const activeBg = useMemo(() => {
     if (props.colorPalette) {
       switch (props?.variant) {
@@ -45,7 +41,7 @@ export const Btn = forwardRef<HTMLButtonElement, BtnProps>((props, ref) => {
           return `${props.colorPalette}.subtle`;
         case "subtle":
         case "surface":
-          return resolvedMutedColor;
+          return `${props.colorPalette}.muted`;
         case "plain":
           return "";
       }
@@ -58,7 +54,7 @@ export const Btn = forwardRef<HTMLButtonElement, BtnProps>((props, ref) => {
           return "gray.muted";
       }
     }
-  }, [props.variant, props.colorPalette, colorMode]);
+  }, [props.variant, props.colorPalette]);
 
   return iconButton ? (
     <IconButton
@@ -67,7 +63,14 @@ export const Btn = forwardRef<HTMLButtonElement, BtnProps>((props, ref) => {
       className={resolvedClassName}
       size={size || (MAIN_BUTTON_SIZE as any)}
       rounded={themeConfig.radii.component}
-      _hover={{ bg: activeBg }}
+      outline={"none !important"}
+      _focusVisible={
+        focusStyle
+          ? {
+              boxShadow: "0 0 0 2px {colors.gray.500}",
+            }
+          : {}
+      }
       _active={{ bg: activeBg }}
       {...restProps}
     >
@@ -81,7 +84,14 @@ export const Btn = forwardRef<HTMLButtonElement, BtnProps>((props, ref) => {
       fontWeight="medium"
       size={size || (MAIN_BUTTON_SIZE as any)}
       rounded={themeConfig.radii.component}
-      _hover={{ bg: activeBg }}
+      outline={"none !important"}
+      _focusVisible={
+        focusStyle
+          ? {
+              boxShadow: "0 0 0 2px {colors.gray.500}",
+            }
+          : {}
+      }
       _active={{ bg: activeBg }}
       {...restProps}
     >
