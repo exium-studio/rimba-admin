@@ -12,11 +12,18 @@ import {
 import { DisclosureHeaderContent } from "@/components/ui/disclosure-header-content";
 import { Field } from "@/components/ui/field";
 import { FileInput } from "@/components/ui/file-input";
+import {
+  MenuContent,
+  MenuItem,
+  MenuRoot,
+  MenuTrigger,
+} from "@/components/ui/menu";
 import { NumInput } from "@/components/ui/number-input";
 import { P } from "@/components/ui/p";
 import { Skeleton } from "@/components/ui/skeleton";
 import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
+import { DotIndicator } from "@/components/widget/Indicator";
 import { ItemContainer } from "@/components/widget/ItemContainer";
 import { ItemHeaderContainer } from "@/components/widget/ItemHeaderContainer";
 import ItemHeaderTitle from "@/components/widget/ItemHeaderTitle";
@@ -43,7 +50,6 @@ import {
   Center,
   Circle,
   FieldRoot,
-  GridItem,
   HStack,
   Icon,
   SimpleGrid,
@@ -53,6 +59,7 @@ import {
 import {
   IconActivity,
   IconCalendarEvent,
+  IconCaretDownFilled,
   IconCoins,
   IconMoneybag,
   IconPencilMinus,
@@ -61,7 +68,7 @@ import {
   IconTimeline,
 } from "@tabler/icons-react";
 import { useFormik } from "formik";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   CartesianGrid,
   LabelList,
@@ -71,6 +78,264 @@ import {
   XAxis,
 } from "recharts";
 import * as yup from "yup";
+
+const DUMMY_DASHBOARD_DATA = {
+  dashboard: {
+    id: "1",
+    frameworkFiles: [
+      {
+        id: "138",
+        uploadedBy: "1",
+        verifiedBy: "1",
+        fileId: "4e5517de-7b86-4797-9b45-fc5bd391faed",
+        fileName: "dummy-pdf.pdf",
+        filePath: "storage/documents/dummy-pdf.pdf",
+        fileUrl: "https://doc.rimbaexium.org/storage/documents/dummy-pdf.pdf",
+        fileMimeType: "application/pdf",
+        fileSize: "1017.73 kB",
+        createdAt: "2025-11-20T03:34:55.203Z",
+        updatedAt: "2025-11-20T03:34:55.203Z",
+        deletedAt: null,
+      },
+    ],
+    planFiles: [
+      {
+        id: "139",
+        uploadedBy: "1",
+        verifiedBy: "1",
+        fileId: "db65bfe8-6a69-4c0e-ae5b-a5103338c8fe",
+        fileName: "dummy-pdf(1).pdf",
+        filePath: "storage/documents/dummy-pdf(1).pdf",
+        fileUrl:
+          "https://doc.rimbaexium.org/storage/documents/dummy-pdf(1).pdf",
+        fileMimeType: "application/pdf",
+        fileSize: "1017.73 kB",
+        createdAt: "2025-11-20T03:35:14.471Z",
+        updatedAt: "2025-11-20T03:35:14.471Z",
+        deletedAt: null,
+      },
+    ],
+    description: "-",
+    networthHibahIDR: "97363629763",
+    networthHibahUSD: "7363629763",
+    createdAt: "2025-11-04T13:25:58.823Z",
+    updatedAt: "2025-12-16T04:12:49.543Z",
+    deletedAt: null,
+  },
+  totalActivityPackages: 2,
+  totalActivityCalendar: 8,
+  sumBudgetTarget: 2135581000,
+  sumBudgetRealization: 2135580000,
+  avgPhysicalTarget: 59,
+  avgPhysicalRealization: 35.63,
+  statsBudgetTarget: [
+    {
+      month: 0,
+      value: 0,
+    },
+    {
+      month: 1,
+      value: 0,
+    },
+    {
+      month: 2,
+      value: 0,
+    },
+    {
+      month: 3,
+      value: 0,
+    },
+    {
+      month: 4,
+      value: 0,
+    },
+    {
+      month: 5,
+      value: 0,
+    },
+    {
+      month: 6,
+      value: 1000,
+    },
+    {
+      month: 7,
+      value: 515845000,
+    },
+    {
+      month: 8,
+      value: 859742000,
+    },
+    {
+      month: 9,
+      value: 416096000,
+    },
+    {
+      month: 10,
+      value: 343897000,
+    },
+    {
+      month: 11,
+      value: 0,
+    },
+  ],
+  statsBudgetRealization: [
+    {
+      month: 0,
+      value: 0,
+    },
+    {
+      month: 1,
+      value: 0,
+    },
+    {
+      month: 2,
+      value: 0,
+    },
+    {
+      month: 3,
+      value: 0,
+    },
+    {
+      month: 4,
+      value: 0,
+    },
+    {
+      month: 5,
+      value: 0,
+    },
+    {
+      month: 6,
+      value: 0,
+    },
+    {
+      month: 7,
+      value: 515845000,
+    },
+    {
+      month: 8,
+      value: 859742000,
+    },
+    {
+      month: 9,
+      value: 416096000,
+    },
+    {
+      month: 10,
+      value: 343897000,
+    },
+    {
+      month: 11,
+      value: 0,
+    },
+  ],
+  statsPhysicalTarget: [
+    {
+      month: 0,
+      value: 0,
+    },
+    {
+      month: 1,
+      value: 0,
+    },
+    {
+      month: 2,
+      value: 0,
+    },
+    {
+      month: 3,
+      value: 0,
+    },
+    {
+      month: 4,
+      value: 0,
+    },
+    {
+      month: 5,
+      value: 0,
+    },
+    {
+      month: 6,
+      value: 1000,
+    },
+    {
+      month: 7,
+      value: 515845000,
+    },
+    {
+      month: 8,
+      value: 859742000,
+    },
+    {
+      month: 9,
+      value: 416096000,
+    },
+    {
+      month: 10,
+      value: 343897000,
+    },
+    {
+      month: 11,
+      value: 0,
+    },
+  ],
+  statsPhysicalRealization: [
+    {
+      month: 0,
+      value: 0,
+    },
+    {
+      month: 1,
+      value: 0,
+    },
+    {
+      month: 2,
+      value: 0,
+    },
+    {
+      month: 3,
+      value: 0,
+    },
+    {
+      month: 4,
+      value: 0,
+    },
+    {
+      month: 5,
+      value: 0,
+    },
+    {
+      month: 6,
+      value: 0,
+    },
+    {
+      month: 7,
+      value: 515845000,
+    },
+    {
+      month: 8,
+      value: 859742000,
+    },
+    {
+      month: 9,
+      value: 416096000,
+    },
+    {
+      month: 10,
+      value: 343897000,
+    },
+    {
+      month: 11,
+      value: 0,
+    },
+  ],
+};
+const DEFAULT_FILTER = {
+  year: new Date().getFullYear(),
+};
+const YEAR_OPTIONS = Array.from(
+  { length: new Date().getFullYear() - 2020 + 1 },
+  (_, i) => new Date().getFullYear() - i
+);
 
 interface Props__StatItem extends StackProps {
   icon?: any;
@@ -116,12 +381,14 @@ const StatItem = (props: Props__StatItem) => {
     </HStack>
   );
 };
+
 interface Props__Chart extends StackProps {
   data: any;
+  STATS_REGISTRY: any;
 }
-const BudgetTargetLineChart = (props: Props__Chart) => {
+const BudgetLineChart = (props: Props__Chart) => {
   // Props
-  const { data, ...restProps } = props;
+  const { data, STATS_REGISTRY, ...restProps } = props;
 
   // Contexts
   const { l, lang } = useLang();
@@ -130,7 +397,7 @@ const BudgetTargetLineChart = (props: Props__Chart) => {
   // States
   const chart = useChart({
     data: data?.statsBudgetTarget?.map((item: any, i: number) => ({
-      month: MONTHS[lang][i],
+      months: MONTHS[lang][i],
       budget: item.value,
     })),
   });
@@ -138,26 +405,50 @@ const BudgetTargetLineChart = (props: Props__Chart) => {
   return (
     <ItemContainer {...restProps}>
       <ItemHeaderContainer borderless>
-        <ItemHeaderTitle>{l.budget_target}</ItemHeaderTitle>
+        <ItemHeaderTitle>{`${l.budget} (${capitalizeWords(
+          l.target_and_realization
+        )})`}</ItemHeaderTitle>
       </ItemHeaderContainer>
+
+      <CContainer
+        p={4}
+        gap={4}
+        bg={"body"}
+        rounded={themeConfig.radii.component}
+      >
+        <SimpleGrid columns={2} gap={4}>
+          <StatItem
+            label={STATS_REGISTRY.sumBudgetTarget.label}
+            value={formatNumber(data?.sumBudgetTarget) || "-"}
+            p={1}
+          />
+
+          <StatItem
+            label={STATS_REGISTRY.sumBudgetRealization.label}
+            value={formatNumber(data?.sumBudgetRealization) || "-"}
+            p={1}
+          />
+        </SimpleGrid>
+      </CContainer>
 
       <Chart.Root maxH="md" chart={chart} pb={4} pr={4}>
         <LineChart data={chart.data} margin={{ left: 40, right: 40, top: 40 }}>
           <CartesianGrid
             stroke={chart.color("border")}
-            strokeDasharray="3 3"
+            strokeDasharray="4 4"
             horizontal={false}
           />
           <XAxis
-            dataKey={chart.key("month")}
-            tickFormatter={(value) => value.slice(0, 3)}
+            dataKey={chart.key("months")}
             stroke={chart.color("border")}
+            tickFormatter={(value) => value.slice(0, 3)}
           />
           <Tooltip
             animationDuration={100}
             cursor={{ stroke: chart.color("border") }}
             content={<Chart.Tooltip hideLabel />}
           />
+
           <Line
             isAnimationActive={false}
             dataKey={chart.key("budget")}
@@ -180,9 +471,9 @@ const BudgetTargetLineChart = (props: Props__Chart) => {
     </ItemContainer>
   );
 };
-const BudgetRealizationLineChart = (props: Props__Chart) => {
+const PhysicalLineChart = (props: Props__Chart) => {
   // Props
-  const { data, ...restProps } = props;
+  const { data, STATS_REGISTRY, ...restProps } = props;
 
   // Contexts
   const { l, lang } = useLang();
@@ -199,8 +490,31 @@ const BudgetRealizationLineChart = (props: Props__Chart) => {
   return (
     <ItemContainer {...restProps}>
       <ItemHeaderContainer borderless>
-        <ItemHeaderTitle>{l.budget_realization}</ItemHeaderTitle>
+        <ItemHeaderTitle>{`${l.physical} (${capitalizeWords(
+          l.target_and_realization
+        )})`}</ItemHeaderTitle>
       </ItemHeaderContainer>
+
+      <CContainer
+        p={4}
+        gap={4}
+        bg={"body"}
+        rounded={themeConfig.radii.component}
+      >
+        <SimpleGrid columns={2} gap={4}>
+          <StatItem
+            label={STATS_REGISTRY.avgPhysicalTarget.label}
+            value={`${formatNumber(data?.avgPhysicalTarget)}%` || "-"}
+            p={1}
+          />
+
+          <StatItem
+            label={STATS_REGISTRY.avgPhysicalRealization.label}
+            value={`${formatNumber(data?.avgPhysicalRealization)}%` || "-"}
+            p={1}
+          />
+        </SimpleGrid>
+      </CContainer>
 
       <Chart.Root maxH="md" chart={chart} pb={4} pr={4}>
         <LineChart data={chart.data} margin={{ left: 40, right: 40, top: 40 }}>
@@ -241,7 +555,8 @@ const BudgetRealizationLineChart = (props: Props__Chart) => {
     </ItemContainer>
   );
 };
-const EditHibahNetworthTrigger = (props: any) => {
+
+const EditHibahNetworthIDRTrigger = (props: any) => {
   // Props
   const { children, STATS_REGISTRY, dashboard, ...restProps } = props;
 
@@ -256,10 +571,10 @@ const EditHibahNetworthTrigger = (props: any) => {
   const { req, loading } = useRequest({
     id: "edit-hibah-networth",
     loadingMessage: {
-      title: `Edit ${STATS_REGISTRY?.networthHibah?.label.toLowerCase()}`,
+      title: `Edit ${STATS_REGISTRY?.networthHibahIDR?.label.toLowerCase()}`,
     },
     successMessage: {
-      title: `Edit ${STATS_REGISTRY?.networthHibah?.label.toLowerCase()} ${l.successful.toLowerCase()}`,
+      title: `Edit ${STATS_REGISTRY?.networthHibahIDR?.label.toLowerCase()} ${l.successful.toLowerCase()}`,
     },
   });
 
@@ -267,7 +582,7 @@ const EditHibahNetworthTrigger = (props: any) => {
   const formik = useFormik({
     validateOnChange: false,
     initialValues: {
-      networthHibah: null as number | null,
+      networthHibahIDR: null as number | null,
       frameworkFiles: [] as any[],
       planFiles: [] as any[],
       deleteFrameworkFileIds: [],
@@ -275,12 +590,12 @@ const EditHibahNetworthTrigger = (props: any) => {
     },
     validationSchema: yup
       .object()
-      .shape({ networthHibah: yup.number().required(l.msg_required_form) }),
+      .shape({ networthHibahIDR: yup.number().required(l.msg_required_form) }),
     onSubmit: (values) => {
       back();
 
       const payload = new FormData();
-      payload.append("hibah", `${values.networthHibah}`);
+      payload.append("hibah", `${values.networthHibahIDR}`);
       payload.append("description", "-");
 
       const config = {
@@ -302,7 +617,7 @@ const EditHibahNetworthTrigger = (props: any) => {
 
   useEffect(() => {
     formik.setValues({
-      networthHibah: dashboard?.networthHibah,
+      networthHibahIDR: dashboard?.networthHibahIDR,
       frameworkFiles: [],
       planFiles: [],
       deleteFrameworkFileIds: [],
@@ -321,7 +636,7 @@ const EditHibahNetworthTrigger = (props: any) => {
           <DisclosureHeader>
             <DisclosureHeaderContent
               title={`Edit ${capitalizeWords(
-                STATS_REGISTRY?.networthHibah?.label
+                STATS_REGISTRY?.networthHibahIDR?.label
               )}`}
             />
           </DisclosureHeader>
@@ -331,13 +646,127 @@ const EditHibahNetworthTrigger = (props: any) => {
               <FieldRoot disabled={loading}>
                 <Field
                   label={"Networth"}
-                  invalid={!!formik.errors.networthHibah}
-                  errorText={formik.errors.networthHibah as string}
+                  invalid={!!formik.errors.networthHibahIDR}
+                  errorText={formik.errors.networthHibahIDR as string}
                 >
                   <NumInput
-                    inputValue={formik.values.networthHibah}
+                    inputValue={formik.values.networthHibahIDR}
                     onChange={(inputValue) => {
-                      formik.setFieldValue("networthHibah", inputValue);
+                      formik.setFieldValue("networthHibahIDR", inputValue);
+                    }}
+                  />
+                </Field>
+              </FieldRoot>
+            </form>
+          </DisclosureBody>
+
+          <DisclosureFooter colorPalette={themeConfig.colorPalette}>
+            <Btn type="submit" form={`edit_hibah_networth`} loading={loading}>
+              {l.save}
+            </Btn>
+          </DisclosureFooter>
+        </DisclosureContent>
+      </DisclosureRoot>
+    </>
+  );
+};
+const EditHibahNetworthUSDTrigger = (props: any) => {
+  // Props
+  const { children, STATS_REGISTRY, dashboard, ...restProps } = props;
+
+  // Contexts
+  const { l } = useLang();
+  const { themeConfig } = useThemeConfig();
+  const setRt = useRenderTrigger((s) => s.setRt);
+
+  // Hooks
+  const { open, onOpen, onClose } = useDisclosure();
+  useBackOnClose(disclosureId(`edit-hibah-networth`), open, onOpen, onClose);
+  const { req, loading } = useRequest({
+    id: "edit-hibah-networth",
+    loadingMessage: {
+      title: `Edit ${STATS_REGISTRY?.networthHibahUSD?.label.toLowerCase()}`,
+    },
+    successMessage: {
+      title: `Edit ${STATS_REGISTRY?.networthHibahUSD?.label.toLowerCase()} ${l.successful.toLowerCase()}`,
+    },
+  });
+
+  // States
+  const formik = useFormik({
+    validateOnChange: false,
+    initialValues: {
+      networthHibahUSD: null as number | null,
+      frameworkFiles: [] as any[],
+      planFiles: [] as any[],
+      deleteFrameworkFileIds: [],
+      deletePlanFileIds: [],
+    },
+    validationSchema: yup
+      .object()
+      .shape({ networthHibahUSD: yup.number().required(l.msg_required_form) }),
+    onSubmit: (values) => {
+      back();
+
+      const payload = new FormData();
+      payload.append("hibah", `${values.networthHibahUSD}`);
+      payload.append("description", "-");
+
+      const config = {
+        method: "PATCH",
+        url: `/api/master-data/monev-dashboard/update/1`,
+        data: payload,
+      };
+
+      req({
+        config,
+        onResolve: {
+          onSuccess: () => {
+            setRt((ps) => !ps);
+          },
+        },
+      });
+    },
+  });
+
+  useEffect(() => {
+    formik.setValues({
+      networthHibahUSD: dashboard?.networthHibahUSD,
+      frameworkFiles: [],
+      planFiles: [],
+      deleteFrameworkFileIds: [],
+      deletePlanFileIds: [],
+    });
+  }, [dashboard]);
+
+  return (
+    <>
+      <CContainer w={"fit"} onClick={onOpen} {...restProps}>
+        {children}
+      </CContainer>
+
+      <DisclosureRoot open={open} lazyLoad size={"xs"}>
+        <DisclosureContent>
+          <DisclosureHeader>
+            <DisclosureHeaderContent
+              title={`Edit ${capitalizeWords(
+                STATS_REGISTRY?.networthHibahUSD?.label
+              )}`}
+            />
+          </DisclosureHeader>
+
+          <DisclosureBody>
+            <form id="edit_hibah_networth" onSubmit={formik.handleSubmit}>
+              <FieldRoot disabled={loading}>
+                <Field
+                  label={"Networth"}
+                  invalid={!!formik.errors.networthHibahUSD}
+                  errorText={formik.errors.networthHibahUSD as string}
+                >
+                  <NumInput
+                    inputValue={formik.values.networthHibahUSD}
+                    onChange={(inputValue) => {
+                      formik.setFieldValue("networthHibahUSD", inputValue);
                     }}
                   />
                 </Field>
@@ -540,39 +969,46 @@ export default function KMISDashboardPage() {
   const { width: containerWidth } = useContainerDimension(containerRef);
   const user = getUserData();
   const isSuperAdmin = user?.role?.id === "1";
+  const [filter, setFilter] = useState<any>(DEFAULT_FILTER);
   const STATS_REGISTRY = {
-    networthHibah: {
+    networthHibahIDR: {
+      currency: "IDR",
       icon: <IconCoins stroke={1.5} />,
-      label: "Networth hibah",
+      label: "Networth Hibah IDR",
+    },
+    networthHibahUSD: {
+      currency: "USD",
+      icon: <IconCoins stroke={1.5} />,
+      label: "Networth Hibah USD",
     },
     totalActivityPackages: {
       icon: <IconActivity stroke={1.5} />,
       label: l.activity_package,
     },
+    totalActivityCalendar: {
+      icon: <IconCalendarEvent stroke={1.5} />,
+      label: "Agenda",
+    },
     sumBudgetTarget: {
       icon: <IconMoneybag stroke={1.5} />,
       label: `Total ${l.budget_target.toLowerCase()}`,
-    },
-    avgPhysicalTarget: {
-      icon: <IconPercentage stroke={1.5} />,
-      label: l.avg_physical_target,
     },
     sumBudgetRealization: {
       icon: <IconReceipt stroke={1.5} />,
       label: `Total ${l.budget_realization.toLowerCase()}`,
     },
-    avgProgressRealization: {
-      icon: <IconTimeline stroke={1.5} />,
-      label: l.avg_progress_realization,
+    avgPhysicalTarget: {
+      icon: <IconPercentage stroke={1.5} />,
+      label: l.avg_physical_target,
     },
-    totalActivityCalendar: {
-      icon: <IconCalendarEvent stroke={1.5} />,
-      label: "Agenda",
+    avgPhysicalRealization: {
+      icon: <IconTimeline stroke={1.5} />,
+      label: l.avg_physical_realization,
     },
   };
   const { error, initialLoading, data, onRetry } = useDataState<any>({
-    initialData: undefined,
-    url: `/api/master-data/monev-dashboard/info`,
+    initialData: DUMMY_DASHBOARD_DATA,
+    // url: `/api/master-data/monev-dashboard/info`,
     dependencies: [],
     dataResource: false,
   });
@@ -582,37 +1018,105 @@ export default function KMISDashboardPage() {
     empty: <FeedbackNoData />,
     loaded: (
       <CContainer gap={4}>
-        <SimpleGrid columns={[1, 2, 4]} gap={4}>
-          <GridItem colSpan={2}>
-            <HStack
-              rounded={themeConfig.radii.component}
-              bg={"body"}
-              align={"start"}
-            >
-              <StatItem
-                icon={STATS_REGISTRY.networthHibah.icon}
-                label={STATS_REGISTRY.networthHibah.label}
-                value={formatNumber(data?.dashboard?.networthHibah) || "-"}
-              />
+        <SimpleGrid columns={[1, null, 2]} gap={4}>
+          <HStack
+            rounded={themeConfig.radii.component}
+            bg={"body"}
+            align={"start"}
+          >
+            <StatItem
+              icon={STATS_REGISTRY.networthHibahIDR.icon}
+              label={STATS_REGISTRY.networthHibahIDR.label}
+              value={formatNumber(data?.dashboard?.networthHibahIDR) || "-"}
+            />
 
-              {isSuperAdmin && (
-                <EditHibahNetworthTrigger
-                  dashboard={data?.dashboard}
-                  STATS_REGISTRY={STATS_REGISTRY}
-                  mt={2}
-                  mr={2}
-                  ml={"auto"}
-                >
-                  <Btn iconButton size={"xs"} variant={"ghost"}>
-                    <Icon boxSize={5}>
-                      <IconPencilMinus stroke={1.5} />
-                    </Icon>
-                  </Btn>
-                </EditHibahNetworthTrigger>
-              )}
-            </HStack>
-          </GridItem>
+            {isSuperAdmin && (
+              <EditHibahNetworthIDRTrigger
+                dashboard={data?.dashboard}
+                STATS_REGISTRY={STATS_REGISTRY}
+                mt={2}
+                mr={2}
+                ml={"auto"}
+              >
+                <Btn iconButton size={"xs"} variant={"ghost"}>
+                  <Icon boxSize={5}>
+                    <IconPencilMinus stroke={1.5} />
+                  </Icon>
+                </Btn>
+              </EditHibahNetworthIDRTrigger>
+            )}
+          </HStack>
 
+          <HStack
+            rounded={themeConfig.radii.component}
+            bg={"body"}
+            align={"start"}
+          >
+            <StatItem
+              icon={STATS_REGISTRY.networthHibahIDR.icon}
+              label={STATS_REGISTRY.networthHibahIDR.label}
+              value={formatNumber(data?.dashboard?.networthHibahIDR) || "-"}
+            />
+
+            {isSuperAdmin && (
+              <EditHibahNetworthUSDTrigger
+                dashboard={data?.dashboard}
+                STATS_REGISTRY={STATS_REGISTRY}
+                mt={2}
+                mr={2}
+                ml={"auto"}
+              >
+                <Btn iconButton size={"xs"} variant={"ghost"}>
+                  <Icon boxSize={5}>
+                    <IconPencilMinus stroke={1.5} />
+                  </Icon>
+                </Btn>
+              </EditHibahNetworthUSDTrigger>
+            )}
+          </HStack>
+        </SimpleGrid>
+
+        <HStack justify={"space-between"}>
+          <P color={"fg.subtle"}>{l.msg_data_below_shown_by_year}</P>
+
+          <HStack>
+            <P color={"fg.muted"}>{l.year}</P>
+
+            <MenuRoot>
+              <MenuTrigger asChild>
+                <Btn size={"xs"} pr={2} variant={"outline"}>
+                  {filter.year}
+
+                  <Icon>
+                    <IconCaretDownFilled />
+                  </Icon>
+                </Btn>
+              </MenuTrigger>
+
+              <MenuContent minW={"100px"} w={"100px"}>
+                {YEAR_OPTIONS.map((year) => {
+                  const isActive = filter.year === year;
+
+                  return (
+                    <MenuItem
+                      key={year}
+                      value={`${year}`}
+                      onClick={() => {
+                        setFilter({ ...filter, year: year });
+                      }}
+                    >
+                      {year}
+
+                      {isActive && <DotIndicator ml={"auto"} mr={"2px"} />}
+                    </MenuItem>
+                  );
+                })}
+              </MenuContent>
+            </MenuRoot>
+          </HStack>
+        </HStack>
+
+        <SimpleGrid columns={[1, null, 2]} gap={4}>
           <StatItem
             icon={STATS_REGISTRY.totalActivityPackages.icon}
             label={STATS_REGISTRY.totalActivityPackages.label}
@@ -627,88 +1131,18 @@ export default function KMISDashboardPage() {
         </SimpleGrid>
 
         <SimpleGrid columns={[1, null, 2]} gap={4}>
-          <CContainer
-            p={4}
-            gap={4}
-            bg={"body"}
-            rounded={themeConfig.radii.component}
-          >
-            <HStack>
-              {/* <Circle
-                p={1}
-                bg={`${hexWithOpacity(themeConfig.primaryColorHex, 0.075)}`}
-                color={themeConfig.primaryColor}
-              >
-                <Icon boxSize={5}>
-                  <IconReceipt stroke={1.5} />
-                </Icon>
-              </Circle> */}
+          <BudgetLineChart data={data} STATS_REGISTRY={STATS_REGISTRY} />
 
-              <P fontWeight={"semibold"}>{l.budget_progress}</P>
-            </HStack>
-
-            <SimpleGrid columns={2} gap={4}>
-              <StatItem
-                label={STATS_REGISTRY.totalActivityPackages.label}
-                value={formatNumber(data?.totalActivityPackages) || "-"}
-                p={1}
-              />
-
-              <StatItem
-                label={STATS_REGISTRY.sumBudgetTarget.label}
-                value={formatNumber(data?.sumBudgetTarget) || "-"}
-                p={1}
-              />
-            </SimpleGrid>
-          </CContainer>
-
-          <CContainer
-            p={4}
-            gap={4}
-            bg={"body"}
-            rounded={themeConfig.radii.component}
-          >
-            <HStack>
-              {/* <Circle
-                p={1}
-                bg={`${hexWithOpacity(themeConfig.primaryColorHex, 0.075)}`}
-                color={themeConfig.primaryColor}
-              >
-                <Icon boxSize={5}>
-                  <IconPercentage stroke={1.5} />
-                </Icon>
-              </Circle> */}
-
-              <P fontWeight={"semibold"}>{l.physical_progress}</P>
-            </HStack>
-
-            <SimpleGrid columns={2} gap={4}>
-              <StatItem
-                label={STATS_REGISTRY.avgPhysicalTarget.label}
-                value={`${formatNumber(data?.avgPhysicalTarget)}%` || "-"}
-                p={1}
-              />
-
-              <StatItem
-                label={STATS_REGISTRY.avgProgressRealization.label}
-                value={`${formatNumber(data?.avgProgressRealization)}%` || "-"}
-                p={1}
-              />
-            </SimpleGrid>
-          </CContainer>
-        </SimpleGrid>
-
-        <SimpleGrid columns={[1, null, 2]} gap={4}>
-          <BudgetTargetLineChart data={data} />
-
-          <BudgetRealizationLineChart data={data} />
+          <PhysicalLineChart data={data} STATS_REGISTRY={STATS_REGISTRY} />
         </SimpleGrid>
 
         <SimpleGrid columns={containerWidth < 1100 ? 1 : 2} gap={4}>
           <ItemContainer>
             <ItemHeaderContainer borderless>
               <HStack w={"full"} justify={"space-between"}>
-                <ItemHeaderTitle>{l.framework_file}</ItemHeaderTitle>
+                <ItemHeaderTitle>
+                  {capitalizeWords(l.framework_file)}
+                </ItemHeaderTitle>
 
                 {isSuperAdmin && (
                   <EditFilesTrigger
@@ -744,7 +1178,9 @@ export default function KMISDashboardPage() {
           <ItemContainer>
             <ItemHeaderContainer borderless>
               <HStack w={"full"} justify={"space-between"}>
-                <ItemHeaderTitle>{l.plan_file}</ItemHeaderTitle>
+                <ItemHeaderTitle>
+                  {capitalizeWords(l.plan_file)}
+                </ItemHeaderTitle>
 
                 {isSuperAdmin && (
                   <EditFilesTrigger type={"plan"} dashboard={data?.dashboard}>
@@ -777,6 +1213,8 @@ export default function KMISDashboardPage() {
       </CContainer>
     ),
   };
+
+  // console.debug(data);
 
   return (
     <PageContainer ref={containerRef}>

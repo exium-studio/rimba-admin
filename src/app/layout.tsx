@@ -5,8 +5,6 @@ import ClientSideOnly from "@/components/widget/ClientSideOnly";
 import { Metadata, Viewport } from "next";
 import { Figtree } from "next/font/google";
 import { APP } from "@/constants/_meta";
-import { Suspense } from "react";
-import { DefaultFallback } from "@/components/widget/DefaultFallback";
 
 interface Props {
   children: React.ReactNode;
@@ -69,9 +67,9 @@ const RootLayout = (props: Props) => {
       <body>
         <Provider>
           <Toaster />
-          <Suspense fallback={<DefaultFallback />}>
-            <ClientSideOnly>{children}</ClientSideOnly>
-          </Suspense>
+          {/* <Suspense fallback={<DefaultFallback />}> */}
+          <ClientSideOnly>{children}</ClientSideOnly>
+          {/* </Suspense> */}
         </Provider>
       </body>
     </html>

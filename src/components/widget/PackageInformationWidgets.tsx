@@ -828,7 +828,7 @@ export const RealizationDisclosure = (props: any) => {
                           max={100}
                           roundedTopRight={0}
                           roundedBottomRight={0}
-                          w={"82px"}
+                          w={"84px"}
                           placeholder="xxx"
                         />
                       </InputGroup>

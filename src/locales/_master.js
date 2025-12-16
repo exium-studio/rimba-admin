@@ -270,7 +270,7 @@ export const contract_type = {
   en: "Contract type",
 };
 export const code_output = {
-  id: "Kode Output",
+  id: "Kode output",
   en: "Input code",
 };
 export const pagu = {
@@ -1269,8 +1269,32 @@ export const topic_type = {
   id: "Tipe topik",
   en: "Topic type",
 };
+export const budget = {
+  id: "Anggaran",
+  en: "Budget",
+};
+export const physical = {
+  id: "Fisik",
+  en: "Physical",
+};
+export const physical_realization = {
+  id: "Realisasi fisik",
+  en: "Physical realization",
+};
+export const avg_physical_realization = {
+  id: "Rata-rata realisasi fisik",
+  en: "Average physical realization",
+};
+export const target_and_realization = {
+  id: "Target & realisasi",
+  en: "Target & realization",
+};
 
 // Message
+export const msg_data_below_shown_by_year = {
+  id: "Data dibawah ini ditampilkan berdasarkan tahun.",
+  en: "The data below is shown based on year.",
+};
 export const msg_validate_confirmation = {
   id: "Data akan divalidasi dan siap digunakan.",
   en: "The data will be validated and ready to use.",
