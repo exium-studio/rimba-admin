@@ -126,8 +126,8 @@ const DUMMY_DASHBOARD_DATA = {
   totalActivityCalendar: 8,
   sumBudgetTarget: 2135581000,
   sumBudgetRealization: 2135580000,
-  currentPhysicalTarget: 59,
-  currentPhysicalRealization: 35.63,
+  avgPhysicalTarget: 59,
+  avgPhysicalRealization: 35.63,
   chartBudget: [
     { month: 0, target: 0, realization: 0 },
     { month: 1, target: 150000000, realization: 120000000 },
@@ -368,14 +368,14 @@ const PhysicalLineChart = (props: Props__Chart) => {
       >
         <SimpleGrid columns={2} gap={4}>
           <StatItem
-            label={STATS_REGISTRY.currentPhysicalTarget.label}
-            value={`${formatNumber(data?.currentPhysicalTarget)}%` || "-"}
+            label={STATS_REGISTRY.avgPhysicalTarget.label}
+            value={`${formatNumber(data?.avgPhysicalTarget)}%` || "-"}
             p={1}
           />
 
           <StatItem
-            label={STATS_REGISTRY.currentPhysicalRealization.label}
-            value={`${formatNumber(data?.currentPhysicalRealization)}%` || "-"}
+            label={STATS_REGISTRY.avgPhysicalRealization.label}
+            value={`${formatNumber(data?.avgPhysicalRealization)}%` || "-"}
             p={1}
           />
         </SimpleGrid>
@@ -886,13 +886,13 @@ export default function KMISDashboardPage() {
       icon: <IconReceipt stroke={1.5} />,
       label: `Total ${l.budget_realization.toLowerCase()}`,
     },
-    currentPhysicalTarget: {
+    avgPhysicalTarget: {
       icon: <IconPercentage stroke={1.5} />,
-      label: l.current_physical_target,
+      label: l.avg_physical_target,
     },
-    currentPhysicalRealization: {
+    avgPhysicalRealization: {
       icon: <IconTimeline stroke={1.5} />,
-      label: l.current_physical_realization,
+      label: l.avg_physical_realization,
     },
   };
   const { error, initialLoading, data, onRetry } = useDataState<any>({
