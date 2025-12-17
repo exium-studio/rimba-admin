@@ -71,11 +71,11 @@ import { useFormik } from "formik";
 import { useEffect, useRef, useState } from "react";
 import {
   CartesianGrid,
-  LabelList,
   Line,
   LineChart,
   Tooltip,
   XAxis,
+  YAxis,
 } from "recharts";
 import * as yup from "yup";
 
@@ -126,207 +126,35 @@ const DUMMY_DASHBOARD_DATA = {
   totalActivityCalendar: 8,
   sumBudgetTarget: 2135581000,
   sumBudgetRealization: 2135580000,
-  avgPhysicalTarget: 59,
-  avgPhysicalRealization: 35.63,
-  statsBudgetTarget: [
-    {
-      month: 0,
-      value: 0,
-    },
-    {
-      month: 1,
-      value: 0,
-    },
-    {
-      month: 2,
-      value: 0,
-    },
-    {
-      month: 3,
-      value: 0,
-    },
-    {
-      month: 4,
-      value: 0,
-    },
-    {
-      month: 5,
-      value: 0,
-    },
-    {
-      month: 6,
-      value: 1000,
-    },
-    {
-      month: 7,
-      value: 515845000,
-    },
-    {
-      month: 8,
-      value: 859742000,
-    },
-    {
-      month: 9,
-      value: 416096000,
-    },
-    {
-      month: 10,
-      value: 343897000,
-    },
-    {
-      month: 11,
-      value: 0,
-    },
+  currentPhysicalTarget: 59,
+  currentPhysicalRealization: 35.63,
+  chartBudget: [
+    { month: 0, target: 0, realization: 0 },
+    { month: 1, target: 150000000, realization: 120000000 },
+    { month: 2, target: 220000000, realization: 180000000 },
+    { month: 3, target: 300000000, realization: 260000000 },
+    { month: 4, target: 280000000, realization: 240000000 },
+    { month: 5, target: 350000000, realization: 310000000 },
+    { month: 6, target: 400000000, realization: 360000000 },
+    { month: 7, target: 380000000, realization: 330000000 },
+    { month: 8, target: 420000000, realization: 370000000 },
+    { month: 9, target: 300000000, realization: 260000000 },
+    { month: 10, target: 250000000, realization: 200000000 },
+    { month: 11, target: 0, realization: 0 },
   ],
-  statsBudgetRealization: [
-    {
-      month: 0,
-      value: 0,
-    },
-    {
-      month: 1,
-      value: 0,
-    },
-    {
-      month: 2,
-      value: 0,
-    },
-    {
-      month: 3,
-      value: 0,
-    },
-    {
-      month: 4,
-      value: 0,
-    },
-    {
-      month: 5,
-      value: 0,
-    },
-    {
-      month: 6,
-      value: 0,
-    },
-    {
-      month: 7,
-      value: 515845000,
-    },
-    {
-      month: 8,
-      value: 859742000,
-    },
-    {
-      month: 9,
-      value: 416096000,
-    },
-    {
-      month: 10,
-      value: 343897000,
-    },
-    {
-      month: 11,
-      value: 0,
-    },
-  ],
-  statsPhysicalTarget: [
-    {
-      month: 0,
-      value: 0,
-    },
-    {
-      month: 1,
-      value: 0,
-    },
-    {
-      month: 2,
-      value: 0,
-    },
-    {
-      month: 3,
-      value: 0,
-    },
-    {
-      month: 4,
-      value: 0,
-    },
-    {
-      month: 5,
-      value: 0,
-    },
-    {
-      month: 6,
-      value: 1000,
-    },
-    {
-      month: 7,
-      value: 515845000,
-    },
-    {
-      month: 8,
-      value: 859742000,
-    },
-    {
-      month: 9,
-      value: 416096000,
-    },
-    {
-      month: 10,
-      value: 343897000,
-    },
-    {
-      month: 11,
-      value: 0,
-    },
-  ],
-  statsPhysicalRealization: [
-    {
-      month: 0,
-      value: 0,
-    },
-    {
-      month: 1,
-      value: 0,
-    },
-    {
-      month: 2,
-      value: 0,
-    },
-    {
-      month: 3,
-      value: 0,
-    },
-    {
-      month: 4,
-      value: 0,
-    },
-    {
-      month: 5,
-      value: 0,
-    },
-    {
-      month: 6,
-      value: 0,
-    },
-    {
-      month: 7,
-      value: 515845000,
-    },
-    {
-      month: 8,
-      value: 859742000,
-    },
-    {
-      month: 9,
-      value: 416096000,
-    },
-    {
-      month: 10,
-      value: 343897000,
-    },
-    {
-      month: 11,
-      value: 0,
-    },
+  chartPhysical: [
+    { month: 0, target: 0, realization: 0 },
+    { month: 1, target: 45, realization: 38 },
+    { month: 2, target: 52, realization: 47 },
+    { month: 3, target: 60, realization: 55 },
+    { month: 4, target: 65, realization: 58 },
+    { month: 5, target: 70, realization: 63 },
+    { month: 6, target: 75, realization: 69 },
+    { month: 7, target: 80, realization: 74 },
+    { month: 8, target: 85, realization: 78 },
+    { month: 9, target: 90, realization: 82 },
+    { month: 10, target: 95, realization: 88 },
+    { month: 11, target: 100, realization: 92 },
   ],
 };
 const DEFAULT_FILTER = {
@@ -396,10 +224,21 @@ const BudgetLineChart = (props: Props__Chart) => {
 
   // States
   const chart = useChart({
-    data: data?.statsBudgetTarget?.map((item: any, i: number) => ({
+    data: data?.chartBudget?.map((item: any, i: number) => ({
       months: MONTHS[lang][i],
-      budget: item.value,
+      Target: item.target,
+      Realization: item.realization,
     })),
+    // series: [
+    //   {
+    //     name: "Target",
+    //     color: themeConfig.primaryColorHex,
+    //   },
+    //   {
+    //     name: "Realization",
+    //     color: "orange.400",
+    //   },
+    // ],
   });
 
   return (
@@ -436,35 +275,60 @@ const BudgetLineChart = (props: Props__Chart) => {
           <CartesianGrid
             stroke={chart.color("border")}
             strokeDasharray="4 4"
-            horizontal={false}
+            vertical={false}
           />
           <XAxis
             dataKey={chart.key("months")}
             stroke={chart.color("border")}
             tickFormatter={(value) => value.slice(0, 3)}
           />
+          <YAxis
+            axisLine={false}
+            dataKey={chart.key("Target")}
+            stroke={chart.color("border")}
+            tickFormatter={(value) => formatNumber(value)}
+          />
+
           <Tooltip
             animationDuration={100}
             cursor={{ stroke: chart.color("border") }}
-            content={<Chart.Tooltip hideLabel />}
+            content={<Chart.Tooltip />}
           />
 
           <Line
             isAnimationActive={false}
-            dataKey={chart.key("budget")}
+            dataKey={chart.key("Target")}
             fill={chart.color(themeConfig.primaryColorHex)}
             stroke={chart.color(themeConfig.primaryColorHex)}
             strokeWidth={2}
           >
-            <LabelList
-              dataKey={chart.key("budget")}
+            {/* <LabelList
+              dataKey={chart.key("Target")}
               position="right"
               offset={10}
               style={{
                 fontWeight: "600",
                 fill: chart.color("fg"),
               }}
-            />
+            /> */}
+          </Line>
+
+          <Line
+            isAnimationActive={false}
+            dataKey={chart.key("Realization")}
+            fill={chart.color("orange.400")}
+            stroke={chart.color("orange.400")}
+            strokeWidth={2}
+          >
+            {/* <LabelList
+              dataKey={chart.key("Target")}
+              position="right"
+              offset={10}
+              style={{
+                fontWeight: "600",
+                fill: chart.color("fg"),
+              }}
+            /> */}
           </Line>
         </LineChart>
       </Chart.Root>
@@ -481,9 +345,10 @@ const PhysicalLineChart = (props: Props__Chart) => {
 
   // States
   const chart = useChart({
-    data: data?.statsBudgetRealization?.map((item: any, i: number) => ({
+    data: data?.chartPhysical?.map((item: any, i: number) => ({
       month: MONTHS[lang][i],
-      budget: item.value,
+      Target: item.target,
+      Realization: item.realization,
     })),
   });
 
@@ -503,14 +368,14 @@ const PhysicalLineChart = (props: Props__Chart) => {
       >
         <SimpleGrid columns={2} gap={4}>
           <StatItem
-            label={STATS_REGISTRY.avgPhysicalTarget.label}
-            value={`${formatNumber(data?.avgPhysicalTarget)}%` || "-"}
+            label={STATS_REGISTRY.currentPhysicalTarget.label}
+            value={`${formatNumber(data?.currentPhysicalTarget)}%` || "-"}
             p={1}
           />
 
           <StatItem
-            label={STATS_REGISTRY.avgPhysicalRealization.label}
-            value={`${formatNumber(data?.avgPhysicalRealization)}%` || "-"}
+            label={STATS_REGISTRY.currentPhysicalRealization.label}
+            value={`${formatNumber(data?.currentPhysicalRealization)}%` || "-"}
             p={1}
           />
         </SimpleGrid>
@@ -521,26 +386,32 @@ const PhysicalLineChart = (props: Props__Chart) => {
           <CartesianGrid
             stroke={chart.color("border")}
             strokeDasharray="3 3"
-            horizontal={false}
+            vertical={false}
           />
           <XAxis
             dataKey={chart.key("month")}
             tickFormatter={(value) => value.slice(0, 3)}
             stroke={chart.color("border")}
           />
+          <YAxis
+            axisLine={false}
+            dataKey={chart.key("Target")}
+            stroke={chart.color("border")}
+            tickFormatter={(value) => formatNumber(value)}
+          />
           <Tooltip
             animationDuration={100}
             cursor={{ stroke: chart.color("border") }}
-            content={<Chart.Tooltip hideLabel />}
+            content={<Chart.Tooltip />}
           />
           <Line
             isAnimationActive={false}
-            dataKey={chart.key("budget")}
+            dataKey={chart.key("Target")}
             fill={chart.color(themeConfig.primaryColorHex)}
             stroke={chart.color(themeConfig.primaryColorHex)}
             strokeWidth={2}
           >
-            <LabelList
+            {/* <LabelList
               dataKey={chart.key("budget")}
               position="right"
               offset={10}
@@ -548,7 +419,25 @@ const PhysicalLineChart = (props: Props__Chart) => {
                 fontWeight: "600",
                 fill: chart.color("fg"),
               }}
-            />
+            /> */}
+          </Line>
+
+          <Line
+            isAnimationActive={false}
+            dataKey={chart.key("Realization")}
+            fill={chart.color("orange.400")}
+            stroke={chart.color("orange.400")}
+            strokeWidth={2}
+          >
+            {/* <LabelList
+              dataKey={chart.key("budget")}
+              position="right"
+              offset={10}
+              style={{
+                fontWeight: "600",
+                fill: chart.color("fg"),
+              }}
+            /> */}
           </Line>
         </LineChart>
       </Chart.Root>
@@ -997,13 +886,13 @@ export default function KMISDashboardPage() {
       icon: <IconReceipt stroke={1.5} />,
       label: `Total ${l.budget_realization.toLowerCase()}`,
     },
-    avgPhysicalTarget: {
+    currentPhysicalTarget: {
       icon: <IconPercentage stroke={1.5} />,
-      label: l.avg_physical_target,
+      label: l.current_physical_target,
     },
-    avgPhysicalRealization: {
+    currentPhysicalRealization: {
       icon: <IconTimeline stroke={1.5} />,
-      label: l.avg_physical_realization,
+      label: l.current_physical_realization,
     },
   };
   const { error, initialLoading, data, onRetry } = useDataState<any>({

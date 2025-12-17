@@ -1217,10 +1217,6 @@ export const before = {
   id: "Sebelum",
   en: "Before",
 };
-export const avg_physical_target = {
-  id: "Rata-rata target fisik",
-  en: "Average physical target",
-};
 export const avg_progress_realization = {
   id: "Rata-rata progres realisasi",
   en: "Average progress realization",
@@ -1281,9 +1277,13 @@ export const physical_realization = {
   id: "Realisasi fisik",
   en: "Physical realization",
 };
-export const avg_physical_realization = {
-  id: "Rata-rata realisasi fisik",
-  en: "Average physical realization",
+export const current_physical_target = {
+  id: "Target fisik saat ini",
+  en: "Current physical target",
+};
+export const current_physical_realization = {
+  id: "Realisasi fisik saat ini",
+  en: "Current physical realization",
 };
 export const target_and_realization = {
   id: "Target & realisasi",
