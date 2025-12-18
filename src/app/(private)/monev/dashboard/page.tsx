@@ -167,13 +167,14 @@ const YEAR_OPTIONS = Array.from(
 
 interface Props__StatItem extends StackProps {
   icon?: any;
+  iconLetter?: string;
   label: string;
   value: string;
   iconBg?: string;
 }
 const StatItem = (props: Props__StatItem) => {
   // Props
-  const { icon, label, value, iconBg, ...restProps } = props;
+  const { icon, iconLetter, label, value, iconBg, ...restProps } = props;
 
   // Contexts
   const { themeConfig } = useThemeConfig();
@@ -186,14 +187,25 @@ const StatItem = (props: Props__StatItem) => {
       rounded={themeConfig.radii.container}
       {...restProps}
     >
-      {icon && (
+      {(icon || iconLetter) && (
         <Circle
           p={3}
           bg={iconBg || `${hexWithOpacity(themeConfig.primaryColorHex, 0.075)}`}
         >
-          <Icon boxSize={8} color={themeConfig.primaryColorHex}>
-            {icon}
-          </Icon>
+          {iconLetter ? (
+            <P
+              fontSize={"xl"}
+              fontWeight={"medium"}
+              textAlign={"center"}
+              m={"auto"}
+            >
+              {iconLetter}
+            </P>
+          ) : (
+            <Icon boxSize={8} color={themeConfig.primaryColorHex}>
+              {icon}
+            </Icon>
+          )}
         </Circle>
       )}
 
@@ -921,6 +933,7 @@ export default function KMISDashboardPage() {
           >
             <StatItem
               icon={STATS_REGISTRY.networthHibahIDR.icon}
+              iconLetter={STATS_REGISTRY.networthHibahIDR.currency}
               label={STATS_REGISTRY.networthHibahIDR.label}
               value={formatNumber(data?.dashboard?.networthHibahIDR) || "-"}
             />
@@ -948,9 +961,10 @@ export default function KMISDashboardPage() {
             align={"start"}
           >
             <StatItem
-              icon={STATS_REGISTRY.networthHibahIDR.icon}
-              label={STATS_REGISTRY.networthHibahIDR.label}
-              value={formatNumber(data?.dashboard?.networthHibahIDR) || "-"}
+              icon={STATS_REGISTRY.networthHibahUSD.icon}
+              iconLetter={STATS_REGISTRY.networthHibahUSD.currency}
+              label={STATS_REGISTRY.networthHibahUSD.label}
+              value={formatNumber(data?.dashboard?.networthHibahUSD) || "-"}
             />
 
             {isSuperAdmin && (
