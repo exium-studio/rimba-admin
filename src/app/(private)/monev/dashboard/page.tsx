@@ -327,6 +327,7 @@ const BudgetLineChart = (props: Props__Chart) => {
 
           <Line
             dot={false}
+            animationDuration={200}
             dataKey={chart.key("Realization")}
             fill={chart.color("orange.400")}
             stroke={chart.color("orange.400")}
@@ -484,6 +485,7 @@ const EditHibahNetworthIDRTrigger = (props: any) => {
     validateOnChange: false,
     initialValues: {
       networthHibahIDR: null as number | null,
+      networthHibahUSD: null as number | null,
       frameworkFiles: [] as any[],
       planFiles: [] as any[],
       deleteFrameworkFileIds: [],
@@ -496,7 +498,7 @@ const EditHibahNetworthIDRTrigger = (props: any) => {
       back();
 
       const payload = new FormData();
-      payload.append("hibah", `${values.networthHibahIDR}`);
+      payload.append("hibahIDR", `${values.networthHibahIDR}`);
       payload.append("description", "-");
 
       const config = {
@@ -519,6 +521,7 @@ const EditHibahNetworthIDRTrigger = (props: any) => {
   useEffect(() => {
     formik.setValues({
       networthHibahIDR: dashboard?.networthHibahIDR,
+      networthHibahUSD: dashboard?.networthHibahUSD,
       frameworkFiles: [],
       planFiles: [],
       deleteFrameworkFileIds: [],
@@ -597,6 +600,7 @@ const EditHibahNetworthUSDTrigger = (props: any) => {
   const formik = useFormik({
     validateOnChange: false,
     initialValues: {
+      networthHibahIDR: null as number | null,
       networthHibahUSD: null as number | null,
       frameworkFiles: [] as any[],
       planFiles: [] as any[],
@@ -610,7 +614,7 @@ const EditHibahNetworthUSDTrigger = (props: any) => {
       back();
 
       const payload = new FormData();
-      payload.append("hibah", `${values.networthHibahUSD}`);
+      payload.append("hibahUSD", `${values.networthHibahUSD}`);
       payload.append("description", "-");
 
       const config = {
@@ -632,6 +636,7 @@ const EditHibahNetworthUSDTrigger = (props: any) => {
 
   useEffect(() => {
     formik.setValues({
+      networthHibahIDR: dashboard?.networthHibahIDR,
       networthHibahUSD: dashboard?.networthHibahUSD,
       frameworkFiles: [],
       planFiles: [],
