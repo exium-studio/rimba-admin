@@ -308,7 +308,7 @@ const BudgetLineChart = (props: Props__Chart) => {
           />
 
           <Line
-            isAnimationActive={false}
+            dot={false}
             dataKey={chart.key("Target")}
             fill={chart.color(themeConfig.primaryColorHex)}
             stroke={chart.color(themeConfig.primaryColorHex)}
@@ -326,7 +326,7 @@ const BudgetLineChart = (props: Props__Chart) => {
           </Line>
 
           <Line
-            isAnimationActive={false}
+            dot={false}
             dataKey={chart.key("Realization")}
             fill={chart.color("orange.400")}
             stroke={chart.color("orange.400")}
@@ -417,7 +417,7 @@ const PhysicalLineChart = (props: Props__Chart) => {
             content={<Chart.Tooltip />}
           />
           <Line
-            isAnimationActive={false}
+            dot={false}
             dataKey={chart.key("Target")}
             fill={chart.color(themeConfig.primaryColorHex)}
             stroke={chart.color(themeConfig.primaryColorHex)}
@@ -435,7 +435,7 @@ const PhysicalLineChart = (props: Props__Chart) => {
           </Line>
 
           <Line
-            isAnimationActive={false}
+            dot={false}
             dataKey={chart.key("Realization")}
             fill={chart.color("orange.400")}
             stroke={chart.color("orange.400")}
