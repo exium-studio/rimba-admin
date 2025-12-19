@@ -45,6 +45,11 @@ export default function ClientSideOnly(props: Props) {
     purgeDisclosureSearchParams();
   }, []);
 
+  // force dark mode = off
+  useEffect(() => {
+    setColorMode("light");
+  }, []);
+
   // Handle offline alert
   useOfflineAlert({ mounted });
 
