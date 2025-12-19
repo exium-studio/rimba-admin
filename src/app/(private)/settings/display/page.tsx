@@ -44,7 +44,6 @@ const ManualDarkModeSetting = () => {
   const { themeConfig } = useThemeConfig();
   const { l } = useLang();
   const { colorMode, setColorMode } = useColorMode();
-  const { ADM } = useADM();
 
   // States, Refs
   const timeoutRef = useRef<any>(null);
@@ -73,13 +72,14 @@ const ManualDarkModeSetting = () => {
   }, [colorMode]);
 
   return (
-    <SettingsItemContainer disabled={ADM}>
+    <SettingsItemContainer disabled={true}>
       <CContainer>
         <P>{l.settings_dark_mode.title}</P>
         <P color={"fg.subtle"}>{l.settings_dark_mode.description}</P>
       </CContainer>
 
       <Switch
+        disabled
         checked={active}
         onCheckedChange={(e) => {
           setActive(e.checked);
