@@ -189,15 +189,18 @@ const StatItem = (props: Props__StatItem) => {
     >
       {(icon || iconLetter) && (
         <Circle
+          w={"56px"}
+          h={"56px"}
           p={3}
           bg={iconBg || `${hexWithOpacity(themeConfig.primaryColorHex, 0.075)}`}
         >
           {iconLetter ? (
             <P
               fontSize={"xl"}
-              fontWeight={"medium"}
+              fontWeight={"semibold"}
               textAlign={"center"}
               m={"auto"}
+              color={themeConfig.primaryColorHex}
             >
               {iconLetter}
             </P>
