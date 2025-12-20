@@ -196,11 +196,12 @@ const StatItem = (props: Props__StatItem) => {
         >
           {iconLetter ? (
             <P
-              fontSize={"xl"}
+              fontSize={"lg"}
               fontWeight={"semibold"}
               textAlign={"center"}
               m={"auto"}
               color={themeConfig.primaryColorHex}
+              whiteSpace={"nowrap"}
             >
               {iconLetter}
             </P>
