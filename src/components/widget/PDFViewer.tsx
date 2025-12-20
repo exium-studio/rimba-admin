@@ -23,14 +23,88 @@ import {
 } from "@tabler/icons-react";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
+import { useThemeConfig } from "@/context/useThemeConfig";
+import { MenuContent, MenuRoot, MenuTrigger } from "@/components/ui/menu";
+import { P } from "@/components/ui/p";
+import { NumInput } from "@/components/ui/number-input";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@4.4.168/build/pdf.worker.min.mjs`;
+
+const PageJump = (props: any) => {
+  // Props
+  const { pageNumber, setPageNumber, numPages, ...restProps } = props;
+
+  // Contexts
+  const { themeConfig } = useThemeConfig();
+
+  // States
+  const [gotoPage, setGotoPage] = useState<number | null>(null);
+
+  // Utils
+  function handleJumpPage(gotoPage: number | null) {
+    if (gotoPage && gotoPage > 0 && gotoPage <= numPages) {
+      console.debug(gotoPage);
+      setPageNumber(gotoPage);
+    }
+  }
+
+  return (
+    <MenuRoot
+      positioning={{
+        placement: "bottom",
+      }}
+    >
+      <MenuTrigger asChild>
+        <Btn
+          px={2}
+          variant={"ghost"}
+          fontWeight={"medium"}
+          whiteSpace={"nowrap"}
+          fontVariantNumeric={"tabular-nums"}
+          {...restProps}
+        >
+          {pageNumber} / {numPages || "?"}
+        </Btn>
+      </MenuTrigger>
+
+      <MenuContent p={0}>
+        <CContainer gap={2} p={2}>
+          <P fontSize={"sm"} fontWeight={"medium"} color={"fg.subtle"}>
+            Go to page
+          </P>
+
+          <NumInput
+            inputValue={gotoPage}
+            onChange={(inputValue) => {
+              setGotoPage(inputValue);
+            }}
+            max={numPages}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleJumpPage(gotoPage);
+            }}
+          />
+
+          <Btn
+            colorPalette={themeConfig.colorPalette}
+            disabled={gotoPage === null}
+            onClick={() => {
+              handleJumpPage(gotoPage);
+            }}
+          >
+            Go
+          </Btn>
+        </CContainer>
+      </MenuContent>
+    </MenuRoot>
+  );
+};
 
 interface Props__PDFToolbar extends StackProps {
   utils: any;
   toggleMode: () => void;
   isSingleMode: boolean;
   pageNumber: number;
+  setPageNumber: React.Dispatch<number>;
   numPages: number | null;
   scale: number;
 }
@@ -41,6 +115,7 @@ const Toolbar = (props: Props__PDFToolbar) => {
     toggleMode,
     isSingleMode,
     pageNumber,
+    setPageNumber,
     numPages,
     scale,
     ...restProps
@@ -75,9 +150,15 @@ const Toolbar = (props: Props__PDFToolbar) => {
             </UtilBtn>
 
             {/* Page Indicator */}
-            <Box fontWeight={"medium"} px={2} whiteSpace={"nowrap"}>
+            {/* <Box fontWeight={"medium"} px={2} whiteSpace={"nowrap"}>
               {pageNumber} / {numPages || "--"}
-            </Box>
+            </Box> */}
+            {/* Page Indicator */}
+            <PageJump
+              pageNumber={pageNumber}
+              setPageNumber={setPageNumber}
+              numPages={numPages}
+            />
 
             <UtilBtn
               onClick={utils.nextPage}
@@ -208,6 +289,7 @@ export const PDFViewer = (props: Props__PdfViewer) => {
         isSingleMode={isSingleMode}
         toggleMode={toggleMode}
         pageNumber={pageNumber}
+        setPageNumber={setPageNumber}
         numPages={numPages}
         scale={scale}
         flexShrink={0}
