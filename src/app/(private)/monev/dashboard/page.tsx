@@ -753,7 +753,8 @@ const EditFilesTrigger = (props: any) => {
       back();
 
       const payload = new FormData();
-      payload.append("hibah", `${dashboard?.networthHibah}`);
+      payload.append("hibahIDR", `${dashboard?.networthHibahIDR}`);
+      payload.append("hibahUSD", `${dashboard?.networthHibahUSD}`);
       payload.append("description", "-");
       if (values.files?.[0]) {
         for (const file of values.files) {
