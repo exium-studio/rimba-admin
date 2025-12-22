@@ -72,7 +72,7 @@ const ManualDarkModeSetting = () => {
   }, [colorMode]);
 
   return (
-    <SettingsItemContainer disabled={true}>
+    <SettingsItemContainer disabled>
       <CContainer>
         <P>{l.settings_dark_mode.title}</P>
         <P color={"fg.subtle"}>{l.settings_dark_mode.description}</P>
@@ -112,7 +112,7 @@ const ADMSetting = () => {
   }, [active]);
 
   return (
-    <SettingsItemContainer>
+    <SettingsItemContainer disabled>
       <CContainer>
         <P>{l.settings_adaptive_dark_mode.title}</P>
         <P color={"fg.subtle"}>{l.settings_adaptive_dark_mode.description}</P>
