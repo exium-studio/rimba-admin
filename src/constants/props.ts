@@ -29,6 +29,11 @@ import {
   Type__Period,
 } from "./types";
 
+export interface Props__PdfViewer extends StackProps {
+  fileUrl: string;
+  fileName?: string;
+}
+
 export interface Props__DisclosureHeaderContent {
   title?: string;
   withCloseButton?: boolean;
