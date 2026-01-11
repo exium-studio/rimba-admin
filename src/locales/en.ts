@@ -251,6 +251,7 @@ const translations = {
   "june": "June",
   "language": "Language",
   "learn_more": "Learn more",
+  "legal_docs_category": "Legal document category",
   "list_of_questions": "List of questions",
   "loading_default": {
     "title": "Loading",
@@ -519,7 +520,8 @@ const translations = {
       "index": "CMS Master Data",
       "activity_category": "Activity Category",
       "news_category": "News Category",
-      "animal_category": "Animal Category"
+      "animal_category": "Animal Category",
+      "legal_docs_category": "Legal Document Category"
     },
     "kmis_master_data": {
       "index": "KMIS Master Data",

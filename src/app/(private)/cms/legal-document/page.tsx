@@ -20,6 +20,7 @@ import { Tooltip, TooltipProps } from "@/components/ui/tooltip";
 import BackButton from "@/components/widget/BackButton";
 import { ClampText } from "@/components/widget/ClampText";
 import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
+import { CreateCMSLegalDocsCategoryDisclosureTrigger } from "@/components/widget/CreateCMSLegalDocsCategoryDisclosure";
 import { DataDisplayToggle } from "@/components/widget/DataDisplayToggle";
 import { DataGrid } from "@/components/widget/DataGrid";
 import { DataGridItem } from "@/components/widget/DataGridItem";
@@ -28,12 +29,14 @@ import FeedbackNoData from "@/components/widget/FeedbackNoData";
 import FeedbackRetry from "@/components/widget/FeedbackRetry";
 import { FileItem } from "@/components/widget/FIleItem";
 import { PageContainer, PageContent } from "@/components/widget/Page";
+import { SelectCMSLegalDocsCategory } from "@/components/widget/SelectCMSLegalDocsCategory";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
 import {
   Interface__BatchOptionsTableOptionGenerator,
   Interface__CMSLegalDocs,
   Interface__DataProps,
   Interface__RowOptionsTableOptionGenerator,
+  Interface__SelectOption,
   Interface__StorageFile,
 } from "@/constants/interfaces";
 import { useDataDisplay } from "@/context/useDataDisplay";
@@ -117,6 +120,7 @@ const Create = (props: any) => {
   const formik = useFormik({
     validateOnChange: false,
     initialValues: {
+      category: null as Interface__SelectOption[] | null,
       files: null as any,
       titleId: "",
       titleEn: "",
@@ -124,6 +128,7 @@ const Create = (props: any) => {
       descriptionEn: "",
     },
     validationSchema: yup.object().shape({
+      category: yup.array().required(l.msg_required_form),
       files: fileValidation({
         maxSizeMB: 10,
         allowedExtensions: ["pdf"],
@@ -142,6 +147,7 @@ const Create = (props: any) => {
           payload.append("files", file);
         }
       }
+      payload.append("categoryId", `${formik.values.category?.[0]?.id}`);
       payload.append(
         "title",
         JSON.stringify({
@@ -201,6 +207,30 @@ const Create = (props: any) => {
           <DisclosureBody>
             <form id={ID} onSubmit={formik.handleSubmit}>
               <FieldsetRoot disabled={loading}>
+                <Field
+                  label={l.category}
+                  invalid={!!formik.errors.category}
+                  errorText={formik.errors.category as string}
+                >
+                  <HStack w={"full"}>
+                    <SelectCMSLegalDocsCategory
+                      inputValue={formik.values.category}
+                      onConfirm={(inputValue) => {
+                        formik.setFieldValue("category", inputValue);
+                      }}
+                      flex={1}
+                    />
+
+                    <CreateCMSLegalDocsCategoryDisclosureTrigger>
+                      <Btn iconButton variant={"outline"}>
+                        <Icon>
+                          <IconPlus stroke={1.5} />
+                        </Icon>
+                      </Btn>
+                    </CreateCMSLegalDocsCategoryDisclosureTrigger>
+                  </HStack>
+                </Field>
+
                 <Field
                   label={"Files"}
                   invalid={!!formik.errors.files}
@@ -345,7 +375,7 @@ const Update = (props: any) => {
   const resolvedData = data as Interface__Data;
 
   // Contexts
-  const { l } = useLang();
+  const { l, lang } = useLang();
   const { themeConfig } = useThemeConfig();
   const setRt = useRenderTrigger((s) => s.setRt);
 
@@ -371,6 +401,7 @@ const Update = (props: any) => {
   const formik = useFormik({
     validateOnChange: false,
     initialValues: {
+      category: null as Interface__SelectOption[] | null,
       files: null as any,
       titleId: "",
       titleEn: "",
@@ -379,6 +410,7 @@ const Update = (props: any) => {
       deleteDocumentIds: [],
     },
     validationSchema: yup.object().shape({
+      category: yup.array().required(l.msg_required_form),
       files: fileValidation({
         allowedExtensions: ["pdf"],
       }).concat(
@@ -442,6 +474,12 @@ const Update = (props: any) => {
 
   useEffect(() => {
     formik.setValues({
+      category: [
+        {
+          id: resolvedData?.documentCategory?.id,
+          label: resolvedData?.documentCategory?.name?.[lang],
+        },
+      ],
       files: [],
       titleId: resolvedData.title.id,
       titleEn: resolvedData.title.en,
@@ -471,6 +509,30 @@ const Update = (props: any) => {
           <DisclosureBody>
             <form id={ID} onSubmit={formik.handleSubmit}>
               <FieldsetRoot disabled={loading}>
+                <Field
+                  label={l.category}
+                  invalid={!!formik.errors.category}
+                  errorText={formik.errors.category as string}
+                >
+                  <HStack w={"full"}>
+                    <SelectCMSLegalDocsCategory
+                      inputValue={formik.values.category}
+                      onConfirm={(inputValue) => {
+                        formik.setFieldValue("category", inputValue);
+                      }}
+                      flex={1}
+                    />
+
+                    <CreateCMSLegalDocsCategoryDisclosureTrigger>
+                      <Btn iconButton variant={"outline"}>
+                        <Icon>
+                          <IconPlus stroke={1.5} />
+                        </Icon>
+                      </Btn>
+                    </CreateCMSLegalDocsCategoryDisclosureTrigger>
+                  </HStack>
+                </Field>
+
                 <Field
                   label={"Files"}
                   invalid={!!formik.errors.files}

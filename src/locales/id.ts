@@ -251,6 +251,7 @@ const translations = {
   "june": "Juni",
   "language": "Bahasa",
   "learn_more": "Pelajari lebih lanjut",
+  "legal_docs_category": "Kategori dokumen hukum",
   "list_of_questions": "Daftar soal",
   "loading_default": {
     "title": "Memuat",
@@ -519,7 +520,8 @@ const translations = {
       "index": "CMS Master Data",
       "activity_category": "Kategori Aktivitas",
       "news_category": "Kategori Berita",
-      "animal_category": "Kategori Satwa"
+      "animal_category": "Kategori Satwa",
+      "legal_docs_category": "Kategori Dokumen Hukum"
     },
     "kmis_master_data": {
       "index": "KMIS Master Data",

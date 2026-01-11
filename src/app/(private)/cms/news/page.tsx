@@ -661,12 +661,23 @@ const Update = (props: any) => {
                       invalid={!!formik.errors.category}
                       errorText={formik.errors.category as string}
                     >
-                      <SelectCMSActivityCategory
-                        inputValue={formik.values.category}
-                        onChange={(inputValue) => {
-                          formik.setFieldValue("category", inputValue);
-                        }}
-                      />
+                      <HStack w={"full"}>
+                        <SelectCMSActivityCategory
+                          inputValue={formik.values.category}
+                          onChange={(inputValue) => {
+                            formik.setFieldValue("category", inputValue);
+                          }}
+                          flex={1}
+                        />
+
+                        <CreateCMSNewsCategoryDisclosureTrigger>
+                          <Btn iconButton variant={"outline"}>
+                            <Icon>
+                              <IconPlus stroke={1.5} />
+                            </Icon>
+                          </Btn>
+                        </CreateCMSNewsCategoryDisclosureTrigger>
+                      </HStack>
                     </Field>
 
                     <Field

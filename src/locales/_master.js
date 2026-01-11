@@ -143,6 +143,10 @@ export const settings_navs = {
       id: "Kategori Satwa",
       en: "Animal Category",
     },
+    legal_docs_category: {
+      id: "Kategori Dokumen Hukum",
+      en: "Legal Document Category",
+    },
   },
   kmis_master_data: {
     index: {
@@ -1296,6 +1300,10 @@ export const avg_physical_realization = {
 export const target_and_realization = {
   id: "Target & realisasi",
   en: "Target & realization",
+};
+export const legal_docs_category = {
+  id: "Kategori dokumen hukum",
+  en: "Legal document category",
 };
 
 // Message

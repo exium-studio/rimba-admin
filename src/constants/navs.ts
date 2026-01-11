@@ -206,6 +206,12 @@ export const OTHER_NAVS: Interface__NavItem[] = [
             list: [
               {
                 icon: IconCategory,
+                labelKey: "settings_navs.cms_master_data.legal_docs_category",
+                path: `/settings/legal-docs-category`,
+                backPath: `/settings`,
+              },
+              {
+                icon: IconCategory,
                 labelKey: "settings_navs.cms_master_data.activity_category",
                 path: `/settings/activity-category`,
                 backPath: `/settings`,

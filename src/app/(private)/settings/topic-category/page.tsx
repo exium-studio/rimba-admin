@@ -418,7 +418,7 @@ const Data = (props: any) => {
   const dataProps: Interface__DataProps = {
     headers: [
       {
-        th: l.title,
+        th: l.name,
         sortable: true,
       },
       {

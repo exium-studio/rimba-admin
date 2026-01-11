@@ -17,7 +17,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipProps } from "@/components/ui/tooltip";
 import { ClampText } from "@/components/widget/ClampText";
 import { ConfirmationDisclosureTrigger } from "@/components/widget/ConfirmationDisclosure";
-import { CreateCMSActivityCategoryDisclosureTrigger } from "@/components/widget/CreateCMSActivityCategoryDisclosure";
+import { CreateCMSLegalDocsCategoryDisclosureTrigger } from "@/components/widget/CreateCMSLegalDocsCategoryDisclosure";
 import { DataGrid } from "@/components/widget/DataGrid";
 import { DataGridItem } from "@/components/widget/DataGridItem";
 import { DataTable } from "@/components/widget/DataTable";
@@ -27,8 +27,8 @@ import { PageContent } from "@/components/widget/Page";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
 import {
   Interface__BatchOptionsTableOptionGenerator,
-  Interface__Gens,
   Interface__DataProps,
+  Interface__Gens,
   Interface__RowOptionsTableOptionGenerator,
 } from "@/constants/interfaces";
 import { useDataDisplay } from "@/context/useDataDisplay";
@@ -63,8 +63,8 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import * as yup from "yup";
 
-const BASE_ENDPOINT = "/api/master-data/event-category";
-const PREFIX_ID = "cms_activity_category";
+const BASE_ENDPOINT = "/api/master-data/legal-docs-category";
+const PREFIX_ID = "cms_legal_docs_category";
 type Interface__Data = Interface__Gens;
 
 const MenuTooltip = (props: TooltipProps) => {
@@ -90,7 +90,7 @@ const Create = () => {
   const iss = useIsSmScreenWidth();
 
   return (
-    <CreateCMSActivityCategoryDisclosureTrigger>
+    <CreateCMSLegalDocsCategoryDisclosureTrigger>
       <Tooltip content={`${l.add} data`}>
         <Btn
           iconButton={iss ? true : false}
@@ -105,7 +105,7 @@ const Create = () => {
           {!iss && l.add}
         </Btn>
       </Tooltip>
-    </CreateCMSActivityCategoryDisclosureTrigger>
+    </CreateCMSLegalDocsCategoryDisclosureTrigger>
   );
 };
 const DataUtils = (props: any) => {

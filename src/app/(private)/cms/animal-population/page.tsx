@@ -126,6 +126,7 @@ const Create = (props: any) => {
       total: null as number | null,
     },
     validationSchema: yup.object().shape({
+      category: yup.array().required(l.msg_required_form),
       files: fileValidation({
         maxSizeMB: 10,
         allowedExtensions: ["jpg", "jpeg", "png"],
@@ -204,10 +205,8 @@ const Create = (props: any) => {
               <FieldsetRoot disabled={loading}>
                 <Field
                   label={l.animal_cateogry}
-                  invalid={!!(formik.errors.nameId || formik.errors.nameEn)}
-                  errorText={
-                    (formik.errors.nameId || formik.errors.nameEn) as string
-                  }
+                  invalid={!!formik.errors.category}
+                  errorText={formik.errors.category as string}
                 >
                   <HStack w={"full"}>
                     <SelectCMSAnimalCategory
@@ -428,9 +427,9 @@ const Update = (props: any) => {
   const formik = useFormik({
     validateOnChange: false,
     initialValues: {
+      category: null as Interface__SelectOption[] | null,
       files: null as any,
       deleteDocumentIds: [],
-      category: null as Interface__SelectOption[] | null,
       nameId: "",
       nameEn: "",
       descriptionId: "",
@@ -438,6 +437,7 @@ const Update = (props: any) => {
       total: null as number | null,
     },
     validationSchema: yup.object().shape({
+      category: yup.array().required(l.msg_required_form),
       files: fileValidation({
         maxSizeMB: 10,
         allowedExtensions: ["jpg", "jpeg", "png"],
