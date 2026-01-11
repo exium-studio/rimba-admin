@@ -27,7 +27,7 @@ import { PageContent } from "@/components/widget/Page";
 import { TableSkeleton } from "@/components/widget/TableSkeleton";
 import {
   Interface__BatchOptionsTableOptionGenerator,
-  Interface__CMSNewsCategory,
+  Interface__Gens,
   Interface__DataProps,
   Interface__RowOptionsTableOptionGenerator,
 } from "@/constants/interfaces";
@@ -65,7 +65,7 @@ import * as yup from "yup";
 
 const BASE_ENDPOINT = "/api/master-data/news-category";
 const PREFIX_ID = "cms_news_category";
-type Interface__Data = Interface__CMSNewsCategory;
+type Interface__Data = Interface__Gens;
 
 const MenuTooltip = (props: TooltipProps) => {
   // Props
