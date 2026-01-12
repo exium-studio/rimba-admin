@@ -23,7 +23,7 @@
   z-index: 9999 !important;
 }
 .tox-tinymce-aux {
-  z-index: 10000 !important; /* dropdowns, dialogs */
+  z-index: 10000 !important;
 }
 
 .mapboxgl-ctrl-bottom-right,

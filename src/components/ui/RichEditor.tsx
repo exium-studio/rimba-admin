@@ -18,7 +18,7 @@ export const RichEditor = (props: Props__RichEditor) => {
         toolbar:
           "undo redo | formatselect | bold italic backcolor | " +
           "alignleft aligncenter alignright alignjustify | " +
-          "bullist numlist outdent indent | removeformat | help | " +
+          "bullist numlist outdent indent | removeformat | " +
           "h1 h2 h3 h4 h5 h6",
         style_formats: [
           { title: "Heading 1", format: "h1" },
@@ -29,6 +29,8 @@ export const RichEditor = (props: Props__RichEditor) => {
           { title: "Heading 6", format: "h6" },
         ],
         highlight_on_focus: false,
+        fixed_toolbar_container: document.body,
+        popup_parent: document.body,
       }}
       value={inputValue}
       onEditorChange={(content) => {
