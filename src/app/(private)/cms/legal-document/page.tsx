@@ -872,6 +872,10 @@ const Data = (props: any) => {
   const dataProps: Interface__DataProps = {
     headers: [
       {
+        th: l.category,
+        sortable: true,
+      },
+      {
         th: l.title,
         sortable: true,
       },
@@ -906,6 +910,10 @@ const Data = (props: any) => {
       data: item,
       dim: !!item.deletedAt,
       columns: [
+        {
+          td: <ClampText>{`${item.documentCategory?.name?.[lang]}`}</ClampText>,
+          value: item.documentCategory?.name?.[lang],
+        },
         {
           td: <ClampText>{`${item.title[lang]}`}</ClampText>,
           value: item.title[lang],

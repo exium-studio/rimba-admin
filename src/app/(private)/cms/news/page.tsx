@@ -1053,6 +1053,10 @@ const Data = (props: any) => {
   const dataProps: Interface__DataProps = {
     headers: [
       {
+        th: l.category,
+        sortable: true,
+      },
+      {
         th: "Thumbnail",
         align: "center",
       },
@@ -1085,6 +1089,10 @@ const Data = (props: any) => {
       data: item,
       dim: !!item.deletedAt,
       columns: [
+        {
+          td: <ClampText>{`${item.newsCategory?.name?.[lang]}`}</ClampText>,
+          value: item.newsCategory?.name?.[lang],
+        },
         {
           td: (
             <ImgViewer
