@@ -1,16 +1,21 @@
 "use client";
 
-import { Box, HStack, Icon, StackProps } from "@chakra-ui/react";
+import { Box, HStack, Icon, StackProps, VStack } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 // react-pdf CSS
 import { Btn } from "@/components/ui/btn";
 import { CContainer } from "@/components/ui/c-container";
+import { MenuContent, MenuRoot, MenuTrigger } from "@/components/ui/menu";
+import { NumInput } from "@/components/ui/number-input";
+import { P } from "@/components/ui/p";
 import Spinner from "@/components/ui/spinner";
 import { Tooltip } from "@/components/ui/tooltip";
 import FeedbackState from "@/components/widget/FeedbackState";
 import HScroll from "@/components/widget/HScroll";
+import { Props__PdfViewer } from "@/constants/props";
 import useLang from "@/context/useLang";
+import { useThemeConfig } from "@/context/useThemeConfig";
 import {
   IconArrowAutofitContent,
   IconArrowAutofitWidth,
@@ -20,16 +25,9 @@ import {
   IconFile,
   IconFileOff,
   IconFiles,
-  IconZoomIn,
-  IconZoomOut,
 } from "@tabler/icons-react";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
-import { Props__PdfViewer } from "@/constants/props";
-import { useThemeConfig } from "@/context/useThemeConfig";
-import { MenuContent, MenuRoot, MenuTrigger } from "@/components/ui/menu";
-import { P } from "@/components/ui/p";
-import { NumInput } from "@/components/ui/number-input";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@4.4.168/build/pdf.worker.min.mjs`;
 
@@ -120,7 +118,7 @@ const Toolbar = (props: Props__PDFToolbar) => {
     pageNumber,
     setPageNumber,
     numPages,
-    scale,
+    // scale,
     ...restProps
   } = props;
 
@@ -174,13 +172,12 @@ const Toolbar = (props: Props__PDFToolbar) => {
           </HStack>
         )}
 
-        <UtilBtn onClick={utils.zoomOut} tooltipContent={l.zoom_out}>
+        {/* <UtilBtn onClick={utils.zoomOut} tooltipContent={l.zoom_out}>
           <Icon boxSize={5}>
             <IconZoomOut stroke={1.5} />
           </Icon>
         </UtilBtn>
 
-        {/* Scale Indicator */}
         <Box minW={"35px"} textAlign={"center"}>
           {Math.round(scale * 100)}%
         </Box>
@@ -189,7 +186,7 @@ const Toolbar = (props: Props__PDFToolbar) => {
           <Icon boxSize={5}>
             <IconZoomIn stroke={1.5} />
           </Icon>
-        </UtilBtn>
+        </UtilBtn> */}
 
         {/* <UtilBtn onClick={utils.resetZoom} tooltipContent={l.zoom_reset}>
           <Icon boxSize={5}>
@@ -354,7 +351,7 @@ export const PDFViewer = (props: Props__PdfViewer) => {
             <>
               {isSingleMode && (
                 // Single Mode
-                <Box mx={"auto"} width={"fit-content"}>
+                <VStack minW={"full"} w={"max"}>
                   <Page
                     pageNumber={pageNumber}
                     renderTextLayer={true}
@@ -362,16 +359,17 @@ export const PDFViewer = (props: Props__PdfViewer) => {
                     width={containerWidth}
                     scale={scale}
                   />
-                </Box>
+                </VStack>
               )}
 
               {!isSingleMode && (
                 // Scroll Mode
-                <Box
-                  display="flex"
-                  flexDirection="column"
+                <VStack
+                  display={"flex"}
+                  flexDirection={"column"}
+                  minW={"full"}
+                  w={"max"}
                   gap={4}
-                  alignItems="center"
                 >
                   {Array.from(new Array(numPages), (_, index) => (
                     <Box key={`page_${index + 1}`}>
@@ -384,7 +382,7 @@ export const PDFViewer = (props: Props__PdfViewer) => {
                       />
                     </Box>
                   ))}
-                </Box>
+                </VStack>
               )}
             </>
           )}
