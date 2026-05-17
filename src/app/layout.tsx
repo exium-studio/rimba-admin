@@ -3,6 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 import ClientSideOnly from "@/components/widget/ClientSideOnly";
 import { Metadata, Viewport } from "next";
+import { headers } from "next/headers";
 import { Figtree } from "next/font/google";
 import { APP } from "@/constants/_meta";
 
@@ -54,9 +55,14 @@ const figtree = Figtree({
   subsets: ["latin"],
 });
 
-const RootLayout = (props: Props) => {
+const RootLayout = async (props: Props) => {
   // Props
   const { children } = props;
+
+  // Read the per-request nonce injected by middleware (via x-nonce header).
+  // Next.js App Router automatically applies this nonce to its own inline
+  // hydration scripts when the CSP header contains 'nonce-XXX'.
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
 
   return (
     <html suppressHydrationWarning className={figtree.className}>
@@ -65,7 +71,7 @@ const RootLayout = (props: Props) => {
       </head>
 
       <body>
-        <Provider>
+        <Provider nonce={nonce}>
           <Toaster />
           {/* <Suspense fallback={<DefaultFallback />}> */}
           <ClientSideOnly>{children}</ClientSideOnly>

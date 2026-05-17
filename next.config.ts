@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { IMAGE_REMOTE_PATTERNS } from "@/constants/csp";
 
 const withPWA = require("@ducanh2912/next-pwa").default({
   dest: "public",
@@ -14,8 +15,10 @@ const withPWA = require("@ducanh2912/next-pwa").default({
 const nextConfig: NextConfig = {
   devIndicators: false,
   reactStrictMode: false,
+
   webpack(config, { dev, isServer }) {
     config.resolve.alias.canvas = false;
+
     config.resolve.fallback = {
       ...config.resolve.fallback,
       fs: false,
@@ -23,6 +26,7 @@ const nextConfig: NextConfig = {
       stream: false,
       zlib: false,
     };
+
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
@@ -31,31 +35,19 @@ const nextConfig: NextConfig = {
         path: false,
       };
     }
+
     if (dev) {
       config.cache = { type: "memory" };
     }
+
     return config;
   },
+
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "doc.rimbaexium.org",
-        pathname: "/storage/documents/**",
-      },
-      {
-        protocol: "https",
-        hostname: "doc-rimba.exium.my.id",
-        pathname: "/storage/documents/**",
-      },
-    ],
+    remotePatterns: IMAGE_REMOTE_PATTERNS,
     qualities: [60, 70, 80, 90, 100],
   },
+
   experimental: {
     optimizePackageImports: ["@chakra-ui/react"],
   },

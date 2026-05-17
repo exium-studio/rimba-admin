@@ -94,7 +94,7 @@ const SSOAuthForm = (props: any) => {
               "__user_data",
               JSON.stringify(r.data.data?.user),
               "local",
-              259200000
+              259200000,
             );
             setAuthToken(r.data.data?.token);
             setVerifiedAuthToken(r.data.data?.token);
@@ -223,7 +223,7 @@ const BasicAuthForm = (props: any) => {
               "__user_data",
               JSON.stringify(r.data.data?.user),
               "local",
-              259200000
+              259200000,
             );
             setAuthToken(r.data.data?.token);
             setVerifiedAuthToken(r.data.data?.token);

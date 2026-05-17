@@ -48,5 +48,10 @@
     "eslint-config-next": "15.5.0",
     "eslint-plugin-unused-imports": "^4.2.0",
     "typescript": "^5"
+  },
+  "overrides": {
+    "serialize-javascript": "^7.0.3",
+    "tar": "^7.5.8",
+    "postcss": "^8.5.10"
   }
 }

@@ -19,7 +19,7 @@ export const formatDate = (
     dateFormat?: Type__DateFormat;
     timezoneKey?: string;
     dashEmpty?: boolean;
-  } = {}
+  } = {},
 ): string => {
   if (!date) return options.dashEmpty ? "-" : "";
 
@@ -67,7 +67,7 @@ export const formatDate = (
   const formatDateString = (
     yearVal: number,
     monthOrName: string | number,
-    dayVal: number
+    dayVal: number,
   ) => {
     const monthDisplay =
       typeof monthOrName === "number"
@@ -135,28 +135,28 @@ export const formatDate = (
       formattedDate = `${weekdayName}, ${formatDateString(
         year,
         monthName,
-        day
+        day,
       )}`;
       break;
     case "weekdayDayShortMonthYear":
       formattedDate = `${weekdayName}, ${formatDateString(
         year,
         shortMonthName,
-        day
+        day,
       )}`;
       break;
     case "shortWeekdayDayMonthYear":
       formattedDate = `${shortWeekdayName}, ${formatDateString(
         year,
         monthName,
-        day
+        day,
       )}`;
       break;
     case "shortWeekdayDayShortMonthYear":
       formattedDate = `${shortWeekdayName}, ${formatDateString(
         year,
         shortMonthName,
-        day
+        day,
       )}`;
       break;
     default:
@@ -175,7 +175,7 @@ export const formatDate = (
 
 export const formatAbsDate = (
   date?: Date | string,
-  options: Parameters<typeof formatDate>[1] = {}
+  options: Parameters<typeof formatDate>[1] = {},
 ): string => {
   return formatDate(date, {
     timezoneKey: "UTC",
@@ -184,7 +184,7 @@ export const formatAbsDate = (
 };
 
 export const formatNumber = (
-  numParam: number | string | undefined | null
+  numParam: number | string | undefined | null,
 ): string => {
   if (numParam === null || numParam === undefined) return "";
 
@@ -242,7 +242,7 @@ export function formatTime(
     timeFormat?: Type__TimeFormat;
     timezoneKey?: string;
     withSuffix?: boolean;
-  } = {}
+  } = {},
 ): string {
   if (!time) return "";
 
@@ -276,7 +276,7 @@ export function formatTime(
   } else {
     formattedTime = `${String(hh).padStart(2, "0")}:${String(mm).padStart(
       2,
-      "0"
+      "0",
     )}`;
 
     if (options.showSeconds) {
@@ -289,7 +289,7 @@ export function formatTime(
 
 export const formatDuration = (
   seconds: number | undefined,
-  format: "long" | "short" | "digital" = "long"
+  format: "long" | "short" | "digital" = "long",
 ): string => {
   if (!seconds) return "0 detik";
 
